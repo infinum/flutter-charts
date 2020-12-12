@@ -16,6 +16,7 @@ class BarChartScreen extends StatefulWidget {
 class _BarChartScreenState extends State<BarChartScreen> {
   final _values = <BarValue>[];
   double targetMax;
+  int minItems = 6;
 
   @override
   void initState() {
@@ -27,8 +28,8 @@ class _BarChartScreenState extends State<BarChartScreen> {
     final Random _rand = Random();
     final double _difference = _rand.nextDouble() * 15;
 
-    targetMax = 3 + (_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25);
-    _values.addAll(List.generate((_rand.nextDouble() * 6).toInt() + 6, (index) {
+    targetMax = 3 + ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25)).roundToDouble();
+    _values.addAll(List.generate(minItems, (index) {
       return BarValue(2 + _rand.nextDouble() * _difference);
     }));
   }
@@ -46,46 +47,95 @@ class _BarChartScreenState extends State<BarChartScreen> {
           padding: const EdgeInsets.all(24.0),
           child: BarChart(
             data: _values,
-            minBarWidth: 12.0,
             height: MediaQuery.of(context).size.height * 0.6,
             dataToValue: (BarValue value) => value.max,
-            targetValueMax: targetMax,
-            itemPadding: EdgeInsets.symmetric(horizontal: Random().nextBool() ? 12.0 : 4.0),
-            itemColor: Theme.of(context).accentColor,
-            targetOverColor: Theme.of(context).errorColor,
-            itemRadius: BorderRadius.vertical(
-              top: Radius.circular(Random().nextBool() ? 100.0 : 0.0),
+            itemOptions: ChartItemOptions(
+              itemPainter: barItemPainter,
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              targetMax: targetMax + 2,
+              targetMin: targetMax,
+              minBarWidth: 6.0,
+              // isTargetInclusive: true,
+              color: Theme.of(context).colorScheme.error,
+              targetOverColor: Theme.of(context).accentColor,
+              radius: const BorderRadius.vertical(
+                top: Radius.circular(24.0),
+              ),
+            ),
+            chartOptions: ChartOptions(
+              valueAxisMax: max(
+                  _values.fold<double>(
+                          0,
+                          (double previousValue, BarValue element) =>
+                              previousValue = max(previousValue, element?.max ?? 0)) +
+                      1,
+                  targetMax + 3),
             ),
             backgroundDecorations: [
-              GridDecoration(
-                showHorizontalValues: true,
-                showTopHorizontalValue: true,
-                showVerticalGrid: true,
-                showVerticalValues: true,
-                verticalValuesPadding: EdgeInsets.only(left: 8.0),
-                valueAxisStep: 1,
-                verticalTextAlign: TextAlign.start,
-                gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
-                textStyle: Theme.of(context).textTheme.caption.copyWith(fontSize: 13.0),
+              HorizontalAxisDecoration(
+                gridWidth: 2.0,
+                valueAxisStep: 2,
               ),
-              TargetLineLegendDecoration(
-                legendDescription: 'Target',
-                legendStyle: Theme.of(context).textTheme.bodyText1.copyWith(
-                      color: Theme.of(context).accentColor.withOpacity(0.8),
-                    ),
-              )
+              VerticalAxisDecoration(
+                gridWidth: 2.0,
+                itemAxisStep: 3,
+              ),
+              GridDecoration(
+                showVerticalGrid: true,
+                valueAxisStep: 0.5,
+                itemAxisStep: 1,
+                gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+              ),
+              TargetAreaDecoration(
+                targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
+                targetColor: Theme.of(context).colorScheme.error,
+                targetAreaRadius: BorderRadius.circular(12.0),
+              ),
+            ],
+            foregroundDecorations: [
+              SparkLineDecoration(
+                lineWidth: 6.0,
+                lineColor: Theme.of(context).colorScheme.secondaryVariant,
+              ),
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.refresh_sharp),
-        onPressed: () {
-          setState(() {
-            _values.clear();
-            _updateValues();
-          });
-        },
+      floatingActionButton: Row(
+        children: [
+          FloatingActionButton(
+            heroTag: 'refresh_sharp',
+            child: Icon(Icons.refresh_sharp),
+            onPressed: () {
+              setState(() {
+                _values.clear();
+                _updateValues();
+              });
+            },
+          ),
+          FloatingActionButton(
+            heroTag: 'add',
+            child: Icon(Icons.add),
+            onPressed: () {
+              setState(() {
+                _values.clear();
+                minItems += 4;
+                _updateValues();
+              });
+            },
+          ),
+          FloatingActionButton(
+            heroTag: 'remove',
+            child: Icon(Icons.remove),
+            onPressed: () {
+              setState(() {
+                _values.clear();
+                minItems -= 4;
+                _updateValues();
+              });
+            },
+          ),
+        ],
       ),
     );
   }

@@ -108,40 +108,8 @@ class ChartState {
 
   /// For later in case charts will have to animate between states.
   static ChartState lerp(ChartState a, ChartState b, double t) {
-    /// Get list length in animation, we will add the items in steps.
-    final _listLength = lerpDouble(a.items.length, b.items.length, t);
-
-    /// Empty value for generated list.
-    final _emptyValue = BarValue(0.0);
-
-    /// Generate new list fot animation step, add items depending on current [_listLength]
-    final _lerpList = List.generate(_listLength.toInt(), (index) {
-      // If old list and new list have value at [index], then just animate from,
-      // old list value to the new value
-      if (index < a.items.length && index < b.items.length) {
-        return b.items[index].animateFrom(a.items[index], t);
-      }
-
-      // If new list is larger, then check if item in the list is not empty
-      // In case item is not empty then animate to it from our [_emptyValue]
-      if (index < b.items.length) {
-        if (b.items[index].isEmpty) {
-          return b.items[index];
-        }
-
-        return b.items[index].animateFrom(_emptyValue, t);
-      }
-
-      // In case that our old list is bigger, and item is not empty
-      // then we need to animate to empty value from current item value
-      if (a.items[index].isEmpty) {
-        return a.items[index];
-      }
-      return a.items[index].animateTo(_emptyValue, t);
-    });
-
     return ChartState._lerp(
-      _lerpList,
+      ChartItemsLerp().lerpValues(a.items, b.items, t),
       options: ChartOptions.lerp(a.options, b.options, t),
       itemOptions: ChartItemOptions.lerp(a.itemOptions, b.itemOptions, t),
       // Find background matches, if found, then animate to them, else just show them.
@@ -171,5 +139,51 @@ class ChartState {
       defaultMargin: EdgeInsets.lerp(a.defaultMargin, b.defaultMargin, t),
       defaultPadding: EdgeInsets.lerp(a.defaultPadding, b.defaultPadding, t),
     );
+  }
+}
+
+class ChartItemsLerp {
+  List<ChartItem> lerpValues(List<ChartItem> a, List<ChartItem> b, double t) {
+    /// Get list length in animation, we will add the items in steps.
+    final double _listLength = lerpDouble(a.length, b.length, t);
+
+    /// Empty value for generated list.
+    final BubbleValue _emptyValue = BubbleValue(0.0);
+
+    /// Generate new list fot animation step, add items depending on current [_listLength]
+    return List<ChartItem>.generate(_listLength.ceil(), (int index) {
+      // If old list and new list have value at [index], then just animate from,
+      // old list value to the new value
+      if (index < a.length && index < b.length) {
+        return b[index].animateFrom(a[index], t);
+      }
+
+      // If new list is larger, then check if item in the list is not empty
+      // In case item is not empty then animate to it from our [_emptyValue]
+      if (index < b.length) {
+        if (b[index].isEmpty) {
+          return b[index];
+        }
+
+        // If item is appearing then it's time to animate is
+        // from time it first showed to end of the animation.
+        final double _value = _listLength.floor() == index ? ((_listLength - _listLength.floor()) * t) : t;
+        return b[index].animateFrom(_emptyValue, _value);
+      }
+
+      // In case that our old list is bigger, and item is not empty
+      // then we need to animate to empty value from current item value
+      if (a[index].isEmpty) {
+        return a[index];
+      }
+
+
+      final double _value = _listLength.floor() == index
+          ? min(1, (1 - (_listLength - _listLength.floor())) + t / _listLength)
+          : _listLength.floor() >= index
+              ? 0
+              : t;
+      return a[index].animateTo(_emptyValue, _value);
+    });
   }
 }

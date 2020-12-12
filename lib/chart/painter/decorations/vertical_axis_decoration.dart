@@ -35,7 +35,7 @@ class VerticalAxisDecoration extends DecorationPainter {
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
     final _size = state?.defaultPadding?.deflateSize(size) ?? size;
-    final _itemWidth = (_size.width - 0.0) / state.items.length;
+    final _itemWidth = _size.width / state.items.length;
 
     final _paint = Paint()
       ..color = gridColor

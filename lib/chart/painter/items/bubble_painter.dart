@@ -40,7 +40,7 @@ class BubblePainter extends ItemPainter {
     final _circleSize = (_itemWidth - _padding.horizontal) / 2;
 
     canvas.drawCircle(
-      Offset(_circleSize + (_padding?.horizontal ?? 0.0), item.min * _verticalMultiplier - _minValue),
+      Offset(size.width * 0.5, item.min * _verticalMultiplier - _minValue),
       _circleSize,
       paint,
     );

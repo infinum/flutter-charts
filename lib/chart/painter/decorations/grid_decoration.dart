@@ -20,7 +20,7 @@ class GridDecoration extends DecorationPainter {
     this.gridWidth = 1.0,
     this.itemAxisStep = 1,
     this.valueAxisStep = 1,
-    this.textStyle = const TextStyle(fontSize: 13.0),
+    this.textStyle,
   }) {
     _horizontalAxisDecoration = HorizontalAxisDecoration(
       showValues: showHorizontalValues,

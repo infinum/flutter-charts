@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:example/charts/bubble_chart_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +5,7 @@ import 'package:flutter_charts/chart.dart';
 
 import 'charts/bar_chart_screen.dart';
 import 'charts/candle_chart_screen.dart';
+import 'charts/line_chart_screen.dart';
 
 void main() {
   runApp(ChartDemo());
@@ -48,16 +47,20 @@ class ShowList extends StatelessWidget {
               width: 80.0,
               child: Chart(
                 state: ChartState(
-                  [1, 3, 4, 2, 3, 6].map((e) => BarValue(e.toDouble())).toList(),
+                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue(e.toDouble())).toList(),
                   itemOptions: ChartItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     radius: BorderRadius.vertical(top: Radius.circular(12.0)),
                     color: Theme.of(context).accentColor,
+                    maxBarWidth: 8.0,
+                  ),
+                  options: ChartOptions(
+                    valueAxisMax: 9,
                   ),
                   backgroundDecorations: [
                     GridDecoration(
                       itemAxisStep: 1,
-                      valueAxisStep: 3,
+                      valueAxisStep: 1.5,
                       gridColor: Theme.of(context).dividerColor,
                     ),
                   ],
@@ -78,15 +81,19 @@ class ShowList extends StatelessWidget {
               width: 80.0,
               child: Chart(
                 state: ChartState(
-                  [1, 3, 4, 2, 3, 6, 2, 1, 4].map((e) => BubbleValue(e.toDouble())).toList(),
+                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue(e.toDouble())).toList(),
                   itemOptions: ChartItemOptions(
                     color: Theme.of(context).accentColor,
                     itemPainter: bubbleItemPainter,
+                    maxBarWidth: 8.0,
+                  ),
+                  options: ChartOptions(
+                    valueAxisMax: 9,
                   ),
                   backgroundDecorations: [
                     GridDecoration(
                       itemAxisStep: 3,
-                      valueAxisStep: 2,
+                      valueAxisStep: 3,
                       gridColor: Theme.of(context).dividerColor,
                     ),
                   ],
@@ -107,9 +114,9 @@ class ShowList extends StatelessWidget {
               width: 80.0,
               child: Chart(
                 state: ChartState(
-                  [1, 3, 4, 2, 3, 6].map((e) => CandleValue(e + 2 + Random().nextDouble() * 4, e.toDouble())).toList(),
+                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => CandleValue(e.toDouble() + 6, e.toDouble())).toList(),
                   options: ChartOptions(
-                    valueAxisMax: 12,
+                    valueAxisMax: 15,
                   ),
                   itemOptions: ChartItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
@@ -129,6 +136,42 @@ class ShowList extends StatelessWidget {
           ),
           onTap: () {
             Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => CandleChartScreen()));
+          },
+        ),
+        Divider(),
+        ListTile(
+          title: Text('Sparkline chart'),
+          trailing: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Container(
+              width: 80.0,
+              child: Chart(
+                state: ChartState(
+                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue(e.toDouble())).toList(),
+                  itemOptions: ChartItemOptions(
+                    padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                    radius: BorderRadius.all(Radius.circular(12.0)),
+                    color: Theme.of(context).accentColor,
+                    maxBarWidth: 1.0,
+                    itemPainter: bubbleItemPainter,
+                  ),
+                  options: ChartOptions(
+                    valueAxisMax: 9,
+                  ),
+                  backgroundDecorations: [
+                    GridDecoration(
+                      itemAxisStep: 9,
+                      valueAxisStep: 9,
+                      gridColor: Theme.of(context).dividerColor,
+                    ),
+                    SparkLineDecoration(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          onTap: () {
+            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => LineChartScreen()));
           },
         ),
         Divider(),
