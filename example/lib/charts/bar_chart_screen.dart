@@ -15,7 +15,7 @@ class BarChartScreen extends StatefulWidget {
 }
 
 class _BarChartScreenState extends State<BarChartScreen> {
-  final _values = <BarValue>[];
+  List<BarValue> _values = <BarValue>[];
   double targetMax;
   bool _showValues = false;
   int minItems = 6;
@@ -36,6 +36,16 @@ class _BarChartScreenState extends State<BarChartScreen> {
     }));
   }
 
+  void _addValues() {
+    _values = List.generate(minItems, (index) {
+      if (_values.length > index) {
+        return _values[index];
+      }
+
+      return BarValue(2 + Random().nextDouble() * targetMax);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +58,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
         children: [
           Center(
             child: Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.all(12.0),
               child: BarChart(
                 data: _values,
                 height: MediaQuery.of(context).size.height * 0.5,
@@ -144,9 +154,8 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   title: Text('Add data'),
                   onTap: () {
                     setState(() {
-                      _values.clear();
                       minItems += 4;
-                      _updateValues();
+                      _addValues();
                     });
                   },
                 ),
@@ -155,9 +164,8 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   title: Text('Remove data'),
                   onTap: () {
                     setState(() {
-                      _values.clear();
                       minItems -= 4;
-                      _updateValues();
+                      _values.removeRange(_values.length - 4, _values.length);
                     });
                   },
                 ),

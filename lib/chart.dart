@@ -10,7 +10,6 @@ import 'package:path_drawing/path_drawing.dart';
 
 part 'chart/animated_chart.dart';
 part 'chart/chart.dart';
-part 'chart/chart_tester.dart';
 part 'chart/model/chart_item_options.dart';
 part 'chart/model/chart_items/bar_value_item.dart';
 part 'chart/model/chart_items/bubble_value_item.dart';

@@ -19,7 +19,7 @@ class ChartPainter extends CustomPainter {
     final _size = state?.defaultPadding?.deflateSize(_paddingSize) ?? _paddingSize;
 
     /// Final usable space for one item in the chart
-    final _itemWidth = (_size.width - 0.0) / state.items.length;
+    final _itemWidth = _size.width / state.items.length;
 
     // First draw background decorations
     state.backgroundDecorations.forEach((decoration) => decoration.draw(canvas, _paddingSize, state));
