@@ -77,7 +77,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.refresh_sharp),
+        child: Icon(Icons.refresh),
         onPressed: () {
           setState(() {
             _values.clear();

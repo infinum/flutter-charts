@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_charts/chart.dart';
 
 import '../widgets/bar_chart.dart';
@@ -16,6 +17,7 @@ class BarChartScreen extends StatefulWidget {
 class _BarChartScreenState extends State<BarChartScreen> {
   final _values = <BarValue>[];
   double targetMax;
+  bool _showValues = false;
   int minItems = 6;
 
   @override
@@ -42,98 +44,125 @@ class _BarChartScreenState extends State<BarChartScreen> {
           'Bar chart',
         ),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: BarChart(
-            data: _values,
-            height: MediaQuery.of(context).size.height * 0.6,
-            dataToValue: (BarValue value) => value.max,
-            itemOptions: ChartItemOptions(
-              itemPainter: barItemPainter,
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              targetMax: targetMax + 2,
-              targetMin: targetMax,
-              minBarWidth: 6.0,
-              // isTargetInclusive: true,
-              color: Theme.of(context).colorScheme.error,
-              targetOverColor: Theme.of(context).accentColor,
-              radius: const BorderRadius.vertical(
-                top: Radius.circular(24.0),
-              ),
-            ),
-            chartOptions: ChartOptions(
-              valueAxisMax: max(
-                  _values.fold<double>(
-                          0,
-                          (double previousValue, BarValue element) =>
-                              previousValue = max(previousValue, element?.max ?? 0)) +
-                      1,
-                  targetMax + 3),
-            ),
-            backgroundDecorations: [
-              HorizontalAxisDecoration(
-                gridWidth: 2.0,
-                valueAxisStep: 2,
-              ),
-              VerticalAxisDecoration(
-                gridWidth: 2.0,
-                itemAxisStep: 3,
-              ),
-              GridDecoration(
-                showVerticalGrid: true,
-                valueAxisStep: 0.5,
-                itemAxisStep: 1,
-                gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
-              ),
-              TargetAreaDecoration(
-                targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
-                targetColor: Theme.of(context).colorScheme.error,
-                targetAreaRadius: BorderRadius.circular(12.0),
-              ),
-            ],
-            foregroundDecorations: [
-              SparkLineDecoration(
-                lineWidth: 6.0,
-                lineColor: Theme.of(context).colorScheme.secondaryVariant,
-              ),
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: Row(
+      body: Column(
         children: [
-          FloatingActionButton(
-            heroTag: 'refresh_sharp',
-            child: Icon(Icons.refresh_sharp),
-            onPressed: () {
-              setState(() {
-                _values.clear();
-                _updateValues();
-              });
-            },
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: BarChart(
+                data: _values,
+                height: MediaQuery.of(context).size.height * 0.5,
+                dataToValue: (BarValue value) => value.max,
+                itemOptions: ChartItemOptions(
+                  itemPainter: barItemPainter,
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  targetMax: targetMax + 2,
+                  targetMin: targetMax,
+                  minBarWidth: 6.0,
+                  // isTargetInclusive: true,
+                  color: Theme.of(context).colorScheme.primary,
+                  targetOverColor: Theme.of(context).colorScheme.error,
+                  radius: const BorderRadius.vertical(
+                    top: Radius.circular(24.0),
+                  ),
+                ),
+                chartOptions: ChartOptions(
+                  valueAxisMax: max(
+                      _values.fold<double>(
+                              0,
+                              (double previousValue, BarValue element) =>
+                                  previousValue = max(previousValue, element?.max ?? 0)) +
+                          1,
+                      targetMax + 3),
+                  padding: _showValues ? EdgeInsets.only(right: 12.0) : null,
+                ),
+                backgroundDecorations: [
+                  HorizontalAxisDecoration(
+                    gridWidth: 2.0,
+                    valueAxisStep: 2,
+                    gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+                  ),
+                  VerticalAxisDecoration(
+                    gridWidth: 2.0,
+                    itemAxisStep: 3,
+                    gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+                  ),
+                  GridDecoration(
+                    showVerticalGrid: true,
+                    showHorizontalValues: _showValues,
+                    showVerticalValues: _showValues,
+                    showTopHorizontalValue: _showValues,
+                    valueAxisStep: 1,
+                    itemAxisStep: 1,
+                    textStyle: Theme.of(context).textTheme.caption,
+                    gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+                  ),
+                  TargetAreaDecoration(
+                    targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
+                    targetColor: Theme.of(context).colorScheme.error,
+                    targetAreaRadius: BorderRadius.circular(12.0),
+                  ),
+                ],
+                foregroundDecorations: [],
+              ),
+            ),
           ),
-          FloatingActionButton(
-            heroTag: 'add',
-            child: Icon(Icons.add),
-            onPressed: () {
-              setState(() {
-                _values.clear();
-                minItems += 4;
-                _updateValues();
-              });
-            },
-          ),
-          FloatingActionButton(
-            heroTag: 'remove',
-            child: Icon(Icons.remove),
-            onPressed: () {
-              setState(() {
-                _values.clear();
-                minItems -= 4;
-                _updateValues();
-              });
-            },
+          Flexible(
+            child: GridView(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 3),
+              children: [
+                ListTile(
+                  leading: Icon(timeDilation == 10 ? Icons.play_arrow : Icons.slow_motion_video),
+                  title: Text(timeDilation == 10 ? 'Faster animations' : 'Slower animations'),
+                  onTap: () {
+                    setState(() {
+                      timeDilation = timeDilation == 10 ? 1 : 10;
+                    });
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.refresh),
+                  title: Text('Refresh dataset'),
+                  onTap: () {
+                    setState(() {
+                      _values.clear();
+                      _updateValues();
+                    });
+                  },
+                ),
+                ListTile(
+                  leading: Icon(_showValues ? Icons.visibility_off : Icons.visibility),
+                  title: Text('${_showValues ? 'Hide' : 'Show'} axis values'),
+                  onTap: () {
+                    setState(() {
+                      _showValues = !_showValues;
+                    });
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.add),
+                  title: Text('Add data'),
+                  onTap: () {
+                    setState(() {
+                      _values.clear();
+                      minItems += 4;
+                      _updateValues();
+                    });
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.remove),
+                  title: Text('Remove data'),
+                  onTap: () {
+                    setState(() {
+                      _values.clear();
+                      minItems -= 4;
+                      _updateValues();
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),

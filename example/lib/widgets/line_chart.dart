@@ -88,7 +88,7 @@ class LineChart<T> extends StatelessWidget {
 
     return AnimatedChart(
       height: height,
-      duration: const Duration(milliseconds: 2000),
+      duration: const Duration(milliseconds: 450),
       state: ChartState(
         _values,
         options: _options,
@@ -110,7 +110,9 @@ class LineChart<T> extends StatelessWidget {
         ],
         backgroundDecorations: [
           ..._backgroundDecorations,
-          SparkLineDecoration(),
+          SparkLineDecoration(
+            lineWidth: 4.0,
+          ),
         ],
       ),
     );

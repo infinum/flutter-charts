@@ -3,12 +3,18 @@ part of flutter_charts;
 class BarPainter extends ItemPainter {
   BarPainter(ChartItem item, ChartState state) : super(item, state);
 
-  @override
-  void paintText(Canvas canvas, Size size, ChartState state, double width, double verticalMultiplier, double minValue) {
+  void paintText(Canvas canvas, Size size, double width, double verticalMultiplier, double minValue) {
     final _padding = state?.itemOptions?.padding;
 
-    final _maxValuePainter =
-        ItemPainter.makeTextPainter(state?.itemOptions?.getTextColor(item), '${item.max.toInt()}', width);
+    final _maxValuePainter = ItemPainter.makeTextPainter(
+      '${item.max.toInt()}',
+      width,
+      TextStyle(
+        fontSize: 14.0,
+        color: state?.itemOptions?.getTextColor(item),
+        fontWeight: FontWeight.w700,
+      ),
+    );
 
     _maxValuePainter.paint(
       canvas,
@@ -22,8 +28,15 @@ class BarPainter extends ItemPainter {
       return;
     }
 
-    final _minValuePainter =
-        ItemPainter.makeTextPainter(state?.itemOptions?.getTextColor(item), '${item.min.toInt()}', width);
+    final _minValuePainter = ItemPainter.makeTextPainter(
+      '${item.min.toInt()}',
+      width,
+      TextStyle(
+        fontSize: 14.0,
+        color: state?.itemOptions?.getTextColor(item),
+        fontWeight: FontWeight.w700,
+      ),
+    );
 
     _minValuePainter.paint(
       canvas,
@@ -77,7 +90,7 @@ class BarPainter extends ItemPainter {
     ///
     /// If value is [CandleValue] it will draw min and max values.
     if (state?.itemOptions?.showValue ?? false) {
-      paintText(canvas, size, state, _itemWidth, _verticalMultiplier, _minValue);
+      paintText(canvas, size, _itemWidth, _verticalMultiplier, _minValue);
     }
   }
 }

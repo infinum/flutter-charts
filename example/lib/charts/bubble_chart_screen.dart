@@ -71,7 +71,7 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.refresh_sharp),
+        child: Icon(Icons.refresh),
         onPressed: () {
           setState(() {
             _values.clear();

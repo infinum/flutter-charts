@@ -45,7 +45,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
           padding: const EdgeInsets.all(24.0),
           child: LineChart(
             data: _values,
-            maxBarWidth: 4.0,
+            maxBarWidth: 2.0,
             height: MediaQuery.of(context).size.height * 0.6,
             dataToValue: (BarValue value) => value.max,
             itemColor: Theme.of(context).accentColor,
@@ -61,7 +61,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.refresh_sharp),
+        child: Icon(Icons.refresh),
         onPressed: () {
           setState(() {
             _values.clear();

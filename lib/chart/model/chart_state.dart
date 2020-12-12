@@ -177,7 +177,6 @@ class ChartItemsLerp {
         return a[index];
       }
 
-
       final double _value = _listLength.floor() == index
           ? min(1, (1 - (_listLength - _listLength.floor())) + t / _listLength)
           : _listLength.floor() >= index

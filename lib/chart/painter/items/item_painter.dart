@@ -15,28 +15,18 @@ abstract class ItemPainter {
   /// from [ChartPainter]
   void draw(Canvas canvas, Size size, Paint paint);
 
-  /// How should [ChartItem] value be displayed on the item.
-  /// This will be called if [ChartItemOptions.showValue] is set to true
-  void paintText(Canvas canvas, Size size, ChartState state, double width, double verticalMultiplier, double minValue);
-
   /// Get default text painter with set [value]
   /// Helper for [paintText]
-  static TextPainter makeTextPainter(Color textColor, String value, double width) {
-    return TextPainter(
-      text: TextSpan(
-        text: value,
-        style: TextStyle(
-          fontSize: 14.0,
-          color: textColor ?? Colors.grey,
-          fontWeight: FontWeight.w700,
+  static TextPainter makeTextPainter(String value, double width, TextStyle style) => TextPainter(
+        text: TextSpan(
+          text: value,
+          style: style,
         ),
-      ),
-      textAlign: TextAlign.center,
-      maxLines: 1,
-      textDirection: TextDirection.ltr,
-    )..layout(
-        maxWidth: width,
-        minWidth: width,
-      );
-  }
+        textAlign: TextAlign.center,
+        maxLines: 1,
+        textDirection: TextDirection.ltr,
+      )..layout(
+          maxWidth: width,
+          minWidth: width,
+        );
 }

@@ -92,7 +92,7 @@ class BubbleChart<T> extends StatelessWidget {
 
     return AnimatedChart(
       height: height,
-      duration: const Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 450),
       state: ChartState(
         _values,
         options: _options,

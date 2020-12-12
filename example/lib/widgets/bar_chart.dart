@@ -38,7 +38,7 @@ class BarChart<T> extends StatelessWidget {
 
     return AnimatedChart(
       height: height,
-      duration: const Duration(milliseconds: 2000),
+      duration: const Duration(milliseconds: 450),
       state: ChartState(
         _values,
         options: chartOptions,
