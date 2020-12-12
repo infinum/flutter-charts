@@ -26,6 +26,7 @@ class LineChart<T> extends StatelessWidget {
     this.maxBarWidth,
     this.itemRadius,
     this.minBarWidth,
+    this.smoothCurves,
     Key key,
   }) : super(key: key);
 
@@ -52,6 +53,7 @@ class LineChart<T> extends StatelessWidget {
   final double maxBarWidth;
   final double minBarWidth;
 
+  final bool smoothCurves;
   final List<DecorationPainter> backgroundDecorations;
 
   @override
@@ -107,12 +109,13 @@ class LineChart<T> extends StatelessWidget {
         ),
         foregroundDecorations: [
           ..._foregroundDecorations,
+          SparkLineDecoration(
+            lineWidth: 4.0,
+            smoothPoints: smoothCurves,
+          ),
         ],
         backgroundDecorations: [
           ..._backgroundDecorations,
-          SparkLineDecoration(
-            lineWidth: 4.0,
-          ),
         ],
       ),
     );

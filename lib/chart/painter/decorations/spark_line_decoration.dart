@@ -55,20 +55,24 @@ class SparkLineDecoration extends DecorationPainter {
       }
     }
 
-    final Path _path = Path();
+    if (fill) {}
 
-    if (fill) {
-      _positions.forEach((element) {
-        _path.lineTo(element.dx, element.dy);
-      });
-    } else {
-      _positions.forEach((element) {
-        if (_positions.first == element) {
-          _path.moveTo(element.dx, element.dy);
-        } else {
+    final Path _path = smoothPoints ? _smoothPoints(_positions, fill) : Path();
+
+    if (!smoothPoints) {
+      if (fill) {
+        _positions.forEach((element) {
           _path.lineTo(element.dx, element.dy);
-        }
-      });
+        });
+      } else {
+        _positions.forEach((element) {
+          if (_positions.first == element) {
+            _path.moveTo(element.dx, element.dy);
+          } else {
+            _path.lineTo(element.dx, element.dy);
+          }
+        });
+      }
     }
 
     canvas.drawPath(_path, _paint);
@@ -78,16 +82,27 @@ class SparkLineDecoration extends DecorationPainter {
 
   /// Smooth out points and return path in turn
   /// Smoothing is done with quadratic bezier
-  Path _smoothPoints(List<Offset> points) {
-    final Path _path = Path();
-    Offset _mid = (points[0] + points[1]) / 2;
+  Path _smoothPoints(List<Offset> points, bool fill) {
+    final List<Offset> _points = fill ? points.getRange(1, points.length - 1).toList() : points;
 
-    _path.moveTo(_mid.dx, _mid.dy);
-    for (int i = 0; i < points.length - 2; i++) {
-      final Offset _p1 = points[(i + 1) % points.length];
-      final Offset _p2 = points[(i + 2) % points.length];
+    final Path _path = Path();
+    Offset _mid = (_points[0] + _points[1]) / 2;
+    if (fill) {
+      _path.moveTo(_mid.dx, 0.0);
+      _path.lineTo(_mid.dx, _mid.dy);
+    } else {
+      _path.moveTo(_mid.dx, _mid.dy);
+    }
+
+    for (int i = 0; i < _points.length - 2; i++) {
+      final Offset _p1 = _points[(i + 1) % _points.length];
+      final Offset _p2 = _points[(i + 2) % _points.length];
       _mid = (_p1 + _p2) / 2;
       _path.quadraticBezierTo(_p1.dx, _p1.dy, _mid.dx, _mid.dy);
+    }
+
+    if (fill) {
+      _path.lineTo(_mid.dx, 0.0);
     }
 
     return _path;
@@ -98,6 +113,7 @@ class SparkLineDecoration extends DecorationPainter {
     if (endValue is SparkLineDecoration) {
       return SparkLineDecoration(
         fill: t > 0.5 ? endValue.fill : fill,
+        smoothPoints: t > 0.5 ? endValue.smoothPoints : smoothPoints,
         lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t),
         startPosition: lerpDouble(startPosition, endValue.startPosition, t),
         lineColor: Color.lerp(lineColor, endValue.lineColor, t),
