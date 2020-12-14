@@ -38,11 +38,9 @@ class _ChartState extends AnimatedWidgetBaseState<AnimatedChart> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size.fromHeight(_heightTween?.evaluate(animation)),
-      painter: ChartPainter(
-        _chartStateTween?.evaluate(animation),
-      ),
+    return _ChartWidget(
+      height: _heightTween?.evaluate(animation),
+      state: _chartStateTween?.evaluate(animation),
     );
   }
 

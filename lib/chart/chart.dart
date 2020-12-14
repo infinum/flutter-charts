@@ -20,11 +20,9 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size.fromHeight(height),
-      painter: ChartPainter(
-        state,
-      ),
+    return _ChartWidget(
+      height: height,
+      state: state,
     );
   }
 }

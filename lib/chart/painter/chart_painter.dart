@@ -12,6 +12,20 @@ class ChartPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     canvas.save();
 
+    if (state.behaviour.isScrollable) {
+      final _shouldScroll =
+          (state.itemOptions.minBarWidth + state.itemOptions.padding.horizontal) * state.items.length > size.width;
+
+      if (_shouldScroll) {
+        size = Size(
+            (state.itemOptions.minBarWidth + state.itemOptions.padding.horizontal) * state.items.length, size.height);
+      }
+
+      if(state.behaviour.scrollController.hasClients) {
+        canvas.translate(state.behaviour.scrollController.offset, 0.0);
+      }
+    }
+
     /// Default chart padding (this is to make place for legend and any other decorations that are inserted)
     final _paddingSize = state.defaultMargin.deflateSize(size);
 

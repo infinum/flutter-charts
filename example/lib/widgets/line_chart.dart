@@ -111,6 +111,7 @@ class LineChart<T> extends StatelessWidget {
           ..._foregroundDecorations,
           SparkLineDecoration(
             lineWidth: 4.0,
+            lineColor: Theme.of(context).accentColor,
             smoothPoints: smoothCurves,
           ),
         ],

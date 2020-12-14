@@ -18,6 +18,7 @@ class ChartState {
     this.items, {
     this.options = const ChartOptions(),
     this.itemOptions = const ChartItemOptions(),
+        this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const [],
     this.foregroundDecorations = const [],
   })  : assert((options?.padding?.vertical ?? 0.0) == 0.0, 'Chart padding cannot be vertical!'),
@@ -33,6 +34,7 @@ class ChartState {
     this.items, {
     this.options = const ChartOptions(),
     this.itemOptions = const ChartItemOptions(),
+        this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const [],
     this.foregroundDecorations = const [],
     this.maxValue,
@@ -45,6 +47,7 @@ class ChartState {
 
   final ChartOptions options;
   final ChartItemOptions itemOptions;
+  final ChartBehaviour behaviour;
   final List<DecorationPainter> backgroundDecorations;
   final List<DecorationPainter> foregroundDecorations;
 
@@ -111,6 +114,7 @@ class ChartState {
     return ChartState._lerp(
       ChartItemsLerp().lerpValues(a.items, b.items, t),
       options: ChartOptions.lerp(a.options, b.options, t),
+      behaviour: ChartBehaviour.lerp(a.behaviour, b.behaviour, t),
       itemOptions: ChartItemOptions.lerp(a.itemOptions, b.itemOptions, t),
       // Find background matches, if found, then animate to them, else just show them.
       backgroundDecorations: b.backgroundDecorations.map((e) {

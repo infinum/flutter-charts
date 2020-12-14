@@ -1,11 +1,10 @@
-import 'package:example/charts/bubble_chart_screen.dart';
+import 'package:example/chart_types.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_charts/chart.dart';
 
-import 'charts/bar_chart_screen.dart';
-import 'charts/candle_chart_screen.dart';
 import 'charts/line_chart_screen.dart';
+import 'charts/scrollable_chart_screen.dart';
 
 void main() {
   runApp(ChartDemo());
@@ -22,6 +21,14 @@ class _ChartDemoState extends State<ChartDemo> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData.light().copyWith(
+        accentColor: Colors.redAccent,
+        colorScheme: ThemeData.light().colorScheme.copyWith(
+              primary: Colors.redAccent,
+              error: Colors.grey,
+            ),
+        primaryColor: Colors.red,
+      ),
       home: Scaffold(
         appBar: AppBar(
           title: Text('Charts showcase'),
@@ -39,108 +46,31 @@ class ShowList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        ListTile(
-          title: Text('Bar chart'),
-          trailing: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Container(
-              width: 80.0,
-              child: Chart(
-                state: ChartState(
-                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue(e.toDouble())).toList(),
-                  itemOptions: ChartItemOptions(
-                    padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-                    color: Theme.of(context).accentColor,
-                    maxBarWidth: 8.0,
-                  ),
-                  options: ChartOptions(
-                    valueAxisMax: 9,
-                  ),
-                  backgroundDecorations: [
-                    GridDecoration(
-                      itemAxisStep: 1,
-                      valueAxisStep: 1.5,
-                      gridColor: Theme.of(context).dividerColor,
-                    ),
-                  ],
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Text(
+            'Chart types',
+            style: Theme.of(context).textTheme.caption.copyWith(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 14.0,
                 ),
-              ),
-            ),
           ),
-          onTap: () {
-            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => BarChartScreen()));
-          },
+        ),
+        Divider(),
+        ChartTypes(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Text(
+            'Decorations',
+            style: Theme.of(context).textTheme.caption.copyWith(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 14.0,
+                ),
+          ),
         ),
         Divider(),
         ListTile(
-          title: Text('Bubble chart'),
-          trailing: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Container(
-              width: 80.0,
-              child: Chart(
-                state: ChartState(
-                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue(e.toDouble())).toList(),
-                  itemOptions: ChartItemOptions(
-                    color: Theme.of(context).accentColor,
-                    itemPainter: bubbleItemPainter,
-                    maxBarWidth: 8.0,
-                  ),
-                  options: ChartOptions(
-                    valueAxisMax: 9,
-                  ),
-                  backgroundDecorations: [
-                    GridDecoration(
-                      itemAxisStep: 3,
-                      valueAxisStep: 3,
-                      gridColor: Theme.of(context).dividerColor,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          onTap: () {
-            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => BubbleChartScreen()));
-          },
-        ),
-        Divider(),
-        ListTile(
-          title: Text('Candle chart'),
-          trailing: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Container(
-              width: 80.0,
-              child: Chart(
-                state: ChartState(
-                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => CandleValue(e.toDouble() + 6, e.toDouble())).toList(),
-                  options: ChartOptions(
-                    valueAxisMax: 15,
-                  ),
-                  itemOptions: ChartItemOptions(
-                    padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    radius: BorderRadius.all(Radius.circular(12.0)),
-                    color: Theme.of(context).accentColor,
-                  ),
-                  backgroundDecorations: [
-                    GridDecoration(
-                      itemAxisStep: 1,
-                      valueAxisStep: 3,
-                      gridColor: Theme.of(context).dividerColor,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          onTap: () {
-            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => CandleChartScreen()));
-          },
-        ),
-        Divider(),
-        ListTile(
-          title: Text('Sparkline chart'),
+          title: Text('Sparkline chart decoration'),
           trailing: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Container(
@@ -164,7 +94,9 @@ class ShowList extends StatelessWidget {
                       valueAxisStep: 9,
                       gridColor: Theme.of(context).dividerColor,
                     ),
-                    SparkLineDecoration(),
+                    SparkLineDecoration(
+                      lineColor: Theme.of(context).accentColor,
+                    ),
                   ],
                 ),
               ),
@@ -172,6 +104,55 @@ class ShowList extends StatelessWidget {
           ),
           onTap: () {
             Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => LineChartScreen()));
+          },
+        ),
+        Divider(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Text(
+            'Scrollable',
+            style: Theme.of(context).textTheme.caption.copyWith(
+              fontWeight: FontWeight.w800,
+              fontSize: 14.0,
+            ),
+          ),
+        ),
+        Divider(),
+        ListTile(
+          title: Text('Scrollable chart'),
+          trailing: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Container(
+              width: 80.0,
+              child: Chart(
+                state: ChartState(
+                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue(e.toDouble())).toList(),
+                  itemOptions: ChartItemOptions(
+                    padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                    radius: BorderRadius.all(Radius.circular(12.0)),
+                    color: Theme.of(context).accentColor,
+                    maxBarWidth: 1.0,
+                    itemPainter: bubbleItemPainter,
+                  ),
+                  options: ChartOptions(
+                    valueAxisMax: 9,
+                  ),
+                  backgroundDecorations: [
+                    GridDecoration(
+                      itemAxisStep: 9,
+                      valueAxisStep: 9,
+                      gridColor: Theme.of(context).dividerColor,
+                    ),
+                    SparkLineDecoration(
+                      lineColor: Theme.of(context).accentColor,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          onTap: () {
+            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => ScrollableChartScreen()));
           },
         ),
         Divider(),

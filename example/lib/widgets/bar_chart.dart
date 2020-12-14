@@ -14,6 +14,7 @@ class BarChart<T> extends StatelessWidget {
     this.height = 240.0,
     this.backgroundDecorations,
     this.foregroundDecorations,
+    this.chartBehaviour,
     this.itemOptions,
     this.chartOptions,
     Key key,
@@ -25,6 +26,7 @@ class BarChart<T> extends StatelessWidget {
 
   final ChartItemOptions itemOptions;
   final ChartOptions chartOptions;
+  final ChartBehaviour chartBehaviour;
   final List<DecorationPainter> backgroundDecorations;
   final List<DecorationPainter> foregroundDecorations;
 
@@ -43,6 +45,7 @@ class BarChart<T> extends StatelessWidget {
         _values,
         options: chartOptions,
         itemOptions: itemOptions,
+        behaviour: chartBehaviour,
         foregroundDecorations: _foregroundDecorations,
         backgroundDecorations: [
           ..._backgroundDecorations,

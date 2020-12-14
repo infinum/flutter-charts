@@ -7,14 +7,14 @@ import 'package:flutter_charts/chart.dart';
 
 import '../widgets/bar_chart.dart';
 
-class BarChartScreen extends StatefulWidget {
-  BarChartScreen({Key key}) : super(key: key);
+class ScrollableChartScreen extends StatefulWidget {
+  ScrollableChartScreen({Key key}) : super(key: key);
 
   @override
-  _BarChartScreenState createState() => _BarChartScreenState();
+  _ScrollableChartScreenState createState() => _ScrollableChartScreenState();
 }
 
-class _BarChartScreenState extends State<BarChartScreen> {
+class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
   List<BarValue> _values = <BarValue>[];
   double targetMax;
   bool _showValues = false;
@@ -51,6 +51,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _controller = ScrollController();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -59,7 +60,8 @@ class _BarChartScreenState extends State<BarChartScreen> {
       ),
       body: Column(
         children: [
-          Center(
+          ScrollableChart(
+            controller: _controller,
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: BarChart(
@@ -71,13 +73,20 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   targetMax: targetMax + 2,
                   targetMin: targetMax,
-                  minBarWidth: 6.0,
+                  minBarWidth: 42.0,
                   // isTargetInclusive: true,
                   color: Theme.of(context).colorScheme.primary.withOpacity(_showBars ? 1.0 : 0.0),
                   targetOverColor: Theme.of(context).colorScheme.error.withOpacity(_showBars ? 1.0 : 0.0),
                   radius: const BorderRadius.vertical(
                     top: Radius.circular(24.0),
                   ),
+                ),
+                chartBehaviour: ChartBehaviour(
+                  isScrollable: true,
+                  scrollController: _controller,
+                  onItemClicked: (item){
+                    print('Clicked: $item');
+                  }
                 ),
                 chartOptions: ChartOptions(
                   valueAxisMax: max(

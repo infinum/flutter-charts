@@ -8,7 +8,7 @@ class SparkLineDecoration extends DecorationPainter {
     this.fill = false,
     this.smoothPoints = false,
     this.lineWidth = 1.0,
-    this.lineColor = Colors.blue,
+    this.lineColor = Colors.red,
     this.startPosition = 0.5,
   });
 
@@ -88,10 +88,12 @@ class SparkLineDecoration extends DecorationPainter {
     final Path _path = Path();
     Offset _mid = (_points[0] + _points[1]) / 2;
     if (fill) {
-      _path.moveTo(_mid.dx, 0.0);
+      _path.moveTo(_points[0].dx, 0.0);
+      _path.lineTo(_points[0].dx, _points[0].dy);
       _path.lineTo(_mid.dx, _mid.dy);
     } else {
-      _path.moveTo(_mid.dx, _mid.dy);
+      _path.moveTo(_points[0].dx, _points[0].dy);
+      _path.lineTo(_mid.dx, _mid.dy);
     }
 
     for (int i = 0; i < _points.length - 2; i++) {
@@ -99,10 +101,13 @@ class SparkLineDecoration extends DecorationPainter {
       final Offset _p2 = _points[(i + 2) % _points.length];
       _mid = (_p1 + _p2) / 2;
       _path.quadraticBezierTo(_p1.dx, _p1.dy, _mid.dx, _mid.dy);
-    }
 
-    if (fill) {
-      _path.lineTo(_mid.dx, 0.0);
+      if (i == _points.length - 3) {
+        _path.lineTo(_p2.dx, _p2.dy);
+        if (fill) {
+          _path.lineTo(_p2.dx, 0.0);
+        }
+      }
     }
 
     return _path;

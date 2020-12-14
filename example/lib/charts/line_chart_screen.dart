@@ -28,7 +28,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
 
   void _updateValues() {
     final Random _rand = Random();
-    final double _difference = _rand.nextDouble() * 15;
+    final double _difference = 2 + (_rand.nextDouble() * 15);
 
     targetMax = 3 + (_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25);
     _values.addAll(List.generate(minItems, (index) {

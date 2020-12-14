@@ -21,7 +21,7 @@ class GridDecoration extends DecorationPainter {
     this.itemAxisStep = 1,
     this.valueAxisStep = 1,
     this.textStyle,
-  }) {
+  }) : assert(textStyle != null || !(showHorizontalValues || showTopHorizontalValue || showVerticalValues), 'Need to provide text style for values to be visible!') {
     _horizontalAxisDecoration = HorizontalAxisDecoration(
       showValues: showHorizontalValues,
       endWithChart: endWithChart,
