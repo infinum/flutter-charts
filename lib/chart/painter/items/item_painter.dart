@@ -17,16 +17,27 @@ abstract class ItemPainter {
 
   /// Get default text painter with set [value]
   /// Helper for [paintText]
-  static TextPainter makeTextPainter(String value, double width, TextStyle style) => TextPainter(
-        text: TextSpan(
-          text: value,
-          style: style,
-        ),
-        textAlign: TextAlign.center,
-        maxLines: 1,
-        textDirection: TextDirection.ltr,
-      )..layout(
-          maxWidth: width,
-          minWidth: width,
-        );
+  static TextPainter makeTextPainter(String value, double width, TextStyle style, {bool hasMaxWidth = true}) {
+    final _painter = TextPainter(
+      text: TextSpan(
+        text: value,
+        style: style,
+      ),
+      textAlign: TextAlign.center,
+      maxLines: 1,
+      textDirection: TextDirection.ltr,
+    );
+    if (hasMaxWidth) {
+      _painter.layout(
+        maxWidth: width,
+        minWidth: width,
+      );
+    } else {
+      _painter.layout(
+        minWidth: width,
+      );
+    }
+
+    return _painter;
+  }
 }

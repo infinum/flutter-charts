@@ -21,7 +21,9 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
   bool _smoothPoints = false;
   bool _showBars = true;
   bool _showLine = false;
+  bool _isScrollable = true;
   int minItems = 6;
+  int _selected;
 
   @override
   void initState() {
@@ -82,11 +84,13 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                   ),
                 ),
                 chartBehaviour: ChartBehaviour(
-                  isScrollable: true,
+                  isScrollable: _isScrollable,
                   scrollController: _controller,
-                  onItemClicked: (item){
-                    print('Clicked: $item');
-                  }
+                  onItemClicked: (item) {
+                    setState(() {
+                      _selected = item;
+                    });
+                  },
                 ),
                 chartOptions: ChartOptions(
                   valueAxisMax: max(
@@ -113,7 +117,6 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                     showVerticalGrid: true,
                     showHorizontalValues: _showValues,
                     showVerticalValues: _showValues,
-                    showTopHorizontalValue: _showValues,
                     valueAxisStep: 1,
                     itemAxisStep: 1,
                     textStyle: Theme.of(context).textTheme.caption,
@@ -129,10 +132,13 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                     lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 0.2 : 0.0),
                     smoothPoints: _smoothPoints,
                   ),
+                  CupertinoSelectedPainter(
+                    _selected,
+                  ),
                 ],
                 foregroundDecorations: [
                   SparkLineDecoration(
-                    lineWidth: 4.0,
+                    lineWidth: 8.0,
                     lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
                     smoothPoints: _smoothPoints,
                   ),
@@ -197,6 +203,16 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                   onTap: () {
                     setState(() {
                       _smoothPoints = !_smoothPoints;
+                    });
+                  },
+                ),
+                ListTile(
+                  subtitle: Text('WIP: Breaks chart!'),
+                  leading: Icon(_isScrollable ? Icons.check_box_outlined : Icons.check_box_outline_blank),
+                  title: Text('Scrollable'),
+                  onTap: () {
+                    setState(() {
+                      _isScrollable = !_isScrollable;
                     });
                   },
                 ),

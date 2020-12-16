@@ -12,6 +12,14 @@ class ChartPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     canvas.save();
 
+    // canvas.drawRect(
+    //   Rect.fromPoints(
+    //     Offset.zero,
+    //     Offset(size.width, size.height)
+    //   ),
+    //   Paint()..color = Colors.red.withOpacity(0.3)
+    // );
+
     if (state.behaviour.isScrollable) {
       final _shouldScroll =
           (state.itemOptions.minBarWidth + state.itemOptions.padding.horizontal) * state.items.length > size.width;
@@ -21,7 +29,7 @@ class ChartPainter extends CustomPainter {
             (state.itemOptions.minBarWidth + state.itemOptions.padding.horizontal) * state.items.length, size.height);
       }
 
-      if(state.behaviour.scrollController.hasClients) {
+      if (state.behaviour.scrollController.hasClients) {
         canvas.translate(state.behaviour.scrollController.offset, 0.0);
       }
     }

@@ -14,9 +14,9 @@ class BarChart<T> extends StatelessWidget {
     this.height = 240.0,
     this.backgroundDecorations,
     this.foregroundDecorations,
-    this.chartBehaviour,
-    this.itemOptions,
-    this.chartOptions,
+    this.chartBehaviour = const ChartBehaviour(),
+    this.itemOptions = const ChartItemOptions(),
+    this.chartOptions = const ChartOptions(),
     Key key,
   }) : super(key: key);
 

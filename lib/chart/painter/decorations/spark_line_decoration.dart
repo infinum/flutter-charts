@@ -36,11 +36,12 @@ class SparkLineDecoration extends DecorationPainter {
     final _size = state?.defaultPadding?.deflateSize(size) ?? size;
     final _maxValue = state.maxValue - state.minValue;
     final scale = _size.height / _maxValue;
-    final _padding = state?.itemOptions?.padding ?? EdgeInsets.zero;
-    final _itemWidth = _size.width / state.items.length;
+
+    final _itemWidth = max(state?.itemOptions?.minBarWidth ?? 0.0,
+        min(state?.itemOptions?.maxBarWidth ?? double.infinity, _size.width / state.items.length));
 
     canvas.save();
-    canvas.translate(_padding.left + state.defaultMargin.left, _size.height + state.defaultMargin.top);
+    canvas.translate(state.defaultMargin.left, _size.height + state.defaultMargin.top);
     final List<Offset> _positions = <Offset>[];
 
     for (int _index = 0; _index < state.items.length; _index++) {
@@ -54,8 +55,6 @@ class SparkLineDecoration extends DecorationPainter {
         _positions.add(Offset(_size.width * (_index / _items.length) + _itemWidth * startPosition, 0.0));
       }
     }
-
-    if (fill) {}
 
     final Path _path = smoothPoints ? _smoothPoints(_positions, fill) : Path();
 

@@ -1,7 +1,5 @@
 part of flutter_charts;
 
-typedef OnChartItemClicked(ChartItem item);
-
 class ChartBehaviour {
   const ChartBehaviour({
     this.isScrollable = false,
@@ -11,9 +9,14 @@ class ChartBehaviour {
 
   final bool isScrollable;
   final ScrollController scrollController;
-  final OnChartItemClicked onItemClicked;
 
-  static ChartBehaviour lerp(ChartBehaviour a, ChartBehaviour b, double t){
+  final ValueChanged<int> onItemClicked;
+
+  void onChartItemClicked(int index) {
+    onItemClicked?.call(index);
+  }
+
+  static ChartBehaviour lerp(ChartBehaviour a, ChartBehaviour b, double t) {
     return ChartBehaviour(
       isScrollable: t > 0.5 ? b.isScrollable : a.isScrollable,
       scrollController: t > 0.5 ? b.scrollController : a.scrollController,

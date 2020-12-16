@@ -18,7 +18,7 @@ class ChartState {
     this.items, {
     this.options = const ChartOptions(),
     this.itemOptions = const ChartItemOptions(),
-        this.behaviour = const ChartBehaviour(),
+    this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const [],
     this.foregroundDecorations = const [],
   })  : assert((options?.padding?.vertical ?? 0.0) == 0.0, 'Chart padding cannot be vertical!'),
@@ -34,7 +34,7 @@ class ChartState {
     this.items, {
     this.options = const ChartOptions(),
     this.itemOptions = const ChartItemOptions(),
-        this.behaviour = const ChartBehaviour(),
+    this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const [],
     this.foregroundDecorations = const [],
     this.maxValue,
