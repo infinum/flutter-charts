@@ -21,13 +21,32 @@ class ChartState {
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const [],
     this.foregroundDecorations = const [],
-  })  : assert((options?.padding?.vertical ?? 0.0) == 0.0, 'Chart padding cannot be vertical!'),
-        minValue = _getMinValue(items, options),
-        maxValue = _getMaxValue(items, options) {
+  })  : assert(items.isNotEmpty, 'No items!'),
+        assert((options?.padding?.vertical ?? 0.0) == 0.0, 'Chart padding cannot be vertical!'),
+        minValue = _getMinValue(items.values.toList(), options),
+        maxValue = _getMaxValue(items.values.toList(), options) {
     /// Set default padding and margin, decorations padding and margins will be added to this value
     defaultPadding = options?.padding ?? EdgeInsets.zero;
     defaultMargin = EdgeInsets.zero;
     _setUpDecorations();
+  }
+
+  factory ChartState.fromList(
+    List<ChartItem> values, {
+    ChartOptions options = const ChartOptions(),
+    ChartItemOptions itemOptions = const ChartItemOptions(),
+    ChartBehaviour behaviour = const ChartBehaviour(),
+    List<DecorationPainter> backgroundDecorations = const [],
+    List<DecorationPainter> foregroundDecorations = const [],
+  }) {
+    return ChartState(
+      values.asMap(),
+      options: options,
+      itemOptions: itemOptions,
+      behaviour: behaviour,
+      foregroundDecorations: foregroundDecorations,
+      backgroundDecorations: backgroundDecorations,
+    );
   }
 
   ChartState._lerp(
@@ -41,9 +60,11 @@ class ChartState {
     this.minValue,
     this.defaultMargin,
     this.defaultPadding,
-  });
+  }) {
+    _initDecorations();
+  }
 
-  final List<ChartItem> items;
+  final Map<int, ChartItem> items;
 
   final ChartOptions options;
   final ChartItemOptions itemOptions;
@@ -147,7 +168,7 @@ class ChartState {
 }
 
 class ChartItemsLerp {
-  List<ChartItem> lerpValues(List<ChartItem> a, List<ChartItem> b, double t) {
+  Map<int, ChartItem> lerpValues(Map<int, ChartItem> a, Map<int, ChartItem> b, double t) {
     /// Get list length in animation, we will add the items in steps.
     final double _listLength = lerpDouble(a.length, b.length, t);
 
@@ -187,6 +208,6 @@ class ChartItemsLerp {
               ? 0
               : t;
       return a[index].animateTo(_emptyValue, _value);
-    });
+    }).asMap();
   }
 }

@@ -1,11 +1,12 @@
 part of flutter_charts;
 
+/// Show selected item in Cupertino style (Health app)
 class CupertinoSelectedPainter extends DecorationPainter {
   CupertinoSelectedPainter(this.selectedIndex);
 
   final int selectedIndex;
 
-  void _drawText(Canvas canvas, Size size, double width, ChartState state) {
+  void _drawText(Canvas canvas, Size size, double width, double totalWidth, ChartState state) {
     final _maxValuePainter = ItemPainter.makeTextPainter(
       state.items[selectedIndex].max.toStringAsFixed(2),
       width,
@@ -17,16 +18,19 @@ class CupertinoSelectedPainter extends DecorationPainter {
       hasMaxWidth: false,
     );
 
-    canvas.drawRect(
-        Rect.fromPoints(
-            Offset(
-              width / 2 + _maxValuePainter.width / 2,
-              size.height,
-            ),
-            Offset(
-              width / 2 - _maxValuePainter.width / 2,
-              size.height - _maxValuePainter.height,
-            )).inflate(4),
+    canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromPoints(
+              Offset(
+                width / 2 - _maxValuePainter.width / 2,
+                size.height,
+              ),
+              Offset(
+                width / 2 + _maxValuePainter.width / 2,
+                size.height - _maxValuePainter.height,
+              )),
+          Radius.circular(8.0),
+        ).inflate(4),
         Paint()..color = Colors.grey);
 
     _maxValuePainter.paint(
@@ -40,9 +44,10 @@ class CupertinoSelectedPainter extends DecorationPainter {
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
-    if (selectedIndex == null || state.items.length <= selectedIndex) {
+    if (selectedIndex == null || state.items.length <= selectedIndex || selectedIndex.isNegative) {
       return;
     }
+
     final _size = state?.defaultPadding?.deflateSize(size) ?? size;
     final _itemWidth = _size.width / state.items.length;
 
@@ -54,7 +59,7 @@ class CupertinoSelectedPainter extends DecorationPainter {
     );
 
     _drawItem(canvas, Size(_itemWidth, -size.height), state);
-    _drawText(canvas, Size(_itemWidth, -size.height), _itemWidth, state);
+    _drawText(canvas, Size(_itemWidth, -size.height), _itemWidth, size.width, state);
 
     // Restore canvas
     canvas.restore();
@@ -106,7 +111,8 @@ class CupertinoSelectedPainter extends DecorationPainter {
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
     if (endValue is CupertinoSelectedPainter) {
       return CupertinoSelectedPainter(
-        lerpDouble(selectedIndex?.toDouble(), endValue.selectedIndex?.toDouble(), t)?.round(),
+        endValue.selectedIndex,
+        // lerpDouble(selectedIndex?.toDouble(), endValue.selectedIndex?.toDouble(), t)?.round(),
       );
     }
 

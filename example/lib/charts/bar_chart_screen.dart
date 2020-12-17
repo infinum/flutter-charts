@@ -64,14 +64,14 @@ class _BarChartScreenState extends State<BarChartScreen> {
               padding: const EdgeInsets.all(12.0),
               child: BarChart(
                 data: _values,
-                height: MediaQuery.of(context).size.height * 0.5,
+                height: MediaQuery.of(context).size.height * 0.4,
                 dataToValue: (BarValue value) => value.max,
                 itemOptions: ChartItemOptions(
                   itemPainter: barItemPainter,
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   targetMax: targetMax + 2,
                   targetMin: targetMax,
-                  minBarWidth: 6.0,
+                  // minBarWidth: 6.0,
                   // isTargetInclusive: true,
                   color: Theme.of(context).colorScheme.primary.withOpacity(_showBars ? 1.0 : 0.0),
                   targetOverColor: Theme.of(context).colorScheme.error.withOpacity(_showBars ? 1.0 : 0.0),
@@ -90,16 +90,6 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   padding: _showValues ? EdgeInsets.only(right: 12.0) : null,
                 ),
                 backgroundDecorations: [
-                  HorizontalAxisDecoration(
-                    gridWidth: 2.0,
-                    valueAxisStep: 2,
-                    gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
-                  ),
-                  VerticalAxisDecoration(
-                    gridWidth: 2.0,
-                    itemAxisStep: 3,
-                    gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
-                  ),
                   GridDecoration(
                     showVerticalGrid: true,
                     showHorizontalValues: _showValues,
@@ -114,11 +104,6 @@ class _BarChartScreenState extends State<BarChartScreen> {
                     targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
                     targetColor: Theme.of(context).colorScheme.error,
                     targetAreaRadius: BorderRadius.circular(12.0),
-                  ),
-                  SparkLineDecoration(
-                    fill: true,
-                    lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 0.2 : 0.0),
-                    smoothPoints: _smoothPoints,
                   ),
                 ],
                 foregroundDecorations: [
@@ -182,7 +167,6 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   },
                 ),
                 ListTile(
-                  enabled: _showLine,
                   leading: Icon(_smoothPoints ? Icons.check_box_outlined : Icons.check_box_outline_blank),
                   title: Text('Smooth line curve'),
                   onTap: () {
@@ -206,8 +190,10 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   title: Text('Remove data'),
                   onTap: () {
                     setState(() {
-                      minItems -= 4;
-                      _values.removeRange(_values.length - 4, _values.length);
+                      if (_values.length > 4) {
+                        minItems -= 4;
+                        _values.removeRange(_values.length - 4, _values.length);
+                      }
                     });
                   },
                 ),

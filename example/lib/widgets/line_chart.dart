@@ -8,110 +8,56 @@ typedef DataToAxis<T> = String Function(int item);
 String defaultAxisValues(int item) => '$item';
 
 class LineChart<T> extends StatelessWidget {
-  const LineChart({
+  LineChart({
     @required this.data,
     @required this.dataToValue,
     this.height = 240.0,
-    this.targetValueMax,
-    this.targetValueMin,
-    this.valueAxisStep,
-    this.minValue,
-    this.maxValue,
-    this.colorForValue,
-    this.backgroundDecorations,
+    this.lineWidth = 2.0,
     this.itemColor,
-    this.targetOverColor,
-    this.itemPadding,
-    this.isTargetInclusive = true,
-    this.maxBarWidth,
-    this.itemRadius,
-    this.minBarWidth,
+    this.backgroundDecorations,
+    this.foregroundDecorations,
+    this.chartOptions,
+    this.chartItemOptions,
+    this.chartBehaviour,
     this.smoothCurves,
     Key key,
-  }) : super(key: key);
+  })  : _mappedValues = data.map((e) => BubbleValue(dataToValue(e))).toList().asMap(),
+        super(key: key);
 
   final List<T> data;
   final DataToValue<T> dataToValue;
 
   final double height;
 
-  final double minValue;
-  final double maxValue;
-  final double targetValueMax;
-  final double targetValueMin;
-
-  final double valueAxisStep;
-
-  final ColorForValue colorForValue;
-
-  final Color targetOverColor;
-  final Color itemColor;
-
-  final EdgeInsets itemPadding;
-  final bool isTargetInclusive;
-  final BorderRadius itemRadius;
-  final double maxBarWidth;
-  final double minBarWidth;
-
   final bool smoothCurves;
+  final Color itemColor;
+  final double lineWidth;
+
   final List<DecorationPainter> backgroundDecorations;
+  final List<DecorationPainter> foregroundDecorations;
+  final ChartBehaviour chartBehaviour;
+  final ChartOptions chartOptions;
+  final ChartItemOptions chartItemOptions;
+
+  final Map<int, BubbleValue> _mappedValues;
 
   @override
   Widget build(BuildContext context) {
     final _foregroundDecorations = <DecorationPainter>[];
     final _backgroundDecorations = backgroundDecorations ?? <DecorationPainter>[];
 
-    if (targetValueMin != null && targetValueMax != null) {
-      _backgroundDecorations.add(TargetAreaDecoration(
-        dashArray: [15, 10],
-        lineWidth: 1.0,
-        targetColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.7),
-        targetAreaRadius: BorderRadius.circular(8.0),
-        targetAreaFillColor: Theme.of(context).colorScheme.background,
-      ));
-    } else if (targetValueMin != null || targetValueMax != null) {
-      _foregroundDecorations.add(TargetLineDecoration(
-        dashArray: [15, 10],
-        lineWidth: 1.0,
-        targetColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.7),
-      ));
-    }
-
-    // Map values
-    final _values = data.map((e) => BubbleValue(dataToValue(e))).toList();
-
-    // Chart options
-    final _options = ChartOptions(
-      valueAxisMax: maxValue ?? (targetValueMax ?? valueAxisStep ?? 2.0) * 1.1,
-      axisLegendTextColor: Theme.of(context).colorScheme.primary,
-      valueAxisMin: minValue,
-      padding: EdgeInsets.only(right: 36.0),
-    );
-
     return AnimatedChart(
       height: height,
       duration: const Duration(milliseconds: 450),
       state: ChartState(
-        _values,
-        options: _options,
-        itemOptions: ChartItemOptions(
-          minBarWidth: minBarWidth,
-          maxBarWidth: maxBarWidth,
-          color: itemColor ?? Theme.of(context).accentColor,
-          targetOverColor: targetOverColor ?? Theme.of(context).errorColor,
-          targetMax: targetValueMax,
-          targetMin: targetValueMin,
-          isTargetInclusive: isTargetInclusive,
-          colorForValue: colorForValue,
-          radius: itemRadius,
-          padding: itemPadding,
-          itemPainter: bubbleItemPainter,
-        ),
+        _mappedValues,
+        options: chartOptions,
+        itemOptions: chartItemOptions,
         foregroundDecorations: [
           ..._foregroundDecorations,
           SparkLineDecoration(
-            lineWidth: 4.0,
-            lineColor: Theme.of(context).accentColor,
+            lineWidth: lineWidth,
+            lineColor: itemColor,
             smoothPoints: smoothCurves,
           ),
         ],

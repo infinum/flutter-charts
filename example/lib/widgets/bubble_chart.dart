@@ -8,7 +8,7 @@ typedef DataToAxis<T> = String Function(int item);
 String defaultAxisValues(int item) => '$item';
 
 class BubbleChart<T> extends StatelessWidget {
-  const BubbleChart({
+  BubbleChart({
     @required this.data,
     @required this.dataToValue,
     this.height = 240.0,
@@ -17,10 +17,12 @@ class BubbleChart<T> extends StatelessWidget {
     this.backgroundDecorations,
     this.foregroundDecorations,
     Key key,
-  }) : super(key: key);
+  })  : _mappedValues = data.map((e) => BubbleValue(dataToValue(e))).toList().asMap(),
+        super(key: key);
 
   final List<T> data;
   final DataToValue<T> dataToValue;
+  final Map<int, ChartItem> _mappedValues;
 
   final double height;
   final ChartOptions chartOptions;
@@ -34,14 +36,11 @@ class BubbleChart<T> extends StatelessWidget {
     final _foregroundDecorations = <DecorationPainter>[];
     final _backgroundDecorations = backgroundDecorations ?? <DecorationPainter>[];
 
-    // Map values
-    final _values = data.map((e) => BubbleValue(dataToValue(e))).toList();
-
     return AnimatedChart(
       height: height,
       duration: const Duration(milliseconds: 450),
       state: ChartState(
-        _values,
+        _mappedValues,
         options: chartOptions,
         itemOptions: itemOptions,
         foregroundDecorations: _foregroundDecorations,

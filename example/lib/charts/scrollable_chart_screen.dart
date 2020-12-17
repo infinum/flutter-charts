@@ -22,8 +22,10 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
   bool _showBars = true;
   bool _showLine = false;
   bool _isScrollable = true;
-  int minItems = 6;
+  int minItems = 12;
   int _selected;
+
+  final _controller = ScrollController();
 
   @override
   void initState() {
@@ -53,29 +55,29 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _controller = ScrollController();
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Bar chart',
+          'Scrollable chart',
         ),
       ),
       body: Column(
         children: [
-          ScrollableChart(
+          SingleChildScrollView(
             controller: _controller,
+            scrollDirection: Axis.horizontal,
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: BarChart(
                 data: _values,
-                height: MediaQuery.of(context).size.height * 0.5,
+                height: MediaQuery.of(context).size.height * 0.4,
                 dataToValue: (BarValue value) => value.max,
                 itemOptions: ChartItemOptions(
                   itemPainter: barItemPainter,
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  padding: EdgeInsets.symmetric(horizontal: 12.0),
                   targetMax: targetMax + 2,
                   targetMin: targetMax,
-                  minBarWidth: 42.0,
+                  minBarWidth: 36.0,
                   // isTargetInclusive: true,
                   color: Theme.of(context).colorScheme.primary.withOpacity(_showBars ? 1.0 : 0.0),
                   targetOverColor: Theme.of(context).colorScheme.error.withOpacity(_showBars ? 1.0 : 0.0),
@@ -231,8 +233,10 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                   title: Text('Remove data'),
                   onTap: () {
                     setState(() {
-                      minItems -= 4;
-                      _values.removeRange(_values.length - 4, _values.length);
+                      if (_values.length > 4) {
+                        minItems -= 4;
+                        _values.removeRange(_values.length - 4, _values.length);
+                      }
                     });
                   },
                 ),

@@ -18,7 +18,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
   double targetMax;
   bool _showValues = false;
   bool _smoothCurves = false;
-  int minItems = 6;
+  int minItems = 10;
 
   @override
   void initState() {
@@ -49,23 +49,44 @@ class _LineChartScreenState extends State<LineChartScreen> {
           Center(
             child: Padding(
               padding: const EdgeInsets.all(24.0),
-              child: LineChart(
-                data: _values,
-                maxBarWidth: 4.0,
-                height: MediaQuery.of(context).size.height * 0.6,
-                dataToValue: (BarValue value) => value.max,
-                itemColor: Theme.of(context).accentColor.withOpacity(0.4),
-                targetOverColor: Theme.of(context).errorColor,
-                smoothCurves: _smoothCurves,
-                backgroundDecorations: [
-                  GridDecoration(
-                    showVerticalGrid: false,
-                    showTopHorizontalValue: _showValues,
-                    showVerticalValues: _showValues,
-                    showHorizontalValues: _showValues,
-                    valueAxisStep: 1,
-                    textStyle: Theme.of(context).textTheme.caption,
-                    gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+              child: Stack(
+                children: [
+                  LineChart(
+                    data: _values.getRange(0, _values.length ~/ 2).toList(),
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    dataToValue: (BarValue value) => value.max,
+                    itemColor: Theme.of(context).accentColor,
+                    lineWidth: 2.0,
+                    chartItemOptions: ChartItemOptions(
+                      maxBarWidth: 4.0,
+                      color: Theme.of(context).accentColor.withOpacity(0.4),
+                      itemPainter: bubbleItemPainter,
+                    ),
+                    smoothCurves: _smoothCurves,
+                    backgroundDecorations: [
+                      GridDecoration(
+                        showVerticalGrid: false,
+                        showTopHorizontalValue: _showValues,
+                        showVerticalValues: _showValues,
+                        showHorizontalValues: _showValues,
+                        valueAxisStep: 1,
+                        textStyle: Theme.of(context).textTheme.caption,
+                        gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+                      ),
+                    ],
+                  ),
+                  LineChart(
+                    lineWidth: 2.0,
+                    data: _values.getRange(_values.length ~/ 2, _values.length).toList(),
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    dataToValue: (BarValue value) => value.max,
+                    itemColor: Theme.of(context).colorScheme.primaryVariant,
+                    smoothCurves: _smoothCurves,
+                    chartItemOptions: ChartItemOptions(
+                      maxBarWidth: 4.0,
+                      itemPainter: bubbleItemPainter,
+                      color: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.4),
+                    ),
                   ),
                 ],
               ),
@@ -118,7 +139,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                   onTap: () {
                     setState(() {
                       _values.clear();
-                      minItems += 4;
+                      minItems += 6;
                       _updateValues();
                     });
                   },
@@ -128,9 +149,10 @@ class _LineChartScreenState extends State<LineChartScreen> {
                   title: Text('Remove data'),
                   onTap: () {
                     setState(() {
-                      _values.clear();
-                      minItems -= 4;
-                      _updateValues();
+                      if (_values.length > 6) {
+                        minItems -= 6;
+                        _values.removeRange(_values.length - 6, _values.length);
+                      }
                     });
                   },
                 ),

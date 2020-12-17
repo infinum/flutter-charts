@@ -31,4 +31,3 @@ part 'chart/painter/decorations/vertical_axis_decoration.dart';
 part 'chart/painter/items/bar_painter.dart';
 part 'chart/painter/items/bubble_painter.dart';
 part 'chart/painter/items/item_painter.dart';
-part 'chart/scrollable_chart.dart';

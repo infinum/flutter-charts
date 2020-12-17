@@ -2,12 +2,6 @@ part of flutter_charts;
 
 /// Extend [ImplicitlyAnimatedWidget], that way every change on
 /// [ChartState] that is included in lerp function will get animated.
-///
-/// Things that are currently not animating are:
-/// [ChartItemOptions.showValue] - bool, could animate by changing opacity of [ChartItemOptions.valueColor] and [ChartItemOptions.valueColorOver]
-/// [ChartItemOptions.colorForValue] - Function, not sure if effort is worth (not really used that often)
-/// [ChartItemOptions.itemPainter] - Function, painter, probably impossible to animate without some kind of shuttle.
-///
 class AnimatedChart extends ImplicitlyAnimatedWidget {
   const AnimatedChart({
     this.height = 240.0,

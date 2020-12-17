@@ -16,6 +16,7 @@ class BubbleChartScreen extends StatefulWidget {
 class _BubbleChartScreenState extends State<BubbleChartScreen> {
   List<BubbleValue> _values = <BubbleValue>[];
   double targetMax;
+  double targetMin;
   bool _showValues = false;
   int minItems = 6;
 
@@ -27,9 +28,10 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
 
   void _updateValues() {
     final Random _rand = Random();
-    final double _difference = _rand.nextDouble() * 15;
+    final double _difference = 5 + (_rand.nextDouble() * 15);
 
-    targetMax = 3 + ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25)).roundToDouble();
+    targetMax = _difference;
+    targetMin = _difference * 0.5;
     _values.addAll(List.generate(minItems, (index) {
       return BubbleValue(2 + _rand.nextDouble() * _difference);
     }));
@@ -61,11 +63,13 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                 padding: const EdgeInsets.all(24.0),
                 child: BubbleChart<BubbleValue>(
                   data: _values,
-                  height: MediaQuery.of(context).size.height * 0.6,
+                  height: MediaQuery.of(context).size.height * 0.3,
                   itemOptions: ChartItemOptions(
                     valueColor: Theme.of(context).colorScheme.onPrimary,
                     targetMax: targetMax,
+                    targetMin: targetMin,
                     color: Theme.of(context).colorScheme.primary,
+                    targetOverColor: Theme.of(context).colorScheme.secondary,
                     showValue: _values.length < 10,
                     padding: EdgeInsets.symmetric(horizontal: (1 - (_values.length / 17)) * 8.0),
                     itemPainter: bubbleItemPainter,
@@ -92,7 +96,12 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                       verticalTextAlign: TextAlign.start,
                       gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                       textStyle: Theme.of(context).textTheme.caption.copyWith(fontSize: 13.0),
-                    )
+                    ),
+                    TargetAreaDecoration(
+                      targetColor: Theme.of(context).colorScheme.secondary,
+                      targetAreaFillColor: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+                      targetAreaRadius: BorderRadius.circular(8.0),
+                    ),
                   ],
                 ),
               ),
@@ -145,8 +154,10 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                   title: Text('Remove data'),
                   onTap: () {
                     setState(() {
-                      minItems -= 4;
-                      _values.removeRange(_values.length - 4, _values.length);
+                      if (_values.length > 4) {
+                        minItems -= 4;
+                        _values.removeRange(_values.length - 4, _values.length);
+                      }
                     });
                   },
                 ),

@@ -46,11 +46,14 @@ class ShowList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
+        SizedBox(
+          height: 8.0,
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
             'Chart types',
-            style: Theme.of(context).textTheme.caption.copyWith(
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 14.0,
                 ),
@@ -62,7 +65,7 @@ class ShowList extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
             'Decorations',
-            style: Theme.of(context).textTheme.caption.copyWith(
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 14.0,
                 ),
@@ -77,7 +80,7 @@ class ShowList extends StatelessWidget {
               width: 80.0,
               child: Chart(
                 state: ChartState(
-                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue(e.toDouble())).toList(),
+                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue(e.toDouble())).toList().asMap(),
                   itemOptions: ChartItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     radius: BorderRadius.all(Radius.circular(12.0)),
@@ -110,11 +113,11 @@ class ShowList extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
-            'Scrollable',
-            style: Theme.of(context).textTheme.caption.copyWith(
-              fontWeight: FontWeight.w800,
-              fontSize: 14.0,
-            ),
+            'Interactions (WIP)',
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 14.0,
+                ),
           ),
         ),
         Divider(),
@@ -126,13 +129,11 @@ class ShowList extends StatelessWidget {
               width: 80.0,
               child: Chart(
                 state: ChartState(
-                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue(e.toDouble())).toList(),
+                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue(e.toDouble())).toList().asMap(),
                   itemOptions: ChartItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    radius: BorderRadius.all(Radius.circular(12.0)),
+                    radius: BorderRadius.vertical(top: Radius.circular(12.0)),
                     color: Theme.of(context).accentColor,
-                    maxBarWidth: 1.0,
-                    itemPainter: bubbleItemPainter,
                   ),
                   options: ChartOptions(
                     valueAxisMax: 9,

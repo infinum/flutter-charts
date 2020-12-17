@@ -23,7 +23,7 @@ class SparkLineDecoration extends DecorationPainter {
 
   @override
   void initDecoration(ChartState state) {
-    _items = state.items;
+    _items = state.items.values.toList();
   }
 
   @override
@@ -37,12 +37,9 @@ class SparkLineDecoration extends DecorationPainter {
     final _maxValue = state.maxValue - state.minValue;
     final scale = _size.height / _maxValue;
 
-    final _itemWidth = max(state?.itemOptions?.minBarWidth ?? 0.0,
-        min(state?.itemOptions?.maxBarWidth ?? double.infinity, _size.width / state.items.length));
-
-    canvas.save();
-    canvas.translate(state.defaultMargin.left, _size.height + state.defaultMargin.top);
     final List<Offset> _positions = <Offset>[];
+
+    final _itemWidth = _size.width / _items.length;
 
     for (int _index = 0; _index < state.items.length; _index++) {
       final _item = _items[_index];
@@ -73,6 +70,9 @@ class SparkLineDecoration extends DecorationPainter {
         });
       }
     }
+
+    canvas.save();
+    canvas.translate(state.defaultMargin.left, _size.height + state.defaultMargin.top);
 
     canvas.drawPath(_path, _paint);
 
@@ -121,7 +121,7 @@ class SparkLineDecoration extends DecorationPainter {
         lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t),
         startPosition: lerpDouble(startPosition, endValue.startPosition, t),
         lineColor: Color.lerp(lineColor, endValue.lineColor, t),
-      ).._items = ChartItemsLerp().lerpValues(_items, endValue._items, t);
+      );
     }
 
     return this;

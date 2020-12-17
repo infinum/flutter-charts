@@ -8,7 +8,7 @@ typedef DataToAxis<T> = String Function(int item);
 String defaultAxisValues(int item) => '$item';
 
 class CandleChart<T> extends StatelessWidget {
-  const CandleChart({
+  CandleChart({
     @required this.data,
     @required this.dataToValue,
     this.height = 240.0,
@@ -18,7 +18,8 @@ class CandleChart<T> extends StatelessWidget {
     this.chartItemOptions,
     this.foregroundDecorations = const [],
     Key key,
-  }) : super(key: key);
+  })  : _mappedValues = data.map(dataToValue).toList().asMap(),
+        super(key: key);
 
   final List<T> data;
   final DataToValue<T> dataToValue;
@@ -30,16 +31,15 @@ class CandleChart<T> extends StatelessWidget {
   final ChartOptions chartOptions;
   final ChartItemOptions chartItemOptions;
 
+  final Map<int, CandleValue> _mappedValues;
+
   @override
   Widget build(BuildContext context) {
-    // Map values
-    final _values = data.map(dataToValue).toList();
-
     return AnimatedChart(
       height: height,
       duration: const Duration(milliseconds: 450),
       state: ChartState(
-        _values,
+        _mappedValues,
         options: chartOptions,
         itemOptions: chartItemOptions,
         behaviour: chartBehaviour,

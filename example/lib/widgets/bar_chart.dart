@@ -8,7 +8,7 @@ typedef DataToAxis<T> = String Function(int item);
 String defaultAxisValues(int item) => '$item';
 
 class BarChart<T> extends StatelessWidget {
-  const BarChart({
+  BarChart({
     @required this.data,
     @required this.dataToValue,
     this.height = 240.0,
@@ -18,10 +18,12 @@ class BarChart<T> extends StatelessWidget {
     this.itemOptions = const ChartItemOptions(),
     this.chartOptions = const ChartOptions(),
     Key key,
-  }) : super(key: key);
+  })  : _mappedValues = data.map((e) => BarValue(dataToValue(e))).toList().asMap(),
+        super(key: key);
 
   final List<T> data;
   final DataToValue<T> dataToValue;
+  final Map<int, BarValue> _mappedValues;
   final double height;
 
   final ChartItemOptions itemOptions;
@@ -35,14 +37,11 @@ class BarChart<T> extends StatelessWidget {
     final _foregroundDecorations = foregroundDecorations ?? <DecorationPainter>[];
     final _backgroundDecorations = backgroundDecorations ?? <DecorationPainter>[];
 
-    // Map values
-    final _values = data.map((e) => BarValue(dataToValue(e))).toList();
-
     return AnimatedChart(
       height: height,
       duration: const Duration(milliseconds: 450),
       state: ChartState(
-        _values,
+        _mappedValues,
         options: chartOptions,
         itemOptions: itemOptions,
         behaviour: chartBehaviour,
