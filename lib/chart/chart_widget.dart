@@ -7,11 +7,13 @@ part of flutter_charts;
 class _ChartWidget extends StatelessWidget {
   const _ChartWidget({
     this.height = 240.0,
+    this.width,
     this.state,
     Key key,
   }) : super(key: key);
 
   final double height;
+  final double width;
   final ChartState state;
 
   @override
@@ -21,10 +23,14 @@ class _ChartWidget extends StatelessWidget {
         builder: (context, constraints) {
           final _itemWidth = max(state?.itemOptions?.minBarWidth ?? 0.0, state?.itemOptions?.maxBarWidth ?? 0.0);
 
-          // TODO(lukaknezic): Figure out how to calculate size between scrollable and non scrollable chart!
-          final _size = state.behaviour.isScrollable
-              ? Size((_itemWidth + state.itemOptions.padding.horizontal) * state.items.length, height)
-              : Size(constraints.maxWidth, height);
+          final _width = constraints.maxWidth.isFinite ? constraints.maxWidth : width;
+          assert(_width != null, 'Width is null! If you are in ScrollView you need to provide the width!');
+
+          final _size = Size(
+              _width +
+                  (((_itemWidth + state.itemOptions.padding.horizontal) * state.items.length) - _width) *
+                      state.behaviour._isScrollable,
+              height);
           final _chart = CustomPaint(
             size: _size,
             painter: ChartPainter(state),

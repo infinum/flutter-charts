@@ -17,15 +17,13 @@ class ChartPainter extends CustomPainter {
           Rect.fromPoints(Offset.zero, Offset(size.width, size.height)), Paint()..color = Colors.red.withOpacity(0.3));
     }
 
-    if (state.behaviour.isScrollable) {
-      final _itemWidth = max(state?.itemOptions?.minBarWidth ?? 0.0, state?.itemOptions?.maxBarWidth ?? 0.0);
+    final _scrollableItemWidth = max(state?.itemOptions?.minBarWidth ?? 0.0, state?.itemOptions?.maxBarWidth ?? 0.0);
 
-      final _shouldScroll = (_itemWidth + state.itemOptions.padding.horizontal) * state.items.length > size.width;
-
-      if (_shouldScroll) {
-        size = Size((_itemWidth + state.itemOptions.padding.horizontal) * state.items.length, size.height);
-      }
-    }
+    size = Size(
+        size.width +
+            (size.width - ((_scrollableItemWidth + state.itemOptions.padding.horizontal) * state.items.length)) *
+                state.behaviour._isScrollable,
+        size.height);
 
     /// Default chart padding (this is to make place for legend and any other decorations that are inserted)
     final _paddingSize = state.defaultMargin.deflateSize(size);

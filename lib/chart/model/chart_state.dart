@@ -38,16 +38,15 @@ class ChartState {
     ChartBehaviour behaviour = const ChartBehaviour(),
     List<DecorationPainter> backgroundDecorations = const [],
     List<DecorationPainter> foregroundDecorations = const [],
-  }) {
-    return ChartState(
-      values.asMap(),
-      options: options,
-      itemOptions: itemOptions,
-      behaviour: behaviour,
-      foregroundDecorations: foregroundDecorations,
-      backgroundDecorations: backgroundDecorations,
-    );
-  }
+  }) =>
+      ChartState(
+        values.asMap(),
+        options: options,
+        itemOptions: itemOptions,
+        behaviour: behaviour,
+        foregroundDecorations: foregroundDecorations,
+        backgroundDecorations: backgroundDecorations,
+      );
 
   ChartState._lerp(
     this.items, {

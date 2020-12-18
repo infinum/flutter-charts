@@ -1,9 +1,10 @@
 import 'dart:math';
 
 import 'package:example/widgets/candle_chart.dart';
+import 'package:example/widgets/chart_options.dart';
+import 'package:example/widgets/toggle_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_charts/chart.dart';
 
 class CandleChartScreen extends StatefulWidget {
@@ -117,56 +118,34 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
             ),
           ),
           Flexible(
-            child: GridView(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 3),
-              children: [
-                ListTile(
-                  leading: Icon(timeDilation == 10 ? Icons.play_arrow : Icons.slow_motion_video),
-                  title: Text(timeDilation == 10 ? 'Faster animations' : 'Slower animations'),
-                  onTap: () {
+            child: ChartOptionsWidget(
+              onRefresh: () {
+                setState(() {
+                  _values.clear();
+                  _updateValues();
+                });
+              },
+              onAddItems: () {
+                setState(() {
+                  minItems += 4;
+                  _addValues();
+                });
+              },
+              onRemoveItems: () {
+                setState(() {
+                  if (_values.length > 4) {
+                    minItems -= 4;
+                    _values.removeRange(_values.length - 4, _values.length);
+                  }
+                });
+              },
+              toggleItems: [
+                ToggleItem(
+                  title: 'Axis values',
+                  value: _showValues,
+                  onChanged: (value) {
                     setState(() {
-                      timeDilation = timeDilation == 10 ? 1 : 10;
-                    });
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.refresh),
-                  title: Text('Refresh dataset'),
-                  onTap: () {
-                    setState(() {
-                      _values.clear();
-                      _updateValues();
-                    });
-                  },
-                ),
-                ListTile(
-                  leading: Icon(_showValues ? Icons.check_box_outlined : Icons.check_box_outline_blank),
-                  title: Text('Show axis values'),
-                  onTap: () {
-                    setState(() {
-                      _showValues = !_showValues;
-                    });
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.add),
-                  title: Text('Add data'),
-                  onTap: () {
-                    setState(() {
-                      minItems += 4;
-                      _addValues();
-                    });
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.remove),
-                  title: Text('Remove data'),
-                  onTap: () {
-                    setState(() {
-                      if (_values.length > 4) {
-                        minItems -= 4;
-                        _values.removeRange(_values.length - 4, _values.length);
-                      }
+                      _showValues = value;
                     });
                   },
                 ),

@@ -1,8 +1,9 @@
 import 'dart:math';
 
+import 'package:example/widgets/chart_options.dart';
+import 'package:example/widgets/toggle_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_charts/chart.dart';
 
 import '../widgets/bar_chart.dart';
@@ -64,6 +65,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
       body: Column(
         children: [
           SingleChildScrollView(
+            physics: _isScrollable ? ScrollPhysics() : NeverScrollableScrollPhysics(),
             controller: _controller,
             scrollDirection: Axis.horizontal,
             child: Padding(
@@ -74,10 +76,10 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                 dataToValue: (BarValue value) => value.max,
                 itemOptions: ChartItemOptions(
                   itemPainter: barItemPainter,
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  padding: EdgeInsets.symmetric(horizontal: _isScrollable ? 12.0 : 4.0),
                   targetMax: targetMax + 2,
                   targetMin: targetMax,
-                  minBarWidth: 36.0,
+                  minBarWidth: _isScrollable ? 36.0 : 2.0,
                   // isTargetInclusive: true,
                   color: Theme.of(context).colorScheme.primary.withOpacity(_showBars ? 1.0 : 0.0),
                   targetOverColor: Theme.of(context).colorScheme.error.withOpacity(_showBars ? 1.0 : 0.0),
@@ -87,7 +89,6 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                 ),
                 chartBehaviour: ChartBehaviour(
                   isScrollable: _isScrollable,
-                  scrollController: _controller,
                   onItemClicked: (item) {
                     setState(() {
                       _selected = item;
@@ -134,109 +135,88 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                     lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 0.2 : 0.0),
                     smoothPoints: _smoothPoints,
                   ),
-                  CupertinoSelectedPainter(
-                    _selected,
-                  ),
                 ],
                 foregroundDecorations: [
                   SparkLineDecoration(
-                    lineWidth: 8.0,
+                    lineWidth: 2.0,
                     lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
                     smoothPoints: _smoothPoints,
+                  ),
+                  CupertinoSelectedPainter(
+                    _selected,
+                    textSize: 44.0,
+                    selectedColor: Theme.of(context).colorScheme.secondary,
+                    backgroundColor: Theme.of(context).shadowColor,
                   ),
                 ],
               ),
             ),
           ),
           Flexible(
-            child: GridView(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 3),
-              children: [
-                ListTile(
-                  leading: Icon(timeDilation == 10 ? Icons.play_arrow : Icons.slow_motion_video),
-                  title: Text(timeDilation == 10 ? 'Faster animations' : 'Slower animations'),
-                  onTap: () {
+            child: ChartOptionsWidget(
+              onRefresh: () {
+                setState(() {
+                  _values.clear();
+                  _updateValues();
+                });
+              },
+              onAddItems: () {
+                setState(() {
+                  minItems += 4;
+                  _addValues();
+                });
+              },
+              onRemoveItems: () {
+                setState(() {
+                  if (_values.length > 4) {
+                    minItems -= 4;
+                    _values.removeRange(_values.length - 4, _values.length);
+                  }
+                });
+              },
+              toggleItems: [
+                ToggleItem(
+                  title: 'Axis values',
+                  value: _showValues,
+                  onChanged: (value) {
                     setState(() {
-                      timeDilation = timeDilation == 10 ? 1 : 10;
+                      _showValues = value;
                     });
                   },
                 ),
-                ListTile(
-                  leading: Icon(Icons.refresh),
-                  title: Text('Refresh dataset'),
-                  onTap: () {
+                ToggleItem(
+                  value: _showBars,
+                  title: 'Show bar items',
+                  onChanged: (value) {
                     setState(() {
-                      _values.clear();
-                      _updateValues();
+                      _showBars = value;
                     });
                   },
                 ),
-                ListTile(
-                  leading: Icon(_showValues ? Icons.check_box_outlined : Icons.check_box_outline_blank),
-                  title: Text('Show axis values'),
-                  onTap: () {
+                ToggleItem(
+                  value: _showLine,
+                  title: 'Show line decoration',
+                  onChanged: (value) {
                     setState(() {
-                      _showValues = !_showValues;
+                      _showLine = value;
                     });
                   },
                 ),
-                ListTile(
-                  leading: Icon(_showBars ? Icons.check_box_outlined : Icons.check_box_outline_blank),
-                  title: Text('Show bar items'),
-                  onTap: () {
+                ToggleItem(
+                  value: _smoothPoints,
+                  title: 'Smooth line curve',
+                  onChanged: (value) {
                     setState(() {
-                      _showBars = !_showBars;
+                      _smoothPoints = value;
                     });
                   },
                 ),
-                ListTile(
-                  leading: Icon(_showLine ? Icons.check_box_outlined : Icons.check_box_outline_blank),
-                  title: Text('Show line decoration'),
-                  onTap: () {
+                ToggleItem(
+                  value: _isScrollable,
+                  title: 'Scrollable',
+                  onChanged: (value) {
                     setState(() {
-                      _showLine = !_showLine;
-                    });
-                  },
-                ),
-                ListTile(
-                  enabled: _showLine,
-                  leading: Icon(_smoothPoints ? Icons.check_box_outlined : Icons.check_box_outline_blank),
-                  title: Text('Smooth line curve'),
-                  onTap: () {
-                    setState(() {
-                      _smoothPoints = !_smoothPoints;
-                    });
-                  },
-                ),
-                ListTile(
-                  subtitle: Text('WIP: Breaks chart!'),
-                  leading: Icon(_isScrollable ? Icons.check_box_outlined : Icons.check_box_outline_blank),
-                  title: Text('Scrollable'),
-                  onTap: () {
-                    setState(() {
-                      _isScrollable = !_isScrollable;
-                    });
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.add),
-                  title: Text('Add data'),
-                  onTap: () {
-                    setState(() {
-                      minItems += 4;
-                      _addValues();
-                    });
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.remove),
-                  title: Text('Remove data'),
-                  onTap: () {
-                    setState(() {
-                      if (_values.length > 4) {
-                        minItems -= 4;
-                        _values.removeRange(_values.length - 4, _values.length);
-                      }
+                      _isScrollable = value;
                     });
                   },
                 ),

@@ -30,8 +30,6 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
   @override
   void initDecoration(ChartState state) {
-    super.initDecoration(state);
-
     if (showValues) {
       final _maxValue = state.maxValue - state.minValue;
       _longestText = '${(_maxValue + state.minValue).toInt()}';

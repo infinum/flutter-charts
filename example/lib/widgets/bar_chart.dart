@@ -39,6 +39,7 @@ class BarChart<T> extends StatelessWidget {
 
     return AnimatedChart(
       height: height,
+      width: MediaQuery.of(context).size.width - 24.0,
       duration: const Duration(milliseconds: 450),
       state: ChartState(
         _mappedValues,

@@ -113,7 +113,7 @@ class ShowList extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
-            'Interactions (WIP)',
+            'Interactions',
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 14.0,

@@ -43,7 +43,7 @@ class LineChart<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _foregroundDecorations = <DecorationPainter>[];
+    final _foregroundDecorations = foregroundDecorations ?? <DecorationPainter>[];
     final _backgroundDecorations = backgroundDecorations ?? <DecorationPainter>[];
 
     return AnimatedChart(
@@ -54,12 +54,12 @@ class LineChart<T> extends StatelessWidget {
         options: chartOptions,
         itemOptions: chartItemOptions,
         foregroundDecorations: [
-          ..._foregroundDecorations,
           SparkLineDecoration(
             lineWidth: lineWidth,
             lineColor: itemColor,
             smoothPoints: smoothCurves,
           ),
+          ..._foregroundDecorations,
         ],
         backgroundDecorations: [
           ..._backgroundDecorations,

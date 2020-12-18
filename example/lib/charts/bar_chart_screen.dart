@@ -1,8 +1,9 @@
 import 'dart:math';
 
+import 'package:example/widgets/chart_options.dart';
+import 'package:example/widgets/toggle_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_charts/chart.dart';
 
 import '../widgets/bar_chart.dart';
@@ -117,83 +118,61 @@ class _BarChartScreenState extends State<BarChartScreen> {
             ),
           ),
           Flexible(
-            child: GridView(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 3),
-              children: [
-                ListTile(
-                  leading: Icon(timeDilation == 10 ? Icons.play_arrow : Icons.slow_motion_video),
-                  title: Text(timeDilation == 10 ? 'Faster animations' : 'Slower animations'),
-                  onTap: () {
+            child: ChartOptionsWidget(
+              onRefresh: () {
+                setState(() {
+                  _values.clear();
+                  _updateValues();
+                });
+              },
+              onAddItems: () {
+                setState(() {
+                  minItems += 4;
+                  _addValues();
+                });
+              },
+              onRemoveItems: () {
+                setState(() {
+                  if (_values.length > 4) {
+                    minItems -= 4;
+                    _values.removeRange(_values.length - 4, _values.length);
+                  }
+                });
+              },
+              toggleItems: [
+                ToggleItem(
+                  title: 'Axis values',
+                  value: _showValues,
+                  onChanged: (value) {
                     setState(() {
-                      timeDilation = timeDilation == 10 ? 1 : 10;
+                      _showValues = value;
                     });
                   },
                 ),
-                ListTile(
-                  leading: Icon(Icons.refresh),
-                  title: Text('Refresh dataset'),
-                  onTap: () {
+                ToggleItem(
+                  value: _showBars,
+                  title: 'Show bar items',
+                  onChanged: (value) {
                     setState(() {
-                      _values.clear();
-                      _updateValues();
+                      _showBars = value;
                     });
                   },
                 ),
-                ListTile(
-                  leading: Icon(_showValues ? Icons.check_box_outlined : Icons.check_box_outline_blank),
-                  title: Text('Show axis values'),
-                  onTap: () {
+                ToggleItem(
+                  value: _showLine,
+                  title: 'Show line decoration',
+                  onChanged: (value) {
                     setState(() {
-                      _showValues = !_showValues;
+                      _showLine = value;
                     });
                   },
                 ),
-                ListTile(
-                  leading: Icon(_showBars ? Icons.check_box_outlined : Icons.check_box_outline_blank),
-                  title: Text('Show bar items'),
-                  onTap: () {
+                ToggleItem(
+                  value: _smoothPoints,
+                  title: 'Smooth line curve',
+                  onChanged: (value) {
                     setState(() {
-                      _showBars = !_showBars;
-                    });
-                  },
-                ),
-                ListTile(
-                  leading: Icon(_showLine ? Icons.check_box_outlined : Icons.check_box_outline_blank),
-                  title: Text('Show line decoration'),
-                  onTap: () {
-                    setState(() {
-                      _showLine = !_showLine;
-                    });
-                  },
-                ),
-                ListTile(
-                  leading: Icon(_smoothPoints ? Icons.check_box_outlined : Icons.check_box_outline_blank),
-                  title: Text('Smooth line curve'),
-                  onTap: () {
-                    setState(() {
-                      _smoothPoints = !_smoothPoints;
-                    });
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.add),
-                  title: Text('Add data'),
-                  onTap: () {
-                    setState(() {
-                      minItems += 4;
-                      _addValues();
-                    });
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.remove),
-                  title: Text('Remove data'),
-                  onTap: () {
-                    setState(() {
-                      if (_values.length > 4) {
-                        minItems -= 4;
-                        _values.removeRange(_values.length - 4, _values.length);
-                      }
+                      _smoothPoints = value;
                     });
                   },
                 ),

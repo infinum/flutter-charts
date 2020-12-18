@@ -5,6 +5,7 @@ part of flutter_charts;
 /// They can be transparent or be used to show values of the graph
 class SparkLineDecoration extends DecorationPainter {
   SparkLineDecoration({
+    this.items,
     this.fill = false,
     this.smoothPoints = false,
     this.lineWidth = 1.0,
@@ -19,11 +20,11 @@ class SparkLineDecoration extends DecorationPainter {
 
   final double startPosition;
 
-  List<ChartItem> _items;
+  List<ChartItem> items;
 
   @override
   void initDecoration(ChartState state) {
-    _items = state.items.values.toList();
+    items ??= state.items.values.toList();
   }
 
   @override
@@ -39,17 +40,17 @@ class SparkLineDecoration extends DecorationPainter {
 
     final List<Offset> _positions = <Offset>[];
 
-    final _itemWidth = _size.width / _items.length;
+    final _itemWidth = _size.width / items.length;
 
-    for (int _index = 0; _index < state.items.length; _index++) {
-      final _item = _items[_index];
+    for (int _index = 0; _index < items.length; _index++) {
+      final _item = items[_index];
 
       if (fill && _index == 0) {
-        _positions.add(Offset(_size.width * (_index / _items.length) + _itemWidth * startPosition, 0.0));
+        _positions.add(Offset(_size.width * (_index / items.length) + _itemWidth * startPosition, 0.0));
       }
-      _positions.add(Offset(_size.width * (_index / _items.length) + _itemWidth * startPosition, -_item.max * scale));
-      if (fill && _index == _items.length - 1) {
-        _positions.add(Offset(_size.width * (_index / _items.length) + _itemWidth * startPosition, 0.0));
+      _positions.add(Offset(_size.width * (_index / items.length) + _itemWidth * startPosition, -_item.max * scale));
+      if (fill && _index == items.length - 1) {
+        _positions.add(Offset(_size.width * (_index / items.length) + _itemWidth * startPosition, 0.0));
       }
     }
 
@@ -121,6 +122,7 @@ class SparkLineDecoration extends DecorationPainter {
         lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t),
         startPosition: lerpDouble(startPosition, endValue.startPosition, t),
         lineColor: Color.lerp(lineColor, endValue.lineColor, t),
+        // items: ChartItemsLerp().lerpValues(items.asMap(), endValue.items.asMap(), t).values.toList(),
       );
     }
 

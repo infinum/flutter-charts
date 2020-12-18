@@ -5,6 +5,7 @@ part of flutter_charts;
 class AnimatedChart extends ImplicitlyAnimatedWidget {
   const AnimatedChart({
     this.height = 240.0,
+    this.width,
     this.state,
     Curve curve = Curves.linear,
     @required Duration duration,
@@ -13,6 +14,7 @@ class AnimatedChart extends ImplicitlyAnimatedWidget {
   }) : super(duration: duration, curve: curve, onEnd: onEnd, key: key);
 
   final double height;
+  final double width;
   final ChartState state;
 
   @override
@@ -33,6 +35,7 @@ class _ChartState extends AnimatedWidgetBaseState<AnimatedChart> {
   @override
   Widget build(BuildContext context) {
     return _ChartWidget(
+      width: widget.width,
       height: _heightTween?.evaluate(animation),
       state: _chartStateTween?.evaluate(animation),
     );

@@ -2,17 +2,28 @@ part of flutter_charts;
 
 /// Show selected item in Cupertino style (Health app)
 class CupertinoSelectedPainter extends DecorationPainter {
-  CupertinoSelectedPainter(this.selectedIndex);
+  CupertinoSelectedPainter(
+    this.selectedIndex, {
+    this.selectedColor = Colors.red,
+    this.backgroundColor = Colors.grey,
+    this.textColor = Colors.white,
+    this.textSize = 28.0,
+  });
 
   final int selectedIndex;
+  final Color selectedColor;
+  final Color backgroundColor;
+
+  final Color textColor;
+  final double textSize;
 
   void _drawText(Canvas canvas, Size size, double width, double totalWidth, ChartState state) {
     final _maxValuePainter = ItemPainter.makeTextPainter(
       state.items[selectedIndex].max.toStringAsFixed(2),
       width,
       TextStyle(
-        fontSize: 28.0,
-        color: Colors.white,
+        fontSize: textSize,
+        color: textColor,
         fontWeight: FontWeight.w700,
       ),
       hasMaxWidth: false,
@@ -23,21 +34,21 @@ class CupertinoSelectedPainter extends DecorationPainter {
           Rect.fromPoints(
               Offset(
                 width / 2 - _maxValuePainter.width / 2,
-                size.height,
+                size.height - textSize * 1.2,
               ),
               Offset(
                 width / 2 + _maxValuePainter.width / 2,
-                size.height - _maxValuePainter.height,
+                size.height - textSize * 0.2,
               )),
           Radius.circular(8.0),
         ).inflate(4),
-        Paint()..color = Colors.grey);
+        Paint()..color = selectedColor);
 
     _maxValuePainter.paint(
       canvas,
       Offset(
         width / 2 - _maxValuePainter.width / 2,
-        size.height - _maxValuePainter.height,
+        size.height - textSize * 1.3,
       ),
     );
   }
@@ -72,6 +83,8 @@ class CupertinoSelectedPainter extends DecorationPainter {
         min(state?.itemOptions?.maxBarWidth ?? double.infinity, size.width - _padding.horizontal));
 
     final _size = 2.0;
+    final _maxValue = state.maxValue - state.minValue;
+    final scale = size.height / _maxValue;
 
     ChartItem _item = state.items[selectedIndex];
     // If item is empty, or it's max value is below chart's minValue then don't draw it.
@@ -84,27 +97,27 @@ class CupertinoSelectedPainter extends DecorationPainter {
       Rect.fromPoints(
         Offset(
           _padding.left + _itemWidth / 2 - _size / 2,
-          0.0,
+          _item.max * scale,
         ),
         Offset(
           _padding.left + _itemWidth / 2 + _size / 2,
-          size.height,
+          size.height - textSize * 0.2,
         ),
       ),
-      Paint()..color = Colors.grey,
+      Paint()..color = selectedColor,
     );
 
     canvas.drawRect(
       Rect.fromPoints(Offset(0.0, 0.0), Offset(size.width, size.height)),
       Paint()
-        ..color = Colors.grey.withOpacity(0.2)
-        ..blendMode = BlendMode.srcOver,
+        ..color = backgroundColor.withOpacity(0.1)
+        ..blendMode = BlendMode.hardLight,
     );
   }
 
   @override
   EdgeInsets marginNeeded() {
-    return const EdgeInsets.only(top: 36.0);
+    return EdgeInsets.only(top: textSize * 1.3);
   }
 
   @override
@@ -113,6 +126,10 @@ class CupertinoSelectedPainter extends DecorationPainter {
       return CupertinoSelectedPainter(
         endValue.selectedIndex,
         // lerpDouble(selectedIndex?.toDouble(), endValue.selectedIndex?.toDouble(), t)?.round(),
+        selectedColor: Color.lerp(selectedColor, endValue.selectedColor, t),
+        backgroundColor: Color.lerp(backgroundColor, endValue.backgroundColor, t),
+        textColor: Color.lerp(textColor, endValue.textColor, t),
+        textSize: lerpDouble(textSize, endValue.textSize, t),
       );
     }
 
