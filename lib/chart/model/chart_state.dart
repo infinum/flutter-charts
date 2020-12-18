@@ -139,7 +139,7 @@ class ChartState {
       // Find background matches, if found, then animate to them, else just show them.
       backgroundDecorations: b.backgroundDecorations.map((e) {
         final DecorationPainter _match =
-            a.backgroundDecorations.firstWhere((element) => element.runtimeType == e.runtimeType, orElse: () => null);
+            a.backgroundDecorations.firstWhere((element) => element.isEqual(e), orElse: () => null);
         if (_match != null) {
           return _match.animateTo(e, t);
         }
@@ -149,7 +149,7 @@ class ChartState {
       // Find foreground matches, if found, then animate to them, else just show them.
       foregroundDecorations: b.foregroundDecorations.map((e) {
         final DecorationPainter _match =
-            a.foregroundDecorations.firstWhere((element) => element.runtimeType == e.runtimeType, orElse: () => null);
+            a.foregroundDecorations.firstWhere((element) => element.isEqual(e), orElse: () => null);
         if (_match != null) {
           return _match.animateTo(e, t);
         }

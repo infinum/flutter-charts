@@ -64,7 +64,7 @@ class ShowList extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
-            'Decorations',
+            'Chart Decorations',
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 14.0,
@@ -100,6 +100,10 @@ class ShowList extends StatelessWidget {
                     SparkLineDecoration(
                       lineColor: Theme.of(context).accentColor,
                     ),
+                    SparkLineDecoration(
+                      lineColor: Theme.of(context).colorScheme.secondary,
+                      items: [2, 7, 2, 4, 2, 1, 6, 7, 2].map((e) => BubbleValue(e.toDouble())).toList(),
+                    ),
                   ],
                 ),
               ),
@@ -113,7 +117,7 @@ class ShowList extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
-            'Interactions',
+            'Chart Interactions',
             style: Theme.of(context).textTheme.bodyText2.copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 14.0,

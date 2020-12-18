@@ -53,12 +53,14 @@ class BarPainter extends ItemPainter {
     final _verticalMultiplier = size.height / _maxValue;
     final _minValue = state.minValue * _verticalMultiplier;
 
-    final _padding = state?.itemOptions?.padding ?? EdgeInsets.zero;
+    EdgeInsets _padding = state?.itemOptions?.padding ?? EdgeInsets.zero;
     final _radius = state?.itemOptions?.radius ?? BorderRadius.zero;
 
-    final _itemWidth = max(state?.itemOptions?.minBarWidth ?? 0.0,
-        min(state?.itemOptions?.maxBarWidth ?? double.infinity, size.width - _padding.horizontal));
+    final _itemWidth = itemWidth(size);
 
+    if (size.width - _itemWidth - _padding.horizontal >= 0) {
+      _padding = EdgeInsets.symmetric(horizontal: (size.width - _itemWidth) / 2);
+    }
     // If item is empty, or it's max value is below chart's minValue then don't draw it.
     // minValue can be below 0, this will just ensure that animation is drawn correctly.
     if (item.isEmpty || item.max < state?.minValue) {
@@ -77,10 +79,10 @@ class BarPainter extends ItemPainter {
             item.max * _verticalMultiplier - _minValue,
           ),
         ),
-        bottomLeft: _radius.bottomLeft,
-        bottomRight: _radius.bottomRight,
-        topLeft: _radius.topLeft,
-        topRight: _radius.topRight,
+        bottomLeft: item.max.isNegative ? _radius.topLeft : _radius.bottomLeft,
+        bottomRight: item.max.isNegative ? _radius.topRight : _radius.bottomRight,
+        topLeft: item.max.isNegative ? _radius.bottomLeft : _radius.topLeft,
+        topRight: item.max.isNegative ? _radius.bottomRight : _radius.topRight,
       ),
       paint,
     );

@@ -93,6 +93,22 @@ class CupertinoSelectedPainter extends DecorationPainter {
       return;
     }
 
+    if ((_item?.min ?? 0.0) != 0.0) {
+      canvas.drawRect(
+        Rect.fromPoints(
+          Offset(
+            _padding.left + _itemWidth / 2 - _size / 2,
+            0.0,
+          ),
+          Offset(
+            _padding.left + _itemWidth / 2 + _size / 2,
+            _item.min * scale,
+          ),
+        ),
+        Paint()..color = selectedColor,
+      );
+    }
+
     canvas.drawRect(
       Rect.fromPoints(
         Offset(
@@ -110,8 +126,8 @@ class CupertinoSelectedPainter extends DecorationPainter {
     canvas.drawRect(
       Rect.fromPoints(Offset(0.0, 0.0), Offset(size.width, size.height)),
       Paint()
-        ..color = backgroundColor.withOpacity(0.1)
-        ..blendMode = BlendMode.hardLight,
+        ..color = backgroundColor
+        ..blendMode = BlendMode.overlay,
     );
   }
 

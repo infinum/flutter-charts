@@ -5,7 +5,7 @@ typedef ChartItemPainter = ItemPainter Function(ChartItem item, ChartState state
 ItemPainter barItemPainter(ChartItem item, ChartState state) => BarPainter(item, state);
 ItemPainter bubbleItemPainter(ChartItem item, ChartState state) => BubblePainter(item, state);
 
-typedef ColorForValue = Color Function(double value);
+typedef ColorForValue = Color Function(double value, [double min]);
 
 /// Options for chart item
 /// [padding] This will accept only horizontal padding and will move item away
@@ -62,19 +62,23 @@ class ChartItemOptions {
   final ChartItemPainter itemPainter;
 
   Color getItemColor(ChartItem item) {
+    return _getColorForValue(item.max, item.min);
+  }
+
+  Color _getColorForValue(double max, [double min]) {
     if (colorForValue != null) {
-      return colorForValue(item.max);
+      return colorForValue(max, min);
     }
 
     if (targetMin == null && targetMax == null) {
       return color;
     }
 
-    final double _min = item.min ?? item.max;
+    final _min = min ?? max;
 
-    if ((targetMin != null && _min <= targetMin) || (targetMax != null && item.max >= targetMax)) {
+    if ((targetMin != null && _min <= targetMin) || (targetMax != null && max >= targetMax)) {
       // Check if target is inclusive, don't show error color in that case
-      if (isTargetInclusive && (_min == targetMin || item.max == targetMax)) {
+      if (isTargetInclusive && (_min == targetMin || max == targetMax)) {
         return color;
       }
 
@@ -104,7 +108,7 @@ class ChartItemOptions {
       valueColorOver: Color.lerp(a.valueColorOver, b.valueColorOver, t),
       maxBarWidth: lerpDouble(a.maxBarWidth, b.maxBarWidth, t),
       minBarWidth: lerpDouble(a.minBarWidth, b.minBarWidth, t),
-      colorForValue: ColorForValueLerp.lerp(a.colorForValue, b.colorForValue, t),
+      colorForValue: ColorForValueLerp.lerp(a, b, t),
 
       // Lerp missing
       showValue: t < 0.5 ? a.showValue : b.showValue,
@@ -114,14 +118,14 @@ class ChartItemOptions {
 }
 
 class ColorForValueLerp {
-  static ColorForValue lerp(ColorForValue a, ColorForValue b, double t) {
+  static ColorForValue lerp(ChartItemOptions a, ChartItemOptions b, double t) {
     if (a == null && b == null) {
       return null;
     }
 
-    return (double value) {
-      final Color _aColor = a?.call(value);
-      final Color _bColor = b?.call(value);
+    return (double value, [double min]) {
+      final Color _aColor = a._getColorForValue(value, min);
+      final Color _bColor = b._getColorForValue(value, min);
 
       return Color.lerp(_aColor, _bColor, t);
     };

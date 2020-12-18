@@ -6,19 +6,38 @@ part of flutter_charts;
 class SparkLineDecoration extends DecorationPainter {
   SparkLineDecoration({
     this.items,
+    this.id,
     this.fill = false,
-    this.smoothPoints = false,
+    bool smoothPoints = false,
     this.lineWidth = 1.0,
     this.lineColor = Colors.red,
     this.startPosition = 0.5,
-  });
+    this.gradient,
+  }) : _smoothPoints = smoothPoints ? 1.0 : 0.0;
+
+  SparkLineDecoration._lerp({
+    this.items,
+    this.id,
+    this.fill = false,
+    double smoothPoints = 0.0,
+    this.lineWidth = 1.0,
+    this.lineColor = Colors.red,
+    this.startPosition = 0.5,
+    this.gradient,
+  }) : _smoothPoints = smoothPoints;
 
   final bool fill;
-  final bool smoothPoints;
+
+  bool get smoothPoints => _smoothPoints > 0.5;
+
+  final String id;
+  final double _smoothPoints;
+
   final double lineWidth;
   final Color lineColor;
 
   final double startPosition;
+  final Gradient gradient;
 
   List<ChartItem> items;
 
@@ -42,6 +61,11 @@ class SparkLineDecoration extends DecorationPainter {
 
     final _itemWidth = _size.width / items.length;
 
+    if (gradient != null) {
+      _paint.shader = gradient.createShader(Rect.fromPoints(
+          Offset(state.defaultPadding.left, state.defaultPadding.bottom), Offset(_size.width, _size.height)));
+    }
+
     for (int _index = 0; _index < items.length; _index++) {
       final _item = items[_index];
 
@@ -54,23 +78,7 @@ class SparkLineDecoration extends DecorationPainter {
       }
     }
 
-    final Path _path = smoothPoints ? _smoothPoints(_positions, fill) : Path();
-
-    if (!smoothPoints) {
-      if (fill) {
-        _positions.forEach((element) {
-          _path.lineTo(element.dx, element.dy);
-        });
-      } else {
-        _positions.forEach((element) {
-          if (_positions.first == element) {
-            _path.moveTo(element.dx, element.dy);
-          } else {
-            _path.lineTo(element.dx, element.dy);
-          }
-        });
-      }
-    }
+    final Path _path = _getPoints(_positions, fill);
 
     canvas.save();
     canvas.translate(state.defaultMargin.left, _size.height + state.defaultMargin.top);
@@ -82,27 +90,29 @@ class SparkLineDecoration extends DecorationPainter {
 
   /// Smooth out points and return path in turn
   /// Smoothing is done with quadratic bezier
-  Path _smoothPoints(List<Offset> points, bool fill) {
+  Path _getPoints(List<Offset> points, bool fill) {
     final List<Offset> _points = fill ? points.getRange(1, points.length - 1).toList() : points;
 
     final Path _path = Path();
-    Offset _mid = (_points[0] + _points[1]) / 2;
     if (fill) {
       _path.moveTo(_points[0].dx, 0.0);
       _path.lineTo(_points[0].dx, _points[0].dy);
-      _path.lineTo(_mid.dx, _mid.dy);
+      _path.lineTo(_points.first.dx, _points.first.dy);
     } else {
       _path.moveTo(_points[0].dx, _points[0].dy);
-      _path.lineTo(_mid.dx, _mid.dy);
+      _path.lineTo(_points.first.dx, _points.first.dy);
     }
 
-    for (int i = 0; i < _points.length - 2; i++) {
-      final Offset _p1 = _points[(i + 1) % _points.length];
-      final Offset _p2 = _points[(i + 2) % _points.length];
-      _mid = (_p1 + _p2) / 2;
-      _path.quadraticBezierTo(_p1.dx, _p1.dy, _mid.dx, _mid.dy);
+    for (int i = 0; i < _points.length - 1; i++) {
+      final Offset _p1 = _points[i % _points.length];
+      final Offset _p2 = _points[(i + 1) % _points.length];
+      final double controlPointX = _p1.dx + ((_p2.dx - _p1.dx) / 2) * _smoothPoints;
+      // _path.quadraticBezierTo(_p1.dx, _p1.dy, _mid.dx, _mid.dy);
+      final Offset _mid = (_p1 + _p2) / 2;
+      _path.cubicTo(controlPointX, _p1.dy, lerpDouble(_mid.dx, controlPointX, _smoothPoints),
+          lerpDouble(_mid.dy, _p2.dy, _smoothPoints), _p2.dx, _p2.dy);
 
-      if (i == _points.length - 3) {
+      if (i == _points.length - 2) {
         _path.lineTo(_p2.dx, _p2.dy);
         if (fill) {
           _path.lineTo(_p2.dx, 0.0);
@@ -116,16 +126,29 @@ class SparkLineDecoration extends DecorationPainter {
   @override
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
     if (endValue is SparkLineDecoration) {
-      return SparkLineDecoration(
+      return SparkLineDecoration._lerp(
         fill: t > 0.5 ? endValue.fill : fill,
-        smoothPoints: t > 0.5 ? endValue.smoothPoints : smoothPoints,
+        id: endValue.id,
+        smoothPoints: lerpDouble(_smoothPoints, endValue._smoothPoints, t),
         lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t),
         startPosition: lerpDouble(startPosition, endValue.startPosition, t),
         lineColor: Color.lerp(lineColor, endValue.lineColor, t),
-        // items: ChartItemsLerp().lerpValues(items.asMap(), endValue.items.asMap(), t).values.toList(),
+        items: ChartItemsLerp().lerpValues(items.asMap(), endValue.items.asMap(), t).values.toList(),
+        gradient: Gradient.lerp(gradient, endValue.gradient, t),
       );
     }
 
     return this;
+  }
+
+  @override
+  bool isEqual(DecorationPainter other) {
+    if (other is SparkLineDecoration) {
+      if (id != null && other.id != null) {
+        return id == other.id;
+      }
+    }
+
+    return runtimeType == other.runtimeType;
   }
 }

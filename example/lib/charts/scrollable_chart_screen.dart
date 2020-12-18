@@ -23,7 +23,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
   bool _showBars = true;
   bool _showLine = false;
   bool _isScrollable = true;
-  int minItems = 12;
+  int minItems = 30;
   int _selected;
 
   final _controller = ScrollController();
@@ -76,10 +76,10 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                 dataToValue: (BarValue value) => value.max,
                 itemOptions: ChartItemOptions(
                   itemPainter: barItemPainter,
-                  padding: EdgeInsets.symmetric(horizontal: _isScrollable ? 12.0 : 4.0),
+                  padding: EdgeInsets.symmetric(horizontal: _isScrollable ? 12.0 : 2.0),
                   targetMax: targetMax + 2,
                   targetMin: targetMax,
-                  minBarWidth: _isScrollable ? 36.0 : 2.0,
+                  minBarWidth: _isScrollable ? 36.0 : 4.0,
                   // isTargetInclusive: true,
                   color: Theme.of(context).colorScheme.primary.withOpacity(_showBars ? 1.0 : 0.0),
                   targetOverColor: Theme.of(context).colorScheme.error.withOpacity(_showBars ? 1.0 : 0.0),
@@ -107,16 +107,19 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                 ),
                 backgroundDecorations: [
                   HorizontalAxisDecoration(
+                    endWithChart: false,
                     gridWidth: 2.0,
                     valueAxisStep: 2,
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),
                   VerticalAxisDecoration(
+                    endWithChart: false,
                     gridWidth: 2.0,
                     itemAxisStep: 3,
-                    gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+                    gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.8),
                   ),
                   GridDecoration(
+                    endWithChart: false,
                     showVerticalGrid: true,
                     showHorizontalValues: _showValues,
                     showVerticalValues: _showValues,
@@ -144,9 +147,9 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                   ),
                   CupertinoSelectedPainter(
                     _selected,
-                    textSize: 44.0,
+                    textSize: 28.0,
                     selectedColor: Theme.of(context).colorScheme.secondary,
-                    backgroundColor: Theme.of(context).shadowColor,
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(_isScrollable ? 0.5 : 0.8),
                   ),
                 ],
               ),

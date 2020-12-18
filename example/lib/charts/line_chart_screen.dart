@@ -19,7 +19,9 @@ class _LineChartScreenState extends State<LineChartScreen> {
   double targetMax;
   bool _showValues = false;
   bool _smoothPoints = false;
-  int minItems = 10;
+  bool _fillLine = false;
+  bool _stack = true;
+  int minItems = 15;
 
   @override
   void initState() {
@@ -49,6 +51,22 @@ class _LineChartScreenState extends State<LineChartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _firstItems = _values.where((element) => _values.indexOf(element) % 3 == 0).toList();
+
+    final _secondItems = _stack
+        ? _values.where((element) => _values.indexOf(element) % 3 == 1).map((element) {
+            final _index = _values.indexOf(element) ~/ 3;
+            return BarValue(element.max + _firstItems[_index].max);
+          }).toList()
+        : _values.where((element) => _values.indexOf(element) % 3 == 1).toList();
+
+    final _thirdItems = _stack
+        ? _values.where((element) => _values.indexOf(element) % 3 == 2).map((element) {
+            final _index = _values.indexOf(element) ~/ 3;
+            return BarValue(element.max + _secondItems[_index].max);
+          }).toList()
+        : _values.where((element) => _values.indexOf(element) % 3 == 2).toList();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -60,50 +78,89 @@ class _LineChartScreenState extends State<LineChartScreen> {
           Center(
             child: Padding(
               padding: const EdgeInsets.all(24.0),
-              child: Stack(
-                children: [
-                  LineChart(
-                    data: _values.where((element) => _values.indexOf(element) % 2 == 0).toList(),
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    dataToValue: (BarValue value) => value.max,
-                    itemColor: Theme.of(context).accentColor,
-                    lineWidth: 2.0,
-                    chartItemOptions: ChartItemOptions(
-                      maxBarWidth: 4.0,
-                      color: Theme.of(context).accentColor.withOpacity(0.4),
-                      itemPainter: bubbleItemPainter,
-                    ),
-                    smoothCurves: _smoothPoints,
-                    backgroundDecorations: [
-                      GridDecoration(
-                        showVerticalGrid: false,
-                        showTopHorizontalValue: _showValues,
-                        showVerticalValues: _showValues,
-                        showHorizontalValues: _showValues,
-                        valueAxisStep: 1,
-                        textStyle: Theme.of(context).textTheme.caption,
-                        gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
-                      ),
-                    ],
-                    foregroundDecorations: [
-                      // SparkLineDecoration(
-                      //   lineWidth: 10.0,
-                      //   items: _values.where((element) => _values.indexOf(element) % 2 == 1).toList(),
-                      // )
-                    ],
+              child: LineChart(
+                data: _values.where((element) => _values.indexOf(element) % 3 == 0).toList(),
+                height: MediaQuery.of(context).size.height * 0.4,
+                dataToValue: (BarValue value) => value.max,
+                itemColor: Theme.of(context).accentColor,
+                lineWidth: 2.0,
+                chartItemOptions: ChartItemOptions(
+                  maxBarWidth: 4.0,
+                  color: Theme.of(context).accentColor.withOpacity(0.4),
+                  itemPainter: bubbleItemPainter,
+                ),
+                chartOptions: ChartOptions(
+                  valueAxisMax: max(
+                      (_stack ? _thirdItems : _values).fold<double>(
+                              0,
+                              (double previousValue, BarValue element) =>
+                                  previousValue = max(previousValue, element?.max ?? 0)) +
+                          1,
+                      targetMax + 3),
+                ),
+                smoothCurves: _smoothPoints,
+                backgroundDecorations: [
+                  GridDecoration(
+                    showVerticalGrid: false,
+                    showTopHorizontalValue: _showValues,
+                    showVerticalValues: _showValues,
+                    showHorizontalValues: _showValues,
+                    valueAxisStep: 1,
+                    textStyle: Theme.of(context).textTheme.caption,
+                    gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),
-                  LineChart(
-                    lineWidth: 0.5,
-                    data: _values.where((element) => _values.indexOf(element) % 2 == 1).toList(),
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    dataToValue: (BarValue value) => value.max,
-                    itemColor: Theme.of(context).colorScheme.primaryVariant,
-                    smoothCurves: _smoothPoints,
-                    chartItemOptions: ChartItemOptions(
-                      maxBarWidth: 4.0,
-                      itemPainter: bubbleItemPainter,
-                      color: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.4),
-                    ),
+                  SparkLineDecoration(
+                    id: 'third_line_fill',
+                    smoothPoints: _smoothPoints,
+                    fill: true,
+                    lineColor: Theme.of(context).colorScheme.secondary.withOpacity(_fillLine
+                        ? _stack
+                            ? 1.0
+                            : 0.2
+                        : 0.0),
+                    items: _thirdItems,
+                  ),
+                  SparkLineDecoration(
+                    id: 'second_line_fill',
+                    smoothPoints: _smoothPoints,
+                    fill: true,
+                    gradient:
+                        LinearGradient(begin: Alignment.centerLeft, end: Alignment.centerRight, colors: Colors.accents),
+                    lineColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(_fillLine
+                        ? _stack
+                            ? 1.0
+                            : 0.4
+                        : 0.0),
+                    items: _secondItems,
+                  ),
+                  SparkLineDecoration(
+                    id: 'first_line_fill',
+                    smoothPoints: _smoothPoints,
+                    fill: true,
+                    lineColor: Theme.of(context).accentColor.withOpacity(_fillLine
+                        ? _stack
+                            ? 1.0
+                            : 0.2
+                        : 0.0),
+                    items: _firstItems,
+                  ),
+                ],
+                foregroundDecorations: [
+                  SparkLineDecoration(
+                    id: 'third_line',
+                    lineWidth: 4.0,
+                    smoothPoints: _smoothPoints,
+                    lineColor: Theme.of(context).colorScheme.secondary,
+                    items: _thirdItems,
+                  ),
+                  SparkLineDecoration(
+                    id: 'second_line',
+                    lineWidth: 4.0,
+                    gradient:
+                        LinearGradient(begin: Alignment.centerLeft, end: Alignment.centerRight, colors: Colors.accents),
+                    smoothPoints: _smoothPoints,
+                    lineColor: Theme.of(context).colorScheme.primaryVariant,
+                    items: _secondItems,
                   ),
                 ],
               ),
@@ -119,7 +176,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
               },
               onAddItems: () {
                 setState(() {
-                  minItems += 8;
+                  minItems += 12;
                   _addValues();
                 });
               },
@@ -147,6 +204,24 @@ class _LineChartScreenState extends State<LineChartScreen> {
                   onChanged: (value) {
                     setState(() {
                       _smoothPoints = value;
+                    });
+                  },
+                ),
+                ToggleItem(
+                  value: _fillLine,
+                  title: 'Fill',
+                  onChanged: (value) {
+                    setState(() {
+                      _fillLine = value;
+                    });
+                  },
+                ),
+                ToggleItem(
+                  title: 'Stack lines',
+                  value: _stack,
+                  onChanged: (value) {
+                    setState(() {
+                      _stack = value;
                     });
                   },
                 ),

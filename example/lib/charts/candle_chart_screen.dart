@@ -106,12 +106,17 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                     textStyle: Theme.of(context).textTheme.caption.copyWith(fontSize: 13.0),
                   ),
-                  CupertinoSelectedPainter(_selected),
                   TargetAreaDecoration(
                     targetColor: Theme.of(context).colorScheme.secondary,
                     targetAreaFillColor: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
                     lineWidth: 2.0,
                     targetAreaRadius: BorderRadius.circular(12.0),
+                  ),
+                ],
+                foregroundDecorations: [
+                  CupertinoSelectedPainter(
+                    _selected,
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
                   ),
                 ],
               ),

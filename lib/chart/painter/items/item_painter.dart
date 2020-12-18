@@ -15,6 +15,9 @@ abstract class ItemPainter {
   /// from [ChartPainter]
   void draw(Canvas canvas, Size size, Paint paint);
 
+  double itemWidth(Size size) => max(state.itemOptions.minBarWidth ?? 0.0,
+      min(state.itemOptions.maxBarWidth ?? double.infinity, size.width - state.itemOptions.padding.horizontal));
+
   /// Get default text painter with set [value]
   /// Helper for [paintText]
   static TextPainter makeTextPainter(String value, double width, TextStyle style, {bool hasMaxWidth = true}) {

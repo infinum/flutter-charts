@@ -55,6 +55,7 @@ class LineChart<T> extends StatelessWidget {
         itemOptions: chartItemOptions,
         foregroundDecorations: [
           SparkLineDecoration(
+            id: 'chart_decoration',
             lineWidth: lineWidth,
             lineColor: itemColor,
             smoothPoints: smoothCurves,

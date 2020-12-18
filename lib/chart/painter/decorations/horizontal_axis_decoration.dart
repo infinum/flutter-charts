@@ -3,7 +3,7 @@ part of flutter_charts;
 class HorizontalAxisDecoration extends DecorationPainter {
   HorizontalAxisDecoration({
     this.showValues = false,
-    this.endWithChart = false,
+    bool endWithChart = false,
     this.showTopValue = false,
     this.valuesAlign = TextAlign.end,
     this.gridColor = Colors.grey,
@@ -11,9 +11,23 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.horizontalAxisUnit,
     this.valueAxisStep = 1.0,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
-  });
+  }) : _endWithChart = endWithChart ? 1.0 : 0.0;
 
-  final bool endWithChart;
+  HorizontalAxisDecoration._lerp({
+    this.showValues = false,
+    double endWithChart = 0.0,
+    this.showTopValue = false,
+    this.valuesAlign = TextAlign.end,
+    this.gridColor = Colors.grey,
+    this.gridWidth = 1.0,
+    this.horizontalAxisUnit,
+    this.valueAxisStep = 1.0,
+    this.legendFontStyle = const TextStyle(fontSize: 13.0),
+  }) : _endWithChart = endWithChart;
+
+  bool get endWithChart => _endWithChart > 0.5;
+  final double _endWithChart;
+
   final bool showValues;
   final TextAlign valuesAlign;
   final bool showTopValue;
@@ -50,7 +64,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     canvas.translate(0.0 + state.defaultMargin.left, size.height + state.defaultMargin.top);
 
     final _maxValue = state.maxValue - state.minValue;
-    final _size = endWithChart ? state?.defaultPadding?.deflateSize(size) ?? size : size;
+    final _size = (state.defaultPadding * _endWithChart).deflateSize(size);
     final scale = _size.height / _maxValue;
 
     for (int i = 0; i <= _maxValue / valueAxisStep; i++) {
@@ -142,9 +156,9 @@ class HorizontalAxisDecoration extends DecorationPainter {
   @override
   HorizontalAxisDecoration animateTo(DecorationPainter endValue, double t) {
     if (endValue is HorizontalAxisDecoration) {
-      return HorizontalAxisDecoration(
+      return HorizontalAxisDecoration._lerp(
         showValues: t < 0.5 ? showValues : endValue.showValues,
-        endWithChart: t < 0.5 ? endWithChart : endValue.endWithChart,
+        endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t),
         showTopValue: t < 0.5 ? showTopValue : endValue.showTopValue,
         valuesAlign: t < 0.5 ? valuesAlign : endValue.valuesAlign,
         gridColor: Color.lerp(gridColor, endValue.gridColor, t),
