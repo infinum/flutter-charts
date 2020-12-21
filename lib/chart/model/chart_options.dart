@@ -25,10 +25,10 @@ class ChartOptions {
 
   static ChartOptions lerp(ChartOptions a, ChartOptions b, double t) {
     return ChartOptions(
-      valueAxisMax: lerpDouble(a.valueAxisMax, b.valueAxisMax, t),
-      valueAxisMin: lerpDouble(a.valueAxisMin, b.valueAxisMin, t),
-      axisLegendTextColor: Color.lerp(a.axisLegendTextColor, b.axisLegendTextColor, t),
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      valueAxisMax: lerpDouble(a?.valueAxisMax, b?.valueAxisMax, t),
+      valueAxisMin: lerpDouble(a?.valueAxisMin, b?.valueAxisMin, t),
+      axisLegendTextColor: Color.lerp(a?.axisLegendTextColor, b?.axisLegendTextColor, t),
+      padding: EdgeInsets.lerp(a?.padding, b?.padding, t),
     );
   }
 }

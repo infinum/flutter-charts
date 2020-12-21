@@ -1,16 +1,29 @@
 part of flutter_charts;
 
+/// Custom painter for charts,
 class ChartPainter extends CustomPainter {
-  ChartPainter(this.state)
-      : _items = state.items.asMap(),
-        assert(state.itemOptions.itemPainter != null, 'You need to provide item painter!');
+  ChartPainter(this.state) : assert(state.itemOptions.itemPainter != null, 'You need to provide item painter!');
 
   final ChartState state;
-  final Map<int, ChartItem> _items;
+
+  final bool _debugBoundary = false;
 
   @override
   void paint(Canvas canvas, Size size) {
     canvas.save();
+
+    if (_debugBoundary) {
+      canvas.drawRect(
+          Rect.fromPoints(Offset.zero, Offset(size.width, size.height)), Paint()..color = Colors.red.withOpacity(0.3));
+    }
+
+    final _scrollableItemWidth = max(state?.itemOptions?.minBarWidth ?? 0.0, state?.itemOptions?.maxBarWidth ?? 0.0);
+
+    size = Size(
+        size.width +
+            (size.width - ((_scrollableItemWidth + state.itemOptions.padding.horizontal) * state.items.length)) *
+                state.behaviour._isScrollable,
+        size.height);
 
     /// Default chart padding (this is to make place for legend and any other decorations that are inserted)
     final _paddingSize = state.defaultMargin.deflateSize(size);
@@ -19,13 +32,15 @@ class ChartPainter extends CustomPainter {
     final _size = state?.defaultPadding?.deflateSize(_paddingSize) ?? _paddingSize;
 
     /// Final usable space for one item in the chart
-    final _itemWidth = (_size.width - 0.0) / state.items.length;
+    final _itemWidth = _size.width / state.items.length;
+
+    void _drawDecoration(DecorationPainter decoration) => decoration.draw(canvas, _paddingSize, state);
 
     // First draw background decorations
-    state.backgroundDecorations.forEach((decoration) => decoration.draw(canvas, _paddingSize, state));
+    state.backgroundDecorations.forEach(_drawDecoration);
 
     // Draw all chart items
-    _items.forEach((index, element) {
+    state.items.forEach((index, element) {
       // Use item painter from ItemOptions to draw the item on the chart
       final _item = state.itemOptions.itemPainter(element, state);
 
@@ -44,7 +59,7 @@ class ChartPainter extends CustomPainter {
     });
 
     // End with drawing all foreground decorations
-    state.foregroundDecorations.forEach((decoration) => decoration.draw(canvas, _paddingSize, state));
+    state.foregroundDecorations.forEach(_drawDecoration);
 
     canvas.restore();
   }

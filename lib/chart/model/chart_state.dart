@@ -18,33 +18,56 @@ class ChartState {
     this.items, {
     this.options = const ChartOptions(),
     this.itemOptions = const ChartItemOptions(),
+    this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const [],
     this.foregroundDecorations = const [],
-  })  : assert((options?.padding?.vertical ?? 0.0) == 0.0, 'Chart padding cannot be vertical!'),
-        minValue = _getMinValue(items, options),
-        maxValue = _getMaxValue(items, options) {
+  })  : assert(items.isNotEmpty, 'No items!'),
+        assert((options?.padding?.vertical ?? 0.0) == 0.0, 'Chart padding cannot be vertical!'),
+        minValue = _getMinValue(items.values.toList(), options),
+        maxValue = _getMaxValue(items.values.toList(), options) {
     /// Set default padding and margin, decorations padding and margins will be added to this value
     defaultPadding = options?.padding ?? EdgeInsets.zero;
     defaultMargin = EdgeInsets.zero;
     _setUpDecorations();
   }
 
+  factory ChartState.fromList(
+    List<ChartItem> values, {
+    ChartOptions options = const ChartOptions(),
+    ChartItemOptions itemOptions = const ChartItemOptions(),
+    ChartBehaviour behaviour = const ChartBehaviour(),
+    List<DecorationPainter> backgroundDecorations = const [],
+    List<DecorationPainter> foregroundDecorations = const [],
+  }) =>
+      ChartState(
+        values.asMap(),
+        options: options,
+        itemOptions: itemOptions,
+        behaviour: behaviour,
+        foregroundDecorations: foregroundDecorations,
+        backgroundDecorations: backgroundDecorations,
+      );
+
   ChartState._lerp(
     this.items, {
     this.options = const ChartOptions(),
     this.itemOptions = const ChartItemOptions(),
+    this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const [],
     this.foregroundDecorations = const [],
     this.maxValue,
     this.minValue,
     this.defaultMargin,
     this.defaultPadding,
-  });
+  }) {
+    _initDecorations();
+  }
 
-  final List<ChartItem> items;
+  final Map<int, ChartItem> items;
 
   final ChartOptions options;
   final ChartItemOptions itemOptions;
+  final ChartBehaviour behaviour;
   final List<DecorationPainter> backgroundDecorations;
   final List<DecorationPainter> foregroundDecorations;
 
@@ -108,46 +131,15 @@ class ChartState {
 
   /// For later in case charts will have to animate between states.
   static ChartState lerp(ChartState a, ChartState b, double t) {
-    /// Get list length in animation, we will add the items in steps.
-    final _listLength = lerpDouble(a.items.length, b.items.length, t);
-
-    /// Empty value for generated list.
-    final _emptyValue = BarValue(0.0);
-
-    /// Generate new list fot animation step, add items depending on current [_listLength]
-    final _lerpList = List.generate(_listLength.toInt(), (index) {
-      // If old list and new list have value at [index], then just animate from,
-      // old list value to the new value
-      if (index < a.items.length && index < b.items.length) {
-        return b.items[index].animateFrom(a.items[index], t);
-      }
-
-      // If new list is larger, then check if item in the list is not empty
-      // In case item is not empty then animate to it from our [_emptyValue]
-      if (index < b.items.length) {
-        if (b.items[index].isEmpty) {
-          return b.items[index];
-        }
-
-        return b.items[index].animateFrom(_emptyValue, t);
-      }
-
-      // In case that our old list is bigger, and item is not empty
-      // then we need to animate to empty value from current item value
-      if (a.items[index].isEmpty) {
-        return a.items[index];
-      }
-      return a.items[index].animateTo(_emptyValue, t);
-    });
-
     return ChartState._lerp(
-      _lerpList,
+      ChartItemsLerp().lerpValues(a.items, b.items, t),
       options: ChartOptions.lerp(a.options, b.options, t),
+      behaviour: ChartBehaviour.lerp(a.behaviour, b.behaviour, t),
       itemOptions: ChartItemOptions.lerp(a.itemOptions, b.itemOptions, t),
       // Find background matches, if found, then animate to them, else just show them.
       backgroundDecorations: b.backgroundDecorations.map((e) {
         final DecorationPainter _match =
-            a.backgroundDecorations.firstWhere((element) => element.runtimeType == e.runtimeType, orElse: () => null);
+            a.backgroundDecorations.firstWhere((element) => element.isEqual(e), orElse: () => null);
         if (_match != null) {
           return _match.animateTo(e, t);
         }
@@ -157,7 +149,7 @@ class ChartState {
       // Find foreground matches, if found, then animate to them, else just show them.
       foregroundDecorations: b.foregroundDecorations.map((e) {
         final DecorationPainter _match =
-            a.foregroundDecorations.firstWhere((element) => element.runtimeType == e.runtimeType, orElse: () => null);
+            a.foregroundDecorations.firstWhere((element) => element.isEqual(e), orElse: () => null);
         if (_match != null) {
           return _match.animateTo(e, t);
         }
@@ -171,5 +163,50 @@ class ChartState {
       defaultMargin: EdgeInsets.lerp(a.defaultMargin, b.defaultMargin, t),
       defaultPadding: EdgeInsets.lerp(a.defaultPadding, b.defaultPadding, t),
     );
+  }
+}
+
+class ChartItemsLerp {
+  Map<int, ChartItem> lerpValues(Map<int, ChartItem> a, Map<int, ChartItem> b, double t) {
+    /// Get list length in animation, we will add the items in steps.
+    final double _listLength = lerpDouble(a.length, b.length, t);
+
+    /// Empty value for generated list.
+    final BubbleValue _emptyValue = BubbleValue(0.0);
+
+    /// Generate new list fot animation step, add items depending on current [_listLength]
+    return List<ChartItem>.generate(_listLength.ceil(), (int index) {
+      // If old list and new list have value at [index], then just animate from,
+      // old list value to the new value
+      if (index < a.length && index < b.length) {
+        return b[index].animateFrom(a[index], t);
+      }
+
+      // If new list is larger, then check if item in the list is not empty
+      // In case item is not empty then animate to it from our [_emptyValue]
+      if (index < b.length) {
+        if (b[index].isEmpty) {
+          return b[index];
+        }
+
+        // If item is appearing then it's time to animate is
+        // from time it first showed to end of the animation.
+        final double _value = _listLength.floor() == index ? ((_listLength - _listLength.floor()) * t) : t;
+        return b[index].animateFrom(_emptyValue, _value);
+      }
+
+      // In case that our old list is bigger, and item is not empty
+      // then we need to animate to empty value from current item value
+      if (a[index].isEmpty) {
+        return a[index];
+      }
+
+      final double _value = _listLength.floor() == index
+          ? min(1, (1 - (_listLength - _listLength.floor())) + t / _listLength)
+          : _listLength.floor() >= index
+              ? 0
+              : t;
+      return a[index].animateTo(_emptyValue, _value);
+    }).asMap();
   }
 }

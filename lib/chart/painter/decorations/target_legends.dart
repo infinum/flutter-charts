@@ -108,10 +108,10 @@ class TargetAreaLegendDecoration extends DecorationPainter {
 /// Text will be rotated 90 CCW
 class TargetLineLegendDecoration extends DecorationPainter {
   TargetLineLegendDecoration({
-    this.legendDescription,
-    this.legendStyle,
+    @required this.legendDescription,
+    @required this.legendStyle,
     this.padding = const EdgeInsets.all(24.0),
-  });
+  }) : assert(legendStyle.fontSize != null, 'You must specify fontSize when using TargetLineLegendDecoration');
 
   final String legendDescription;
   final TextStyle legendStyle;
@@ -155,7 +155,7 @@ class TargetLineLegendDecoration extends DecorationPainter {
 
   @override
   EdgeInsets marginNeeded() {
-    return const EdgeInsets.only(left: 32.0);
+    return EdgeInsets.only(left: legendStyle.fontSize * 1.4);
   }
 
   @override

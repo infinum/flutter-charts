@@ -35,4 +35,8 @@ abstract class DecorationPainter {
   /// This is just regular lerp function, but instead of static function where you pass start and
   /// end state, here we start with current state and animate to [endValue].
   DecorationPainter animateTo(DecorationPainter endValue, double t);
+
+  bool isEqual(DecorationPainter other) {
+    return runtimeType == other.runtimeType;
+  }
 }

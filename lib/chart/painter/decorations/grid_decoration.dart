@@ -8,7 +8,7 @@ class GridDecoration extends DecorationPainter {
   GridDecoration({
     this.showHorizontalValues = false,
     this.showVerticalValues = false,
-    this.endWithChart = false,
+    bool endWithChart = false,
     this.horizontalTextAlign = TextAlign.end,
     this.showTopHorizontalValue = false,
     this.verticalTextAlign = TextAlign.center,
@@ -20,8 +20,10 @@ class GridDecoration extends DecorationPainter {
     this.gridWidth = 1.0,
     this.itemAxisStep = 1,
     this.valueAxisStep = 1,
-    this.textStyle = const TextStyle(fontSize: 13.0),
-  }) {
+    this.textStyle,
+  })  : _endWithChart = endWithChart ? 1.0 : 0.0,
+        assert(textStyle != null || !(showHorizontalValues || showTopHorizontalValue || showVerticalValues),
+            'Need to provide text style for values to be visible!') {
     _horizontalAxisDecoration = HorizontalAxisDecoration(
       showValues: showHorizontalValues,
       endWithChart: endWithChart,
@@ -47,9 +49,54 @@ class GridDecoration extends DecorationPainter {
     );
   }
 
+  GridDecoration._lerp({
+    this.showHorizontalValues = false,
+    this.showVerticalValues = false,
+    double endWithChart = 0.0,
+    this.horizontalTextAlign = TextAlign.end,
+    this.showTopHorizontalValue = false,
+    this.verticalTextAlign = TextAlign.center,
+    this.showVerticalGrid = true,
+    this.verticalValuesPadding,
+    this.horizontalAxisUnit,
+    this.verticalAxisValueFromIndex = defaultAxisValue,
+    this.gridColor = Colors.grey,
+    this.gridWidth = 1.0,
+    this.itemAxisStep = 1,
+    this.valueAxisStep = 1,
+    this.textStyle,
+  })  : _endWithChart = endWithChart,
+        assert(textStyle != null || !(showHorizontalValues || showTopHorizontalValue || showVerticalValues),
+            'Need to provide text style for values to be visible!') {
+    _horizontalAxisDecoration = HorizontalAxisDecoration._lerp(
+      showValues: showHorizontalValues,
+      endWithChart: _endWithChart,
+      valuesAlign: horizontalTextAlign,
+      showTopValue: showTopHorizontalValue,
+      horizontalAxisUnit: horizontalAxisUnit,
+      gridColor: gridColor,
+      gridWidth: gridWidth,
+      valueAxisStep: valueAxisStep,
+      legendFontStyle: textStyle,
+    );
+    _verticalAxisDecoration = VerticalAxisDecoration._lerp(
+      showValues: showVerticalValues,
+      valuesAlign: verticalTextAlign,
+      showGrid: showVerticalGrid,
+      endWithChart: _endWithChart,
+      gridColor: gridColor,
+      axisValueFromIndex: verticalAxisValueFromIndex,
+      valuesPadding: verticalValuesPadding,
+      gridWidth: gridWidth,
+      itemAxisStep: itemAxisStep,
+      legendFontStyle: textStyle,
+    );
+  }
+
   final bool showHorizontalValues;
   final bool showVerticalValues;
-  final bool endWithChart;
+  bool get endWithChart => _endWithChart > 0.5;
+  final double _endWithChart;
 
   final TextAlign horizontalTextAlign;
   final TextAlign verticalTextAlign;
@@ -101,10 +148,10 @@ class GridDecoration extends DecorationPainter {
   @override
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
     if (endValue is GridDecoration) {
-      return GridDecoration(
+      return GridDecoration._lerp(
         showHorizontalValues: t < 0.5 ? showHorizontalValues : endValue.showHorizontalValues,
         showVerticalValues: t < 0.5 ? showVerticalValues : endValue.showVerticalValues,
-        endWithChart: t < 0.5 ? endWithChart : endValue.endWithChart,
+        endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t),
         horizontalTextAlign: t < 0.5 ? horizontalTextAlign : endValue.horizontalTextAlign,
         showTopHorizontalValue: t < 0.5 ? showTopHorizontalValue : endValue.showTopHorizontalValue,
         verticalTextAlign: t < 0.5 ? verticalTextAlign : endValue.verticalTextAlign,

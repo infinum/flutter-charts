@@ -122,8 +122,8 @@ class TargetAreaDecoration extends DecorationPainter {
     final _rectPath = Path()
       ..addRRect(RRect.fromRectAndCorners(
         Rect.fromPoints(
-          Offset(0.0, -scale * state.itemOptions.targetMin + _minValue),
-          Offset(_size.width, -scale * state.itemOptions.targetMax + _minValue),
+          Offset(0.0, -scale * (state?.itemOptions?.targetMin ?? 0.0) + _minValue),
+          Offset(_size.width, -scale * (state?.itemOptions?.targetMax ?? 0.0) + _minValue),
         ),
         bottomLeft: targetAreaRadius?.bottomLeft ?? Radius.zero,
         bottomRight: targetAreaRadius?.bottomRight ?? Radius.zero,
