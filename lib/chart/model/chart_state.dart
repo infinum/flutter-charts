@@ -1,6 +1,10 @@
 part of flutter_charts;
 
 typedef AxisGenerator = double Function(ChartItem item);
+typedef ChartItemPainter = ItemPainter Function(ChartItem item, ChartState state);
+
+ItemPainter barItemPainter(ChartItem item, ChartState state) => BarPainter(item, state);
+ItemPainter bubbleItemPainter(ChartItem item, ChartState state) => BubblePainter(item, state);
 
 /// Main state of the charts. Painter will use this as state and it will format chart depending
 /// on options.
@@ -21,6 +25,7 @@ class ChartState {
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const [],
     this.foregroundDecorations = const [],
+    this.itemPainter = barItemPainter,
   })  : assert(items.isNotEmpty, 'No items!'),
         assert((options?.padding?.vertical ?? 0.0) == 0.0, 'Chart padding cannot be vertical!'),
         minValue = _getMinValue(items.values.toList(), options),
@@ -59,12 +64,14 @@ class ChartState {
     this.minValue,
     this.defaultMargin,
     this.defaultPadding,
+    this.itemPainter = barItemPainter,
   }) {
     _initDecorations();
   }
 
   final Map<int, ChartItem> items;
 
+  final ChartItemPainter itemPainter;
   final ChartOptions options;
   final ChartItemOptions itemOptions;
   final ChartBehaviour behaviour;
@@ -162,6 +169,9 @@ class ChartState {
       minValue: lerpDouble(a.minValue, b.minValue, t),
       defaultMargin: EdgeInsets.lerp(a.defaultMargin, b.defaultMargin, t),
       defaultPadding: EdgeInsets.lerp(a.defaultPadding, b.defaultPadding, t),
+
+      // Lerp missing
+      itemPainter: t < 0.5 ? a.itemPainter : b.itemPainter,
     );
   }
 }
@@ -172,7 +182,7 @@ class ChartItemsLerp {
     final double _listLength = lerpDouble(a.length, b.length, t);
 
     /// Empty value for generated list.
-    final BubbleValue _emptyValue = BubbleValue(0.0);
+    final BubbleValue _emptyValue = BubbleValue<void>(null, 0.0);
 
     /// Generate new list fot animation step, add items depending on current [_listLength]
     return List<ChartItem>.generate(_listLength.ceil(), (int index) {

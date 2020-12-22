@@ -10,6 +10,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.gridWidth = 1.0,
     this.horizontalAxisUnit,
     this.valueAxisStep = 1.0,
+    this.axisLegendTextColor,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
   }) : _endWithChart = endWithChart ? 1.0 : 0.0;
 
@@ -22,6 +23,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.gridWidth = 1.0,
     this.horizontalAxisUnit,
     this.valueAxisStep = 1.0,
+    this.axisLegendTextColor,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
   }) : _endWithChart = endWithChart;
 
@@ -31,6 +33,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
   final bool showValues;
   final TextAlign valuesAlign;
   final bool showTopValue;
+  final Color axisLegendTextColor;
 
   final String horizontalAxisUnit;
 
@@ -93,7 +96,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
       final _textPainter = TextPainter(
         text: TextSpan(
           text: _text,
-          style: legendFontStyle.copyWith(color: state?.options?.axisLegendTextColor ?? Colors.grey),
+          style: legendFontStyle.copyWith(color: axisLegendTextColor ?? Colors.grey),
         ),
         textAlign: valuesAlign,
         maxLines: 1,
@@ -122,7 +125,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     final _textPainter = TextPainter(
       text: TextSpan(
         text: horizontalAxisUnit,
-        style: legendFontStyle.copyWith(color: state?.options?.axisLegendTextColor ?? Colors.grey),
+        style: legendFontStyle.copyWith(color: axisLegendTextColor ?? Colors.grey),
       ),
       textAlign: valuesAlign,
       maxLines: 1,
@@ -162,6 +165,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
         showTopValue: t < 0.5 ? showTopValue : endValue.showTopValue,
         valuesAlign: t < 0.5 ? valuesAlign : endValue.valuesAlign,
         gridColor: Color.lerp(gridColor, endValue.gridColor, t),
+        axisLegendTextColor: Color.lerp(axisLegendTextColor, endValue.axisLegendTextColor, t),
         gridWidth: lerpDouble(gridWidth, endValue.gridWidth, t),
         valueAxisStep: lerpDouble(valueAxisStep, endValue.valueAxisStep, t),
         legendFontStyle: TextStyle.lerp(legendFontStyle, endValue.legendFontStyle, t),

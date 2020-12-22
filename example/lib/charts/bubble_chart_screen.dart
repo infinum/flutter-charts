@@ -34,7 +34,7 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
     targetMax = _difference;
     targetMin = _difference * 0.5;
     _values.addAll(List.generate(minItems, (index) {
-      return BubbleValue(2 + _rand.nextDouble() * _difference);
+      return BubbleValue<void>(null, 2 + _rand.nextDouble() * _difference);
     }));
   }
 
@@ -44,7 +44,7 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
         return _values[index];
       }
 
-      return BubbleValue(2 + Random().nextDouble() * targetMax);
+      return BubbleValue<void>(null, 2 + Random().nextDouble() * targetMax);
     });
   }
 
@@ -66,14 +66,11 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                   data: _values,
                   height: MediaQuery.of(context).size.height * 0.3,
                   itemOptions: ChartItemOptions(
-                    valueColor: Theme.of(context).colorScheme.onPrimary,
                     targetMax: targetMax,
                     targetMin: targetMin,
                     color: Theme.of(context).colorScheme.primary,
-                    targetOverColor: Theme.of(context).colorScheme.secondary,
-                    showValue: _values.length < 10,
+                    colorOverTarget: Theme.of(context).colorScheme.secondary,
                     padding: EdgeInsets.symmetric(horizontal: (1 - (_values.length / 17)) * 8.0),
-                    itemPainter: bubbleItemPainter,
                   ),
                   chartOptions: ChartOptions(
                     valueAxisMax: max(

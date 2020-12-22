@@ -14,6 +14,7 @@ class VerticalAxisDecoration extends DecorationPainter {
     this.axisValueFromIndex = defaultAxisValue,
     this.gridColor = Colors.grey,
     this.gridWidth = 1.0,
+    this.axisLegendTextColor,
     this.itemAxisStep = 1,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
   }) : _endWithChart = endWithChart ? 1.0 : 0.0;
@@ -26,6 +27,7 @@ class VerticalAxisDecoration extends DecorationPainter {
     this.valuesPadding = EdgeInsets.zero,
     this.axisValueFromIndex = defaultAxisValue,
     this.gridColor = Colors.grey,
+    this.axisLegendTextColor,
     this.gridWidth = 1.0,
     this.itemAxisStep = 1,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
@@ -39,6 +41,7 @@ class VerticalAxisDecoration extends DecorationPainter {
   final TextAlign valuesAlign;
   final EdgeInsets valuesPadding;
 
+  final Color axisLegendTextColor;
   final Color gridColor;
   final double gridWidth;
   final double itemAxisStep;
@@ -90,7 +93,7 @@ class VerticalAxisDecoration extends DecorationPainter {
       final _textPainter = TextPainter(
         text: TextSpan(
           text: _text,
-          style: legendFontStyle.copyWith(color: state?.options?.axisLegendTextColor ?? Colors.grey),
+          style: legendFontStyle.copyWith(color: axisLegendTextColor ?? Colors.grey),
         ),
         textAlign: valuesAlign,
         maxLines: 1,
@@ -120,6 +123,7 @@ class VerticalAxisDecoration extends DecorationPainter {
     if (endValue is VerticalAxisDecoration) {
       return VerticalAxisDecoration._lerp(
         gridColor: Color.lerp(gridColor, endValue.gridColor, t),
+        axisLegendTextColor: Color.lerp(axisLegendTextColor, endValue.axisLegendTextColor, t),
         gridWidth: lerpDouble(gridWidth, endValue.gridWidth, t),
         itemAxisStep: lerpDouble(itemAxisStep, endValue.itemAxisStep, t),
         endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t),

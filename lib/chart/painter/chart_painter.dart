@@ -2,7 +2,7 @@ part of flutter_charts;
 
 /// Custom painter for charts,
 class ChartPainter extends CustomPainter {
-  ChartPainter(this.state) : assert(state.itemOptions.itemPainter != null, 'You need to provide item painter!');
+  ChartPainter(this.state) : assert(state.itemPainter != null, 'You need to provide item painter!');
 
   final ChartState state;
 
@@ -42,7 +42,7 @@ class ChartPainter extends CustomPainter {
     // Draw all chart items
     state.items.forEach((index, element) {
       // Use item painter from ItemOptions to draw the item on the chart
-      final _item = state.itemOptions.itemPainter(element, state);
+      final _item = state.itemPainter(element, state);
 
       // Save, and translate the canvas so [0,0] is top left of item at [index] position
       canvas.save();
@@ -52,7 +52,8 @@ class ChartPainter extends CustomPainter {
       );
 
       // Draw the item on selected position
-      _item.draw(canvas, Size(_itemWidth, -_size.height), Paint()..color = state.itemOptions.getItemColor(_item.item));
+      _item.draw(
+          canvas, Size(_itemWidth, -_size.height), Paint()..color = state.itemOptions.getItemColor(_item.item, index));
 
       // Restore canvas
       canvas.restore();

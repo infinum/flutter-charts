@@ -38,7 +38,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
     targetMin = targetMax - (3 + (_rand.nextDouble() * (_max / 2)));
     _values.addAll(List.generate(minItems, (index) {
       double _value = 2 + _rand.nextDouble() * _difference;
-      return CandleValue(_value + 2 + _rand.nextDouble() * 4, _value);
+      return CandleValue<void>(null, _value + 2 + _rand.nextDouble() * 4, _value);
     }));
   }
 
@@ -48,7 +48,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
         return _values[index];
       }
       double _value = 2 + Random().nextDouble() * targetMax;
-      return CandleValue(_value + 2 + Random().nextDouble() * 4, _value);
+      return CandleValue<void>(null, _value + 2 + Random().nextDouble() * 4, _value);
     });
   }
 
@@ -75,7 +75,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                   minBarWidth: 4.0,
                   padding: EdgeInsets.symmetric(horizontal: 2.0),
                   color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
-                  targetOverColor: Theme.of(context).colorScheme.error.withOpacity(1.0),
+                  colorOverTarget: Theme.of(context).colorScheme.error.withOpacity(1.0),
                   radius: BorderRadius.all(
                     Radius.circular(100.0),
                   ),

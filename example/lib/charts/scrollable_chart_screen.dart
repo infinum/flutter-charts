@@ -40,7 +40,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
 
     targetMax = 3 + ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25)).roundToDouble();
     _values.addAll(List.generate(minItems, (index) {
-      return BarValue(2 + _rand.nextDouble() * _difference);
+      return BarValue<void>(null, 2 + _rand.nextDouble() * _difference);
     }));
   }
 
@@ -50,7 +50,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
         return _values[index];
       }
 
-      return BarValue(2 + Random().nextDouble() * targetMax);
+      return BarValue<void>(null, 2 + Random().nextDouble() * targetMax);
     });
   }
 
@@ -75,14 +75,13 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                 height: MediaQuery.of(context).size.height * 0.4,
                 dataToValue: (BarValue value) => value.max,
                 itemOptions: ChartItemOptions(
-                  itemPainter: barItemPainter,
                   padding: EdgeInsets.symmetric(horizontal: _isScrollable ? 12.0 : 2.0),
                   targetMax: targetMax + 2,
                   targetMin: targetMax,
                   minBarWidth: _isScrollable ? 36.0 : 4.0,
                   // isTargetInclusive: true,
                   color: Theme.of(context).colorScheme.primary.withOpacity(_showBars ? 1.0 : 0.0),
-                  targetOverColor: Theme.of(context).colorScheme.error.withOpacity(_showBars ? 1.0 : 0.0),
+                  colorOverTarget: Theme.of(context).colorScheme.error.withOpacity(_showBars ? 1.0 : 0.0),
                   radius: const BorderRadius.vertical(
                     top: Radius.circular(24.0),
                   ),
@@ -148,6 +147,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                   CupertinoSelectedPainter(
                     _selected,
                     textSize: 28.0,
+                    animate: true,
                     selectedColor: Theme.of(context).colorScheme.secondary,
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(_isScrollable ? 0.5 : 0.8),
                   ),

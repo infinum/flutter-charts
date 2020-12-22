@@ -8,14 +8,14 @@ import 'package:flutter_charts/chart.dart';
 
 import '../widgets/bar_chart.dart';
 
-class BarChartScreen extends StatefulWidget {
-  BarChartScreen({Key key}) : super(key: key);
+class BarTargetChartScreen extends StatefulWidget {
+  BarTargetChartScreen({Key key}) : super(key: key);
 
   @override
-  _BarChartScreenState createState() => _BarChartScreenState();
+  _BarTargetChartScreenState createState() => _BarTargetChartScreenState();
 }
 
-class _BarChartScreenState extends State<BarChartScreen> {
+class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
   List<BarValue> _values = <BarValue>[];
   double targetMax;
   double targetMin;
@@ -71,7 +71,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
                 itemOptions: ChartItemOptions(
                   padding: const EdgeInsets.symmetric(horizontal: 2.0),
                   targetMax: targetMax,
-                  targetMin: targetMin,
+                  // targetMin: targetMin,
                   minBarWidth: 4.0,
                   // isTargetInclusive: true,
                   color: Theme.of(context).colorScheme.primary,
@@ -103,14 +103,12 @@ class _BarChartScreenState extends State<BarChartScreen> {
                     showVerticalValues: _showValues,
                     showTopHorizontalValue: _showValues,
                     valueAxisStep: 1,
-                    itemAxisStep: 2,
+                    itemAxisStep: 1,
                     textStyle: Theme.of(context).textTheme.caption,
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),
-                  TargetAreaDecoration(
-                    targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
+                  TargetLineDecoration(
                     targetColor: Theme.of(context).colorScheme.error,
-                    targetAreaRadius: BorderRadius.circular(12.0),
                   ),
                 ],
                 foregroundDecorations: [
@@ -118,6 +116,11 @@ class _BarChartScreenState extends State<BarChartScreen> {
                     lineWidth: 4.0,
                     lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
                     smoothPoints: _smoothPoints,
+                  ),
+                  TargetLineLegendDecoration(
+                    legendDescription: 'Target line 👇',
+                    legendStyle: Theme.of(context).textTheme.overline.copyWith(fontSize: 14),
+                    padding: EdgeInsets.only(top: -8.0),
                   ),
                 ],
               ),

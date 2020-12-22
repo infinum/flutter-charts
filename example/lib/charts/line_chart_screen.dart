@@ -35,7 +35,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
 
     targetMax = 3 + (_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25);
     _values.addAll(List.generate(minItems, (index) {
-      return BarValue(2 + _rand.nextDouble() * _difference);
+      return BarValue<void>(null, 2 + _rand.nextDouble() * _difference);
     }));
   }
 
@@ -45,7 +45,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
         return _values[index];
       }
 
-      return BarValue(2 + Random().nextDouble() * targetMax);
+      return BarValue<void>(null, 2 + Random().nextDouble() * targetMax);
     });
   }
 
@@ -56,14 +56,14 @@ class _LineChartScreenState extends State<LineChartScreen> {
     final _secondItems = _stack
         ? _values.where((element) => _values.indexOf(element) % 3 == 1).map((element) {
             final _index = _values.indexOf(element) ~/ 3;
-            return BarValue(element.max + _firstItems[_index].max);
+            return BarValue<void>(null, element.max + _firstItems[_index].max);
           }).toList()
         : _values.where((element) => _values.indexOf(element) % 3 == 1).toList();
 
     final _thirdItems = _stack
         ? _values.where((element) => _values.indexOf(element) % 3 == 2).map((element) {
             final _index = _values.indexOf(element) ~/ 3;
-            return BarValue(element.max + _secondItems[_index].max);
+            return BarValue<void>(null, element.max + _secondItems[_index].max);
           }).toList()
         : _values.where((element) => _values.indexOf(element) % 3 == 2).toList();
 
@@ -87,7 +87,6 @@ class _LineChartScreenState extends State<LineChartScreen> {
                 chartItemOptions: ChartItemOptions(
                   maxBarWidth: 4.0,
                   color: Theme.of(context).accentColor.withOpacity(0.4),
-                  itemPainter: bubbleItemPainter,
                 ),
                 chartOptions: ChartOptions(
                   valueAxisMax: max(
@@ -105,7 +104,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                     showTopHorizontalValue: _showValues,
                     showVerticalValues: _showValues,
                     showHorizontalValues: _showValues,
-                    valueAxisStep: 1,
+                    valueAxisStep: _stack ? 3 : 1,
                     textStyle: Theme.of(context).textTheme.caption,
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),

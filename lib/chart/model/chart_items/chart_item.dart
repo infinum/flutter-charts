@@ -1,10 +1,11 @@
 part of flutter_charts;
 
-abstract class ChartItem {
-  ChartItem(this.min, this.max);
+abstract class ChartItem<T> {
+  ChartItem(this.value, this.min, this.max);
 
   final double min;
   final double max;
+  final T value;
 
   bool get isEmpty => (max ?? 0) == 0 && (min ?? 0) == 0;
 
@@ -15,7 +16,7 @@ abstract class ChartItem {
   }
 
   @override
-  int get hashCode => hashValues(min, max);
+  int get hashCode => hashValues(min, max) ^ value.hashCode;
 
   @override
   bool operator ==(Object other) {

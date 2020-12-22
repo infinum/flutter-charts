@@ -21,7 +21,7 @@ class LineChart<T> extends StatelessWidget {
     this.chartBehaviour,
     this.smoothCurves,
     Key key,
-  })  : _mappedValues = data.map((e) => BubbleValue(dataToValue(e))).toList().asMap(),
+  })  : _mappedValues = data.map((e) => BubbleValue<void>(null, dataToValue(e))).toList().asMap(),
         super(key: key);
 
   final List<T> data;
@@ -52,6 +52,7 @@ class LineChart<T> extends StatelessWidget {
       state: ChartState(
         _mappedValues,
         options: chartOptions,
+        itemPainter: bubbleItemPainter,
         itemOptions: chartItemOptions,
         foregroundDecorations: [
           SparkLineDecoration(

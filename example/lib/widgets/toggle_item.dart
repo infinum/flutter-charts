@@ -10,8 +10,7 @@ class ToggleItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60.0,
-      child: CheckboxListTile(
+      child: SwitchListTile(
         value: value,
         title: Text(title),
         onChanged: onChanged,

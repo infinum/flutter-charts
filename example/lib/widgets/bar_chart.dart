@@ -9,7 +9,7 @@ String defaultAxisValues(int item) => '$item';
 
 class BarChart<T> extends StatelessWidget {
   BarChart({
-    @required this.data,
+    @required List<T> data,
     @required this.dataToValue,
     this.height = 240.0,
     this.backgroundDecorations,
@@ -18,12 +18,23 @@ class BarChart<T> extends StatelessWidget {
     this.itemOptions = const ChartItemOptions(),
     this.chartOptions = const ChartOptions(),
     Key key,
-  })  : _mappedValues = data.map((e) => BarValue(dataToValue(e))).toList().asMap(),
+  })  : _mappedValues = data.map<ChartItem>((e) => BarValue<void>(null, dataToValue(e))).toList().asMap(),
         super(key: key);
 
-  final List<T> data;
+  BarChart.map(
+    this._mappedValues, {
+    @required this.dataToValue,
+    this.height = 240.0,
+    this.backgroundDecorations,
+    this.foregroundDecorations,
+    this.chartBehaviour = const ChartBehaviour(),
+    this.itemOptions = const ChartItemOptions(),
+    this.chartOptions = const ChartOptions(),
+    Key key,
+  }) : super(key: key);
+
   final DataToValue<T> dataToValue;
-  final Map<int, BarValue> _mappedValues;
+  final Map<int, ChartItem> _mappedValues;
   final double height;
 
   final ChartItemOptions itemOptions;

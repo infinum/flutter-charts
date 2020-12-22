@@ -7,7 +7,6 @@ class ChartOptions {
     this.padding,
     this.valueAxisMax,
     this.valueAxisMin,
-    this.axisLegendTextColor,
   });
 
   final EdgeInsets padding;
@@ -20,14 +19,10 @@ class ChartOptions {
   /// x axis will start from [valueAxisMin] (default: 0)
   final double valueAxisMin;
 
-  /// Text color for Text on the right and below the chart
-  final Color axisLegendTextColor;
-
   static ChartOptions lerp(ChartOptions a, ChartOptions b, double t) {
     return ChartOptions(
       valueAxisMax: lerpDouble(a?.valueAxisMax, b?.valueAxisMax, t),
       valueAxisMin: lerpDouble(a?.valueAxisMin, b?.valueAxisMin, t),
-      axisLegendTextColor: Color.lerp(a?.axisLegendTextColor, b?.axisLegendTextColor, t),
       padding: EdgeInsets.lerp(a?.padding, b?.padding, t),
     );
   }

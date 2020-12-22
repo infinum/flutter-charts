@@ -110,7 +110,7 @@ class TargetLineLegendDecoration extends DecorationPainter {
   TargetLineLegendDecoration({
     @required this.legendDescription,
     @required this.legendStyle,
-    this.padding = const EdgeInsets.all(24.0),
+    this.padding = EdgeInsets.zero,
   }) : assert(legendStyle.fontSize != null, 'You must specify fontSize when using TargetLineLegendDecoration');
 
   final String legendDescription;
@@ -123,7 +123,8 @@ class TargetLineLegendDecoration extends DecorationPainter {
     final _maxValue = state.maxValue - state.minValue;
     final scale = size.height / _maxValue;
     final _minValue = state.minValue * scale;
-    final _target = state.itemOptions.targetMax ?? state.itemOptions.targetMin ?? 0.0;
+
+    final _target = state.itemOptions.targetMin ?? state.itemOptions.targetMax ?? 0.0;
 
     canvas.save();
     canvas.translate(
@@ -141,8 +142,8 @@ class TargetLineLegendDecoration extends DecorationPainter {
         maxWidth: size.width,
       );
 
-    canvas.translate(
-        state?.defaultPadding?.left ?? 0.0 + padding.left, -scale * _target + _minValue + _textPainter.width);
+    canvas.translate(state?.defaultPadding?.left ?? 0.0 + padding.left,
+        -scale * _target + _minValue + _textPainter.width + padding.top);
     canvas.rotate(pi * 1.5);
 
     _textPainter.paint(

@@ -66,7 +66,7 @@ class TargetLineDecoration extends DecorationPainter {
 }
 
 /// Target area decoration, draw a RRect on the chart as `target range`
-/// To actually change item colors you have to also set [ChartItemOptions.targetOverColor]
+/// To actually change item colors you have to also set [ChartItemOptions.colorOverTarget]
 ///
 /// Target range is defined by [ChartItemOptions.targetMin] and [ChartItemOptions.targetMax]
 class TargetAreaDecoration extends DecorationPainter {
