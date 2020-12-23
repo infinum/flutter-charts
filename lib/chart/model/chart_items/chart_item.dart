@@ -29,6 +29,6 @@ abstract class ChartItem<T> {
 
   @override
   String toString() {
-    return 'ChartItem(min: $min, max: $max)';
+    return 'ChartItem(min: $min, max: $max, value: $value)';
   }
 }

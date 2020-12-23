@@ -34,7 +34,7 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
     targetMax = _difference;
     targetMin = _difference * 0.5;
     _values.addAll(List.generate(minItems, (index) {
-      return BubbleValue<void>(null, 2 + _rand.nextDouble() * _difference);
+      return BubbleValue<void>(2 + _rand.nextDouble() * _difference);
     }));
   }
 
@@ -44,7 +44,7 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
         return _values[index];
       }
 
-      return BubbleValue<void>(null, 2 + Random().nextDouble() * targetMax);
+      return BubbleValue<void>(2 + Random().nextDouble() * targetMax);
     });
   }
 

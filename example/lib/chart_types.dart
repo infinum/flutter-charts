@@ -20,7 +20,7 @@ class ChartTypes extends StatelessWidget {
               width: 100.0,
               child: Chart(
                 state: ChartState(
-                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(null, e.toDouble())).toList().asMap(),
+                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList().asMap(),
                   itemOptions: ChartItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     radius: BorderRadius.vertical(top: Radius.circular(12.0)),
@@ -54,7 +54,7 @@ class ChartTypes extends StatelessWidget {
               width: 100.0,
               child: Chart(
                 state: ChartState(
-                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(null, e.toDouble())).toList().asMap(),
+                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList().asMap(),
                   itemPainter: bubbleItemPainter,
                   itemOptions: ChartItemOptions(
                     color: Theme.of(context).accentColor,
@@ -88,7 +88,7 @@ class ChartTypes extends StatelessWidget {
               child: Chart(
                 state: ChartState(
                   [1, 3, 4, 2, 7, 6, 2, 5, 4]
-                      .map((e) => CandleValue<void>(null, e.toDouble() + 6, e.toDouble()))
+                      .map((e) => CandleValue<void>(e.toDouble() + 6, e.toDouble()))
                       .toList()
                       .asMap(),
                   options: ChartOptions(

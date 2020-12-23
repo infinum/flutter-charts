@@ -17,7 +17,7 @@ class BubbleChart<T> extends StatelessWidget {
     this.backgroundDecorations,
     this.foregroundDecorations,
     Key key,
-  })  : _mappedValues = data.map((e) => BubbleValue<void>(null, dataToValue(e))).toList().asMap(),
+  })  : _mappedValues = data.map((e) => BubbleValue<void>(dataToValue(e))).toList().asMap(),
         super(key: key);
 
   final List<T> data;

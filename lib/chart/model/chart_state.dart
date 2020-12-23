@@ -182,7 +182,7 @@ class ChartItemsLerp {
     final double _listLength = lerpDouble(a.length, b.length, t);
 
     /// Empty value for generated list.
-    final BubbleValue _emptyValue = BubbleValue<void>(null, 0.0);
+    final BubbleValue _emptyValue = BubbleValue<void>(0.0);
 
     /// Generate new list fot animation step, add items depending on current [_listLength]
     return List<ChartItem>.generate(_listLength.ceil(), (int index) {

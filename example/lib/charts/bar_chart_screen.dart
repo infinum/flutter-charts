@@ -36,7 +36,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
     final double _difference = _rand.nextDouble() * 10;
     targetMax = 5 + ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25)).roundToDouble();
     _values.addAll(List.generate(minItems, (index) {
-      return BarValue<void>(null, targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
+      return BarValue<void>(targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
     }));
     targetMin = targetMax - ((_rand.nextDouble() * 3) + (targetMax * 0.2));
   }
@@ -47,7 +47,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
         return _values[index];
       }
 
-      return BarValue<void>(null, targetMax * 0.4 + Random().nextDouble() * targetMax * 0.9);
+      return BarValue<void>(targetMax * 0.4 + Random().nextDouble() * targetMax * 0.9);
     });
   }
 
@@ -103,7 +103,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
                     showVerticalValues: _showValues,
                     showTopHorizontalValue: _showValues,
                     valueAxisStep: 1,
-                    itemAxisStep: 2,
+                    itemAxisStep: 1,
                     textStyle: Theme.of(context).textTheme.caption,
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),
@@ -118,6 +118,9 @@ class _BarChartScreenState extends State<BarChartScreen> {
                     lineWidth: 4.0,
                     lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
                     smoothPoints: _smoothPoints,
+                  ),
+                  ValueDecoration(
+                    textStyle: Theme.of(context).textTheme.caption,
                   ),
                 ],
               ),

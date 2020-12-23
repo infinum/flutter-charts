@@ -35,7 +35,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
 
     targetMax = 3 + (_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25);
     _values.addAll(List.generate(minItems, (index) {
-      return BarValue<void>(null, 2 + _rand.nextDouble() * _difference);
+      return BarValue<void>(2 + _rand.nextDouble() * _difference);
     }));
   }
 
@@ -45,7 +45,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
         return _values[index];
       }
 
-      return BarValue<void>(null, 2 + Random().nextDouble() * targetMax);
+      return BarValue<void>(2 + Random().nextDouble() * targetMax);
     });
   }
 
@@ -56,21 +56,21 @@ class _LineChartScreenState extends State<LineChartScreen> {
     final _secondItems = _stack
         ? _values.where((element) => _values.indexOf(element) % 3 == 1).map((element) {
             final _index = _values.indexOf(element) ~/ 3;
-            return BarValue<void>(null, element.max + _firstItems[_index].max);
+            return BarValue<void>(element.max + _firstItems[_index].max);
           }).toList()
         : _values.where((element) => _values.indexOf(element) % 3 == 1).toList();
 
     final _thirdItems = _stack
         ? _values.where((element) => _values.indexOf(element) % 3 == 2).map((element) {
             final _index = _values.indexOf(element) ~/ 3;
-            return BarValue<void>(null, element.max + _secondItems[_index].max);
+            return BarValue<void>(element.max + _secondItems[_index].max);
           }).toList()
         : _values.where((element) => _values.indexOf(element) % 3 == 2).toList();
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Sparkline chart',
+          'Multi sparkline decoration',
         ),
       ),
       body: Column(

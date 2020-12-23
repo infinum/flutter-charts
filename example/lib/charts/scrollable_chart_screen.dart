@@ -40,7 +40,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
 
     targetMax = 3 + ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25)).roundToDouble();
     _values.addAll(List.generate(minItems, (index) {
-      return BarValue<void>(null, 2 + _rand.nextDouble() * _difference);
+      return BarValue<void>(2 + _rand.nextDouble() * _difference);
     }));
   }
 
@@ -50,7 +50,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
         return _values[index];
       }
 
-      return BarValue<void>(null, 2 + Random().nextDouble() * targetMax);
+      return BarValue<void>(2 + Random().nextDouble() * targetMax);
     });
   }
 

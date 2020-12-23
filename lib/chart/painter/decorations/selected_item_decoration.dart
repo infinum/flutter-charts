@@ -20,7 +20,7 @@ class CupertinoSelectedPainter extends DecorationPainter {
   final double textSize;
 
   void _drawText(Canvas canvas, Size size, double width, double totalWidth, ChartState state) {
-    final _maxValuePainter = ItemPainter.makeTextPainter(
+    final _maxValuePainter = ValueDecoration.makeTextPainter(
       state.items[selectedIndex].max.toStringAsFixed(2),
       width,
       TextStyle(

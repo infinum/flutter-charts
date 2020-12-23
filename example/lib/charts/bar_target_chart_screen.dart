@@ -36,7 +36,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
     final double _difference = _rand.nextDouble() * 10;
     targetMax = 5 + ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25)).roundToDouble();
     _values.addAll(List.generate(minItems, (index) {
-      return BarValue<void>(null, targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
+      return BarValue<void>(targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
     }));
     targetMin = targetMax - ((_rand.nextDouble() * 3) + (targetMax * 0.2));
   }
@@ -47,7 +47,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
         return _values[index];
       }
 
-      return BarValue<void>(null, targetMax * 0.4 + Random().nextDouble() * targetMax * 0.9);
+      return BarValue<void>(targetMax * 0.4 + Random().nextDouble() * targetMax * 0.9);
     });
   }
 
@@ -56,7 +56,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Bar chart',
+          'Target line decoration',
         ),
       ),
       body: Column(
