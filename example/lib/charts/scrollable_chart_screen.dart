@@ -21,7 +21,6 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
   bool _showValues = false;
   bool _smoothPoints = false;
   bool _showBars = true;
-  bool _showLine = false;
   bool _isScrollable = true;
   int minItems = 30;
   int _selected;
@@ -134,14 +133,22 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                   ),
                   SparkLineDecoration(
                     fill: true,
-                    lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 0.2 : 0.0),
+                    lineColor: Theme.of(context).primaryColor.withOpacity(!_showBars ? 0.2 : 0.0),
                     smoothPoints: _smoothPoints,
                   ),
                 ],
                 foregroundDecorations: [
+                  ValueDecoration(
+                    alignment: _showBars ? Alignment.bottomCenter : Alignment(0.0, -1.0),
+                    textStyle: Theme.of(context).textTheme.button.copyWith(
+                        color: (_showBars
+                                ? Theme.of(context).colorScheme.onPrimary
+                                : Theme.of(context).colorScheme.primary)
+                            .withOpacity(_isScrollable ? 1.0 : 0.0)),
+                  ),
                   SparkLineDecoration(
                     lineWidth: 2.0,
-                    lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
+                    lineColor: Theme.of(context).primaryColor.withOpacity(!_showBars ? 1.0 : 0.0),
                     smoothPoints: _smoothPoints,
                   ),
                   CupertinoSelectedPainter(
@@ -193,15 +200,6 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                   onChanged: (value) {
                     setState(() {
                       _showBars = value;
-                    });
-                  },
-                ),
-                ToggleItem(
-                  value: _showLine,
-                  title: 'Show line decoration',
-                  onChanged: (value) {
-                    setState(() {
-                      _showLine = value;
                     });
                   },
                 ),

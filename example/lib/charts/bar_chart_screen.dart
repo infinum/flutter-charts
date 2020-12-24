@@ -119,9 +119,6 @@ class _BarChartScreenState extends State<BarChartScreen> {
                     lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
                     smoothPoints: _smoothPoints,
                   ),
-                  ValueDecoration(
-                    textStyle: Theme.of(context).textTheme.caption,
-                  ),
                 ],
               ),
             ),

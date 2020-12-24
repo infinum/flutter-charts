@@ -120,7 +120,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                   TargetLineLegendDecoration(
                     legendDescription: 'Target line 👇',
                     legendStyle: Theme.of(context).textTheme.overline.copyWith(fontSize: 14),
-                    padding: EdgeInsets.only(top: -8.0),
+                    padding: EdgeInsets.only(top: -3.5),
                   ),
                 ],
               ),

@@ -23,10 +23,11 @@ class _ChartDemoState extends State<ChartDemo> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.light().copyWith(
-        accentColor: Colors.redAccent,
+        accentColor: Color(0xFFd8262C),
         colorScheme: ThemeData.light().colorScheme.copyWith(
-              primary: Colors.redAccent,
-              error: Colors.grey,
+              primary: Color(0xFFd8262C),
+              secondary: Color(0xFF353535),
+              error: Colors.lightBlue,
             ),
         primaryColor: Colors.red,
       ),
@@ -100,11 +101,11 @@ class ShowList extends StatelessWidget {
                     ),
                     SparkLineDecoration(
                       lineWidth: 2.0,
-                      lineColor: Theme.of(context).accentColor,
+                      lineColor: Theme.of(context).colorScheme.primary,
                     ),
                     SparkLineDecoration(
                       lineWidth: 2.0,
-                      lineColor: Theme.of(context).colorScheme.error,
+                      lineColor: Theme.of(context).colorScheme.secondary,
                       items: [1, 3, 4, 2, 2, 1, 6, 7, 2].map((e) => BubbleValue<void>(e.toDouble())).toList(),
                     ),
                   ],

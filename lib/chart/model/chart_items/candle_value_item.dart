@@ -7,9 +7,9 @@ class CandleValue<T> extends ChartItem<T> {
   @override
   CandleValue animateTo(ChartItem endValue, double t) {
     return CandleValue<T>.withValue(
-      endValue.value,
-      lerpDouble(this.max, endValue.max, t),
+      endValue?.value,
       lerpDouble(this.min, endValue.min, t),
+      lerpDouble(this.max, endValue.max, t),
     );
   }
 }

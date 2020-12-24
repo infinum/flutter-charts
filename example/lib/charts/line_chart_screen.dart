@@ -78,88 +78,122 @@ class _LineChartScreenState extends State<LineChartScreen> {
           Center(
             child: Padding(
               padding: const EdgeInsets.all(24.0),
-              child: LineChart(
-                data: _values.where((element) => _values.indexOf(element) % 3 == 0).toList(),
-                height: MediaQuery.of(context).size.height * 0.4,
-                dataToValue: (BarValue value) => value.max,
-                itemColor: Theme.of(context).accentColor,
-                lineWidth: 2.0,
-                chartItemOptions: ChartItemOptions(
-                  maxBarWidth: 4.0,
-                  color: Theme.of(context).accentColor.withOpacity(0.4),
-                ),
-                chartOptions: ChartOptions(
-                  valueAxisMax: max(
-                      (_stack ? _thirdItems : _values).fold<double>(
-                              0,
-                              (double previousValue, BarValue element) =>
-                                  previousValue = max(previousValue, element?.max ?? 0)) +
-                          1,
-                      targetMax + 3),
-                ),
-                smoothCurves: _smoothPoints,
-                backgroundDecorations: [
-                  GridDecoration(
-                    showVerticalGrid: false,
-                    showTopHorizontalValue: _showValues,
-                    showVerticalValues: _showValues,
-                    showHorizontalValues: _showValues,
-                    valueAxisStep: _stack ? 3 : 1,
-                    textStyle: Theme.of(context).textTheme.caption,
-                    gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+              child: Stack(
+                children: [
+                  LineChart(
+                    data: _thirdItems,
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    dataToValue: (BarValue value) => value.max,
+                    itemColor: Theme.of(context).colorScheme.secondary,
+                    lineWidth: 2.0,
+                    chartItemOptions: ChartItemOptions(
+                      maxBarWidth: 4.0,
+                      color: Theme.of(context).colorScheme.secondary.withOpacity(0.4),
+                    ),
+                    chartOptions: ChartOptions(
+                      valueAxisMax: max(
+                          (_stack ? _thirdItems : _values).fold<double>(
+                                  0,
+                                  (double previousValue, BarValue element) =>
+                                      previousValue = max(previousValue, element?.max ?? 0)) +
+                              1,
+                          targetMax + 3),
+                    ),
+                    smoothCurves: _smoothPoints,
+                    backgroundDecorations: [
+                      GridDecoration(
+                        showVerticalGrid: false,
+                        showTopHorizontalValue: _showValues,
+                        showVerticalValues: _showValues,
+                        showHorizontalValues: _showValues,
+                        valueAxisStep: _stack ? 3 : 1,
+                        textStyle: Theme.of(context).textTheme.caption,
+                        gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+                      ),
+                      SparkLineDecoration(
+                        id: 'third_line_fill',
+                        smoothPoints: _smoothPoints,
+                        fill: true,
+                        lineColor: Theme.of(context).colorScheme.secondary.withOpacity(_fillLine
+                            ? _stack
+                                ? 1.0
+                                : 0.2
+                            : 0.0),
+                        items: _thirdItems,
+                      ),
+                    ],
                   ),
-                  SparkLineDecoration(
-                    id: 'third_line_fill',
-                    smoothPoints: _smoothPoints,
-                    fill: true,
-                    lineColor: Theme.of(context).colorScheme.secondary.withOpacity(_fillLine
-                        ? _stack
-                            ? 1.0
-                            : 0.2
-                        : 0.0),
-                    items: _thirdItems,
+                  LineChart(
+                    data: _secondItems,
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    dataToValue: (BarValue value) => value.max,
+                    itemColor: Theme.of(context).colorScheme.primary,
+                    lineWidth: 2.0,
+                    chartItemOptions: ChartItemOptions(
+                      maxBarWidth: 4.0,
+                      color: Theme.of(context).colorScheme.primary.withOpacity(0.4),
+                    ),
+                    chartOptions: ChartOptions(
+                      valueAxisMax: max(
+                          (_stack ? _thirdItems : _values).fold<double>(
+                                  0,
+                                  (double previousValue, BarValue element) =>
+                                      previousValue = max(previousValue, element?.max ?? 0)) +
+                              1,
+                          targetMax + 3),
+                    ),
+                    smoothCurves: _smoothPoints,
+                    backgroundDecorations: [
+                      SparkLineDecoration(
+                        id: 'second_line_fill',
+                        smoothPoints: _smoothPoints,
+                        fill: true,
+                        lineColor: Theme.of(context).colorScheme.primary.withOpacity(_fillLine
+                            ? _stack
+                                ? 1.0
+                                : 0.2
+                            : 0.0),
+                        items: _secondItems,
+                      ),
+                    ],
                   ),
-                  SparkLineDecoration(
-                    id: 'second_line_fill',
-                    smoothPoints: _smoothPoints,
-                    fill: true,
+                  LineChart(
+                    data: _firstItems,
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    dataToValue: (BarValue value) => value.max,
+                    itemColor: Theme.of(context).accentColor,
+                    lineWidth: 2.0,
                     gradient:
                         LinearGradient(begin: Alignment.centerLeft, end: Alignment.centerRight, colors: Colors.accents),
-                    lineColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(_fillLine
-                        ? _stack
-                            ? 1.0
-                            : 0.4
-                        : 0.0),
-                    items: _secondItems,
-                  ),
-                  SparkLineDecoration(
-                    id: 'first_line_fill',
-                    smoothPoints: _smoothPoints,
-                    fill: true,
-                    lineColor: Theme.of(context).accentColor.withOpacity(_fillLine
-                        ? _stack
-                            ? 1.0
-                            : 0.2
-                        : 0.0),
-                    items: _firstItems,
-                  ),
-                ],
-                foregroundDecorations: [
-                  SparkLineDecoration(
-                    id: 'third_line',
-                    lineWidth: 4.0,
-                    smoothPoints: _smoothPoints,
-                    lineColor: Theme.of(context).colorScheme.secondary,
-                    items: _thirdItems,
-                  ),
-                  SparkLineDecoration(
-                    id: 'second_line',
-                    lineWidth: 4.0,
-                    gradient:
-                        LinearGradient(begin: Alignment.centerLeft, end: Alignment.centerRight, colors: Colors.accents),
-                    smoothPoints: _smoothPoints,
-                    lineColor: Theme.of(context).colorScheme.primaryVariant,
-                    items: _secondItems,
+                    chartItemOptions: ChartItemOptions(
+                      maxBarWidth: 4.0,
+                      color: Theme.of(context).accentColor.withOpacity(0.4),
+                    ),
+                    chartOptions: ChartOptions(
+                      valueAxisMax: max(
+                          (_stack ? _thirdItems : _values).fold<double>(
+                                  0,
+                                  (double previousValue, BarValue element) =>
+                                      previousValue = max(previousValue, element?.max ?? 0)) +
+                              1,
+                          targetMax + 3),
+                    ),
+                    smoothCurves: _smoothPoints,
+                    backgroundDecorations: [
+                      SparkLineDecoration(
+                        id: 'first_line_fill',
+                        smoothPoints: _smoothPoints,
+                        fill: true,
+                        gradient: LinearGradient(
+                            begin: Alignment.centerLeft, end: Alignment.centerRight, colors: Colors.accents),
+                        lineColor: Theme.of(context).accentColor.withOpacity(_fillLine
+                            ? _stack
+                                ? 1.0
+                                : 0.2
+                            : 0.0),
+                        items: _firstItems,
+                      ),
+                    ],
                   ),
                 ],
               ),

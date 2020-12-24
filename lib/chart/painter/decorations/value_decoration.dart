@@ -28,7 +28,6 @@ class ValueDecoration extends DecorationPainter {
   }
 
   void paintText(Canvas canvas, Size size, ChartItem item, double width, double verticalMultiplier, double minValue) {
-    final _padding = state?.itemOptions?.padding;
 
     final _maxValuePainter = ValueDecoration.makeTextPainter(
       '${item.max.toInt()}',
@@ -39,7 +38,7 @@ class ValueDecoration extends DecorationPainter {
     _maxValuePainter.paint(
       canvas,
       Offset(
-        (_padding?.left ?? 0.0) + (width * alignment.x * 0.4),
+        width * alignment.x,
         -item.max * verticalMultiplier -
             minValue -
             _maxValuePainter.height * 0.2 +

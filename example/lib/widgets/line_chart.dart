@@ -20,6 +20,7 @@ class LineChart<T> extends StatelessWidget {
     this.chartItemOptions,
     this.chartBehaviour,
     this.smoothCurves,
+    this.gradient,
     Key key,
   })  : _mappedValues = data.map((e) => BubbleValue<void>(dataToValue(e))).toList().asMap(),
         super(key: key);
@@ -31,6 +32,7 @@ class LineChart<T> extends StatelessWidget {
 
   final bool smoothCurves;
   final Color itemColor;
+  final Gradient gradient;
   final double lineWidth;
 
   final List<DecorationPainter> backgroundDecorations;
@@ -59,6 +61,7 @@ class LineChart<T> extends StatelessWidget {
             id: 'chart_decoration',
             lineWidth: lineWidth,
             lineColor: itemColor,
+            gradient: gradient,
             smoothPoints: smoothCurves,
           ),
           ..._foregroundDecorations,

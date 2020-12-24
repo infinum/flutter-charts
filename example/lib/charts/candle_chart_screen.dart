@@ -38,7 +38,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
     targetMin = targetMax - (3 + (_rand.nextDouble() * (_max / 2)));
     _values.addAll(List.generate(minItems, (index) {
       double _value = 2 + _rand.nextDouble() * _difference;
-      return CandleValue<void>(_value + 2 + _rand.nextDouble() * 4, _value);
+      return CandleValue<void>(_value, _value + 2 + _rand.nextDouble() * 4);
     }));
   }
 
@@ -48,7 +48,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
         return _values[index];
       }
       double _value = 2 + Random().nextDouble() * targetMax;
-      return CandleValue<void>(_value + 2 + Random().nextDouble() * 4, _value);
+      return CandleValue<void>(_value, _value + 2 + Random().nextDouble() * 4);
     });
   }
 

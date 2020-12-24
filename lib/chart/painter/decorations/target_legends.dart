@@ -156,7 +156,7 @@ class TargetLineLegendDecoration extends DecorationPainter {
 
   @override
   EdgeInsets marginNeeded() {
-    return EdgeInsets.only(left: legendStyle.fontSize * 1.4);
+    return EdgeInsets.only(left: legendStyle.fontSize * 2);
   }
 
   @override
