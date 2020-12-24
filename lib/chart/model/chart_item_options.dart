@@ -50,8 +50,28 @@ class ChartItemOptions {
   final ColorForValue colorForValue;
   final ColorForIndex colorForIndex;
 
+  static bool isInTarget(double max, {double min, double targetMin, double targetMax, bool inclusive = true}) {
+    if (targetMin == null && targetMax == null) {
+      return true;
+    }
+
+    final _min = min ?? max;
+
+    if ((targetMin != null && _min <= targetMin) || (targetMax != null && max >= targetMax)) {
+      // Check if target is inclusive, don't show error color in that case
+      if (inclusive && (_min == targetMin || max == targetMax)) {
+        return true;
+      }
+
+      return false;
+    }
+
+    return true;
+  }
+
   Color getItemColor(ChartItem item, int index) {
     if (colorForIndex != null) {
+      print('Color for index');
       return colorForIndex(item, index);
     }
 
@@ -60,25 +80,14 @@ class ChartItemOptions {
 
   Color _getColorForValue(double max, [double min]) {
     if (colorForValue != null) {
+      print('Color for value');
       return colorForValue(max, min);
     }
 
-    if (targetMin == null && targetMax == null) {
-      return color;
-    }
-
-    final _min = min ?? max;
-
-    if ((targetMin != null && _min <= targetMin) || (targetMax != null && max >= targetMax)) {
-      // Check if target is inclusive, don't show error color in that case
-      if (isTargetInclusive && (_min == targetMin || max == targetMax)) {
-        return color;
-      }
-
-      return colorOverTarget ?? color;
-    }
-
-    return color;
+    print('Default colors');
+    return isInTarget(max, min: min, targetMax: targetMax, targetMin: targetMin, inclusive: isTargetInclusive)
+        ? color
+        : (colorOverTarget ?? color);
   }
 
   static ChartItemOptions lerp(ChartItemOptions a, ChartItemOptions b, double t) {

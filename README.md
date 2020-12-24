@@ -18,7 +18,7 @@ flutter packages get
 ```
 
 Now you are ready to use charts lib.
-This is how you can start, this is simple bar chart:
+This is how you can start, this is simple bar chart with grid decoration:
 
 ```dart
   @override
@@ -34,8 +34,8 @@ This is how you can start, this is simple bar chart:
           ),
           backgroundDecorations: [
             GridDecoration(
-              itemAxisStep: 3,
-              valueAxisStep: 3,
+              itemAxisStep: 1,
+              valueAxisStep: 1,
               gridColor: Theme.of(context).dividerColor,
             ),
           ],
@@ -45,16 +45,14 @@ This is how you can start, this is simple bar chart:
   }
 ```
 Code above will draw this:
+
 ![simple_chart]
 
-*Show simple chart code*
-*Show chart code made by code above*
-
 #### Chart options
-Chart options
+Chart options apply to the whole chart widget
 
 #### Chart item options
-Item options
+Chart item options are options that apply to individual items.
 
 #### Chart behaviour
 Scroll + click

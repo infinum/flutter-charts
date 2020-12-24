@@ -1,5 +1,7 @@
 part of flutter_charts;
 
+enum HorizontalLegendPosition { start, end }
+
 class HorizontalAxisDecoration extends DecorationPainter {
   HorizontalAxisDecoration({
     this.showValues = false,
@@ -11,6 +13,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.horizontalAxisUnit,
     this.valueAxisStep = 1.0,
     this.axisLegendTextColor,
+    this.horizontalLegendPosition = HorizontalLegendPosition.end,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
   }) : _endWithChart = endWithChart ? 1.0 : 0.0;
 
@@ -24,6 +27,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.horizontalAxisUnit,
     this.valueAxisStep = 1.0,
     this.axisLegendTextColor,
+    this.horizontalLegendPosition = HorizontalLegendPosition.end,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
   }) : _endWithChart = endWithChart;
 
@@ -34,6 +38,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
   final TextAlign valuesAlign;
   final bool showTopValue;
   final Color axisLegendTextColor;
+  final HorizontalLegendPosition horizontalLegendPosition;
 
   final String horizontalAxisUnit;
 
@@ -47,6 +52,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
   @override
   void initDecoration(ChartState state) {
+    super.initDecoration(state);
     if (showValues) {
       final _maxValue = state.maxValue - state.minValue;
       _longestText = '${(_maxValue + state.minValue).toInt()}';
@@ -101,14 +107,14 @@ class HorizontalAxisDecoration extends DecorationPainter {
         textAlign: valuesAlign,
         maxLines: 1,
         textDirection: TextDirection.ltr,
-      )..layout(
-          maxWidth: state?.defaultPadding?.right ?? 0.0,
-          minWidth: state?.defaultPadding?.right ?? 0.0,
-        );
+      )..layout();
+
+      final _positionEnd = (size.width - (state?.defaultMargin?.right ?? 0.0)) - _textPainter.width;
+      final _positionStart = state?.defaultMargin?.left ?? 0.0;
 
       _textPainter.paint(
           canvas,
-          Offset(size.width - (state?.defaultPadding?.right ?? 0.0),
+          Offset(horizontalLegendPosition == HorizontalLegendPosition.end ? _positionEnd : _positionStart,
               -valueAxisStep * i * scale - (_textPainter.height * 1.1)));
     }
 
@@ -152,8 +158,13 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
   @override
   EdgeInsets paddingNeeded() {
-    final _textWidth = textWidth(_longestText, legendFontStyle);
-    return EdgeInsets.only(right: _textWidth);
+    final _textWidth = textWidth(_longestText, legendFontStyle) * 1.2;
+    final _isEnd = horizontalLegendPosition == HorizontalLegendPosition.end;
+
+    return EdgeInsets.only(
+      right: _isEnd ? _textWidth : 0.0,
+      left: _isEnd ? 0.0 : _textWidth,
+    );
   }
 
   @override
@@ -170,6 +181,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
         valueAxisStep: lerpDouble(valueAxisStep, endValue.valueAxisStep, t),
         legendFontStyle: TextStyle.lerp(legendFontStyle, endValue.legendFontStyle, t),
         horizontalAxisUnit: t > 0.5 ? endValue.horizontalAxisUnit : horizontalAxisUnit,
+        horizontalLegendPosition: t > 0.5 ? endValue.horizontalLegendPosition : horizontalLegendPosition,
       );
     }
 

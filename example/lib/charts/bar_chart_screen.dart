@@ -24,6 +24,8 @@ class _BarChartScreenState extends State<BarChartScreen> {
   bool _colorfulBars = false;
   bool _showLine = false;
   int minItems = 6;
+  bool _legendOnEnd = true;
+  bool _legendOnBottom = true;
 
   @override
   void initState() {
@@ -94,14 +96,20 @@ class _BarChartScreenState extends State<BarChartScreen> {
                                   previousValue = max(previousValue, element?.max ?? 0)) +
                           1,
                       targetMax + 3),
-                  padding: _showValues ? EdgeInsets.only(right: 12.0) : null,
+                  padding: _showValues
+                      ? EdgeInsets.only(right: _legendOnEnd ? 12.0 : 0.0, left: _legendOnEnd ? 0.0 : 12.0)
+                      : null,
                 ),
                 backgroundDecorations: [
                   GridDecoration(
                     showVerticalGrid: true,
                     showHorizontalValues: _showValues,
                     showVerticalValues: _showValues,
-                    showTopHorizontalValue: _showValues,
+                    showTopHorizontalValue: _legendOnBottom ? _showValues : false,
+                    horizontalLegendPosition:
+                        _legendOnEnd ? HorizontalLegendPosition.end : HorizontalLegendPosition.start,
+                    verticalLegendPosition:
+                        _legendOnBottom ? VerticalLegendPosition.bottom : VerticalLegendPosition.top,
                     valueAxisStep: 1,
                     itemAxisStep: 1,
                     textStyle: Theme.of(context).textTheme.caption,
@@ -118,6 +126,11 @@ class _BarChartScreenState extends State<BarChartScreen> {
                     lineWidth: 4.0,
                     lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
                     smoothPoints: _smoothPoints,
+                  ),
+                  ValueDecoration(
+                    alignment: Alignment.bottomCenter,
+                    textStyle:
+                        Theme.of(context).textTheme.button.copyWith(color: Theme.of(context).colorScheme.onPrimary),
                   ),
                 ],
               ),
@@ -161,6 +174,24 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   onChanged: (value) {
                     setState(() {
                       _colorfulBars = value;
+                    });
+                  },
+                ),
+                ToggleItem(
+                  value: _legendOnEnd,
+                  title: 'Legend on end',
+                  onChanged: (value) {
+                    setState(() {
+                      _legendOnEnd = value;
+                    });
+                  },
+                ),
+                ToggleItem(
+                  value: _legendOnBottom,
+                  title: 'Legend on bottom',
+                  onChanged: (value) {
+                    setState(() {
+                      _legendOnBottom = value;
                     });
                   },
                 ),

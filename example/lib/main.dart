@@ -95,18 +95,13 @@ class ShowList extends StatelessWidget {
                   ),
                   backgroundDecorations: [
                     GridDecoration(
-                      itemAxisStep: 9,
-                      valueAxisStep: 9,
+                      showVerticalGrid: false,
+                      valueAxisStep: 3,
                       gridColor: Theme.of(context).dividerColor,
                     ),
                     SparkLineDecoration(
                       lineWidth: 2.0,
                       lineColor: Theme.of(context).colorScheme.primary,
-                    ),
-                    SparkLineDecoration(
-                      lineWidth: 2.0,
-                      lineColor: Theme.of(context).colorScheme.secondary,
-                      items: [1, 3, 4, 2, 2, 1, 6, 7, 2].map((e) => BubbleValue<void>(e.toDouble())).toList(),
                     ),
                   ],
                 ),
