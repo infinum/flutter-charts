@@ -81,7 +81,7 @@ class ShowList extends StatelessWidget {
             child: Container(
               width: 100.0,
               child: Chart(
-                state: ChartState(
+                state: ChartState<void>(
                   [2, 7, 2, 4, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList().asMap(),
                   itemOptions: ChartItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
@@ -120,7 +120,8 @@ class ShowList extends StatelessWidget {
             child: Container(
               width: 100.0,
               child: Chart(
-                state: ChartState([1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList().asMap(),
+                state: ChartState<void>(
+                    [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList().asMap(),
                     itemOptions: ChartItemOptions(
                       padding: const EdgeInsets.symmetric(horizontal: 2.0),
                       color: Theme.of(context).accentColor,
@@ -169,7 +170,7 @@ class ShowList extends StatelessWidget {
             child: Container(
               width: 100.0,
               child: Chart(
-                state: ChartState(
+                state: ChartState<void>(
                   [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList().asMap(),
                   itemOptions: ChartItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),

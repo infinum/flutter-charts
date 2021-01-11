@@ -1,11 +1,13 @@
 part of flutter_charts;
 
 /// Item painter for charts
-abstract class ItemPainter {
+/// Chart will slice the canvas and each item is painted has constraints (width / [itemWidth]) * height
+///
+abstract class ItemPainter<T> {
   ItemPainter(this.item, this.state);
 
   final ChartState state;
-  final ChartItem item;
+  final ChartItem<T> item;
 
   /// Draw [ChartItem] on the canvas.
   /// Canvas with item size is passed, item's padding and margin need to be calculated

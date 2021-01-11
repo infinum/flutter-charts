@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_charts/chart.dart';
 
-typedef DataToValue<T> = CandleValue Function(T item);
+typedef DataToValue<T> = CandleValue<T> Function(T item);
 typedef DataToAxis<T> = String Function(int item);
 
 String defaultAxisValues(int item) => '$item';
@@ -33,14 +33,14 @@ class CandleChart<T> extends StatelessWidget {
   final ChartItemOptions chartItemOptions;
   final ChartItemPainter itemPainter;
 
-  final Map<int, CandleValue> _mappedValues;
+  final Map<int, CandleValue<T>> _mappedValues;
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedChart(
+    return AnimatedChart<T>(
       height: height,
       duration: const Duration(milliseconds: 450),
-      state: ChartState(
+      state: ChartState<T>(
         _mappedValues,
         options: chartOptions,
         itemOptions: chartItemOptions,

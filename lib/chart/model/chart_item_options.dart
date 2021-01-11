@@ -84,7 +84,6 @@ class ChartItemOptions {
       return colorForValue(max, min);
     }
 
-    print('Default colors');
     return isInTarget(max, min: min, targetMax: targetMax, targetMin: targetMin, inclusive: isTargetInclusive)
         ? color
         : (colorOverTarget ?? color);

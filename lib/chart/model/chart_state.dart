@@ -1,10 +1,10 @@
 part of flutter_charts;
 
-typedef AxisGenerator = double Function(ChartItem item);
-typedef ChartItemPainter = ItemPainter Function(ChartItem item, ChartState state);
+typedef AxisGenerator<T> = double Function(ChartItem<T> item);
+typedef ChartItemPainter<T> = ItemPainter<T> Function(ChartItem<T> item, ChartState state);
 
-ItemPainter barItemPainter(ChartItem item, ChartState state) => BarPainter(item, state);
-ItemPainter bubbleItemPainter(ChartItem item, ChartState state) => BubblePainter(item, state);
+ItemPainter<T> barItemPainter<T>(ChartItem<T> item, ChartState<T> state) => BarPainter<T>(item, state);
+ItemPainter<T> bubbleItemPainter<T>(ChartItem<T> item, ChartState<T> state) => BubblePainter<T>(item, state);
 
 /// Main state of the charts. Painter will use this as state and it will format chart depending
 /// on options.
@@ -17,14 +17,14 @@ ItemPainter bubbleItemPainter(ChartItem item, ChartState state) => BubblePainter
 /// chart but can show important info (Axis, target line...)
 ///
 /// More different decorations can be added by extending [DecorationPainter]
-class ChartState {
+class ChartState<T> {
   ChartState(
     this.items, {
     this.options = const ChartOptions(),
     this.itemOptions = const ChartItemOptions(),
     this.behaviour = const ChartBehaviour(),
-    this.backgroundDecorations = const [],
-    this.foregroundDecorations = const [],
+    this.backgroundDecorations = const <DecorationPainter>[],
+    this.foregroundDecorations = const <DecorationPainter>[],
     this.itemPainter = barItemPainter,
   })  : assert(items.isNotEmpty, 'No items!'),
         assert((options?.padding?.vertical ?? 0.0) == 0.0, 'Chart padding cannot be vertical!'),
@@ -37,14 +37,14 @@ class ChartState {
   }
 
   factory ChartState.fromList(
-    List<ChartItem> values, {
+    List<ChartItem<T>> values, {
     ChartOptions options = const ChartOptions(),
     ChartItemOptions itemOptions = const ChartItemOptions(),
     ChartBehaviour behaviour = const ChartBehaviour(),
-    List<DecorationPainter> backgroundDecorations = const [],
-    List<DecorationPainter> foregroundDecorations = const [],
+    List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
+    List<DecorationPainter> foregroundDecorations = const <DecorationPainter>[],
   }) =>
-      ChartState(
+      ChartState<T>(
         values.asMap(),
         options: options,
         itemOptions: itemOptions,
@@ -69,7 +69,7 @@ class ChartState {
     _initDecorations();
   }
 
-  final Map<int, ChartItem> items;
+  final Map<int, ChartItem<T>> items;
 
   final ChartItemPainter itemPainter;
   final ChartOptions options;
@@ -93,13 +93,13 @@ class ChartState {
 
   /// Get max value of the chart
   /// Max value is max data item from [items] or [ChartOptions.valueAxisMax]
-  static double _getMaxValue(List<ChartItem> items, ChartOptions options) {
+  static double _getMaxValue<T>(List<ChartItem<T>> items, ChartOptions options) {
     return max(options?.valueAxisMax ?? 0.0, items.map((e) => e.max ?? 0.0).reduce(max));
   }
 
   /// Get min value of the chart
   /// Min value is min data item from [items] or [ChartOptions.valueAxisMin]
-  static double _getMinValue(List<ChartItem> items, ChartOptions options) {
+  static double _getMinValue<T>(List<ChartItem<T>> items, ChartOptions options) {
     final _minItems = items
         .where((e) => (e.min != null && e.min != 0.0) || (e.min == null && e.max != 0.0))
         .map((e) => e.min ?? e.max ?? double.infinity);
@@ -137,9 +137,9 @@ class ChartState {
   void _getDecorationsPadding() => allDecorations.forEach((element) => defaultPadding += element.paddingNeeded());
 
   /// For later in case charts will have to animate between states.
-  static ChartState lerp(ChartState a, ChartState b, double t) {
-    return ChartState._lerp(
-      ChartItemsLerp().lerpValues(a.items, b.items, t),
+  static ChartState<T> lerp<T>(ChartState<T> a, ChartState<T> b, double t) {
+    return ChartState<T>._lerp(
+      ChartItemsLerp().lerpValues<T>(a.items, b.items, t),
       options: ChartOptions.lerp(a.options, b.options, t),
       behaviour: ChartBehaviour.lerp(a.behaviour, b.behaviour, t),
       itemOptions: ChartItemOptions.lerp(a.itemOptions, b.itemOptions, t),
@@ -177,15 +177,15 @@ class ChartState {
 }
 
 class ChartItemsLerp {
-  Map<int, ChartItem> lerpValues(Map<int, ChartItem> a, Map<int, ChartItem> b, double t) {
+  Map<int, ChartItem<T>> lerpValues<T>(Map<int, ChartItem<T>> a, Map<int, ChartItem<T>> b, double t) {
     /// Get list length in animation, we will add the items in steps.
     final double _listLength = lerpDouble(a.length, b.length, t);
 
     /// Empty value for generated list.
-    final BubbleValue _emptyValue = BubbleValue<void>(0.0);
+    final BubbleValue<T> _emptyValue = BubbleValue<T>(0.0);
 
     /// Generate new list fot animation step, add items depending on current [_listLength]
-    return List<ChartItem>.generate(_listLength.ceil(), (int index) {
+    return List<ChartItem<T>>.generate(_listLength.ceil(), (int index) {
       // If old list and new list have value at [index], then just animate from,
       // old list value to the new value
       if (index < a.length && index < b.length) {

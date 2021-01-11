@@ -1,7 +1,7 @@
 part of flutter_charts;
 
-class BarPainter extends ItemPainter {
-  BarPainter(ChartItem item, ChartState state) : super(item, state);
+class BarPainter<T> extends ItemPainter<T> {
+  BarPainter(ChartItem<T> item, ChartState state) : super(item, state);
 
   @override
   void draw(Canvas canvas, Size size, Paint paint) {

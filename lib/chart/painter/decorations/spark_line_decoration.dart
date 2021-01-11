@@ -133,7 +133,7 @@ class SparkLineDecoration extends DecorationPainter {
         lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t),
         startPosition: lerpDouble(startPosition, endValue.startPosition, t),
         lineColor: Color.lerp(lineColor, endValue.lineColor, t),
-        items: ChartItemsLerp().lerpValues(items.asMap(), endValue.items.asMap(), t).values.toList(),
+        items: ChartItemsLerp().lerpValues<void>(items.asMap(), endValue.items.asMap(), t).values.toList(),
         gradient: Gradient.lerp(gradient, endValue.gradient, t),
       );
     }

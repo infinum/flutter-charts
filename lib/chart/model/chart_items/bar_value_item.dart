@@ -5,7 +5,7 @@ class BarValue<T> extends ChartItem<T> {
   BarValue.withValue(T value, double max) : super(value, null, max);
 
   @override
-  BarValue animateTo(ChartItem endValue, double t) {
+  BarValue<T> animateTo(ChartItem<T> endValue, double t) {
     return BarValue<T>.withValue(
       endValue.value,
       lerpDouble(this.max, endValue.max, t),

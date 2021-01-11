@@ -2,7 +2,7 @@ part of flutter_charts;
 
 /// Extend [ImplicitlyAnimatedWidget], that way every change on
 /// [ChartState] that is included in lerp function will get animated.
-class AnimatedChart extends ImplicitlyAnimatedWidget {
+class AnimatedChart<T> extends ImplicitlyAnimatedWidget {
   const AnimatedChart({
     this.height = 240.0,
     this.width,
@@ -15,10 +15,10 @@ class AnimatedChart extends ImplicitlyAnimatedWidget {
 
   final double height;
   final double width;
-  final ChartState state;
+  final ChartState<T> state;
 
   @override
-  _ChartState createState() => _ChartState();
+  _ChartState<T> createState() => _ChartState<T>();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -28,8 +28,8 @@ class AnimatedChart extends ImplicitlyAnimatedWidget {
   }
 }
 
-class _ChartState extends AnimatedWidgetBaseState<AnimatedChart> {
-  ChartStateTween _chartStateTween;
+class _ChartState<T> extends AnimatedWidgetBaseState<AnimatedChart<T>> {
+  ChartStateTween<T> _chartStateTween;
   Tween<double> _heightTween;
 
   @override
@@ -44,8 +44,8 @@ class _ChartState extends AnimatedWidgetBaseState<AnimatedChart> {
   @override
   void forEachTween(visitor) {
     _chartStateTween =
-        visitor(_chartStateTween, widget.state, (dynamic value) => ChartStateTween(begin: value as ChartState))
-            as ChartStateTween;
+        visitor(_chartStateTween, widget.state, (dynamic value) => ChartStateTween<T>(begin: value as ChartState<T>))
+            as ChartStateTween<T>;
     _heightTween =
         visitor(_heightTween, widget.height, (dynamic value) => Tween<double>(begin: value as double)) as Tween<double>;
   }
@@ -58,9 +58,9 @@ class _ChartState extends AnimatedWidgetBaseState<AnimatedChart> {
   }
 }
 
-class ChartStateTween extends Tween<ChartState> {
-  ChartStateTween({ChartState begin, ChartState end}) : super(begin: begin, end: end);
+class ChartStateTween<T> extends Tween<ChartState<T>> {
+  ChartStateTween({ChartState<T> begin, ChartState<T> end}) : super(begin: begin, end: end);
 
   @override
-  ChartState lerp(double t) => ChartState.lerp(begin, end, t);
+  ChartState<T> lerp(double t) => ChartState.lerp(begin, end, t);
 }

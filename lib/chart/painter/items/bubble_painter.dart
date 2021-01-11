@@ -1,7 +1,7 @@
 part of flutter_charts;
 
-class BubblePainter extends ItemPainter {
-  BubblePainter(ChartItem item, ChartState state) : super(item, state);
+class BubblePainter<T> extends ItemPainter<T> {
+  BubblePainter(ChartItem<T> item, ChartState state) : super(item, state);
 
   @override
   void draw(Canvas canvas, Size size, Paint paint) {
