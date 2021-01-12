@@ -54,7 +54,7 @@ void main() {
 
         test('[Candle] Min value is min value', () {
           final _state =
-              ChartState<void>.fromList([CandleValue<void>(5, 2)], options: const ChartOptions(valueAxisMin: 10));
+              ChartState<void>.fromList([CandleValue<void>(2, 5)], options: const ChartOptions(valueAxisMin: 10));
           expect(_state.items.isEmpty, false);
           expect(_state.minValue, 2);
         });
@@ -75,7 +75,7 @@ void main() {
 
         test('[Candle] Min can go negative', () {
           final _state =
-              ChartState<void>.fromList([CandleValue<void>(5, -2)], options: const ChartOptions(valueAxisMin: 10));
+              ChartState<void>.fromList([CandleValue<void>(-2, 5)], options: const ChartOptions(valueAxisMin: 10));
           expect(_state.items.isEmpty, false);
           expect(_state.minValue, -2);
         });
@@ -99,7 +99,7 @@ void main() {
 
         test('[Candle] Value max value is item', () {
           final _state =
-              ChartState<void>.fromList([CandleValue<void>(5, 2)], options: const ChartOptions(valueAxisMax: 1));
+              ChartState<void>.fromList([CandleValue<void>(2, 5)], options: const ChartOptions(valueAxisMax: 1));
           expect(_state.items.isEmpty, false);
           expect(_state.maxValue, 5);
         });
@@ -120,7 +120,7 @@ void main() {
 
         test('[Candle] Max value is max value', () {
           final _state =
-              ChartState<void>.fromList([CandleValue<void>(5, 2)], options: const ChartOptions(valueAxisMax: 10));
+              ChartState<void>.fromList([CandleValue<void>(2, 5)], options: const ChartOptions(valueAxisMax: 10));
           expect(_state.items.isEmpty, false);
           expect(_state.maxValue, 10);
         });
@@ -163,7 +163,7 @@ void main() {
 
       final _middleState = ChartState.lerp<void>(_firstState, _secondState, 0.5);
 
-      expect(_middleState.items, [BarValue<void>(15), BarValue<void>(5)]);
+      expect(_middleState.items.values, [BarValue<void>(15), BarValue<void>(5)]);
     });
 
     test('[Animation] Bar -> Bubble animates different type items', () {
@@ -173,7 +173,7 @@ void main() {
       final _middleState = ChartState.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items, [BubbleValue<void>(15)]);
+      expect(_middleState.items.values, [BubbleValue<void>(15)]);
     });
 
     test('[Animation] Bubble -> Bar animates different type items', () {
@@ -183,47 +183,47 @@ void main() {
       final _middleState = ChartState.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items, [BarValue<void>(15)]);
+      expect(_middleState.items.values, [BarValue<void>(15)]);
     });
 
     test('[Animation] Bar -> Candle animates different type items', () {
       final _firstState = ChartState<void>.fromList([BarValue<void>(10)]);
-      final _secondState = ChartState<void>.fromList([CandleValue<void>(20, 10)]);
+      final _secondState = ChartState<void>.fromList([CandleValue<void>(10, 20)]);
 
       final _middleState = ChartState.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items, [CandleValue<void>(15, 5)]);
+      expect(_middleState.items.values, [CandleValue<void>(5, 15)]);
     });
 
     test('[Animation] Candle -> Bar animates different type items', () {
-      final _firstState = ChartState<void>.fromList([CandleValue<void>(20, 10)]);
+      final _firstState = ChartState<void>.fromList([CandleValue<void>(10, 20)]);
       final _secondState = ChartState<void>.fromList([BarValue<void>(10)]);
 
       final _middleState = ChartState.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items, [BarValue<void>(15)]);
+      expect(_middleState.items.values, [BarValue<void>(15)]);
     });
 
     test('[Animation] Bubble -> Candle animates different type items', () {
       final _firstState = ChartState<void>.fromList([BubbleValue<void>(10)]);
-      final _secondState = ChartState<void>.fromList([CandleValue<void>(20, 10)]);
+      final _secondState = ChartState<void>.fromList([CandleValue<void>(10, 20)]);
 
       final _middleState = ChartState.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items, [CandleValue<void>(15, 10)]);
+      expect(_middleState.items.values, [CandleValue<void>(10, 15)]);
     });
 
     test('[Animation] Candle -> Bubble animates different type items', () {
-      final _firstState = ChartState<void>.fromList([CandleValue<void>(20, 10)]);
+      final _firstState = ChartState<void>.fromList([CandleValue<void>(10, 20)]);
       final _secondState = ChartState<void>.fromList([BubbleValue<void>(10)]);
 
       final _middleState = ChartState.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items, [BubbleValue<void>(15)]);
+      expect(_middleState.items.values, [BubbleValue<void>(15)]);
     });
   });
 }

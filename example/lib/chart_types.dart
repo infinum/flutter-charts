@@ -6,7 +6,7 @@ import 'charts/bubble_chart_screen.dart';
 import 'charts/candle_chart_screen.dart';
 
 class ChartTypes extends StatelessWidget {
-  ChartTypes({Key key}) : super(key: key);
+  const ChartTypes({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

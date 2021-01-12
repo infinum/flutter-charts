@@ -43,7 +43,7 @@ class _ChartWidget extends StatelessWidget {
 
             final _constraintSize = constraints.biggest;
             final _constraint = state?.defaultPadding?.deflateSize(_constraintSize) ?? _constraintSize;
-            final _itemWidth = ((size.width.isFinite ? size.width : _constraint.width) / state.items.length);
+            final _itemWidth = (size.width.isFinite ? size.width : _constraint.width) / state.items.length;
 
             return GestureDetector(
               onTapDown: (tapDetails) =>

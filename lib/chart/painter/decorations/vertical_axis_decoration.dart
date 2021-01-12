@@ -104,7 +104,7 @@ class VerticalAxisDecoration extends DecorationPainter {
       final _textPainter = TextPainter(
         text: TextSpan(
           text: _text,
-          style: (style ?? TextStyle()).copyWith(color: axisLegendTextColor ?? Colors.grey),
+          style: (style ?? const TextStyle()).copyWith(color: axisLegendTextColor ?? Colors.grey),
         ),
         textAlign: valuesAlign,
         maxLines: 1,
@@ -133,7 +133,7 @@ class VerticalAxisDecoration extends DecorationPainter {
     }
 
     final _value = (style?.fontSize ?? 24.0) * 2 + (valuesPadding?.vertical ?? 0.0);
-    final _isBottom =verticalLegendPosition == VerticalLegendPosition.bottom;
+    final _isBottom = verticalLegendPosition == VerticalLegendPosition.bottom;
 
     return EdgeInsets.only(
       bottom: _isBottom ? _value : 0.0,

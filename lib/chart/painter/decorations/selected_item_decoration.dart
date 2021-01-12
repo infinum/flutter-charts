@@ -42,7 +42,7 @@ class CupertinoSelectedPainter extends DecorationPainter {
                 width / 2 + _maxValuePainter.width / 2,
                 size.height - textSize * 0.2,
               )),
-          Radius.circular(8.0),
+          const Radius.circular(8.0),
         ).inflate(4),
         Paint()..color = selectedColor);
 
@@ -84,11 +84,11 @@ class CupertinoSelectedPainter extends DecorationPainter {
     final _itemWidth = max(state?.itemOptions?.minBarWidth ?? 0.0,
         min(state?.itemOptions?.maxBarWidth ?? double.infinity, size.width - _padding.horizontal));
 
-    final _size = 2.0;
+    const _size = 2.0;
     final _maxValue = state.maxValue - state.minValue;
     final scale = size.height / _maxValue;
 
-    ChartItem _item = state.items[selectedIndex];
+    final _item = state.items[selectedIndex];
     // If item is empty, or it's max value is below chart's minValue then don't draw it.
     // minValue can be below 0, this will just ensure that animation is drawn correctly.
     if (_item.isEmpty || _item.max < state?.minValue) {
@@ -126,7 +126,7 @@ class CupertinoSelectedPainter extends DecorationPainter {
     );
 
     canvas.drawRect(
-      Rect.fromPoints(Offset(0.0, 0.0), Offset(size.width, size.height)),
+      Rect.fromPoints(Offset.zero, Offset(size.width, size.height)),
       Paint()
         ..color = backgroundColor
         ..blendMode = BlendMode.overlay,
