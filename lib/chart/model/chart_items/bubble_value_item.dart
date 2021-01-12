@@ -1,11 +1,13 @@
 part of flutter_charts;
 
-class BubbleValue extends ChartItem {
-  BubbleValue(double value) : super(value, value);
+class BubbleValue<T> extends ChartItem<T> {
+  BubbleValue(double max) : super(null, max, max);
+  BubbleValue.withValue(T value, double max) : super(value, max, max);
 
   @override
-  BubbleValue animateTo(ChartItem endValue, double t) {
-    return BubbleValue(
+  BubbleValue<T> animateTo(ChartItem<T> endValue, double t) {
+    return BubbleValue<T>.withValue(
+      endValue.value,
       lerpDouble(this.max, endValue.max, t),
     );
   }

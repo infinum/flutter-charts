@@ -1,29 +1,7 @@
 part of flutter_charts;
 
-class BubblePainter extends ItemPainter {
-  BubblePainter(ChartItem item, ChartState state) : super(item, state);
-
-  void paintText(Canvas canvas, Size size, double width, double verticalMultiplier, double minValue) {
-    final _padding = state?.itemOptions?.padding;
-
-    final _maxValuePainter = ItemPainter.makeTextPainter(
-      '${item.max.toInt()}',
-      width,
-      TextStyle(
-        fontSize: 14.0,
-        color: state?.itemOptions?.getTextColor(item),
-        fontWeight: FontWeight.w700,
-      ),
-    );
-
-    _maxValuePainter.paint(
-      canvas,
-      Offset(
-        _padding?.left ?? 0.0,
-        item.max * verticalMultiplier - minValue - _maxValuePainter.height / 2,
-      ),
-    );
-  }
+class BubblePainter<T> extends ItemPainter<T> {
+  BubblePainter(ChartItem<T> item, ChartState state) : super(item, state);
 
   @override
   void draw(Canvas canvas, Size size, Paint paint) {
@@ -52,13 +30,5 @@ class BubblePainter extends ItemPainter {
       _circleSize,
       paint,
     );
-
-    /// If [ChartItemOptions.showValue] is on the this will draw value on top of
-    /// the bar item as well.
-    ///
-    /// If value is [CandleValue] it will draw min and max values.
-    if (state?.itemOptions?.showValue ?? false) {
-      paintText(canvas, size, _itemWidth, _verticalMultiplier, _minValue);
-    }
   }
 }

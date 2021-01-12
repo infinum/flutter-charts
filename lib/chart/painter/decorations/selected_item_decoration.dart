@@ -8,17 +8,19 @@ class CupertinoSelectedPainter extends DecorationPainter {
     this.backgroundColor = Colors.grey,
     this.textColor = Colors.white,
     this.textSize = 28.0,
+    this.animate = false,
   });
 
   final int selectedIndex;
   final Color selectedColor;
   final Color backgroundColor;
+  final bool animate;
 
   final Color textColor;
   final double textSize;
 
   void _drawText(Canvas canvas, Size size, double width, double totalWidth, ChartState state) {
-    final _maxValuePainter = ItemPainter.makeTextPainter(
+    final _maxValuePainter = ValueDecoration.makeTextPainter(
       state.items[selectedIndex].max.toStringAsFixed(2),
       width,
       TextStyle(
@@ -140,13 +142,14 @@ class CupertinoSelectedPainter extends DecorationPainter {
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
     if (endValue is CupertinoSelectedPainter) {
       return CupertinoSelectedPainter(
-        endValue.selectedIndex,
-        // lerpDouble(selectedIndex?.toDouble(), endValue.selectedIndex?.toDouble(), t)?.round(),
-        selectedColor: Color.lerp(selectedColor, endValue.selectedColor, t),
-        backgroundColor: Color.lerp(backgroundColor, endValue.backgroundColor, t),
-        textColor: Color.lerp(textColor, endValue.textColor, t),
-        textSize: lerpDouble(textSize, endValue.textSize, t),
-      );
+          animate
+              ? lerpDouble(selectedIndex?.toDouble(), endValue.selectedIndex?.toDouble(), t)?.round()
+              : endValue.selectedIndex,
+          selectedColor: Color.lerp(selectedColor, endValue.selectedColor, t),
+          backgroundColor: Color.lerp(backgroundColor, endValue.backgroundColor, t),
+          textColor: Color.lerp(textColor, endValue.textColor, t),
+          textSize: lerpDouble(textSize, endValue.textSize, t),
+          animate: endValue.animate);
     }
 
     return this;

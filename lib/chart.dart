@@ -27,6 +27,7 @@ part 'chart/painter/decorations/selected_item_decoration.dart';
 part 'chart/painter/decorations/spark_line_decoration.dart';
 part 'chart/painter/decorations/target_decoration.dart';
 part 'chart/painter/decorations/target_legends.dart';
+part 'chart/painter/decorations/value_decoration.dart';
 part 'chart/painter/decorations/vertical_axis_decoration.dart';
 part 'chart/painter/items/bar_painter.dart';
 part 'chart/painter/items/bubble_painter.dart';

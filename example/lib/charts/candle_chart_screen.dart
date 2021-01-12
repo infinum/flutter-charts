@@ -7,6 +7,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_charts/chart.dart';
 
+class CandleItem {
+  CandleItem(this.min, this.max);
+
+  final double max;
+  final double min;
+}
+
 class CandleChartScreen extends StatefulWidget {
   CandleChartScreen({Key key}) : super(key: key);
 
@@ -15,7 +22,7 @@ class CandleChartScreen extends StatefulWidget {
 }
 
 class _CandleChartScreenState extends State<CandleChartScreen> {
-  List<CandleValue> _values = <CandleValue>[];
+  List<CandleItem> _values = <CandleItem>[];
   double targetMax;
   double targetMin;
 
@@ -38,7 +45,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
     targetMin = targetMax - (3 + (_rand.nextDouble() * (_max / 2)));
     _values.addAll(List.generate(minItems, (index) {
       double _value = 2 + _rand.nextDouble() * _difference;
-      return CandleValue(_value + 2 + _rand.nextDouble() * 4, _value);
+      return CandleItem(_value, _value + 2 + _rand.nextDouble() * 4);
     }));
   }
 
@@ -48,7 +55,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
         return _values[index];
       }
       double _value = 2 + Random().nextDouble() * targetMax;
-      return CandleValue(_value + 2 + Random().nextDouble() * 4, _value);
+      return CandleItem(_value, _value + 2 + Random().nextDouble() * 4);
     });
   }
 
@@ -65,17 +72,17 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
           Center(
             child: Padding(
               padding: const EdgeInsets.all(24.0),
-              child: CandleChart(
+              child: CandleChart<CandleItem>(
                 data: _values,
                 height: MediaQuery.of(context).size.height * 0.4,
-                dataToValue: (CandleValue value) => value,
+                dataToValue: (CandleItem value) => CandleValue(value.min, value.max),
                 chartItemOptions: ChartItemOptions(
                   targetMax: targetMax,
                   targetMin: targetMin,
                   minBarWidth: 4.0,
                   padding: EdgeInsets.symmetric(horizontal: 2.0),
                   color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
-                  targetOverColor: Theme.of(context).colorScheme.error.withOpacity(1.0),
+                  colorOverTarget: Theme.of(context).colorScheme.error.withOpacity(1.0),
                   radius: BorderRadius.all(
                     Radius.circular(100.0),
                   ),
@@ -85,7 +92,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                   valueAxisMax: max(
                       _values.fold<double>(
                               0,
-                              (double previousValue, CandleValue element) =>
+                              (double previousValue, CandleItem element) =>
                                   previousValue = max(previousValue, element?.max ?? 0)) +
                           1,
                       targetMax + 3),

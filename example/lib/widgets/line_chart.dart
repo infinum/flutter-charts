@@ -20,8 +20,9 @@ class LineChart<T> extends StatelessWidget {
     this.chartItemOptions,
     this.chartBehaviour,
     this.smoothCurves,
+    this.gradient,
     Key key,
-  })  : _mappedValues = data.map((e) => BubbleValue(dataToValue(e))).toList().asMap(),
+  })  : _mappedValues = data.map((e) => BubbleValue<T>(dataToValue(e))).toList().asMap(),
         super(key: key);
 
   final List<T> data;
@@ -31,6 +32,7 @@ class LineChart<T> extends StatelessWidget {
 
   final bool smoothCurves;
   final Color itemColor;
+  final Gradient gradient;
   final double lineWidth;
 
   final List<DecorationPainter> backgroundDecorations;
@@ -39,25 +41,27 @@ class LineChart<T> extends StatelessWidget {
   final ChartOptions chartOptions;
   final ChartItemOptions chartItemOptions;
 
-  final Map<int, BubbleValue> _mappedValues;
+  final Map<int, BubbleValue<T>> _mappedValues;
 
   @override
   Widget build(BuildContext context) {
     final _foregroundDecorations = foregroundDecorations ?? <DecorationPainter>[];
     final _backgroundDecorations = backgroundDecorations ?? <DecorationPainter>[];
 
-    return AnimatedChart(
+    return AnimatedChart<T>(
       height: height,
       duration: const Duration(milliseconds: 450),
-      state: ChartState(
+      state: ChartState<T>(
         _mappedValues,
         options: chartOptions,
+        itemPainter: bubbleItemPainter,
         itemOptions: chartItemOptions,
         foregroundDecorations: [
           SparkLineDecoration(
             id: 'chart_decoration',
             lineWidth: lineWidth,
             lineColor: itemColor,
+            gradient: gradient,
             smoothPoints: smoothCurves,
           ),
           ..._foregroundDecorations,

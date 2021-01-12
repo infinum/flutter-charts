@@ -1,4 +1,5 @@
 import 'package:example/chart_types.dart';
+import 'package:example/charts/bar_target_chart_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_charts/chart.dart';
@@ -22,10 +23,11 @@ class _ChartDemoState extends State<ChartDemo> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.light().copyWith(
-        accentColor: Colors.redAccent,
+        accentColor: Color(0xFFd8262C),
         colorScheme: ThemeData.light().colorScheme.copyWith(
-              primary: Colors.redAccent,
-              error: Colors.grey,
+              primary: Color(0xFFd8262C),
+              secondary: Color(0xFF353535),
+              error: Colors.lightBlue,
             ),
         primaryColor: Colors.red,
       ),
@@ -73,36 +75,33 @@ class ShowList extends StatelessWidget {
         ),
         Divider(),
         ListTile(
-          title: Text('Sparkline chart decoration'),
+          title: Text('Sparkline decoration'),
           trailing: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Container(
-              width: 80.0,
+              width: 100.0,
               child: Chart(
-                state: ChartState(
-                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue(e.toDouble())).toList().asMap(),
+                state: ChartState<void>(
+                  [2, 7, 2, 4, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList().asMap(),
                   itemOptions: ChartItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     radius: BorderRadius.all(Radius.circular(12.0)),
                     color: Theme.of(context).accentColor,
                     maxBarWidth: 1.0,
-                    itemPainter: bubbleItemPainter,
                   ),
+                  itemPainter: bubbleItemPainter,
                   options: ChartOptions(
                     valueAxisMax: 9,
                   ),
                   backgroundDecorations: [
                     GridDecoration(
-                      itemAxisStep: 9,
-                      valueAxisStep: 9,
+                      showVerticalGrid: false,
+                      valueAxisStep: 3,
                       gridColor: Theme.of(context).dividerColor,
                     ),
                     SparkLineDecoration(
-                      lineColor: Theme.of(context).accentColor,
-                    ),
-                    SparkLineDecoration(
-                      lineColor: Theme.of(context).colorScheme.secondary,
-                      items: [2, 7, 2, 4, 2, 1, 6, 7, 2].map((e) => BubbleValue(e.toDouble())).toList(),
+                      lineWidth: 2.0,
+                      lineColor: Theme.of(context).colorScheme.primary,
                     ),
                   ],
                 ),
@@ -111,6 +110,45 @@ class ShowList extends StatelessWidget {
           ),
           onTap: () {
             Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => LineChartScreen()));
+          },
+        ),
+        Divider(),
+        ListTile(
+          title: Text('Target line decoration'),
+          trailing: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Container(
+              width: 100.0,
+              child: Chart(
+                state: ChartState<void>(
+                    [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList().asMap(),
+                    itemOptions: ChartItemOptions(
+                      padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                      color: Theme.of(context).accentColor,
+                      colorOverTarget: Theme.of(context).colorScheme.error,
+                      maxBarWidth: 4.0,
+                      targetMin: 6,
+                    ),
+                    options: ChartOptions(
+                      valueAxisMax: 8,
+                    ),
+                    backgroundDecorations: [
+                      GridDecoration(
+                        itemAxisStep: 1,
+                        valueAxisStep: 2,
+                        gridColor: Theme.of(context).dividerColor,
+                      ),
+                    ],
+                    foregroundDecorations: [
+                      TargetLineDecoration(
+                        targetColor: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ]),
+              ),
+            ),
+          ),
+          onTap: () {
+            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => BarTargetChartScreen()));
           },
         ),
         Divider(),
@@ -130,22 +168,22 @@ class ShowList extends StatelessWidget {
           trailing: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Container(
-              width: 80.0,
+              width: 100.0,
               child: Chart(
-                state: ChartState(
-                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue(e.toDouble())).toList().asMap(),
+                state: ChartState<void>(
+                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList().asMap(),
                   itemOptions: ChartItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     radius: BorderRadius.vertical(top: Radius.circular(12.0)),
                     color: Theme.of(context).accentColor,
                   ),
                   options: ChartOptions(
-                    valueAxisMax: 9,
+                    valueAxisMax: 8,
                   ),
                   backgroundDecorations: [
                     GridDecoration(
-                      itemAxisStep: 9,
-                      valueAxisStep: 9,
+                      itemAxisStep: 1,
+                      valueAxisStep: 4,
                       gridColor: Theme.of(context).dividerColor,
                     ),
                     SparkLineDecoration(
