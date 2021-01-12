@@ -1,9 +1,13 @@
 part of flutter_charts;
 
-typedef AxisGenerator<T> = double Function(ChartItem<T> item);
+/// Item painter, use [barItemPainter] or [barItemPainter].
+/// Custom painter can also be added by extending [ItemPainter]
 typedef ChartItemPainter<T> = ItemPainter<T> Function(ChartItem<T> item, ChartState state);
 
+/// Bar painter
 ItemPainter<T> barItemPainter<T>(ChartItem<T> item, ChartState<T> state) => BarPainter<T>(item, state);
+
+/// Bubble painter
 ItemPainter<T> bubbleItemPainter<T>(ChartItem<T> item, ChartState<T> state) => BubblePainter<T>(item, state);
 
 /// Main state of the charts. Painter will use this as state and it will format chart depending
@@ -182,7 +186,7 @@ class ChartItemsLerp {
     final double _listLength = lerpDouble(a.length, b.length, t);
 
     /// Empty value for generated list.
-    final BubbleValue<T> _emptyValue = BubbleValue<T>(0.0);
+    final CandleValue<T> _emptyValue = CandleValue<T>(0.0, 0.0);
 
     /// Generate new list fot animation step, add items depending on current [_listLength]
     return List<ChartItem<T>>.generate(_listLength.ceil(), (int index) {

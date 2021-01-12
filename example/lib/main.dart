@@ -99,7 +99,7 @@ class ShowList extends StatelessWidget {
                       valueAxisStep: 3,
                       gridColor: Theme.of(context).dividerColor,
                     ),
-                    SparkLineDecoration(
+                    SparkLineDecoration<void>(
                       lineWidth: 2.0,
                       lineColor: Theme.of(context).colorScheme.primary,
                     ),
@@ -125,9 +125,7 @@ class ShowList extends StatelessWidget {
                     itemOptions: ChartItemOptions(
                       padding: const EdgeInsets.symmetric(horizontal: 2.0),
                       color: Theme.of(context).accentColor,
-                      colorOverTarget: Theme.of(context).colorScheme.error,
                       maxBarWidth: 4.0,
-                      targetMin: 6,
                     ),
                     options: ChartOptions(
                       valueAxisMax: 8,
@@ -141,7 +139,9 @@ class ShowList extends StatelessWidget {
                     ],
                     foregroundDecorations: [
                       TargetLineDecoration(
-                        targetColor: Theme.of(context).colorScheme.secondary,
+                        target: 6,
+                        colorOverTarget: Theme.of(context).colorScheme.error,
+                        targetLineColor: Theme.of(context).colorScheme.secondary,
                       ),
                     ]),
               ),
@@ -186,7 +186,7 @@ class ShowList extends StatelessWidget {
                       valueAxisStep: 4,
                       gridColor: Theme.of(context).dividerColor,
                     ),
-                    SparkLineDecoration(
+                    SparkLineDecoration<void>(
                       lineColor: Theme.of(context).accentColor,
                     ),
                   ],

@@ -57,7 +57,7 @@ class LineChart<T> extends StatelessWidget {
         itemPainter: bubbleItemPainter,
         itemOptions: chartItemOptions,
         foregroundDecorations: [
-          SparkLineDecoration(
+          SparkLineDecoration<T>(
             id: 'chart_decoration',
             lineWidth: lineWidth,
             lineColor: itemColor,

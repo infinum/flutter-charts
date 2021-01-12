@@ -70,17 +70,15 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                 dataToValue: (BarValue value) => value.max,
                 itemOptions: ChartItemOptions(
                   padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                  targetMax: targetMax,
                   // targetMin: targetMin,
                   minBarWidth: 4.0,
                   // isTargetInclusive: true,
                   color: Theme.of(context).colorScheme.primary,
-                  colorOverTarget: Theme.of(context).colorScheme.error,
                   radius: const BorderRadius.vertical(
                     top: Radius.circular(24.0),
                   ),
                   colorForValue: _colorfulBars
-                      ? (value, [min]) {
+                      ? (_, value, [min]) {
                           int _value = ((value / (targetMax * 1.3)) * 10).round();
                           return Colors.accents[_value];
                         }
@@ -108,19 +106,22 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),
                   TargetLineDecoration(
-                    targetColor: Theme.of(context).colorScheme.error,
+                    target: targetMax,
+                    colorOverTarget: Theme.of(context).colorScheme.error,
+                    targetLineColor: Theme.of(context).colorScheme.error,
                   ),
                 ],
                 foregroundDecorations: [
-                  SparkLineDecoration(
+                  SparkLineDecoration<void>(
                     lineWidth: 4.0,
                     lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
                     smoothPoints: _smoothPoints,
                   ),
                   TargetLineLegendDecoration(
                     legendDescription: 'Target line 👇',
+                    legendTarget: targetMax,
                     legendStyle: Theme.of(context).textTheme.overline.copyWith(fontSize: 14),
-                    padding: EdgeInsets.only(top: -3.5),
+                    padding: EdgeInsets.only(top: -7),
                   ),
                 ],
               ),

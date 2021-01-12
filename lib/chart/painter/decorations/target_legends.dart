@@ -110,6 +110,7 @@ class TargetLineLegendDecoration extends DecorationPainter {
   TargetLineLegendDecoration({
     @required this.legendDescription,
     @required this.legendStyle,
+    this.legendTarget = 0,
     this.padding = EdgeInsets.zero,
   }) : assert(legendStyle.fontSize != null, 'You must specify fontSize when using TargetLineLegendDecoration');
 
@@ -118,13 +119,13 @@ class TargetLineLegendDecoration extends DecorationPainter {
 
   final EdgeInsets padding;
 
+  final double legendTarget;
+
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
     final _maxValue = state.maxValue - state.minValue;
     final scale = size.height / _maxValue;
     final _minValue = state.minValue * scale;
-
-    final _target = state.itemOptions.targetMin ?? state.itemOptions.targetMax ?? 0.0;
 
     canvas.save();
     canvas.translate(
@@ -143,7 +144,7 @@ class TargetLineLegendDecoration extends DecorationPainter {
       );
 
     canvas.translate(state?.defaultPadding?.left ?? 0.0 + padding.left,
-        -scale * _target + _minValue + _textPainter.width + padding.top);
+        -scale * legendTarget + _minValue + _textPainter.width + padding.top);
     canvas.rotate(pi * 1.5);
 
     _textPainter.paint(
@@ -166,6 +167,7 @@ class TargetLineLegendDecoration extends DecorationPainter {
         legendStyle: TextStyle.lerp(legendStyle, endValue.legendStyle, t),
         legendDescription: endValue.legendDescription,
         padding: EdgeInsets.lerp(padding, endValue.padding, t),
+        legendTarget: lerpDouble(legendTarget, endValue.legendTarget, t),
       );
     }
 

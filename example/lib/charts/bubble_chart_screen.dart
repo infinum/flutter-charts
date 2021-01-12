@@ -66,10 +66,7 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                   data: _values,
                   height: MediaQuery.of(context).size.height * 0.3,
                   itemOptions: ChartItemOptions(
-                    targetMax: targetMax,
-                    targetMin: targetMin,
                     color: Theme.of(context).colorScheme.primary,
-                    colorOverTarget: Theme.of(context).colorScheme.secondary,
                     padding: EdgeInsets.symmetric(horizontal: (1 - (_values.length / 17)) * 8.0),
                   ),
                   chartOptions: ChartOptions(
@@ -96,7 +93,10 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                       textStyle: Theme.of(context).textTheme.caption.copyWith(fontSize: 13.0),
                     ),
                     TargetAreaDecoration(
-                      targetColor: Theme.of(context).colorScheme.secondary,
+                      targetMax: targetMax,
+                      targetMin: targetMin,
+                      colorOverTarget: Theme.of(context).colorScheme.secondary,
+                      targetLineColor: Theme.of(context).colorScheme.secondary,
                       targetAreaFillColor: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
                       targetAreaRadius: BorderRadius.circular(8.0),
                     ),

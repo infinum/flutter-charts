@@ -11,9 +11,7 @@ abstract class ChartItem<T> {
 
   ChartItem<T> animateTo(ChartItem<T> endValue, double t);
 
-  ChartItem<T> animateFrom(ChartItem<T> startValue, double t) {
-    return animateTo(startValue, 1 - t);
-  }
+  ChartItem<T> animateFrom(ChartItem<T> startValue, double t) => startValue.animateTo(this, t);
 
   @override
   int get hashCode => hashValues(min, max) ^ value.hashCode;

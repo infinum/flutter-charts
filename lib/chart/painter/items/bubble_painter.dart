@@ -1,5 +1,16 @@
 part of flutter_charts;
 
+/// Paint bubble value item.
+///
+///    ┌───────────┐ --> Max value in set or [ChartOptions.valueAxisMax]
+///    │           │
+///    │           │
+///    │    /⎺⎺\   │ --> Bubble value
+///    │    \__/   │
+///    │           │
+///    │           │
+///    └───────────┘ --> 0 or [ChartOptions.valueAxisMin]
+///
 class BubblePainter<T> extends ItemPainter<T> {
   BubblePainter(ChartItem<T> item, ChartState state) : super(item, state);
 

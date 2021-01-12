@@ -3,7 +3,7 @@ part of flutter_charts;
 /// Sparkline (Line graph) is considered to be just a decoration.
 /// You need to use [BarPainter] or [BubblePainter] in combination.
 /// They can be transparent or be used to show values of the graph
-class SparkLineDecoration extends DecorationPainter {
+class SparkLineDecoration<T> extends DecorationPainter {
   SparkLineDecoration({
     this.items,
     this.id,
@@ -39,11 +39,13 @@ class SparkLineDecoration extends DecorationPainter {
   final double startPosition;
   final Gradient gradient;
 
-  List<ChartItem> items;
+  List<ChartItem<T>> items;
 
   @override
   void initDecoration(ChartState state) {
-    items ??= state.items.values.toList();
+    if(state is ChartState<T>) {
+      items ??= state.items.values.toList();
+    }
   }
 
   @override
@@ -125,7 +127,7 @@ class SparkLineDecoration extends DecorationPainter {
 
   @override
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
-    if (endValue is SparkLineDecoration) {
+    if (endValue is SparkLineDecoration<T>) {
       return SparkLineDecoration._lerp(
         fill: t > 0.5 ? endValue.fill : fill,
         id: endValue.id,
@@ -133,7 +135,7 @@ class SparkLineDecoration extends DecorationPainter {
         lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t),
         startPosition: lerpDouble(startPosition, endValue.startPosition, t),
         lineColor: Color.lerp(lineColor, endValue.lineColor, t),
-        items: ChartItemsLerp().lerpValues<void>(items.asMap(), endValue.items.asMap(), t).values.toList(),
+        items: ChartItemsLerp().lerpValues<T>(items.asMap(), endValue.items.asMap(), t).values.toList(),
         gradient: Gradient.lerp(gradient, endValue.gradient, t),
       );
     }
