@@ -2,6 +2,8 @@
 
 Customizable charts library for flutter.
 
+Idea behind this lib is to allow highly customizable charts. By having decorations painters (foreground and background) and item painters that can be easily changed. Customizing and adding new decorations will require some CustomPainter knowledge.
+
 ## Showcase
 Showcase some charts, animations and decorations
 
@@ -49,22 +51,50 @@ Code above will draw this:
 ![simple_chart]
 
 #### Chart options
-Chart options apply to the whole chart widget
+Options that will have effect on the whole chart.
+
+Padding can only be horizontal, decorations usually ignore this padding.
+
+Options valueAxisMin and valueAxisMax are here to make sure we are showing some 
+value on the chart, those items get ignored if some item in data is less than valueAxisMin or more than valueAxisMax.
+```
+┍━━━━━━━┯━━━━━━━┯━━━━━━━┯━━━━━━━┑ --> valueAxisMax
+│       │       │       │       │
+│  ┌─┐  │       │       │       │
+│  │ │  │       │  ┌─┐  │       │
+│  │ │  │  ┌─┐  │  │ │  │       │
+│  │ │  │  │ │  │  │ │  │  ┌─┐  │
+┕━━┷━┷━━┷━━┷━┷━━┷━━┷━┷━━┷━━┷━┷━━┙ --> valueAxisMin
+```
 
 #### Chart item options
-Chart item options are options that apply to individual items.
+Options that apply to each individual item in the chart.
 
 #### Chart behaviour
 Scroll + click
 
 #### Chart decorations
-This deserves more details
+Chart decorations are decorations that can be painted in the background or in a foreground of the items.
+Everything that is not chart item is a decoration.
 
 ### Decorations
-There are few of them...
+##### Legend decorations
+ - GridDecoration - _Decoration is just merging of HorizontalAxisDecoration and VerticalAxisDecoration_
+    - HorizontalAxisDecoration - _Show horizontal lines on the chart, can show legend as well_ 
+    - VerticalAxisDecoration - _Show vertical lines on the chart, can show legend as well_
+ - ValueDecoration - _Show value of each item_
+
+##### Target decorations
+ - TargetLineDecoration - _Show target line on the chart, can pass `getTargetItemColor` to `colorForValue` to change item colors_
+    - TargetLineLegendDecoration - _Show text legend on left side of the chart_
+ - TargetAreaDecoration
+
+##### Other decorations
+SelectedItemDecoration
+SparkLineDecoration
 
 ### Decoration painter
-You can make your own! Need to lerp!
+You can make your own custom Decoration by extending `DecorationPainter`
 
 ### Item painters
 Draw items! Custom!

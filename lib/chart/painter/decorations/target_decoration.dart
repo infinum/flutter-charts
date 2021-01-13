@@ -35,6 +35,9 @@ Color _getColorForTarget(
 ///
 /// If you provide [targetMax] or/and [targetMin] then [colorOverTarget] color will
 /// be applied to items that missed the target.
+///
+/// In order to change the color of item when it didn't meet the target criteria, you will need
+/// to add [getTargetItemColor] to [ChartItemOptions.colorForValue]
 class TargetLineDecoration extends DecorationPainter {
   TargetLineDecoration({
     @required this.target,
@@ -60,9 +63,8 @@ class TargetLineDecoration extends DecorationPainter {
 
   final Color colorOverTarget;
 
-  ColorForValue getTargetItemColor() => (Color defaultColor, double max, [double min]) {
-        return _getColorForTarget(defaultColor, colorOverTarget, isTargetInclusive, target, target, max, min);
-      };
+  ColorForValue getTargetItemColor() => (Color defaultColor, double max, [double min]) =>
+      _getColorForTarget(defaultColor, colorOverTarget, isTargetInclusive, target, target, max, min);
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
@@ -152,9 +154,8 @@ class TargetAreaDecoration extends DecorationPainter {
   /// Fill color for [TargetAreaDecoration]
   final Color targetAreaFillColor;
 
-  ColorForValue getTargetItemColor() => (Color defaultColor, double max, [double min]) {
-        return _getColorForTarget(defaultColor, colorOverTarget, isTargetInclusive, targetMin, targetMax, max, min);
-      };
+  ColorForValue getTargetItemColor() => (Color defaultColor, double max, [double min]) =>
+      _getColorForTarget(defaultColor, colorOverTarget, isTargetInclusive, targetMin, targetMax, max, min);
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {

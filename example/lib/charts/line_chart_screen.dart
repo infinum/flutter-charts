@@ -121,7 +121,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                                 ? 1.0
                                 : 0.2
                             : 0.0),
-                        items: _thirdItems,
+                        items: _thirdItems.asMap(),
                       ),
                       SparkLineDecoration<void>(
                         id: 'second_line_fill',
@@ -132,7 +132,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                                 ? 1.0
                                 : 0.2
                             : 0.0),
-                        items: _secondItems,
+                        items: _secondItems.asMap(),
                       ),
                       SparkLineDecoration<void>(
                         id: 'first_line_fill',
@@ -143,7 +143,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                                 ? 1.0
                                 : 0.2
                             : 0.0),
-                        items: _firstItems,
+                        items: _firstItems.asMap(),
                       ),
                     ],
                     foregroundDecorations: [
@@ -152,7 +152,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                         lineWidth: 2.0,
                         smoothPoints: _smoothPoints,
                         lineColor: Theme.of(context).colorScheme.primary,
-                        items: _secondItems,
+                        items: _secondItems.asMap(),
                       ),
                       SparkLineDecoration<void>(
                         id: 'third_line',
@@ -160,7 +160,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                         smoothPoints: _smoothPoints,
                         gradient: LinearGradient(
                             begin: Alignment.centerLeft, end: Alignment.centerRight, colors: Colors.accents),
-                        items: _thirdItems,
+                        items: _thirdItems.asMap(),
                       ),
                     ],
                   ),

@@ -39,12 +39,12 @@ class SparkLineDecoration<T> extends DecorationPainter {
   final double startPosition;
   final Gradient gradient;
 
-  List<ChartItem<T>> items;
+  Map<int, ChartItem<T>> items;
 
   @override
   void initDecoration(ChartState state) {
-    if(state is ChartState<T>) {
-      items ??= state.items.values.toList();
+    if (state is ChartState<T>) {
+      items ??= state.items;
     }
   }
 
@@ -64,19 +64,19 @@ class SparkLineDecoration<T> extends DecorationPainter {
     final _itemWidth = _size.width / items.length;
 
     if (gradient != null) {
-      _paint.shader = gradient.createShader(Rect.fromPoints(
-          Offset(state.defaultPadding.left, state.defaultPadding.bottom), Offset(_size.width, _size.height)));
+      _paint.shader = gradient.createShader(Rect.fromPoints(Offset.zero, Offset(size.width, -size.height)));
     }
 
-    for (int _index = 0; _index < items.length; _index++) {
-      final _item = items[_index];
+    for (final int key in items.keys) {
+      final _item = items[key];
 
-      if (fill && _index == 0) {
-        _positions.add(Offset(_size.width * (_index / items.length) + _itemWidth * startPosition, 0.0));
+      if (fill && items.keys.first == key) {
+        _positions.add(Offset(_size.width * (key / items.length) + _itemWidth * startPosition, 0.0));
       }
-      _positions.add(Offset(_size.width * (_index / items.length) + _itemWidth * startPosition, -_item.max * scale));
-      if (fill && _index == items.length - 1) {
-        _positions.add(Offset(_size.width * (_index / items.length) + _itemWidth * startPosition, 0.0));
+      _positions.add(Offset(
+          _size.width * (key / items.length) + _itemWidth * startPosition, -(_item.max - state.minValue) * scale));
+      if (fill && items.keys.last == key) {
+        _positions.add(Offset(_size.width * (key / items.length) + _itemWidth * startPosition, 0.0));
       }
     }
 
@@ -135,7 +135,7 @@ class SparkLineDecoration<T> extends DecorationPainter {
         lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t),
         startPosition: lerpDouble(startPosition, endValue.startPosition, t),
         lineColor: Color.lerp(lineColor, endValue.lineColor, t),
-        items: ChartItemsLerp().lerpValues<T>(items.asMap(), endValue.items.asMap(), t).values.toList(),
+        items: ChartItemsLerp().lerpValues<T>(items, endValue.items, t),
         gradient: Gradient.lerp(gradient, endValue.gradient, t),
       );
     }
@@ -144,7 +144,7 @@ class SparkLineDecoration<T> extends DecorationPainter {
   }
 
   @override
-  bool isEqual(DecorationPainter other) {
+  bool isSameType(DecorationPainter other) {
     if (other is SparkLineDecoration) {
       if (id != null && other.id != null) {
         return id == other.id;

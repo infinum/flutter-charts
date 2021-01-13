@@ -150,7 +150,7 @@ class ChartState<T> {
       // Find background matches, if found, then animate to them, else just show them.
       backgroundDecorations: b.backgroundDecorations.map((e) {
         final DecorationPainter _match =
-            a.backgroundDecorations.firstWhere((element) => element.isEqual(e), orElse: () => null);
+            a.backgroundDecorations.firstWhere((element) => element.isSameType(e), orElse: () => null);
         if (_match != null) {
           return _match.animateTo(e, t);
         }
@@ -160,7 +160,7 @@ class ChartState<T> {
       // Find foreground matches, if found, then animate to them, else just show them.
       foregroundDecorations: b.foregroundDecorations.map((e) {
         final DecorationPainter _match =
-            a.foregroundDecorations.firstWhere((element) => element.isEqual(e), orElse: () => null);
+            a.foregroundDecorations.firstWhere((element) => element.isSameType(e), orElse: () => null);
         if (_match != null) {
           return _match.animateTo(e, t);
         }
@@ -192,13 +192,13 @@ class ChartItemsLerp {
     return List<ChartItem<T>>.generate(_listLength.ceil(), (int index) {
       // If old list and new list have value at [index], then just animate from,
       // old list value to the new value
-      if (index < a.length && index < b.length) {
+      if (a.containsKey(index) && b.containsKey(index)) {
         return b[index].animateFrom(a[index], t);
       }
 
       // If new list is larger, then check if item in the list is not empty
       // In case item is not empty then animate to it from our [_emptyValue]
-      if (index < b.length) {
+      if (b.containsKey(index)) {
         if (b[index].isEmpty) {
           return b[index];
         }
@@ -211,16 +211,19 @@ class ChartItemsLerp {
 
       // In case that our old list is bigger, and item is not empty
       // then we need to animate to empty value from current item value
-      if (a[index].isEmpty) {
-        return a[index];
+      if (a.containsKey(index)) {
+        if (a[index].isEmpty) {
+          return a[index];
+        }
+        final double _value = _listLength.floor() == index
+            ? min(1, (1 - (_listLength - _listLength.floor())) + t / _listLength)
+            : _listLength.floor() >= index
+                ? 0
+                : t;
+        return a[index].animateTo(_emptyValue, _value);
       }
 
-      final double _value = _listLength.floor() == index
-          ? min(1, (1 - (_listLength - _listLength.floor())) + t / _listLength)
-          : _listLength.floor() >= index
-              ? 0
-              : t;
-      return a[index].animateTo(_emptyValue, _value);
+      return _emptyValue;
     }).asMap();
   }
 }

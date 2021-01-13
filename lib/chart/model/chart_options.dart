@@ -1,9 +1,12 @@
 part of flutter_charts;
 
 /// Options that have effect on whole chart.
-/// [padding] - Chart padding, this will affect whole chart and all decorations.
+/// [padding] - Chart padding, this will affect all chart items, decorations will still be able to
+/// draw outside of this padding.
+///
 /// [valueAxisMin] - Min value that has to be displayed on the chart, if data contains value that is
 /// lower than [valueAxisMin] in that case [valueAxisMin] is ignored and actual min value is shown.
+///
 /// [valueAxisMax] - Same as [valueAxisMin] but for max value.
 class ChartOptions {
   const ChartOptions({
