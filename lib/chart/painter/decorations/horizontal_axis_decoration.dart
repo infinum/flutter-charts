@@ -7,6 +7,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.showValues = false,
     bool endWithChart = false,
     this.showTopValue = false,
+    this.showGrid = true,
     this.valuesAlign = TextAlign.end,
     this.gridColor = Colors.grey,
     this.gridWidth = 1.0,
@@ -21,6 +22,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.showValues = false,
     double endWithChart = 0.0,
     this.showTopValue = false,
+    this.showGrid = true,
     this.valuesAlign = TextAlign.end,
     this.gridColor = Colors.grey,
     this.gridWidth = 1.0,
@@ -42,6 +44,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
   final String horizontalAxisUnit;
 
+  final bool showGrid;
   final Color gridColor;
   final double gridWidth;
   final double valueAxisStep;
@@ -77,11 +80,13 @@ class HorizontalAxisDecoration extends DecorationPainter {
     final scale = _size.height / _maxValue;
 
     for (int i = 0; i <= _maxValue / valueAxisStep; i++) {
-      canvas.drawLine(
-        Offset(0.0, -valueAxisStep * i * scale),
-        Offset(_size.width, -valueAxisStep * i * scale),
-        _paint,
-      );
+      if (showGrid) {
+        canvas.drawLine(
+          Offset(0.0, -valueAxisStep * i * scale),
+          Offset(_size.width, -valueAxisStep * i * scale),
+          _paint,
+        );
+      }
 
       if (!showValues) {
         continue;
@@ -182,6 +187,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
         legendFontStyle: TextStyle.lerp(legendFontStyle, endValue.legendFontStyle, t),
         horizontalAxisUnit: t > 0.5 ? endValue.horizontalAxisUnit : horizontalAxisUnit,
         horizontalLegendPosition: t > 0.5 ? endValue.horizontalLegendPosition : horizontalLegendPosition,
+        showGrid: t > 0.5 ? endValue.showGrid : showGrid,
       );
     }
 

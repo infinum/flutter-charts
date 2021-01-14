@@ -16,7 +16,7 @@ class BarChartScreen extends StatefulWidget {
 }
 
 class _BarChartScreenState extends State<BarChartScreen> {
-  List<BarValue> _values = <BarValue>[];
+  List<BarValue<void>> _values = <BarValue<void>>[];
   double targetMax;
   double targetMin;
   bool _showValues = false;

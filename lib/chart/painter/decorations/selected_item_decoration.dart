@@ -9,6 +9,7 @@ class CupertinoSelectedPainter extends DecorationPainter {
     this.textColor = Colors.white,
     this.textSize = 28.0,
     this.animate = false,
+    this.selectedKey = 0,
   });
 
   final int selectedIndex;
@@ -18,10 +19,11 @@ class CupertinoSelectedPainter extends DecorationPainter {
 
   final Color textColor;
   final double textSize;
+  final int selectedKey;
 
   void _drawText(Canvas canvas, Size size, double width, double totalWidth, ChartState state) {
     final _maxValuePainter = ValueDecoration.makeTextPainter(
-      state.items[selectedIndex].max.toStringAsFixed(2),
+      state.items[selectedKey][selectedIndex].max.toStringAsFixed(2),
       width,
       TextStyle(
         fontSize: textSize,
@@ -57,12 +59,14 @@ class CupertinoSelectedPainter extends DecorationPainter {
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
-    if (selectedIndex == null || state.items.length <= selectedIndex || selectedIndex.isNegative) {
+    final int _listSize = state.items.values.fold(0, (previousValue, element) => max(previousValue, element.length));
+
+    if (selectedIndex == null || _listSize <= selectedIndex || selectedIndex.isNegative) {
       return;
     }
 
     final _size = state?.defaultPadding?.deflateSize(size) ?? size;
-    final _itemWidth = _size.width / state.items.length;
+    final _itemWidth = _size.width / _listSize;
 
     // Save, and translate the canvas so [0,0] is top left of item at [index] position
     canvas.save();
@@ -88,14 +92,14 @@ class CupertinoSelectedPainter extends DecorationPainter {
     final _maxValue = state.maxValue - state.minValue;
     final scale = size.height / _maxValue;
 
-    final _item = state.items[selectedIndex];
+    final _item = state.items[selectedKey][selectedIndex];
     // If item is empty, or it's max value is below chart's minValue then don't draw it.
     // minValue can be below 0, this will just ensure that animation is drawn correctly.
     if (_item.isEmpty || _item.max < state?.minValue) {
       return;
     }
 
-    if ((_item?.min ?? 0.0) != 0.0) {
+    if ((_item.min ?? 0.0) != 0.0) {
       canvas.drawRect(
         Rect.fromPoints(
           Offset(
@@ -142,14 +146,16 @@ class CupertinoSelectedPainter extends DecorationPainter {
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
     if (endValue is CupertinoSelectedPainter) {
       return CupertinoSelectedPainter(
-          animate
-              ? lerpDouble(selectedIndex?.toDouble(), endValue.selectedIndex?.toDouble(), t)?.round()
-              : endValue.selectedIndex,
-          selectedColor: Color.lerp(selectedColor, endValue.selectedColor, t),
-          backgroundColor: Color.lerp(backgroundColor, endValue.backgroundColor, t),
-          textColor: Color.lerp(textColor, endValue.textColor, t),
-          textSize: lerpDouble(textSize, endValue.textSize, t),
-          animate: endValue.animate);
+        animate
+            ? lerpDouble(selectedIndex?.toDouble(), endValue.selectedIndex?.toDouble(), t)?.round()
+            : endValue.selectedIndex,
+        selectedColor: Color.lerp(selectedColor, endValue.selectedColor, t),
+        backgroundColor: Color.lerp(backgroundColor, endValue.backgroundColor, t),
+        textColor: Color.lerp(textColor, endValue.textColor, t),
+        textSize: lerpDouble(textSize, endValue.textSize, t),
+        animate: endValue.animate,
+        selectedKey: endValue.selectedKey,
+      );
     }
 
     return this;

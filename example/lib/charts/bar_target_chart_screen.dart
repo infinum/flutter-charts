@@ -70,7 +70,6 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                 dataToValue: (BarValue value) => value.max,
                 itemOptions: ChartItemOptions(
                   padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                  // targetMin: targetMin,
                   minBarWidth: 4.0,
                   // isTargetInclusive: true,
                   color: Theme.of(context).colorScheme.primary,
@@ -112,7 +111,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                   ),
                 ],
                 foregroundDecorations: [
-                  SparkLineDecoration<void>(
+                  SparkLineDecoration<BarValue<dynamic>>(
                     lineWidth: 4.0,
                     lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
                     smoothPoints: _smoothPoints,

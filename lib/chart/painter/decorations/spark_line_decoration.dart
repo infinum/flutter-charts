@@ -13,6 +13,7 @@ class SparkLineDecoration<T> extends DecorationPainter {
     this.lineColor = Colors.red,
     this.startPosition = 0.5,
     this.gradient,
+    this.lineKey = 0,
   }) : _smoothPoints = smoothPoints ? 1.0 : 0.0;
 
   SparkLineDecoration._lerp({
@@ -24,6 +25,7 @@ class SparkLineDecoration<T> extends DecorationPainter {
     this.lineColor = Colors.red,
     this.startPosition = 0.5,
     this.gradient,
+    this.lineKey = 0,
   }) : _smoothPoints = smoothPoints;
 
   final bool fill;
@@ -39,13 +41,18 @@ class SparkLineDecoration<T> extends DecorationPainter {
   final double startPosition;
   final Gradient gradient;
 
-  Map<int, ChartItem<T>> items;
+  final int lineKey;
+
+  Map<int, List<ChartItem<T>>> items;
 
   @override
   void initDecoration(ChartState state) {
     if (state is ChartState<T>) {
       items ??= state.items;
     }
+
+    assert(items != null, 'No matching state for sparkline found!\nCheck if type `T` is set properly.');
+    assert(items.containsKey(lineKey), 'Line key is not in the list!\nCheck the `lineKey` you are passing.');
   }
 
   @override
@@ -61,29 +68,30 @@ class SparkLineDecoration<T> extends DecorationPainter {
 
     final List<Offset> _positions = <Offset>[];
 
-    final _itemWidth = _size.width / items.length;
+    final int _listSize = state.items.values.fold(0, (previousValue, element) => max(previousValue, element.length));
+
+    final _itemWidth = _size.width / _listSize;
 
     if (gradient != null) {
-      _paint.shader = gradient.createShader(Rect.fromPoints(Offset.zero, Offset(size.width, -size.height)));
+      _paint.shader = gradient.createShader(Rect.fromPoints(Offset.zero, Offset(_size.width, -_size.height)));
     }
 
-    for (final int key in items.keys) {
-      final _item = items[key];
-
-      if (fill && items.keys.first == key) {
-        _positions.add(Offset(_size.width * (key / items.length) + _itemWidth * startPosition, 0.0));
+    items[lineKey].asMap().forEach((key, value) {
+      if (fill && items[lineKey].first == value) {
+        _positions.add(Offset(_size.width * (key / items[lineKey].length) + _itemWidth * startPosition, 0.0));
       }
-      _positions.add(Offset(
-          _size.width * (key / items.length) + _itemWidth * startPosition, -(_item.max - state.minValue) * scale));
-      if (fill && items.keys.last == key) {
-        _positions.add(Offset(_size.width * (key / items.length) + _itemWidth * startPosition, 0.0));
+      _positions.add(Offset(_size.width * (key / items[lineKey].length) + _itemWidth * startPosition,
+          -(value.max - state.minValue) * scale));
+      if (fill && items[lineKey].last == value) {
+        _positions.add(Offset(_size.width * (key / items[lineKey].length) + _itemWidth * startPosition, 0.0));
       }
-    }
+    });
 
     final Path _path = _getPoints(_positions, fill);
 
     canvas.save();
-    canvas.translate(state.defaultMargin.left, _size.height + state.defaultMargin.top);
+    canvas.translate(
+        (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left, _size.height + state.defaultMargin.top);
 
     canvas.drawPath(_path, _paint);
 
@@ -137,6 +145,7 @@ class SparkLineDecoration<T> extends DecorationPainter {
         lineColor: Color.lerp(lineColor, endValue.lineColor, t),
         items: ChartItemsLerp().lerpValues<T>(items, endValue.items, t),
         gradient: Gradient.lerp(gradient, endValue.gradient, t),
+        lineKey: endValue.lineKey,
       );
     }
 

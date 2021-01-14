@@ -32,8 +32,12 @@ class ChartState<T> {
     this.itemPainter = barItemPainter,
   })  : assert(items.isNotEmpty, 'No items!'),
         assert((options?.padding?.vertical ?? 0.0) == 0.0, 'Chart padding cannot be vertical!'),
-        minValue = _getMinValue(items.values.toList(), options),
-        maxValue = _getMaxValue(items.values.toList(), options) {
+        minValue = _getMinValue(
+            items.values.fold(<ChartItem<T>>[], (List<ChartItem<T>> list, element) => list..addAll(element)).toList(),
+            options),
+        maxValue = _getMaxValue(
+            items.values.fold(<ChartItem<T>>[], (List<ChartItem<T>> list, element) => list..addAll(element)).toList(),
+            options) {
     /// Set default padding and margin, decorations padding and margins will be added to this value
     defaultPadding = options?.padding ?? EdgeInsets.zero;
     defaultMargin = EdgeInsets.zero;
@@ -47,14 +51,16 @@ class ChartState<T> {
     ChartBehaviour behaviour = const ChartBehaviour(),
     List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
     List<DecorationPainter> foregroundDecorations = const <DecorationPainter>[],
+    ChartItemPainter itemPainter = barItemPainter,
   }) =>
       ChartState<T>(
-        values.asMap(),
+        {0: values},
         options: options,
         itemOptions: itemOptions,
         behaviour: behaviour,
         foregroundDecorations: foregroundDecorations,
         backgroundDecorations: backgroundDecorations,
+        itemPainter: itemPainter,
       );
 
   ChartState._lerp(
@@ -73,7 +79,7 @@ class ChartState<T> {
     _initDecorations();
   }
 
-  final Map<int, ChartItem<T>> items;
+  final Map<int, List<ChartItem<T>>> items;
 
   final ChartItemPainter itemPainter;
   final ChartOptions options;
@@ -181,24 +187,36 @@ class ChartState<T> {
 }
 
 class ChartItemsLerp {
-  Map<int, ChartItem<T>> lerpValues<T>(Map<int, ChartItem<T>> a, Map<int, ChartItem<T>> b, double t) {
+  Map<int, List<ChartItem<T>>> lerpValues<T>(Map<int, List<ChartItem<T>>> a, Map<int, List<ChartItem<T>>> b, double t) {
     /// Get list length in animation, we will add the items in steps.
+    final double _listLength = lerpDouble(a.length, b.length, t);
+
+    /// Empty value for generated list.
+    final List<BarValue<T>> _emptyList = [];
+
+    /// Generate new list fot animation step, add items depending on current [_listLength]
+    return List<List<ChartItem<T>>>.generate(_listLength.ceil(), (int index) {
+      return _lerpItemList<T>(
+          a.containsKey(index) ? a[index] : _emptyList, b.containsKey(index) ? b[index] : _emptyList, t);
+    }).asMap();
+  }
+
+  List<ChartItem<T>> _lerpItemList<T>(List<ChartItem<T>> a, List<ChartItem<T>> b, double t) {
     final double _listLength = lerpDouble(a.length, b.length, t);
 
     /// Empty value for generated list.
     final BarValue<T> _emptyValue = BarValue<T>(0.0);
 
-    /// Generate new list fot animation step, add items depending on current [_listLength]
     return List<ChartItem<T>>.generate(_listLength.ceil(), (int index) {
       // If old list and new list have value at [index], then just animate from,
       // old list value to the new value
-      if (a.containsKey(index) && b.containsKey(index)) {
+      if (index < a.length && index < b.length) {
         return b[index].animateFrom(a[index], t);
       }
 
       // If new list is larger, then check if item in the list is not empty
       // In case item is not empty then animate to it from our [_emptyValue]
-      if (b.containsKey(index)) {
+      if (index < b.length) {
         if (b[index].isEmpty) {
           return b[index];
         }
@@ -211,19 +229,16 @@ class ChartItemsLerp {
 
       // In case that our old list is bigger, and item is not empty
       // then we need to animate to empty value from current item value
-      if (a.containsKey(index)) {
-        if (a[index].isEmpty) {
-          return a[index];
-        }
-        final double _value = _listLength.floor() == index
-            ? min(1, (1 - (_listLength - _listLength.floor())) + t / _listLength)
-            : _listLength.floor() >= index
-                ? 0
-                : t;
-        return a[index].animateTo(_emptyValue, _value);
+      if (a[index].isEmpty) {
+        return a[index];
       }
 
-      return _emptyValue;
-    }).asMap();
+      final double _value = _listLength.floor() == index
+          ? min(1, (1 - (_listLength - _listLength.floor())) + t / _listLength)
+          : _listLength.floor() >= index
+              ? 0
+              : t;
+      return a[index].animateTo(_emptyValue, _value);
+    });
   }
 }

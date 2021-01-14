@@ -129,9 +129,10 @@ class TargetAreaDecoration extends DecorationPainter {
     this.lineWidth = 2.0,
     this.targetLineColor = Colors.red,
     this.colorOverTarget = Colors.red,
+    this.areaPadding = EdgeInsets.zero,
     this.targetAreaRadius,
     this.targetAreaFillColor,
-  });
+  }) : assert(areaPadding.vertical == 0, 'Vertical padding cannot be applied here!');
 
   final List<double> dashArray;
   final double lineWidth;
@@ -147,6 +148,7 @@ class TargetAreaDecoration extends DecorationPainter {
   /// as the value then the value and it's not using [colorOverTarget] or [valueColorOver]
   final bool isTargetInclusive;
   final Color colorOverTarget;
+  final EdgeInsets areaPadding;
 
   /// Border radius for [TargetAreaDecoration]
   final BorderRadius targetAreaRadius;
@@ -165,15 +167,15 @@ class TargetAreaDecoration extends DecorationPainter {
     final _minValue = state.minValue * scale;
 
     canvas.save();
-    canvas.translate(
-        (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left, _size.height + state.defaultMargin.top);
+    canvas.translate(areaPadding.left + (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left,
+        _size.height + state.defaultMargin.top);
 
     if (targetAreaFillColor != null) {
       canvas.drawRRect(
         RRect.fromRectAndCorners(
           Rect.fromPoints(
             Offset(0.0, -scale * targetMin + _minValue),
-            Offset(_size.width, -scale * targetMax + _minValue),
+            Offset(_size.width - areaPadding.horizontal, -scale * targetMax + _minValue),
           ),
           bottomLeft: targetAreaRadius?.bottomLeft ?? Radius.zero,
           bottomRight: targetAreaRadius?.bottomRight ?? Radius.zero,
@@ -228,6 +230,7 @@ class TargetAreaDecoration extends DecorationPainter {
         dashArray: t < 0.5 ? dashArray : endValue.dashArray,
         targetAreaFillColor: Color.lerp(targetAreaFillColor, endValue.targetAreaFillColor, t),
         targetAreaRadius: BorderRadius.lerp(targetAreaRadius, endValue.targetAreaRadius, t),
+        areaPadding: EdgeInsets.lerp(areaPadding, endValue.areaPadding, t),
         targetMin: lerpDouble(targetMin, endValue.targetMin, t),
         targetMax: lerpDouble(targetMax, endValue.targetMax, t),
         colorOverTarget: Color.lerp(colorOverTarget, endValue.colorOverTarget, t),

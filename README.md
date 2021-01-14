@@ -28,8 +28,8 @@ This is how you can start, this is simple bar chart with grid decoration:
     return Padding(
       padding: const EdgeInsents.all(8.0),
       child: Chart(
-        state: ChartState(
-          [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList().asMap(),
+        state: ChartState<void>.fromList(
+          [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
           itemOptions: ChartItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 2.0),
             radius: BorderRadius.vertical(top: Radius.circular(12.0)),
@@ -58,26 +58,26 @@ Padding can only be horizontal, decorations usually ignore this padding.
 Options valueAxisMin and valueAxisMax are here to make sure we are showing some 
 value on the chart, those items get ignored if some item in data is less than valueAxisMin or more than valueAxisMax.
 ```
-┍━━━━━━━┯━━━━━━━┯━━━━━━━┯━━━━━━━┑ --> valueAxisMax
-│       │       │       │       │
-│  ┌─┐  │       │       │       │
-│  │ │  │       │  ┌─┐  │       │
-│  │ │  │  ┌─┐  │  │ │  │       │
-│  │ │  │  │ │  │  │ │  │  ┌─┐  │
-┕━━┷━┷━━┷━━┷━┷━━┷━━┷━┷━━┷━━┷━┷━━┙ --> valueAxisMin
+┍━━━━━━━┯━━━━━━━┯━━━━━━━┑ --> valueAxisMax
+│       │       │       │
+│  ┌─┐  │       │       │
+│  │ │  │       │  ┌─┐  │
+│  │ │  │  ┌─┐  │  │ │  │
+│  │ │  │  │ │  │  │ │  │
+┕━━┷━┷━━┷━━┷━┷━━┷━━┷━┷━━┙ --> valueAxisMin
 ```
 
 #### Chart item options
 Options that apply to each individual item in the chart.
 
 #### Chart behaviour
-Scroll + click
+Setting `isScrollable` to `true` will make the chart ignore it's specified width and should be wrapped in some Scrollable widget in order to display properly.
+Get selected item, `onItemClick` will return index of the clicked item.  
 
 #### Chart decorations
 Chart decorations are decorations that can be painted in the background or in a foreground of the items.
 Everything that is not chart item is a decoration.
 
-### Decorations
 ##### Legend decorations
  - GridDecoration - _Decoration is just merging of HorizontalAxisDecoration and VerticalAxisDecoration_
     - HorizontalAxisDecoration - _Show horizontal lines on the chart, can show legend as well_ 
@@ -90,17 +90,16 @@ Everything that is not chart item is a decoration.
  - TargetAreaDecoration
 
 ##### Other decorations
-SelectedItemDecoration
-SparkLineDecoration
+SelectedItemDecoration - _When providing `ChartBehaviour.onItemClicked` then you can use `SelectedItemDecoration` for showing selected item on the chart_
+SparkLineDecoration - _Show data with sparkline chart_
 
 ### Decoration painter
 You can make your own custom Decoration by extending `DecorationPainter`
 
 ### Item painters
-Draw items! Custom!
+You can also make your own item painters by extending `ItemPainter`
 
 ## More examples
-
 ### Line charts
 ![line_chart_animating]
 
@@ -110,9 +109,7 @@ Draw items! Custom!
 ### Scrollable chart
 ![scrollable_chart]
 
-### Candle charts
-
-### Bubble charts
+### Axis decorations
 
 [simple_chart]: ./assets/simple_chart.png
 [bar_chart_animating]: ./assets/bar_chart_animating.gif

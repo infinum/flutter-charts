@@ -61,7 +61,8 @@ class VerticalAxisDecoration extends DecorationPainter {
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
     final _size = state.defaultPadding.deflateSize(size) ?? size;
-    final _itemWidth = _size.width / state.items.length;
+    final int _listSize = state.items.values.fold(0, (previousValue, element) => max(previousValue, element.length));
+    final _itemWidth = _size.width / _listSize;
 
     final _paint = Paint()
       ..color = gridColor
@@ -73,7 +74,7 @@ class VerticalAxisDecoration extends DecorationPainter {
       size.height + state.defaultMargin.top,
     );
 
-    for (int i = 0; i <= state.items.length / itemAxisStep; i++) {
+    for (int i = 0; i <= _listSize / itemAxisStep; i++) {
       if (showGrid) {
         final _showValuesBottom = showValues ? (state.defaultMargin.bottom * (1 - _endWithChart)) : 0.0;
         final _showValuesTop = -size.height - (showValues ? (state.defaultMargin.top * (1 - _endWithChart)) : 0.0);
@@ -85,7 +86,7 @@ class VerticalAxisDecoration extends DecorationPainter {
         );
       }
 
-      if (!showValues || i == state.items.length / itemAxisStep) {
+      if (!showValues || i == _listSize / itemAxisStep) {
         continue;
       }
 

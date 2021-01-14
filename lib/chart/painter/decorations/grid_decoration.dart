@@ -13,6 +13,7 @@ class GridDecoration extends DecorationPainter {
     this.showTopHorizontalValue = false,
     this.verticalTextAlign = TextAlign.center,
     this.showVerticalGrid = true,
+    this.showHorizontalGrid = true,
     this.verticalValuesPadding,
     this.horizontalAxisUnit,
     this.verticalAxisValueFromIndex = defaultAxisValue,
@@ -29,6 +30,7 @@ class GridDecoration extends DecorationPainter {
     _horizontalAxisDecoration = HorizontalAxisDecoration(
       showValues: showHorizontalValues,
       endWithChart: endWithChart,
+      showGrid: showHorizontalGrid,
       valuesAlign: horizontalTextAlign,
       showTopValue: showTopHorizontalValue,
       horizontalAxisUnit: horizontalAxisUnit,
@@ -61,6 +63,7 @@ class GridDecoration extends DecorationPainter {
     this.showTopHorizontalValue = false,
     this.verticalTextAlign = TextAlign.center,
     this.showVerticalGrid = true,
+    this.showHorizontalGrid = true,
     this.verticalValuesPadding,
     this.horizontalAxisUnit,
     this.verticalAxisValueFromIndex = defaultAxisValue,
@@ -79,6 +82,7 @@ class GridDecoration extends DecorationPainter {
       endWithChart: _endWithChart,
       valuesAlign: horizontalTextAlign,
       showTopValue: showTopHorizontalValue,
+      showGrid: showHorizontalGrid,
       horizontalAxisUnit: horizontalAxisUnit,
       gridColor: gridColor,
       gridWidth: gridWidth,
@@ -115,6 +119,7 @@ class GridDecoration extends DecorationPainter {
 
   final bool showTopHorizontalValue;
   final bool showVerticalGrid;
+  final bool showHorizontalGrid;
   final String horizontalAxisUnit;
 
   HorizontalLegendPosition horizontalLegendPosition;
@@ -167,6 +172,7 @@ class GridDecoration extends DecorationPainter {
         showTopHorizontalValue: t < 0.5 ? showTopHorizontalValue : endValue.showTopHorizontalValue,
         verticalTextAlign: t < 0.5 ? verticalTextAlign : endValue.verticalTextAlign,
         showVerticalGrid: t < 0.5 ? showVerticalGrid : endValue.showVerticalGrid,
+        showHorizontalGrid: t < 0.5 ? showHorizontalGrid : endValue.showHorizontalGrid,
         horizontalAxisUnit: t < 0.5 ? horizontalAxisUnit : endValue.horizontalAxisUnit,
         verticalAxisValueFromIndex: t < 0.5 ? verticalAxisValueFromIndex : endValue.verticalAxisValueFromIndex,
         horizontalLegendPosition: t < 0.5 ? horizontalLegendPosition : endValue.horizontalLegendPosition,
