@@ -144,6 +144,10 @@ class ShowList extends StatelessWidget {
                         colorOverTarget: Theme.of(context).colorScheme.error,
                         targetLineColor: Theme.of(context).colorScheme.secondary,
                       ),
+                      BorderDecoration(
+                        width: 1.5,
+                        color: Theme.of(context).primaryColorDark,
+                      ),
                     ]),
               ),
             ),

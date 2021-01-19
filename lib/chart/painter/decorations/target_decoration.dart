@@ -64,7 +64,7 @@ class TargetLineDecoration extends DecorationPainter {
   final Color colorOverTarget;
 
   ColorForValue getTargetItemColor() => (Color defaultColor, double max, [double min]) =>
-      _getColorForTarget(defaultColor, colorOverTarget, isTargetInclusive, target, target, max, min);
+      _getColorForTarget(defaultColor, colorOverTarget, isTargetInclusive, target, null, max, min);
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {

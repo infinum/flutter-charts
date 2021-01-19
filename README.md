@@ -1,4 +1,4 @@
-# flutter_charts
+# Flutter charts
 
 Customizable charts library for flutter.
 
@@ -90,6 +90,7 @@ Everything that is not chart item is a decoration.
  - TargetAreaDecoration
 
 ##### Other decorations
+BorderDecoration - _Add rectangular border around the chart_
 SelectedItemDecoration - _When providing `ChartBehaviour.onItemClicked` then you can use `SelectedItemDecoration` for showing selected item on the chart_
 SparkLineDecoration - _Show data with sparkline chart_
 

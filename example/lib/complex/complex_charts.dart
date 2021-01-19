@@ -1,4 +1,4 @@
-import 'package:example/charts/bar_chart_screen.dart';
+import 'package:example/charts/multi_bar_chart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_charts/chart.dart';
 
@@ -50,7 +50,7 @@ class ComplexCharts extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => BarChartScreen()));
+            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => MultiBarChartScreen()));
           },
         ),
         Divider(),

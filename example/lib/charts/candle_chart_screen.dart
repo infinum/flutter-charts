@@ -125,6 +125,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                     _selected,
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
                   ),
+                  BorderDecoration(width: 1, color: Theme.of(context).colorScheme.secondaryVariant),
                 ],
               ),
             ),

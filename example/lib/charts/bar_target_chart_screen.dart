@@ -53,6 +53,12 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _targetDecoration = TargetLineDecoration(
+      target: targetMax,
+      colorOverTarget: Theme.of(context).colorScheme.error,
+      targetLineColor: Theme.of(context).colorScheme.error,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -76,12 +82,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                   radius: const BorderRadius.vertical(
                     top: Radius.circular(24.0),
                   ),
-                  colorForValue: _colorfulBars
-                      ? (_, value, [min]) {
-                          int _value = ((value / (targetMax * 1.3)) * 10).round();
-                          return Colors.accents[_value];
-                        }
-                      : null,
+                  colorForValue: _targetDecoration.getTargetItemColor(),
                 ),
                 chartOptions: ChartOptions(
                   valueAxisMax: max(
@@ -104,11 +105,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                     textStyle: Theme.of(context).textTheme.caption,
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),
-                  TargetLineDecoration(
-                    target: targetMax,
-                    colorOverTarget: Theme.of(context).colorScheme.error,
-                    targetLineColor: Theme.of(context).colorScheme.error,
-                  ),
+                  _targetDecoration,
                 ],
                 foregroundDecorations: [
                   SparkLineDecoration<BarValue<dynamic>>(
@@ -121,6 +118,10 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                     legendTarget: targetMax,
                     legendStyle: Theme.of(context).textTheme.overline.copyWith(fontSize: 14),
                     padding: EdgeInsets.only(top: -7),
+                  ),
+                  BorderDecoration(
+                    borderWidth: EdgeInsets.all(1.5),
+                    color: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.4),
                   ),
                 ],
               ),

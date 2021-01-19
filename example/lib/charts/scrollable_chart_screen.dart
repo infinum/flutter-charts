@@ -23,7 +23,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
   bool _showBars = true;
   bool _isScrollable = true;
   int minItems = 30;
-  int _selected;
+  int _selected = 0;
 
   final _controller = ScrollController();
 
@@ -120,7 +120,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                   VerticalAxisDecoration(
                     endWithChart: false,
                     gridWidth: 2.0,
-                    itemAxisStep: 3,
+                    itemAxisStep: 7,
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.8),
                   ),
                   GridDecoration(
@@ -160,6 +160,9 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                     animate: true,
                     selectedColor: Theme.of(context).colorScheme.secondary,
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(_isScrollable ? 0.5 : 0.8),
+                  ),
+                  BorderDecoration(
+                    color: Theme.of(context).colorScheme.primaryVariant,
                   ),
                 ],
               ),

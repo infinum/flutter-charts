@@ -24,7 +24,8 @@ class _ChartWidget extends StatelessWidget {
           final _itemWidth = max(state?.itemOptions?.minBarWidth ?? 0.0, state?.itemOptions?.maxBarWidth ?? 0.0);
 
           final _width = constraints.maxWidth.isFinite ? constraints.maxWidth : width;
-          assert(_width != null, 'Width is null! If you are in ScrollView you need to provide the width!');
+          final _height = constraints.maxHeight.isFinite ? constraints.maxHeight : height;
+          assert(_width != null, 'Parent has infinite width! Charts need finite width!');
 
           final int _listSize =
               state.items.values.fold(0, (previousValue, element) => max(previousValue, element.length));
@@ -33,7 +34,7 @@ class _ChartWidget extends StatelessWidget {
               _width +
                   (((_itemWidth + state.itemOptions.padding.horizontal) * _listSize) - _width) *
                       state.behaviour._isScrollable,
-              height);
+              _height);
           final _chart = CustomPaint(
             size: _size,
             painter: ChartPainter(state),
