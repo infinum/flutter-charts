@@ -1,5 +1,10 @@
 part of flutter_charts;
 
+/// Behaviour of the chart
+/// [isScrollable] - If chart is scrollable then width of canvas is ignored and
+/// chart will take any size it needs. Chart has to be wrapped with [SingleChildScrollView]
+/// or similar scrollable widget.
+/// [onItemClicked] - Returns index of clicked item.
 class ChartBehaviour {
   const ChartBehaviour({
     bool isScrollable = false,

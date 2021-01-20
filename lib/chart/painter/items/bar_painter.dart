@@ -1,5 +1,27 @@
 part of flutter_charts;
 
+/// Paint bar value item. This is painter used for [BarValue] and [CandleValue]
+///
+/// Bar value:
+///    ┌───────────┐ --> Max value in set or [ChartOptions.valueAxisMax]
+///    │           │
+///    │   ┌───┐   │ --> Bar value
+///    │   │   │   │
+///    │   │   │   │
+///    │   │   │   │
+///    │   │   │   │
+///    └───┴───┴───┘ --> 0 or [ChartOptions.valueAxisMin]
+///
+/// Candle value:
+///    ┌───────────┐ --> Max value in set or [ChartOptions.valueAxisMax]
+///    │           │
+///    │   ┌───┐   │ --> Candle max value
+///    │   │   │   │
+///    │   │   │   │
+///    │   └───┘   │ --> Candle min value
+///    │           │
+///    └───────────┘ --> 0 or [ChartOptions.valueAxisMin]
+///
 class BarPainter<T> extends ItemPainter<T> {
   BarPainter(ChartItem<T> item, ChartState state) : super(item, state);
 

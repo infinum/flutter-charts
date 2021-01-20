@@ -26,7 +26,7 @@ abstract class DecorationPainter {
   }
 
   /// Init decoration is first thing called on decorations, it will pass current [ChartState]
-  /// so decoration can easily calculate needed stuff for it's layout.
+  /// so decoration can easily calculate needed stuff for their layout.
   void initDecoration(ChartState state) {
     return;
   }
@@ -36,7 +36,9 @@ abstract class DecorationPainter {
   /// end state, here we start with current state and animate to [endValue].
   DecorationPainter animateTo(DecorationPainter endValue, double t);
 
-  bool isEqual(DecorationPainter other) {
+  /// Used for animating, we just need to find matching type, don't actually check for equality since we want to animate
+  /// from one state to other.
+  bool isSameType(DecorationPainter other) {
     return runtimeType == other.runtimeType;
   }
 }

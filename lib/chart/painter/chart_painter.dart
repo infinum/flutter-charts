@@ -1,6 +1,6 @@
 part of flutter_charts;
 
-/// Custom painter for charts,
+/// Custom painter for charts
 class ChartPainter extends CustomPainter {
   ChartPainter(this.state) : assert(state.itemPainter != null, 'You need to provide item painter!');
 

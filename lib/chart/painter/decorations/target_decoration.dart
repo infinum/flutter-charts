@@ -1,20 +1,70 @@
 part of flutter_charts;
 
+/// Check iv item is inside the target
+bool _isInTarget(double max, {double min, double targetMin, double targetMax, bool inclusive = true}) {
+  if (targetMin == null && targetMax == null) {
+    return true;
+  }
+
+  final _min = min ?? max;
+
+  if ((targetMin != null && _min <= targetMin) || (targetMax != null && max >= targetMax)) {
+    // Check if target is inclusive, don't show error color in that case
+    if (inclusive && (_min == targetMin || max == targetMax)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  return true;
+}
+
+Color _getColorForTarget(
+    Color color, Color colorOverTarget, bool isTargetInclusive, double targetMin, double targetMax, double max,
+    [double min]) {
+  return _isInTarget(max, min: min, targetMax: targetMax, targetMin: targetMin, inclusive: isTargetInclusive)
+      ? color
+      : (colorOverTarget ?? color);
+}
+
 /// Target line decoration will draw target line horizontally across the chart
 /// height of the line is defined by [ChartItemOptions.targetMin] or if target min is missing
 /// then [ChartItemOptions.targetMax] is used
+///
+///
+/// If you provide [targetMax] or/and [targetMin] then [colorOverTarget] color will
+/// be applied to items that missed the target.
+///
+/// In order to change the color of item when it didn't meet the target criteria, you will need
+/// to add [getTargetItemColor] to [ChartItemOptions.colorForValue]
 class TargetLineDecoration extends DecorationPainter {
   TargetLineDecoration({
+    @required this.target,
     this.dashArray,
-    this.targetColor = Colors.red,
+    this.colorOverTarget = Colors.red,
+    this.targetLineColor = Colors.red,
     this.lineWidth = 2.0,
+    this.isTargetInclusive = true,
   });
 
   final List<double> dashArray;
   final double lineWidth;
 
+  final double target;
+
+  /// In case you want to change how value acts on the target value
+  /// by default this is true, meaning that when the target is the same
+  /// as the value then the value and it's not using [colorOverTarget] or [valueColorOver]
+  final bool isTargetInclusive;
+
   /// Color for target line, this will modify [TargetLineDecoration] and [TargetAreaDecoration]
-  final Color targetColor;
+  final Color targetLineColor;
+
+  final Color colorOverTarget;
+
+  ColorForValue getTargetItemColor() => (Color defaultColor, double max, [double min]) =>
+      _getColorForTarget(defaultColor, colorOverTarget, isTargetInclusive, target, target, max, min);
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
@@ -22,9 +72,8 @@ class TargetLineDecoration extends DecorationPainter {
     final scale = size.height / _maxValue;
     final _minValue = state.minValue * scale;
 
-    final _target = state.itemOptions.targetMin ?? state.itemOptions.targetMax ?? 0.0;
     final _linePaint = Paint()
-      ..color = targetColor
+      ..color = targetLineColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = lineWidth;
 
@@ -33,8 +82,8 @@ class TargetLineDecoration extends DecorationPainter {
         (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left, size.height + state.defaultMargin.top);
 
     final _path = Path()
-      ..moveTo(0.0, -scale * _target + _minValue)
-      ..lineTo(size.width, -scale * _target + _minValue);
+      ..moveTo(0.0, -scale * target + _minValue)
+      ..lineTo(size.width, -scale * target + _minValue);
 
     if (dashArray != null) {
       canvas.drawPath(
@@ -55,9 +104,11 @@ class TargetLineDecoration extends DecorationPainter {
   TargetLineDecoration animateTo(DecorationPainter endValue, double t) {
     if (endValue is TargetLineDecoration) {
       return TargetLineDecoration(
-        targetColor: Color.lerp(targetColor, endValue.targetColor, t),
+        targetLineColor: Color.lerp(targetLineColor, endValue.targetLineColor, t),
         lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t),
         dashArray: t < 0.5 ? dashArray : endValue.dashArray,
+        target: lerpDouble(target, endValue.target, t),
+        colorOverTarget: Color.lerp(colorOverTarget, endValue.colorOverTarget, t),
       );
     }
 
@@ -71,9 +122,13 @@ class TargetLineDecoration extends DecorationPainter {
 /// Target range is defined by [ChartItemOptions.targetMin] and [ChartItemOptions.targetMax]
 class TargetAreaDecoration extends DecorationPainter {
   TargetAreaDecoration({
+    this.targetMin,
+    this.targetMax,
+    this.isTargetInclusive = true,
     this.dashArray,
     this.lineWidth = 2.0,
-    this.targetColor = Colors.red,
+    this.targetLineColor = Colors.red,
+    this.colorOverTarget = Colors.red,
     this.targetAreaRadius,
     this.targetAreaFillColor,
   });
@@ -82,13 +137,25 @@ class TargetAreaDecoration extends DecorationPainter {
   final double lineWidth;
 
   /// Color for target line
-  final Color targetColor;
+  final Color targetLineColor;
+
+  final double targetMin;
+  final double targetMax;
+
+  /// In case you want to change how value acts on the target value
+  /// by default this is true, meaning that when the target is the same
+  /// as the value then the value and it's not using [colorOverTarget] or [valueColorOver]
+  final bool isTargetInclusive;
+  final Color colorOverTarget;
 
   /// Border radius for [TargetAreaDecoration]
   final BorderRadius targetAreaRadius;
 
   /// Fill color for [TargetAreaDecoration]
   final Color targetAreaFillColor;
+
+  ColorForValue getTargetItemColor() => (Color defaultColor, double max, [double min]) =>
+      _getColorForTarget(defaultColor, colorOverTarget, isTargetInclusive, targetMin, targetMax, max, min);
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
@@ -105,8 +172,8 @@ class TargetAreaDecoration extends DecorationPainter {
       canvas.drawRRect(
         RRect.fromRectAndCorners(
           Rect.fromPoints(
-            Offset(0.0, -scale * state.itemOptions.targetMin + _minValue),
-            Offset(_size.width, -scale * state.itemOptions.targetMax + _minValue),
+            Offset(0.0, -scale * targetMin + _minValue),
+            Offset(_size.width, -scale * targetMax + _minValue),
           ),
           bottomLeft: targetAreaRadius?.bottomLeft ?? Radius.zero,
           bottomRight: targetAreaRadius?.bottomRight ?? Radius.zero,
@@ -122,8 +189,8 @@ class TargetAreaDecoration extends DecorationPainter {
     final _rectPath = Path()
       ..addRRect(RRect.fromRectAndCorners(
         Rect.fromPoints(
-          Offset(0.0, -scale * (state?.itemOptions?.targetMin ?? 0.0) + _minValue),
-          Offset(_size.width, -scale * (state?.itemOptions?.targetMax ?? 0.0) + _minValue),
+          Offset(0.0, -scale * (targetMin ?? 0.0) + _minValue),
+          Offset(_size.width, -scale * (targetMax ?? 0.0) + _minValue),
         ),
         bottomLeft: targetAreaRadius?.bottomLeft ?? Radius.zero,
         bottomRight: targetAreaRadius?.bottomRight ?? Radius.zero,
@@ -135,7 +202,7 @@ class TargetAreaDecoration extends DecorationPainter {
       canvas.drawPath(
         dashPath(_rectPath, dashArray: CircularIntervalList(dashArray)),
         Paint()
-          ..color = targetColor
+          ..color = targetLineColor
           ..strokeWidth = lineWidth
           ..style = PaintingStyle.stroke,
       );
@@ -143,7 +210,7 @@ class TargetAreaDecoration extends DecorationPainter {
       canvas.drawPath(
         _rectPath,
         Paint()
-          ..color = targetColor
+          ..color = targetLineColor
           ..strokeWidth = lineWidth
           ..style = PaintingStyle.stroke,
       );
@@ -156,11 +223,14 @@ class TargetAreaDecoration extends DecorationPainter {
   TargetAreaDecoration animateTo(DecorationPainter endValue, double t) {
     if (endValue is TargetAreaDecoration) {
       return TargetAreaDecoration(
-        targetColor: Color.lerp(targetColor, endValue.targetColor, t),
+        targetLineColor: Color.lerp(targetLineColor, endValue.targetLineColor, t),
         lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t),
         dashArray: t < 0.5 ? dashArray : endValue.dashArray,
         targetAreaFillColor: Color.lerp(targetAreaFillColor, endValue.targetAreaFillColor, t),
         targetAreaRadius: BorderRadius.lerp(targetAreaRadius, endValue.targetAreaRadius, t),
+        targetMin: lerpDouble(targetMin, endValue.targetMin, t),
+        targetMax: lerpDouble(targetMax, endValue.targetMax, t),
+        colorOverTarget: Color.lerp(colorOverTarget, endValue.colorOverTarget, t),
       );
     }
 

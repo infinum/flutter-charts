@@ -72,17 +72,14 @@ class _BarChartScreenState extends State<BarChartScreen> {
                 dataToValue: (BarValue value) => value.max,
                 itemOptions: ChartItemOptions(
                   padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                  targetMax: targetMax,
-                  targetMin: targetMin,
                   minBarWidth: 4.0,
                   // isTargetInclusive: true,
                   color: Theme.of(context).colorScheme.primary,
-                  colorOverTarget: Theme.of(context).colorScheme.error,
                   radius: const BorderRadius.vertical(
                     top: Radius.circular(24.0),
                   ),
                   colorForValue: _colorfulBars
-                      ? (value, [min]) {
+                      ? (_, value, [min]) {
                           int _value = ((value / (targetMax * 1.3)) * 10).round();
                           return Colors.accents[_value];
                         }
@@ -117,12 +114,15 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   ),
                   TargetAreaDecoration(
                     targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
-                    targetColor: Theme.of(context).colorScheme.error,
+                    targetLineColor: Theme.of(context).colorScheme.error,
                     targetAreaRadius: BorderRadius.circular(12.0),
+                    targetMax: targetMax,
+                    targetMin: targetMin,
+                    colorOverTarget: Theme.of(context).colorScheme.error,
                   ),
                 ],
                 foregroundDecorations: [
-                  SparkLineDecoration(
+                  SparkLineDecoration<BarValue<dynamic>>(
                     lineWidth: 4.0,
                     lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
                     smoothPoints: _smoothPoints,

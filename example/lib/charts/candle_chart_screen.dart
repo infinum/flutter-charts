@@ -77,12 +77,9 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                 height: MediaQuery.of(context).size.height * 0.4,
                 dataToValue: (CandleItem value) => CandleValue(value.min, value.max),
                 chartItemOptions: ChartItemOptions(
-                  targetMax: targetMax,
-                  targetMin: targetMin,
                   minBarWidth: 4.0,
                   padding: EdgeInsets.symmetric(horizontal: 2.0),
                   color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
-                  colorOverTarget: Theme.of(context).colorScheme.error.withOpacity(1.0),
                   radius: BorderRadius.all(
                     Radius.circular(100.0),
                   ),
@@ -114,7 +111,10 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                     textStyle: Theme.of(context).textTheme.caption.copyWith(fontSize: 13.0),
                   ),
                   TargetAreaDecoration(
-                    targetColor: Theme.of(context).colorScheme.secondary,
+                    targetMax: targetMax,
+                    targetMin: targetMin,
+                    colorOverTarget: Theme.of(context).colorScheme.error.withOpacity(1.0),
+                    targetLineColor: Theme.of(context).colorScheme.secondary,
                     targetAreaFillColor: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
                     lineWidth: 2.0,
                     targetAreaRadius: BorderRadius.circular(12.0),

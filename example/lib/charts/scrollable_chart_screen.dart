@@ -16,7 +16,7 @@ class ScrollableChartScreen extends StatefulWidget {
 }
 
 class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
-  List<BarValue> _values = <BarValue>[];
+  List<double> _values = <double>[];
   double targetMax;
   bool _showValues = false;
   bool _smoothPoints = false;
@@ -39,7 +39,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
 
     targetMax = 3 + ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25)).roundToDouble();
     _values.addAll(List.generate(minItems, (index) {
-      return BarValue<void>(2 + _rand.nextDouble() * _difference);
+      return 2 + _rand.nextDouble() * _difference;
     }));
   }
 
@@ -49,12 +49,21 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
         return _values[index];
       }
 
-      return BarValue<void>(2 + Random().nextDouble() * targetMax);
+      return 2 + Random().nextDouble() * targetMax;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final targetArea = TargetAreaDecoration(
+      targetMax: targetMax + 2,
+      targetMin: targetMax,
+      colorOverTarget: Theme.of(context).colorScheme.error.withOpacity(_showBars ? 1.0 : 0.0),
+      targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
+      targetLineColor: Theme.of(context).colorScheme.error,
+      targetAreaRadius: BorderRadius.circular(12.0),
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -72,18 +81,16 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
               child: BarChart(
                 data: _values,
                 height: MediaQuery.of(context).size.height * 0.4,
-                dataToValue: (BarValue value) => value.max,
+                dataToValue: (double value) => value,
                 itemOptions: ChartItemOptions(
                   padding: EdgeInsets.symmetric(horizontal: _isScrollable ? 12.0 : 2.0),
-                  targetMax: targetMax + 2,
-                  targetMin: targetMax,
                   minBarWidth: _isScrollable ? 36.0 : 4.0,
                   // isTargetInclusive: true,
                   color: Theme.of(context).colorScheme.primary.withOpacity(_showBars ? 1.0 : 0.0),
-                  colorOverTarget: Theme.of(context).colorScheme.error.withOpacity(_showBars ? 1.0 : 0.0),
                   radius: const BorderRadius.vertical(
                     top: Radius.circular(24.0),
                   ),
+                  colorForValue: targetArea.getTargetItemColor(),
                 ),
                 chartBehaviour: ChartBehaviour(
                   isScrollable: _isScrollable,
@@ -97,8 +104,8 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                   valueAxisMax: max(
                       _values.fold<double>(
                               0,
-                              (double previousValue, BarValue element) =>
-                                  previousValue = max(previousValue, element?.max ?? 0)) +
+                              (double previousValue, double element) =>
+                                  previousValue = max(previousValue, element ?? 0)) +
                           1,
                       targetMax + 3),
                   padding: _showValues ? EdgeInsets.only(right: 12.0) : null,
@@ -126,12 +133,8 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                     textStyle: Theme.of(context).textTheme.caption,
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),
-                  TargetAreaDecoration(
-                    targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
-                    targetColor: Theme.of(context).colorScheme.error,
-                    targetAreaRadius: BorderRadius.circular(12.0),
-                  ),
-                  SparkLineDecoration(
+                  targetArea,
+                  SparkLineDecoration<double>(
                     fill: true,
                     lineColor: Theme.of(context).primaryColor.withOpacity(!_showBars ? 0.2 : 0.0),
                     smoothPoints: _smoothPoints,
@@ -146,7 +149,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                                 : Theme.of(context).colorScheme.primary)
                             .withOpacity(_isScrollable ? 1.0 : 0.0)),
                   ),
-                  SparkLineDecoration(
+                  SparkLineDecoration<double>(
                     lineWidth: 2.0,
                     lineColor: Theme.of(context).primaryColor.withOpacity(!_showBars ? 1.0 : 0.0),
                     smoothPoints: _smoothPoints,

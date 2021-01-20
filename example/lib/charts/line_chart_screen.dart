@@ -53,14 +53,14 @@ class _LineChartScreenState extends State<LineChartScreen> {
   Widget build(BuildContext context) {
     final _firstItems = _values.where((element) => _values.indexOf(element) % 3 == 0).toList();
 
-    final _secondItems = _stack
+    final List<BarValue<void>> _secondItems = _stack
         ? _values.where((element) => _values.indexOf(element) % 3 == 1).map((element) {
             final _index = _values.indexOf(element) ~/ 3;
             return BarValue<void>(element.max + _firstItems[_index].max);
           }).toList()
         : _values.where((element) => _values.indexOf(element) % 3 == 1).toList();
 
-    final _thirdItems = _stack
+    final List<BarValue<void>> _thirdItems = _stack
         ? _values.where((element) => _values.indexOf(element) % 3 == 2).map((element) {
             final _index = _values.indexOf(element) ~/ 3;
             return BarValue<void>(element.max + _secondItems[_index].max);
@@ -81,7 +81,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
               child: Stack(
                 children: [
                   LineChart(
-                    data: _thirdItems,
+                    data: _firstItems,
                     height: MediaQuery.of(context).size.height * 0.4,
                     dataToValue: (BarValue value) => value.max,
                     itemColor: Theme.of(context).colorScheme.secondary,
@@ -110,78 +110,8 @@ class _LineChartScreenState extends State<LineChartScreen> {
                         textStyle: Theme.of(context).textTheme.caption,
                         gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                       ),
-                      SparkLineDecoration(
+                      SparkLineDecoration<void>(
                         id: 'third_line_fill',
-                        smoothPoints: _smoothPoints,
-                        fill: true,
-                        lineColor: Theme.of(context).colorScheme.secondary.withOpacity(_fillLine
-                            ? _stack
-                                ? 1.0
-                                : 0.2
-                            : 0.0),
-                        items: _thirdItems,
-                      ),
-                    ],
-                  ),
-                  LineChart(
-                    data: _secondItems,
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    dataToValue: (BarValue value) => value.max,
-                    itemColor: Theme.of(context).colorScheme.primary,
-                    lineWidth: 2.0,
-                    chartItemOptions: ChartItemOptions(
-                      maxBarWidth: 4.0,
-                      color: Theme.of(context).colorScheme.primary.withOpacity(0.4),
-                    ),
-                    chartOptions: ChartOptions(
-                      valueAxisMax: max(
-                          (_stack ? _thirdItems : _values).fold<double>(
-                                  0,
-                                  (double previousValue, BarValue element) =>
-                                      previousValue = max(previousValue, element?.max ?? 0)) +
-                              1,
-                          targetMax + 3),
-                    ),
-                    smoothCurves: _smoothPoints,
-                    backgroundDecorations: [
-                      SparkLineDecoration(
-                        id: 'second_line_fill',
-                        smoothPoints: _smoothPoints,
-                        fill: true,
-                        lineColor: Theme.of(context).colorScheme.primary.withOpacity(_fillLine
-                            ? _stack
-                                ? 1.0
-                                : 0.2
-                            : 0.0),
-                        items: _secondItems,
-                      ),
-                    ],
-                  ),
-                  LineChart(
-                    data: _firstItems,
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    dataToValue: (BarValue value) => value.max,
-                    itemColor: Theme.of(context).accentColor,
-                    lineWidth: 2.0,
-                    gradient:
-                        LinearGradient(begin: Alignment.centerLeft, end: Alignment.centerRight, colors: Colors.accents),
-                    chartItemOptions: ChartItemOptions(
-                      maxBarWidth: 4.0,
-                      color: Theme.of(context).accentColor.withOpacity(0.4),
-                    ),
-                    chartOptions: ChartOptions(
-                      valueAxisMax: max(
-                          (_stack ? _thirdItems : _values).fold<double>(
-                                  0,
-                                  (double previousValue, BarValue element) =>
-                                      previousValue = max(previousValue, element?.max ?? 0)) +
-                              1,
-                          targetMax + 3),
-                    ),
-                    smoothCurves: _smoothPoints,
-                    backgroundDecorations: [
-                      SparkLineDecoration(
-                        id: 'first_line_fill',
                         smoothPoints: _smoothPoints,
                         fill: true,
                         gradient: LinearGradient(
@@ -191,7 +121,46 @@ class _LineChartScreenState extends State<LineChartScreen> {
                                 ? 1.0
                                 : 0.2
                             : 0.0),
-                        items: _firstItems,
+                        items: _thirdItems.asMap(),
+                      ),
+                      SparkLineDecoration<void>(
+                        id: 'second_line_fill',
+                        smoothPoints: _smoothPoints,
+                        fill: true,
+                        lineColor: Theme.of(context).colorScheme.primary.withOpacity(_fillLine
+                            ? _stack
+                                ? 1.0
+                                : 0.2
+                            : 0.0),
+                        items: _secondItems.asMap(),
+                      ),
+                      SparkLineDecoration<void>(
+                        id: 'first_line_fill',
+                        smoothPoints: _smoothPoints,
+                        fill: true,
+                        lineColor: Theme.of(context).colorScheme.secondary.withOpacity(_fillLine
+                            ? _stack
+                                ? 1.0
+                                : 0.2
+                            : 0.0),
+                        items: _firstItems.asMap(),
+                      ),
+                    ],
+                    foregroundDecorations: [
+                      SparkLineDecoration<void>(
+                        id: 'second_line',
+                        lineWidth: 2.0,
+                        smoothPoints: _smoothPoints,
+                        lineColor: Theme.of(context).colorScheme.primary,
+                        items: _secondItems.asMap(),
+                      ),
+                      SparkLineDecoration<void>(
+                        id: 'third_line',
+                        lineWidth: 2.0,
+                        smoothPoints: _smoothPoints,
+                        gradient: LinearGradient(
+                            begin: Alignment.centerLeft, end: Alignment.centerRight, colors: Colors.accents),
+                        items: _thirdItems.asMap(),
                       ),
                     ],
                   ),

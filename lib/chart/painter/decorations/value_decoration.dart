@@ -6,8 +6,6 @@ class ValueDecoration extends DecorationPainter {
     this.alignment = Alignment.topCenter,
   });
 
-  ChartState state;
-
   final TextStyle textStyle;
   final Alignment alignment;
 
@@ -22,13 +20,7 @@ class ValueDecoration extends DecorationPainter {
     return this;
   }
 
-  @override
-  void initDecoration(ChartState state) {
-    this.state = state;
-  }
-
-  void paintText(Canvas canvas, Size size, ChartItem item, double width, double verticalMultiplier, double minValue) {
-
+  void _paintText(Canvas canvas, Size size, ChartItem item, double width, double verticalMultiplier, double minValue) {
     final _maxValuePainter = ValueDecoration.makeTextPainter(
       '${item.max.toInt()}',
       width,
@@ -62,13 +54,13 @@ class ValueDecoration extends DecorationPainter {
         (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left + _itemWidth * key,
         size.height + state.defaultMargin.top,
       );
-      paintText(canvas, Size(key * _itemWidth, _size.height), value, _itemWidth, _verticalMultiplier, _minValue);
+      _paintText(canvas, Size(key * _itemWidth, _size.height), value, _itemWidth, _verticalMultiplier, _minValue);
       canvas.restore();
     });
   }
 
   /// Get default text painter with set [value]
-  /// Helper for [paintText]
+  /// Helper for [_paintText]
   static TextPainter makeTextPainter(String value, double width, TextStyle style, {bool hasMaxWidth = true}) {
     final _painter = TextPainter(
       text: TextSpan(
