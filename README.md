@@ -82,7 +82,7 @@ By replacing the `BarValue` to `BubbleValue` and changing `itemPainter` to `bubb
             radius: BorderRadius.vertical(top: Radius.circular(12.0)),
             maxBarWidth: 4.0,
           ),
-          /// ADDED: Add item painter for BubbleValue
+          /// ADDED: Add item painter for BubbleValue ([bubbleItemPainter])
           itemPainter: bubbleItemPainter,
           options: ChartOptions(
             valueAxisMax: 8,
@@ -95,7 +95,7 @@ By replacing the `BarValue` to `BubbleValue` and changing `itemPainter` to `bubb
             ),
           ],
           foregroundDecorations: [
-            /// ADDED: Add spark line decoration on foreground
+            /// ADDED: Add spark line decoration ([SparkLineDecoration]) on foreground
             SparkLineDecoration<void>(),
             BorderDecoration(
               color: Theme.of(context).colorScheme.secondary,
