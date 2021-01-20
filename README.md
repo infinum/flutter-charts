@@ -75,14 +75,14 @@ By replacing the `BarValue` to `BubbleValue` and changing `itemPainter` to `bubb
       padding: const EdgeInsets.all(8.0),
       child: Chart(
         state: ChartState.fromList(
-          // CHANGE: Change [BarValue<void>] to [BubbleValue<void>]
+          /// CHANGE: Change [BarValue<void>] to [BubbleValue<void>]
           [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
           itemOptions: ChartItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 2.0),
             radius: BorderRadius.vertical(top: Radius.circular(12.0)),
             maxBarWidth: 4.0,
           ),
-          // ADDED: Add item painter for BubbleValue
+          /// ADDED: Add item painter for BubbleValue
           itemPainter: bubbleItemPainter,
           options: ChartOptions(
             valueAxisMax: 8,
@@ -95,7 +95,7 @@ By replacing the `BarValue` to `BubbleValue` and changing `itemPainter` to `bubb
             ),
           ],
           foregroundDecorations: [
-            // ADDED: Add spark line decoration on foreground
+            /// ADDED: Add spark line decoration on foreground
             SparkLineDecoration<void>(),
             BorderDecoration(
               color: Theme.of(context).colorScheme.secondary,
