@@ -23,17 +23,19 @@ class BorderDecoration extends DecorationPainter {
     size = state.defaultPadding.deflateSize(size);
 
     _paint.strokeWidth = _borderWidth.top;
-    canvas.drawLine(Offset.zero, Offset(size.width, 0.0), _paint);
+    canvas.drawLine(Offset(0.0, -_borderWidth.top / 2), Offset(size.width, -_borderWidth.top / 2), _paint);
 
     _paint.strokeWidth = _borderWidth.right;
-    canvas.drawLine(Offset(size.width, -(_borderWidth.top / 2)),
-        Offset(size.width, size.height + (_borderWidth.bottom / 2)), _paint);
+    canvas.drawLine(Offset(size.width + (_borderWidth.right / 2), -_borderWidth.top),
+        Offset(size.width + (_borderWidth.right / 2), size.height + _borderWidth.bottom), _paint);
 
     _paint.strokeWidth = _borderWidth.bottom;
-    canvas.drawLine(Offset(size.width, size.height), Offset(0.0, size.height), _paint);
+    canvas.drawLine(Offset(size.width, size.height + (_borderWidth.bottom / 2)),
+        Offset(0.0, size.height + (_borderWidth.bottom / 2)), _paint);
 
     _paint.strokeWidth = _borderWidth.left;
-    canvas.drawLine(Offset(0.0, size.height + (_borderWidth.bottom / 2)), Offset(0.0, -(_borderWidth.top / 2)), _paint);
+    canvas.drawLine(Offset(-_borderWidth.left / 2, size.height + _borderWidth.bottom),
+        Offset(-_borderWidth.left / 2, -_borderWidth.top), _paint);
 
     canvas.restore();
   }

@@ -5,8 +5,6 @@ import 'package:flutter_charts/chart.dart';
 typedef DataToValue<T> = double Function(T item);
 typedef DataToAxis<T> = String Function(int item);
 
-String defaultAxisValues(int item) => '$item';
-
 class LineChart<T> extends StatelessWidget {
   LineChart({
     @required this.data,

@@ -120,7 +120,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                     padding: EdgeInsets.only(top: -7),
                   ),
                   BorderDecoration(
-                    borderWidth: EdgeInsets.all(1.5),
+                    borderWidth: EdgeInsets.symmetric(vertical: 8.0, horizontal: 2.0),
                     color: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.4),
                   ),
                 ],

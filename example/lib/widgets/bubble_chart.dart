@@ -5,8 +5,6 @@ import 'package:flutter_charts/chart.dart';
 typedef DataToValue<T> = double Function(T item);
 typedef DataToAxis<T> = String Function(int item);
 
-String defaultAxisValues(int item) => '$item';
-
 class BubbleChart<T> extends StatelessWidget {
   BubbleChart({
     @required this.data,

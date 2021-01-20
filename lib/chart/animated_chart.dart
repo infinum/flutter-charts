@@ -31,11 +31,12 @@ class AnimatedChart<T> extends ImplicitlyAnimatedWidget {
 class _ChartState<T> extends AnimatedWidgetBaseState<AnimatedChart<T>> {
   ChartStateTween<T> _chartStateTween;
   Tween<double> _heightTween;
+  Tween<double> _widthTween;
 
   @override
   Widget build(BuildContext context) {
     return _ChartWidget(
-      width: widget.width,
+      width: _widthTween?.evaluate(animation),
       height: _heightTween?.evaluate(animation),
       state: _chartStateTween?.evaluate(animation),
     );
@@ -48,6 +49,8 @@ class _ChartState<T> extends AnimatedWidgetBaseState<AnimatedChart<T>> {
             as ChartStateTween<T>;
     _heightTween =
         visitor(_heightTween, widget.height, (dynamic value) => Tween<double>(begin: value as double)) as Tween<double>;
+    _widthTween =
+        visitor(_widthTween, widget.height, (dynamic value) => Tween<double>(begin: value as double)) as Tween<double>;
   }
 
   @override
@@ -55,6 +58,7 @@ class _ChartState<T> extends AnimatedWidgetBaseState<AnimatedChart<T>> {
     super.debugFillProperties(description);
     description.add(DiagnosticsProperty<ChartStateTween>('state', _chartStateTween, defaultValue: null));
     description.add(DiagnosticsProperty<Tween<double>>('height', _heightTween, defaultValue: null));
+    description.add(DiagnosticsProperty<Tween<double>>('width', _widthTween, defaultValue: null));
   }
 }
 

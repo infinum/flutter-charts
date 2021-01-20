@@ -23,6 +23,7 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
   int minItems = 6;
   bool _legendOnEnd = true;
   bool _legendOnBottom = true;
+  bool _stackItems = true;
 
   @override
   void initState() {
@@ -102,7 +103,7 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                     radius: const BorderRadius.vertical(
                       top: Radius.circular(24.0),
                     ),
-                    colorForIndex: (_, index) {
+                    colorForKey: (_, index) {
                       return [
                         Theme.of(context).colorScheme.primary,
                         Theme.of(context).colorScheme.primaryVariant,
@@ -113,6 +114,9 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                   padding: _showValues
                       ? EdgeInsets.only(right: _legendOnEnd ? 12.0 : 0.0, left: _legendOnEnd ? 0.0 : 12.0)
                       : null,
+                ),
+                chartBehaviour: ChartBehaviour(
+                  multiItemStack: _stackItems,
                 ),
                 backgroundDecorations: [
                   GridDecoration(
@@ -183,6 +187,15 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                   onChanged: (value) {
                     setState(() {
                       _legendOnBottom = value;
+                    });
+                  },
+                ),
+                ToggleItem(
+                  value: _stackItems,
+                  title: 'Stack items',
+                  onChanged: (value) {
+                    setState(() {
+                      _stackItems = value;
                     });
                   },
                 ),

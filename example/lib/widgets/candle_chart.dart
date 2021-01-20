@@ -5,8 +5,6 @@ import 'package:flutter_charts/chart.dart';
 typedef DataToValue<T> = CandleValue<T> Function(T item);
 typedef DataToAxis<T> = String Function(int item);
 
-String defaultAxisValues(int item) => '$item';
-
 class CandleChart<T> extends StatelessWidget {
   CandleChart({
     @required this.data,

@@ -28,7 +28,7 @@ class ComplexCharts extends StatelessWidget {
                       radius: BorderRadius.vertical(top: Radius.circular(12.0)),
                       color: Theme.of(context).accentColor,
                       maxBarWidth: 12.0,
-                      colorForIndex: (_, key) {
+                      colorForKey: (_, key) {
                         return [
                           Theme.of(context).colorScheme.primary,
                           Theme.of(context).colorScheme.secondary,

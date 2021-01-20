@@ -46,17 +46,21 @@ class ChartPainter extends CustomPainter {
       element.asMap().forEach((index, item) {
         // Use item painter from ItemOptions to draw the item on the chart
         final _item = state.itemPainter(item, state);
+        final _stack = 1 - state.behaviour._multiValueStacked;
+
+        final _width = _itemWidth / max(1, state.items.length * _stack);
+        final _position = _itemWidth * index + (key * _width * _stack);
 
         // Save, and translate the canvas so [0,0] is top left of item at [index] position
         canvas.save();
         canvas.translate(
-          (state?.defaultPadding?.left ?? 0.0) + (_itemWidth * index) + state.defaultMargin.left,
+          (state?.defaultPadding?.left ?? 0.0) + _position + state.defaultMargin.left,
           _size.height + state.defaultMargin.top + state.defaultPadding.top,
         );
 
         // Draw the item on selected position
         _item.draw(
-            canvas, Size(_itemWidth, -_size.height), Paint()..color = state.itemOptions.getItemColor(_item.item, key));
+            canvas, Size(_width, -_size.height), Paint()..color = state.itemOptions.getItemColor(_item.item, key));
 
         // Restore canvas
         canvas.restore();
