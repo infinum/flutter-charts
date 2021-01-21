@@ -241,6 +241,7 @@ Scrollable bar chart [example code](example/lib/charts/scrollable_chart_screen.d
 
 [simple_chart]: ./assets/simple_chart.png
 [simple_line_chart]: ./assets/simple_line_chart.png
+[simple_multi_line_chart]: ./assets/simple_multi_line_chart.png
 [bar_chart_animating]: ./assets/bar_chart_animating.gif
 [scrollable_chart]: ./assets/scrollable_chart.gif
 [line_chart_animating]: ./assets/line_chart_animating.gif
