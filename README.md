@@ -78,6 +78,7 @@ By replacing the `BarValue` to `BubbleValue` and changing `itemPainter` to `bubb
           itemOptions: ChartItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 2.0),
             radius: BorderRadius.vertical(top: Radius.circular(12.0)),
+            /// ADDED: Make [BubbleValue] items smaller
             maxBarWidth: 4.0,
           ),
           /// ADDED: Add item painter for BubbleValue ([bubbleItemPainter])
@@ -130,8 +131,7 @@ To turn any chart to multi value we need to use `ChartState` instead of `ChartSt
             padding: const EdgeInsets.symmetric(horizontal: 2.0),
             radius: BorderRadius.vertical(top: Radius.circular(12.0)),
             maxBarWidth: 4.0,
-
-            /// ADDED: Color bubbles differently depending on List they came from
+            /// ADDED: Color bubbles differently depending on List they came from. [ColorForIndex]
             colorForKey: (item, index) {
               return [Theme.of(context).colorScheme.primary, Theme.of(context).colorScheme.primaryVariant][index];
             },
@@ -150,8 +150,10 @@ To turn any chart to multi value we need to use `ChartState` instead of `ChartSt
           foregroundDecorations: [
             SparkLineDecoration<void>(),
 
-            /// ADDED: Add another spark line decoration ([SparkLineDecoration]) on foreground for second list
+            /// ADDED: Add another [SparkLineDecoration] for the second list
             SparkLineDecoration<void>(
+              // Specify key that this [SparkLineDecoration] will follow 
+              // Throws if `lineKey` does not exist in chart data 
               lineKey: 1,
               lineColor: Theme.of(context).colorScheme.primaryVariant,
             ),
