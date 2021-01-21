@@ -1,5 +1,6 @@
 import 'package:example/chart_types.dart';
 import 'package:example/charts/bar_target_chart_screen.dart';
+import 'package:example/complex/complex_charts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_charts/chart.dart';
@@ -81,8 +82,8 @@ class ShowList extends StatelessWidget {
             child: Container(
               width: 100.0,
               child: Chart(
-                state: ChartState<void>(
-                  [2, 7, 2, 4, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList().asMap(),
+                state: ChartState<void>.fromList(
+                  [2, 7, 2, 4, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
                   itemOptions: ChartItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     radius: BorderRadius.all(Radius.circular(12.0)),
@@ -120,8 +121,8 @@ class ShowList extends StatelessWidget {
             child: Container(
               width: 100.0,
               child: Chart(
-                state: ChartState<void>(
-                    [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList().asMap(),
+                state: ChartState<void>.fromList(
+                    [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
                     itemOptions: ChartItemOptions(
                       padding: const EdgeInsets.symmetric(horizontal: 2.0),
                       color: Theme.of(context).accentColor,
@@ -142,6 +143,10 @@ class ShowList extends StatelessWidget {
                         target: 6,
                         colorOverTarget: Theme.of(context).colorScheme.error,
                         targetLineColor: Theme.of(context).colorScheme.secondary,
+                      ),
+                      BorderDecoration(
+                        width: 1.5,
+                        color: Theme.of(context).primaryColorDark,
                       ),
                     ]),
               ),
@@ -170,8 +175,8 @@ class ShowList extends StatelessWidget {
             child: Container(
               width: 100.0,
               child: Chart(
-                state: ChartState<void>(
-                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList().asMap(),
+                state: ChartState<void>.fromList(
+                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
                   itemOptions: ChartItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     radius: BorderRadius.vertical(top: Radius.circular(12.0)),
@@ -199,6 +204,18 @@ class ShowList extends StatelessWidget {
           },
         ),
         Divider(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Text(
+            'Complex charts',
+            style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 14.0,
+                ),
+          ),
+        ),
+        Divider(),
+        ComplexCharts(),
       ],
     );
   }

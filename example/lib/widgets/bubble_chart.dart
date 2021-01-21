@@ -5,8 +5,6 @@ import 'package:flutter_charts/chart.dart';
 typedef DataToValue<T> = double Function(T item);
 typedef DataToAxis<T> = String Function(int item);
 
-String defaultAxisValues(int item) => '$item';
-
 class BubbleChart<T> extends StatelessWidget {
   BubbleChart({
     @required this.data,
@@ -17,12 +15,12 @@ class BubbleChart<T> extends StatelessWidget {
     this.backgroundDecorations,
     this.foregroundDecorations,
     Key key,
-  })  : _mappedValues = data.map((e) => BubbleValue<T>(dataToValue(e))).toList().asMap(),
+  })  : _mappedValues = [data.map((e) => BubbleValue<T>(dataToValue(e))).toList()],
         super(key: key);
 
   final List<T> data;
   final DataToValue<T> dataToValue;
-  final Map<int, ChartItem<T>> _mappedValues;
+  final List<List<ChartItem<T>>> _mappedValues;
 
   final double height;
   final ChartOptions chartOptions;

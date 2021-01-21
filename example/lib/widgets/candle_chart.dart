@@ -5,8 +5,6 @@ import 'package:flutter_charts/chart.dart';
 typedef DataToValue<T> = CandleValue<T> Function(T item);
 typedef DataToAxis<T> = String Function(int item);
 
-String defaultAxisValues(int item) => '$item';
-
 class CandleChart<T> extends StatelessWidget {
   CandleChart({
     @required this.data,
@@ -19,7 +17,7 @@ class CandleChart<T> extends StatelessWidget {
     this.foregroundDecorations = const [],
     this.itemPainter = barItemPainter,
     Key key,
-  })  : _mappedValues = data.map(dataToValue).toList().asMap(),
+  })  : _mappedValues = [data.map(dataToValue).toList()],
         super(key: key);
 
   final List<T> data;
@@ -33,7 +31,7 @@ class CandleChart<T> extends StatelessWidget {
   final ChartItemOptions chartItemOptions;
   final ChartItemPainter itemPainter;
 
-  final Map<int, CandleValue<T>> _mappedValues;
+  final List<List<CandleValue<T>>> _mappedValues;
 
   @override
   Widget build(BuildContext context) {

@@ -4,10 +4,12 @@ class ValueDecoration extends DecorationPainter {
   ValueDecoration({
     this.textStyle,
     this.alignment = Alignment.topCenter,
+    this.valueKey = 0,
   });
 
   final TextStyle textStyle;
   final Alignment alignment;
+  final int valueKey;
 
   @override
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
@@ -15,9 +17,16 @@ class ValueDecoration extends DecorationPainter {
       return ValueDecoration(
         textStyle: TextStyle.lerp(textStyle, endValue.textStyle, t),
         alignment: Alignment.lerp(alignment, endValue.alignment, t),
+        valueKey: endValue.valueKey,
       );
     }
     return this;
+  }
+
+  @override
+  void initDecoration(ChartState state) {
+    super.initDecoration(state);
+    assert(state.items.length > valueKey, 'Value key is not in the list!\nCheck the `valueKey` you are passing.');
   }
 
   void _paintText(Canvas canvas, Size size, ChartItem item, double width, double verticalMultiplier, double minValue) {
@@ -46,15 +55,18 @@ class ValueDecoration extends DecorationPainter {
     final _verticalMultiplier = _size.height / _maxValue;
     final _minValue = state.minValue * _verticalMultiplier;
 
-    final _itemWidth = _size.width / state.items.length;
+    final int _listSize = state.items.fold(0, (previousValue, element) => max(previousValue, element.length));
+    final _itemWidth = _size.width / _listSize;
 
-    state.items.forEach((key, value) {
+    state.items[valueKey].forEach((value) {
+      final _index = state.items[valueKey].indexOf(value);
+
       canvas.save();
       canvas.translate(
-        (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left + _itemWidth * key,
+        (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left + _itemWidth * _index,
         size.height + state.defaultMargin.top,
       );
-      _paintText(canvas, Size(key * _itemWidth, _size.height), value, _itemWidth, _verticalMultiplier, _minValue);
+      _paintText(canvas, Size(_index * _itemWidth, _size.height), value, _itemWidth, _verticalMultiplier, _minValue);
       canvas.restore();
     });
   }

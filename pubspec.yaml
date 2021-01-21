@@ -1,8 +1,8 @@
 name: flutter_charts
 description: Highly customizable charts library for flutter
 version: 0.1.0
-author:
-homepage:
+homepage: https://github.com/infinum/flutter-charts
+repository: https://github.com/infinum/flutter-charts
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

@@ -19,7 +19,7 @@ class ChartItemOptions {
     this.maxBarWidth,
     this.minBarWidth,
     this.colorForValue,
-    this.colorForIndex,
+    this.colorForKey,
   });
 
   final BorderRadius radius;
@@ -33,11 +33,11 @@ class ChartItemOptions {
 
   /// Define color for value, this allows different colors for different values
   final ColorForValue colorForValue;
-  final ColorForIndex colorForIndex;
+  final ColorForIndex colorForKey;
 
   Color getItemColor(ChartItem item, int index) {
-    if (colorForIndex != null) {
-      return colorForIndex(item, index);
+    if (colorForKey != null) {
+      return colorForKey(item, index);
     }
 
     return _getColorForValue(item.max, item.min);
@@ -59,7 +59,7 @@ class ChartItemOptions {
       maxBarWidth: lerpDouble(a.maxBarWidth, b.maxBarWidth, t),
       minBarWidth: lerpDouble(a.minBarWidth, b.minBarWidth, t),
       colorForValue: ColorForValueLerp.lerp(a, b, t),
-      colorForIndex: ColorForIndexLerp.lerp(a, b, t),
+      colorForKey: ColorForIndexLerp.lerp(a, b, t),
     );
   }
 }
@@ -81,7 +81,7 @@ class ColorForValueLerp {
 
 class ColorForIndexLerp {
   static ColorForIndex lerp(ChartItemOptions a, ChartItemOptions b, double t) {
-    if (a.colorForIndex == null && b.colorForIndex == null) {
+    if (a.colorForKey == null && b.colorForKey == null) {
       return null;
     }
 

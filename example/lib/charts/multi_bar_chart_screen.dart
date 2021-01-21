@@ -8,24 +8,22 @@ import 'package:flutter_charts/chart.dart';
 
 import '../widgets/bar_chart.dart';
 
-class BarChartScreen extends StatefulWidget {
-  BarChartScreen({Key key}) : super(key: key);
+class MultiBarChartScreen extends StatefulWidget {
+  MultiBarChartScreen({Key key}) : super(key: key);
 
   @override
-  _BarChartScreenState createState() => _BarChartScreenState();
+  _MultiBarChartScreenState createState() => _MultiBarChartScreenState();
 }
 
-class _BarChartScreenState extends State<BarChartScreen> {
-  List<BarValue<void>> _values = <BarValue<void>>[];
+class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
+  Map<int, List<BarValue<void>>> _values = <int, List<BarValue<void>>>{};
   double targetMax;
   double targetMin;
   bool _showValues = false;
-  bool _smoothPoints = false;
-  bool _colorfulBars = false;
-  bool _showLine = false;
   int minItems = 6;
   bool _legendOnEnd = true;
   bool _legendOnBottom = true;
+  bool _stackItems = true;
 
   @override
   void initState() {
@@ -37,20 +35,48 @@ class _BarChartScreenState extends State<BarChartScreen> {
     final Random _rand = Random();
     final double _difference = _rand.nextDouble() * 10;
     targetMax = 5 + ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25)).roundToDouble();
-    _values.addAll(List.generate(minItems, (index) {
-      return BarValue<void>(targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
-    }));
+    _values.addAll(Map<int, List<BarValue<void>>>.fromEntries(List.generate(3, (key) {
+      return MapEntry(
+          key,
+          List.generate(minItems, (index) {
+            return BarValue<void>(targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
+          }));
+    })));
     targetMin = targetMax - ((_rand.nextDouble() * 3) + (targetMax * 0.2));
   }
 
   void _addValues() {
-    _values = List.generate(minItems, (index) {
-      if (_values.length > index) {
-        return _values[index];
-      }
+    _values = Map.fromEntries(List.generate(3, (key) {
+      return MapEntry(
+          key,
+          List.generate(minItems, (index) {
+            if (_values[key].length > index) {
+              return _values[key][index];
+            }
 
-      return BarValue<void>(targetMax * 0.4 + Random().nextDouble() * targetMax * 0.9);
-    });
+            return BarValue<void>(targetMax * 0.4 + Random().nextDouble() * targetMax * 0.9);
+          }));
+    }));
+  }
+
+  List<List<BarValue<void>>> _getMap() {
+    return [
+      _values[0]
+          .asMap()
+          .map<int, BarValue<void>>((index, e) {
+            return MapEntry(index, BarValue<void>(e.max + _values[1][index].max + _values[2][index].max));
+          })
+          .values
+          .toList(),
+      _values[1]
+          .asMap()
+          .map<int, BarValue<void>>((index, e) {
+            return MapEntry(index, BarValue<void>(e.max + _values[2][index].max));
+          })
+          .values
+          .toList(),
+      _values[2].toList()
+    ];
   }
 
   @override
@@ -66,36 +92,31 @@ class _BarChartScreenState extends State<BarChartScreen> {
           Center(
             child: Padding(
               padding: const EdgeInsets.all(12.0),
-              child: BarChart(
-                data: _values,
+              child: BarChart.map(
+                _getMap(),
                 height: MediaQuery.of(context).size.height * 0.4,
-                dataToValue: (BarValue value) => value.max,
                 itemOptions: ChartItemOptions(
-                  padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                  minBarWidth: 4.0,
-                  // isTargetInclusive: true,
-                  color: Theme.of(context).colorScheme.primary,
-                  radius: const BorderRadius.vertical(
-                    top: Radius.circular(24.0),
-                  ),
-                  colorForValue: _colorfulBars
-                      ? (_, value, [min]) {
-                          int _value = ((value / (targetMax * 1.3)) * 10).round();
-                          return Colors.accents[_value];
-                        }
-                      : null,
-                ),
+                    padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                    minBarWidth: 4.0,
+                    // isTargetInclusive: true,
+                    color: Theme.of(context).colorScheme.primary,
+                    radius: const BorderRadius.vertical(
+                      top: Radius.circular(24.0),
+                    ),
+                    colorForKey: (_, index) {
+                      return [
+                        Theme.of(context).colorScheme.primary,
+                        Theme.of(context).colorScheme.primaryVariant,
+                        Theme.of(context).colorScheme.secondary
+                      ][index];
+                    }),
                 chartOptions: ChartOptions(
-                  valueAxisMax: max(
-                      _values.fold<double>(
-                              0,
-                              (double previousValue, BarValue element) =>
-                                  previousValue = max(previousValue, element?.max ?? 0)) +
-                          1,
-                      targetMax + 3),
                   padding: _showValues
                       ? EdgeInsets.only(right: _legendOnEnd ? 12.0 : 0.0, left: _legendOnEnd ? 0.0 : 12.0)
                       : null,
+                ),
+                chartBehaviour: ChartBehaviour(
+                  multiItemStack: _stackItems,
                 ),
                 backgroundDecorations: [
                   GridDecoration(
@@ -112,27 +133,8 @@ class _BarChartScreenState extends State<BarChartScreen> {
                     textStyle: Theme.of(context).textTheme.caption,
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),
-                  TargetAreaDecoration(
-                    targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
-                    targetLineColor: Theme.of(context).colorScheme.error,
-                    targetAreaRadius: BorderRadius.circular(12.0),
-                    targetMax: targetMax,
-                    targetMin: targetMin,
-                    colorOverTarget: Theme.of(context).colorScheme.error,
-                  ),
                 ],
-                foregroundDecorations: [
-                  SparkLineDecoration<BarValue<dynamic>>(
-                    lineWidth: 4.0,
-                    lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
-                    smoothPoints: _smoothPoints,
-                  ),
-                  ValueDecoration(
-                    alignment: Alignment.bottomCenter,
-                    textStyle:
-                        Theme.of(context).textTheme.button.copyWith(color: Theme.of(context).colorScheme.onPrimary),
-                  ),
-                ],
+                foregroundDecorations: [BorderDecoration()],
               ),
             ),
           ),
@@ -152,9 +154,11 @@ class _BarChartScreenState extends State<BarChartScreen> {
               },
               onRemoveItems: () {
                 setState(() {
-                  if (_values.length > 4) {
+                  if (minItems > 6) {
                     minItems -= 4;
-                    _values.removeRange(_values.length - 4, _values.length);
+                    _values = _values.map((key, value) {
+                      return MapEntry(key, value..removeRange(value.length - 4, value.length));
+                    });
                   }
                 });
               },
@@ -165,15 +169,6 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   onChanged: (value) {
                     setState(() {
                       _showValues = value;
-                    });
-                  },
-                ),
-                ToggleItem(
-                  value: _colorfulBars,
-                  title: 'Rainbow bar items',
-                  onChanged: (value) {
-                    setState(() {
-                      _colorfulBars = value;
                     });
                   },
                 ),
@@ -196,20 +191,11 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   },
                 ),
                 ToggleItem(
-                  value: _showLine,
-                  title: 'Show line decoration',
+                  value: _stackItems,
+                  title: 'Stack items',
                   onChanged: (value) {
                     setState(() {
-                      _showLine = value;
-                    });
-                  },
-                ),
-                ToggleItem(
-                  value: _smoothPoints,
-                  title: 'Smooth line curve',
-                  onChanged: (value) {
-                    setState(() {
-                      _smoothPoints = value;
+                      _stackItems = value;
                     });
                   },
                 ),

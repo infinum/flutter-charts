@@ -24,13 +24,16 @@ class _ChartWidget extends StatelessWidget {
           final _itemWidth = max(state?.itemOptions?.minBarWidth ?? 0.0, state?.itemOptions?.maxBarWidth ?? 0.0);
 
           final _width = constraints.maxWidth.isFinite ? constraints.maxWidth : width;
-          assert(_width != null, 'Width is null! If you are in ScrollView you need to provide the width!');
+          final _height = constraints.maxHeight.isFinite ? constraints.maxHeight : height;
+          assert(_width != null, 'Parent has infinite width! Charts need finite width!');
+
+          final int _listSize = state.items.fold(0, (previousValue, element) => max(previousValue, element.length));
 
           final _size = Size(
               _width +
-                  (((_itemWidth + state.itemOptions.padding.horizontal) * state.items.length) - _width) *
+                  (((_itemWidth + state.itemOptions.padding.horizontal) * _listSize) - _width) *
                       state.behaviour._isScrollable,
-              height);
+              _height);
           final _chart = CustomPaint(
             size: _size,
             painter: ChartPainter(state),
@@ -43,7 +46,7 @@ class _ChartWidget extends StatelessWidget {
 
             final _constraintSize = constraints.biggest;
             final _constraint = state?.defaultPadding?.deflateSize(_constraintSize) ?? _constraintSize;
-            final _itemWidth = (size.width.isFinite ? size.width : _constraint.width) / state.items.length;
+            final _itemWidth = (size.width.isFinite ? size.width : _constraint.width) / _listSize;
 
             return GestureDetector(
               onTapDown: (tapDetails) =>

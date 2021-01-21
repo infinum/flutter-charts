@@ -5,8 +5,6 @@ import 'package:flutter_charts/chart.dart';
 typedef DataToValue<T> = double Function(T item);
 typedef DataToAxis<T> = String Function(int item);
 
-String defaultAxisValues(int item) => '$item';
-
 class BarChart<T> extends StatelessWidget {
   BarChart({
     @required List<T> data,
@@ -18,12 +16,11 @@ class BarChart<T> extends StatelessWidget {
     this.itemOptions = const ChartItemOptions(),
     this.chartOptions = const ChartOptions(),
     Key key,
-  })  : _mappedValues = data.map<ChartItem<T>>((e) => BarValue<T>(dataToValue(e))).toList().asMap(),
+  })  : _mappedValues = [data.map((e) => BarValue<T>(dataToValue(e))).toList()],
         super(key: key);
 
-  BarChart.map(
+  const BarChart.map(
     this._mappedValues, {
-    @required this.dataToValue,
     this.height = 240.0,
     this.backgroundDecorations,
     this.foregroundDecorations,
@@ -31,10 +28,11 @@ class BarChart<T> extends StatelessWidget {
     this.itemOptions = const ChartItemOptions(),
     this.chartOptions = const ChartOptions(),
     Key key,
-  }) : super(key: key);
+  })  : dataToValue = null,
+        super(key: key);
 
   final DataToValue<T> dataToValue;
-  final Map<int, ChartItem<T>> _mappedValues;
+  final List<List<ChartItem<T>>> _mappedValues;
   final double height;
 
   final ChartItemOptions itemOptions;

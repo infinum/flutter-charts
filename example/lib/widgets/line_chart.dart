@@ -5,8 +5,6 @@ import 'package:flutter_charts/chart.dart';
 typedef DataToValue<T> = double Function(T item);
 typedef DataToAxis<T> = String Function(int item);
 
-String defaultAxisValues(int item) => '$item';
-
 class LineChart<T> extends StatelessWidget {
   LineChart({
     @required this.data,
@@ -22,7 +20,24 @@ class LineChart<T> extends StatelessWidget {
     this.smoothCurves,
     this.gradient,
     Key key,
-  })  : _mappedValues = data.map((e) => BubbleValue<T>(dataToValue(e))).toList().asMap(),
+  })  : _mappedValues = [data.map((e) => BubbleValue<T>(dataToValue(e))).toList()],
+        super(key: key);
+
+  LineChart.multiple(
+    this._mappedValues, {
+    this.height = 240.0,
+    this.lineWidth = 2.0,
+    this.itemColor,
+    this.backgroundDecorations,
+    this.foregroundDecorations,
+    this.chartOptions,
+    this.chartItemOptions,
+    this.chartBehaviour,
+    this.smoothCurves,
+    this.gradient,
+    Key key,
+  })  : data = null,
+        dataToValue = null,
         super(key: key);
 
   final List<T> data;
@@ -41,7 +56,7 @@ class LineChart<T> extends StatelessWidget {
   final ChartOptions chartOptions;
   final ChartItemOptions chartItemOptions;
 
-  final Map<int, BubbleValue<T>> _mappedValues;
+  final List<List<ChartItem<T>>> _mappedValues;
 
   @override
   Widget build(BuildContext context) {

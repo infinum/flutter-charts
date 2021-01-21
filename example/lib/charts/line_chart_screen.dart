@@ -15,11 +15,12 @@ class LineChartScreen extends StatefulWidget {
 }
 
 class _LineChartScreenState extends State<LineChartScreen> {
-  List<BarValue> _values = <BarValue>[];
+  Map<int, List<BubbleValue>> _values = <int, List<BubbleValue>>{};
   double targetMax;
   bool _showValues = false;
   bool _smoothPoints = false;
   bool _fillLine = false;
+  bool _showLine = true;
   bool _stack = true;
   int minItems = 15;
 
@@ -34,39 +35,55 @@ class _LineChartScreenState extends State<LineChartScreen> {
     final double _difference = 2 + (_rand.nextDouble() * 15);
 
     targetMax = 3 + (_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25);
-    _values.addAll(List.generate(minItems, (index) {
-      return BarValue<void>(2 + _rand.nextDouble() * _difference);
-    }));
+    _values.addAll(List.generate(3, (index) {
+      List<BubbleValue<void>> _items = [];
+      for (int i = 0; i < minItems; i++) {
+        _items.add(BubbleValue<void>(2 + _rand.nextDouble() * _difference));
+      }
+      return _items;
+    }).asMap());
   }
 
   void _addValues() {
-    _values = List.generate(minItems, (index) {
-      if (_values.length > index) {
-        return _values[index];
+    _values.addAll(List.generate(3, (index) {
+      List<BubbleValue<void>> _items = [];
+      for (int i = 0; i < minItems; i++) {
+        _items.add(BubbleValue<void>(2 + Random().nextDouble() * targetMax));
       }
+      return _items;
+    }).asMap());
+  }
 
-      return BarValue<void>(2 + Random().nextDouble() * targetMax);
-    });
+  List<List<BubbleValue<void>>> _getMap() {
+    return [
+      _values[0].toList(),
+      _values[1]
+          .asMap()
+          .map<int, BubbleValue<void>>((index, e) {
+            if (_stack) {
+              return MapEntry(index, BubbleValue<void>(e.max + _values[0][index].max));
+            }
+
+            return MapEntry(index, e);
+          })
+          .values
+          .toList(),
+      _values[2]
+          .asMap()
+          .map<int, BubbleValue<void>>((index, e) {
+            if (_stack) {
+              return MapEntry(index, BubbleValue<void>(e.max + _values[0][index].max + _values[1][index].max));
+            }
+
+            return MapEntry(index, e);
+          })
+          .values
+          .toList()
+    ];
   }
 
   @override
   Widget build(BuildContext context) {
-    final _firstItems = _values.where((element) => _values.indexOf(element) % 3 == 0).toList();
-
-    final List<BarValue<void>> _secondItems = _stack
-        ? _values.where((element) => _values.indexOf(element) % 3 == 1).map((element) {
-            final _index = _values.indexOf(element) ~/ 3;
-            return BarValue<void>(element.max + _firstItems[_index].max);
-          }).toList()
-        : _values.where((element) => _values.indexOf(element) % 3 == 1).toList();
-
-    final List<BarValue<void>> _thirdItems = _stack
-        ? _values.where((element) => _values.indexOf(element) % 3 == 2).map((element) {
-            final _index = _values.indexOf(element) ~/ 3;
-            return BarValue<void>(element.max + _secondItems[_index].max);
-          }).toList()
-        : _values.where((element) => _values.indexOf(element) % 3 == 2).toList();
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -80,25 +97,16 @@ class _LineChartScreenState extends State<LineChartScreen> {
               padding: const EdgeInsets.all(24.0),
               child: Stack(
                 children: [
-                  LineChart(
-                    data: _firstItems,
+                  LineChart<void>.multiple(
+                    _getMap(),
                     height: MediaQuery.of(context).size.height * 0.4,
-                    dataToValue: (BarValue value) => value.max,
-                    itemColor: Theme.of(context).colorScheme.secondary,
+                    itemColor: Theme.of(context).colorScheme.secondary.withOpacity(_showLine ? 1.0 : 0.0),
                     lineWidth: 2.0,
                     chartItemOptions: ChartItemOptions(
-                      maxBarWidth: 4.0,
+                      maxBarWidth: _showLine ? 6.0 : 8.0,
                       color: Theme.of(context).colorScheme.secondary.withOpacity(0.4),
                     ),
-                    chartOptions: ChartOptions(
-                      valueAxisMax: max(
-                          (_stack ? _thirdItems : _values).fold<double>(
-                                  0,
-                                  (double previousValue, BarValue element) =>
-                                      previousValue = max(previousValue, element?.max ?? 0)) +
-                              1,
-                          targetMax + 3),
-                    ),
+                    chartOptions: ChartOptions(),
                     smoothCurves: _smoothPoints,
                     backgroundDecorations: [
                       GridDecoration(
@@ -121,7 +129,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                                 ? 1.0
                                 : 0.2
                             : 0.0),
-                        items: _thirdItems.asMap(),
+                        lineKey: 2,
                       ),
                       SparkLineDecoration<void>(
                         id: 'second_line_fill',
@@ -132,7 +140,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                                 ? 1.0
                                 : 0.2
                             : 0.0),
-                        items: _secondItems.asMap(),
+                        lineKey: 1,
                       ),
                       SparkLineDecoration<void>(
                         id: 'first_line_fill',
@@ -143,7 +151,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                                 ? 1.0
                                 : 0.2
                             : 0.0),
-                        items: _firstItems.asMap(),
+                        lineKey: 0,
                       ),
                     ],
                     foregroundDecorations: [
@@ -151,8 +159,8 @@ class _LineChartScreenState extends State<LineChartScreen> {
                         id: 'second_line',
                         lineWidth: 2.0,
                         smoothPoints: _smoothPoints,
-                        lineColor: Theme.of(context).colorScheme.primary,
-                        items: _secondItems.asMap(),
+                        lineColor: Theme.of(context).colorScheme.primary.withOpacity(_showLine ? 1.0 : 0.0),
+                        lineKey: 1,
                       ),
                       SparkLineDecoration<void>(
                         id: 'third_line',
@@ -160,7 +168,8 @@ class _LineChartScreenState extends State<LineChartScreen> {
                         smoothPoints: _smoothPoints,
                         gradient: LinearGradient(
                             begin: Alignment.centerLeft, end: Alignment.centerRight, colors: Colors.accents),
-                        items: _thirdItems.asMap(),
+                        lineColor: Theme.of(context).colorScheme.primary.withOpacity(_showLine ? 1.0 : 0.0),
+                        lineKey: 2,
                       ),
                     ],
                   ),
@@ -178,15 +187,17 @@ class _LineChartScreenState extends State<LineChartScreen> {
               },
               onAddItems: () {
                 setState(() {
-                  minItems += 12;
+                  minItems += 4;
                   _addValues();
                 });
               },
               onRemoveItems: () {
                 setState(() {
-                  if (_values.length > 4) {
+                  if (minItems > 6) {
                     minItems -= 4;
-                    _values.removeRange(_values.length - 4, _values.length);
+                    _values = _values.map((key, value) {
+                      return MapEntry(key, value..removeRange(value.length - 4, value.length));
+                    });
                   }
                 });
               },
@@ -224,6 +235,15 @@ class _LineChartScreenState extends State<LineChartScreen> {
                   onChanged: (value) {
                     setState(() {
                       _stack = value;
+                    });
+                  },
+                ),
+                ToggleItem(
+                  title: 'Show lines',
+                  value: _showLine,
+                  onChanged: (value) {
+                    setState(() {
+                      _showLine = value;
                     });
                   },
                 ),

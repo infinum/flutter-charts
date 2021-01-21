@@ -19,9 +19,11 @@ class ChartPainter extends CustomPainter {
 
     final _scrollableItemWidth = max(state?.itemOptions?.minBarWidth ?? 0.0, state?.itemOptions?.maxBarWidth ?? 0.0);
 
+    final int _listSize = state.items.fold(0, (previousValue, element) => max(previousValue, element.length));
+
     size = Size(
         size.width +
-            (size.width - ((_scrollableItemWidth + state.itemOptions.padding.horizontal) * state.items.length)) *
+            (size.width - ((_scrollableItemWidth + state.itemOptions.padding.horizontal) * _listSize)) *
                 state.behaviour._isScrollable,
         size.height);
 
@@ -32,7 +34,7 @@ class ChartPainter extends CustomPainter {
     final _size = state?.defaultPadding?.deflateSize(_paddingSize) ?? _paddingSize;
 
     /// Final usable space for one item in the chart
-    final _itemWidth = _size.width / state.items.length;
+    final _itemWidth = _size.width / _listSize;
 
     void _drawDecoration(DecorationPainter decoration) => decoration.draw(canvas, _paddingSize, state);
 
@@ -40,23 +42,29 @@ class ChartPainter extends CustomPainter {
     state.backgroundDecorations.forEach(_drawDecoration);
 
     // Draw all chart items
-    state.items.forEach((index, element) {
-      // Use item painter from ItemOptions to draw the item on the chart
-      final _item = state.itemPainter(element, state);
+    state.items.asMap().forEach((key, element) {
+      element.asMap().forEach((index, item) {
+        // Use item painter from ItemOptions to draw the item on the chart
+        final _item = state.itemPainter(item, state);
+        final _stack = 1 - state.behaviour._multiValueStacked;
 
-      // Save, and translate the canvas so [0,0] is top left of item at [index] position
-      canvas.save();
-      canvas.translate(
-        (state?.defaultPadding?.left ?? 0.0) + (_itemWidth * index) + state.defaultMargin.left,
-        _size.height + state.defaultMargin.top + state.defaultPadding.top,
-      );
+        final _width = _itemWidth / max(1, state.items.length * _stack);
+        final _position = _itemWidth * index + (key * _width * _stack);
 
-      // Draw the item on selected position
-      _item.draw(
-          canvas, Size(_itemWidth, -_size.height), Paint()..color = state.itemOptions.getItemColor(_item.item, index));
+        // Save, and translate the canvas so [0,0] is top left of item at [index] position
+        canvas.save();
+        canvas.translate(
+          (state?.defaultPadding?.left ?? 0.0) + _position + state.defaultMargin.left,
+          _size.height + state.defaultMargin.top + state.defaultPadding.top,
+        );
 
-      // Restore canvas
-      canvas.restore();
+        // Draw the item on selected position
+        _item.draw(
+            canvas, Size(_width, -_size.height), Paint()..color = state.itemOptions.getItemColor(_item.item, key));
+
+        // Restore canvas
+        canvas.restore();
+      });
     });
 
     // End with drawing all foreground decorations

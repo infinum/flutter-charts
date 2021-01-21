@@ -1,5 +1,7 @@
 part of flutter_charts;
 
+enum MultiBarItemView { stacked, grouped }
+
 /// Behaviour of the chart
 /// [isScrollable] - If chart is scrollable then width of canvas is ignored and
 /// chart will take any size it needs. Chart has to be wrapped with [SingleChildScrollView]
@@ -9,11 +11,15 @@ class ChartBehaviour {
   const ChartBehaviour({
     bool isScrollable = false,
     this.onItemClicked,
-  }) : _isScrollable = isScrollable ? 1.0 : 0.0;
+    bool multiItemStack = true,
+  })  : _isScrollable = isScrollable ? 1.0 : 0.0,
+        _multiValueStacked = multiItemStack ? 1.0 : 0.0;
 
-  const ChartBehaviour._lerp(this._isScrollable, this.onItemClicked);
+  const ChartBehaviour._lerp(this._isScrollable, this.onItemClicked, this._multiValueStacked);
 
   final double _isScrollable;
+  final double _multiValueStacked;
+
   final ValueChanged<int> onItemClicked;
 
   bool get isScrollable => _isScrollable > 0.5;
@@ -26,6 +32,7 @@ class ChartBehaviour {
     return ChartBehaviour._lerp(
       lerpDouble(a._isScrollable, b._isScrollable, t),
       t > 0.5 ? b.onItemClicked : a.onItemClicked,
+      lerpDouble(a._multiValueStacked, b._multiValueStacked, t),
     );
   }
 }
