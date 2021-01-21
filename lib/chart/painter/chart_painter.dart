@@ -10,12 +10,19 @@ class ChartPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.save();
-
     if (_debugBoundary) {
       canvas.drawRect(
-          Rect.fromPoints(Offset.zero, Offset(size.width, size.height)), Paint()..color = Colors.red.withOpacity(0.3));
+          Rect.fromPoints(Offset.zero, Offset(size.width, size.height)).inflate(2),
+          Paint()
+            ..color = Colors.red.withOpacity(0.4)
+            ..strokeWidth = 4
+            ..style = PaintingStyle.stroke);
+
+      canvas.drawRect(
+          Rect.fromPoints(Offset.zero, Offset(size.width, size.height)), Paint()..color = Colors.red.withOpacity(0.1));
     }
+
+    // canvas.clipRect(Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
 
     final _scrollableItemWidth = max(state?.itemOptions?.minBarWidth ?? 0.0, state?.itemOptions?.maxBarWidth ?? 0.0);
 
@@ -69,12 +76,10 @@ class ChartPainter extends CustomPainter {
 
     // End with drawing all foreground decorations
     state.foregroundDecorations.forEach(_drawDecoration);
-
-    canvas.restore();
   }
 
   @override
   bool shouldRepaint(ChartPainter oldDelegate) {
-    return oldDelegate.state != state;
+    return false;
   }
 }

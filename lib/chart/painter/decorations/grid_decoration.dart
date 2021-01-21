@@ -15,6 +15,7 @@ class GridDecoration extends DecorationPainter {
     this.showVerticalGrid = true,
     this.showHorizontalGrid = true,
     this.verticalValuesPadding,
+    this.horizontalValuesPadding,
     this.horizontalAxisUnit,
     this.verticalAxisValueFromIndex = defaultAxisValue,
     this.gridColor = Colors.grey,
@@ -32,6 +33,7 @@ class GridDecoration extends DecorationPainter {
       endWithChart: endWithChart,
       showGrid: showHorizontalGrid,
       valuesAlign: horizontalTextAlign,
+      valuesPadding: horizontalValuesPadding,
       showTopValue: showTopHorizontalValue,
       horizontalAxisUnit: horizontalAxisUnit,
       gridColor: gridColor,
@@ -51,7 +53,7 @@ class GridDecoration extends DecorationPainter {
       valuesPadding: verticalValuesPadding,
       gridWidth: gridWidth,
       itemAxisStep: itemAxisStep,
-      style: textStyle,
+      legendFontStyle: textStyle,
     );
   }
 
@@ -65,6 +67,7 @@ class GridDecoration extends DecorationPainter {
     this.showVerticalGrid = true,
     this.showHorizontalGrid = true,
     this.verticalValuesPadding,
+    this.horizontalValuesPadding,
     this.horizontalAxisUnit,
     this.verticalAxisValueFromIndex = defaultAxisValue,
     this.gridColor = Colors.grey,
@@ -84,6 +87,7 @@ class GridDecoration extends DecorationPainter {
       showTopValue: showTopHorizontalValue,
       showGrid: showHorizontalGrid,
       horizontalAxisUnit: horizontalAxisUnit,
+      valuesPadding: horizontalValuesPadding,
       gridColor: gridColor,
       gridWidth: gridWidth,
       valueAxisStep: valueAxisStep,
@@ -101,7 +105,7 @@ class GridDecoration extends DecorationPainter {
       gridWidth: gridWidth,
       verticalLegendPosition: verticalLegendPosition,
       itemAxisStep: itemAxisStep,
-      style: textStyle,
+      legendFontStyle: textStyle,
     );
   }
 
@@ -115,6 +119,7 @@ class GridDecoration extends DecorationPainter {
 
   final TextStyle textStyle;
 
+  final EdgeInsets horizontalValuesPadding;
   final EdgeInsets verticalValuesPadding;
 
   final bool showTopHorizontalValue;
@@ -182,6 +187,7 @@ class GridDecoration extends DecorationPainter {
         itemAxisStep: lerpDouble(itemAxisStep, endValue.itemAxisStep, t),
         valueAxisStep: lerpDouble(valueAxisStep, endValue.valueAxisStep, t),
         verticalValuesPadding: EdgeInsets.lerp(verticalValuesPadding, endValue.verticalValuesPadding, t),
+        horizontalValuesPadding: EdgeInsets.lerp(horizontalValuesPadding, endValue.horizontalValuesPadding, t),
         textStyle: TextStyle.lerp(textStyle, endValue.textStyle, t),
       );
     }

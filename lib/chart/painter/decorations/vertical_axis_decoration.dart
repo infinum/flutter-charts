@@ -19,10 +19,9 @@ class VerticalAxisDecoration extends DecorationPainter {
     this.axisValueFromIndex = defaultAxisValue,
     this.gridColor = Colors.grey,
     this.gridWidth = 1.0,
-    this.axisLegendTextColor,
     this.itemAxisStep = 1,
     this.verticalLegendPosition = VerticalLegendPosition.bottom,
-    this.style = const TextStyle(fontSize: 13.0),
+    this.legendFontStyle = const TextStyle(fontSize: 13.0),
   }) : _endWithChart = endWithChart ? 1.0 : 0.0;
 
   VerticalAxisDecoration._lerp({
@@ -33,11 +32,10 @@ class VerticalAxisDecoration extends DecorationPainter {
     this.valuesPadding = EdgeInsets.zero,
     this.axisValueFromIndex = defaultAxisValue,
     this.gridColor = Colors.grey,
-    this.axisLegendTextColor,
     this.gridWidth = 1.0,
     this.itemAxisStep = 1,
     this.verticalLegendPosition = VerticalLegendPosition.bottom,
-    this.style = const TextStyle(fontSize: 13.0),
+    this.legendFontStyle = const TextStyle(fontSize: 13.0),
   }) : _endWithChart = endWithChart;
 
   bool get endWithChart => _endWithChart > 0.5;
@@ -48,13 +46,12 @@ class VerticalAxisDecoration extends DecorationPainter {
   final TextAlign valuesAlign;
   final EdgeInsets valuesPadding;
 
-  final Color axisLegendTextColor;
   final Color gridColor;
   final double gridWidth;
   final double itemAxisStep;
 
   final VerticalLegendPosition verticalLegendPosition;
-  final TextStyle style;
+  final TextStyle legendFontStyle;
 
   final AxisValueFromIndex axisValueFromIndex;
 
@@ -62,7 +59,7 @@ class VerticalAxisDecoration extends DecorationPainter {
   void draw(Canvas canvas, Size size, ChartState state) {
     final _size = state.defaultPadding.deflateSize(size) ?? size;
     final int _listSize = state.items.fold(0, (previousValue, element) => max(previousValue, element.length));
-    final _itemWidth = _size.width / _listSize;
+    final _itemWidth = (_size.width - gridWidth) / _listSize;
 
     final _paint = Paint()
       ..color = gridColor
@@ -76,12 +73,12 @@ class VerticalAxisDecoration extends DecorationPainter {
 
     for (int i = 0; i <= _listSize / itemAxisStep; i++) {
       if (showGrid) {
-        final _showValuesBottom = showValues ? (state.defaultMargin.bottom * (1 - _endWithChart)) : 0.0;
+        final _showValuesBottom = showValues ? (state.defaultMargin.bottom * (1 - _endWithChart)) : gridWidth;
         final _showValuesTop = -size.height - (showValues ? (state.defaultMargin.top * (1 - _endWithChart)) : 0.0);
 
         canvas.drawLine(
-          Offset(_itemWidth * i * itemAxisStep, _showValuesBottom),
-          Offset(_itemWidth * i * itemAxisStep, _showValuesTop),
+          Offset(_itemWidth * i * itemAxisStep + gridWidth / 2, _showValuesBottom),
+          Offset(_itemWidth * i * itemAxisStep + gridWidth / 2, _showValuesTop),
           _paint,
         );
       }
@@ -105,7 +102,7 @@ class VerticalAxisDecoration extends DecorationPainter {
       final _textPainter = TextPainter(
         text: TextSpan(
           text: _text,
-          style: (style ?? const TextStyle()).copyWith(color: axisLegendTextColor ?? Colors.grey),
+          style: legendFontStyle,
         ),
         textAlign: valuesAlign,
         maxLines: 1,
@@ -120,8 +117,8 @@ class VerticalAxisDecoration extends DecorationPainter {
         Offset(
             _itemWidth * i * itemAxisStep + (valuesPadding?.left ?? 0.0),
             verticalLegendPosition == VerticalLegendPosition.top
-                ? -size.height - _textPainter.height * 1.1
-                : _textPainter.height + (valuesPadding?.top ?? 0.0)),
+                ? -size.height - _textPainter.height - (valuesPadding?.bottom ?? 0.0)
+                : _textPainter.height - _textPainter.height + (valuesPadding?.top ?? 0.0)),
       );
     }
     canvas.restore();
@@ -133,7 +130,7 @@ class VerticalAxisDecoration extends DecorationPainter {
       return EdgeInsets.zero;
     }
 
-    final _value = (style?.fontSize ?? 24.0) * 2 + (valuesPadding?.vertical ?? 0.0);
+    final _value = legendFontStyle.fontSize + (valuesPadding?.vertical ?? 0.0);
     final _isBottom = verticalLegendPosition == VerticalLegendPosition.bottom;
 
     return EdgeInsets.only(
@@ -147,7 +144,6 @@ class VerticalAxisDecoration extends DecorationPainter {
     if (endValue is VerticalAxisDecoration) {
       return VerticalAxisDecoration._lerp(
         gridColor: Color.lerp(gridColor, endValue.gridColor, t),
-        axisLegendTextColor: Color.lerp(axisLegendTextColor, endValue.axisLegendTextColor, t),
         gridWidth: lerpDouble(gridWidth, endValue.gridWidth, t),
         itemAxisStep: lerpDouble(itemAxisStep, endValue.itemAxisStep, t),
         endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t),
@@ -157,7 +153,7 @@ class VerticalAxisDecoration extends DecorationPainter {
         valuesAlign: t > 0.5 ? endValue.valuesAlign : valuesAlign,
         axisValueFromIndex: t > 0.5 ? endValue.axisValueFromIndex : axisValueFromIndex,
         verticalLegendPosition: t > 0.5 ? endValue.verticalLegendPosition : verticalLegendPosition,
-        style: TextStyle.lerp(style, endValue.style, t),
+        legendFontStyle: TextStyle.lerp(legendFontStyle, endValue.legendFontStyle, t),
       );
     }
 

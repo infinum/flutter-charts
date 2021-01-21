@@ -239,4 +239,9 @@ class TargetAreaDecoration extends DecorationPainter {
 
     return this;
   }
+
+  @override
+  EdgeInsets marginNeeded() {
+    return EdgeInsets.symmetric(horizontal: lineWidth / 2);
+  }
 }

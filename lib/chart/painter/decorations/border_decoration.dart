@@ -19,22 +19,21 @@ class BorderDecoration extends DecorationPainter {
 
     canvas.save();
 
-    canvas.translate(0.0 + state.defaultPadding.left + state.defaultMargin.left, state.defaultMargin.top);
-    size = state.defaultPadding.deflateSize(size);
+    canvas.translate(state.defaultMargin.left, state.defaultMargin.top);
 
     _paint.strokeWidth = _borderWidth.top;
     canvas.drawLine(Offset(0.0, -_borderWidth.top / 2), Offset(size.width, -_borderWidth.top / 2), _paint);
 
     _paint.strokeWidth = _borderWidth.right;
     canvas.drawLine(Offset(size.width + (_borderWidth.right / 2), -_borderWidth.top),
-        Offset(size.width + (_borderWidth.right / 2), size.height + _borderWidth.bottom), _paint);
+        Offset(size.width + (_borderWidth.right / 2), size.height + state.defaultMargin.bottom), _paint);
 
     _paint.strokeWidth = _borderWidth.bottom;
-    canvas.drawLine(Offset(size.width, size.height + (_borderWidth.bottom / 2)),
-        Offset(0.0, size.height + (_borderWidth.bottom / 2)), _paint);
+    canvas.drawLine(Offset(size.width, size.height + state.defaultMargin.bottom - (_borderWidth.bottom / 2)),
+        Offset(0.0, size.height + state.defaultMargin.bottom - (_borderWidth.bottom / 2)), _paint);
 
     _paint.strokeWidth = _borderWidth.left;
-    canvas.drawLine(Offset(-_borderWidth.left / 2, size.height + _borderWidth.bottom),
+    canvas.drawLine(Offset(-_borderWidth.left / 2, size.height + state.defaultMargin.bottom),
         Offset(-_borderWidth.left / 2, -_borderWidth.top), _paint);
 
     canvas.restore();
