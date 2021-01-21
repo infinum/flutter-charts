@@ -16,7 +16,7 @@ class BarChart<T> extends StatelessWidget {
     this.itemOptions = const ChartItemOptions(),
     this.chartOptions = const ChartOptions(),
     Key key,
-  })  : _mappedValues = {0: data.map((e) => BarValue<T>(dataToValue(e))).toList()},
+  })  : _mappedValues = [data.map((e) => BarValue<T>(dataToValue(e))).toList()],
         super(key: key);
 
   const BarChart.map(
@@ -32,7 +32,7 @@ class BarChart<T> extends StatelessWidget {
         super(key: key);
 
   final DataToValue<T> dataToValue;
-  final Map<int, List<ChartItem<T>>> _mappedValues;
+  final List<List<ChartItem<T>>> _mappedValues;
   final double height;
 
   final ChartItemOptions itemOptions;

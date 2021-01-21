@@ -21,6 +21,13 @@ class CupertinoSelectedPainter extends DecorationPainter {
   final double textSize;
   final int selectedKey;
 
+  @override
+  void initDecoration(ChartState state) {
+    super.initDecoration(state);
+    assert(
+        state.items.length > selectedKey, 'Selected key is not in the list!\nCheck the `selectedKey` you are passing.');
+  }
+
   void _drawText(Canvas canvas, Size size, double width, double totalWidth, ChartState state) {
     final _maxValuePainter = ValueDecoration.makeTextPainter(
       state.items[selectedKey][selectedIndex].max.toStringAsFixed(2),
@@ -59,7 +66,7 @@ class CupertinoSelectedPainter extends DecorationPainter {
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
-    final int _listSize = state.items.values.fold(0, (previousValue, element) => max(previousValue, element.length));
+    final int _listSize = state.items.fold(0, (previousValue, element) => max(previousValue, element.length));
 
     if (selectedIndex == null || _listSize <= selectedIndex || selectedIndex.isNegative) {
       return;

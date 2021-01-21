@@ -33,10 +33,10 @@ class ChartState<T> {
   })  : assert(items.isNotEmpty, 'No items!'),
         assert((options?.padding?.vertical ?? 0.0) == 0.0, 'Chart padding cannot be vertical!'),
         minValue = _getMinValue(
-            items.values.fold(<ChartItem<T>>[], (List<ChartItem<T>> list, element) => list..addAll(element)).toList(),
+            items.fold(<ChartItem<T>>[], (List<ChartItem<T>> list, element) => list..addAll(element)).toList(),
             options),
         maxValue = _getMaxValue(
-            items.values.fold(<ChartItem<T>>[], (List<ChartItem<T>> list, element) => list..addAll(element)).toList(),
+            items.fold(<ChartItem<T>>[], (List<ChartItem<T>> list, element) => list..addAll(element)).toList(),
             options) {
     /// Set default padding and margin, decorations padding and margins will be added to this value
     defaultPadding = options?.padding ?? EdgeInsets.zero;
@@ -54,7 +54,7 @@ class ChartState<T> {
     ChartItemPainter itemPainter = barItemPainter,
   }) =>
       ChartState<T>(
-        {0: values},
+        [values],
         options: options,
         itemOptions: itemOptions,
         behaviour: behaviour,
@@ -79,7 +79,7 @@ class ChartState<T> {
     _initDecorations();
   }
 
-  final Map<int, List<ChartItem<T>>> items;
+  final List<List<ChartItem<T>>> items;
 
   final ChartItemPainter itemPainter;
   final ChartOptions options;
@@ -187,7 +187,7 @@ class ChartState<T> {
 }
 
 class ChartItemsLerp {
-  Map<int, List<ChartItem<T>>> lerpValues<T>(Map<int, List<ChartItem<T>>> a, Map<int, List<ChartItem<T>>> b, double t) {
+  List<List<ChartItem<T>>> lerpValues<T>(List<List<ChartItem<T>>> a, List<List<ChartItem<T>>> b, double t) {
     /// Get list length in animation, we will add the items in steps.
     final double _listLength = lerpDouble(a.length, b.length, t);
 
@@ -196,13 +196,14 @@ class ChartItemsLerp {
 
     /// Generate new list fot animation step, add items depending on current [_listLength]
     return List<List<ChartItem<T>>>.generate(_listLength.ceil(), (int index) {
-      return _lerpItemList<T>(
-          a.containsKey(index) ? a[index] : _emptyList, b.containsKey(index) ? b[index] : _emptyList, t);
-    }).asMap();
+      return _lerpItemList<T>(a.length > index ? a[index] : _emptyList, b.length > index ? b[index] : _emptyList, t);
+    });
   }
 
   List<ChartItem<T>> _lerpItemList<T>(List<ChartItem<T>> a, List<ChartItem<T>> b, double t) {
     final double _listLength = lerpDouble(a.length, b.length, t);
+
+    print('Smaller list: $a - $b');
 
     /// Empty value for generated list.
     final BarValue<T> _emptyValue = BarValue<T>(0.0);

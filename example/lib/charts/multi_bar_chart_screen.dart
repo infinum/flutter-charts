@@ -59,24 +59,24 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
     }));
   }
 
-  Map<int, List<BarValue<void>>> _getMap() {
-    return {
-      0: _values[0]
+  List<List<BarValue<void>>> _getMap() {
+    return [
+      _values[0]
           .asMap()
           .map<int, BarValue<void>>((index, e) {
             return MapEntry(index, BarValue<void>(e.max + _values[1][index].max + _values[2][index].max));
           })
           .values
           .toList(),
-      1: _values[1]
+      _values[1]
           .asMap()
           .map<int, BarValue<void>>((index, e) {
             return MapEntry(index, BarValue<void>(e.max + _values[2][index].max));
           })
           .values
           .toList(),
-      2: _values[2].toList()
-    };
+      _values[2].toList()
+    ];
   }
 
   @override

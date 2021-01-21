@@ -26,7 +26,6 @@ Now you are ready to use charts lib. If chart needs to animate the state changes
 `AnimatedChart<T>` needs to specify `Duration` and it can accept `Curve` for animation.
 #### Bar Chart
 This is how you can start, this is simple bar chart with grid decoration:
-
 ```dart
   @override
   Widget build(BuildContext context) {
@@ -67,7 +66,6 @@ Code above will draw this:
 To turn any chart to line chart we just need to add `SparklineDecoration` to `foregroundDecorations` or `backgroundDecorations`. This will add decoration line on top/bottom of the chart.
 
 By replacing the `BarValue` to `BubbleValue` and changing `itemPainter` to `bubblePainter` we can show nicer line chart with small bubbles on data points:
-
 ```dart
   @override
   Widget build(BuildContext context) {
@@ -110,6 +108,67 @@ By replacing the `BarValue` to `BubbleValue` and changing `itemPainter` to `bubb
 Code above will make our nicer line graph:
 ![simple_line_chart]
 
+#### Multi Chart
+Charts can have multiple values that are grouped.
+To turn any chart to multi value we need to use `ChartState` instead of `ChartState.fromList` constructor. Default constructor will accept `List<List<ChartItem<T>>` allowing us to pass multiple lists to same chart.
+```dart
+  @override
+  Widget build(BuildContext context) {
+    Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Chart(
+        /// CHANGE: From [ChartState.fromList] to [ChartState]
+        state: ChartState(
+          /// CHANGE: Add list we had into bigger List
+          [
+            [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+
+            /// ADD: Another list
+            [4, 6, 3, 3, 2, 1, 4, 7, 5].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+          ],
+          itemOptions: ChartItemOptions(
+            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+            radius: BorderRadius.vertical(top: Radius.circular(12.0)),
+            maxBarWidth: 4.0,
+
+            /// ADDED: Color bubbles differently depending on List they came from
+            colorForKey: (item, index) {
+              return [Theme.of(context).colorScheme.primary, Theme.of(context).colorScheme.primaryVariant][index];
+            },
+          ),
+          itemPainter: bubbleItemPainter,
+          options: ChartOptions(
+            valueAxisMax: 8,
+          ),
+          backgroundDecorations: [
+            GridDecoration(
+              itemAxisStep: 1,
+              valueAxisStep: 1,
+              gridColor: Theme.of(context).dividerColor,
+            ),
+          ],
+          foregroundDecorations: [
+            SparkLineDecoration<void>(),
+
+            /// ADDED: Add another spark line decoration ([SparkLineDecoration]) on foreground for second list
+            SparkLineDecoration<void>(
+              lineKey: 1,
+              lineColor: Theme.of(context).colorScheme.primaryVariant,
+            ),
+            BorderDecoration(
+              color: Theme.of(context).colorScheme.secondary,
+              width: 2.0,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+```
+Code above will make this multi line graph:
+![simple_multi_line_chart]
+
+Control how multiple values are drawn with `ChartBehaviour.multiItemStack`, this is by default set to `true` and multiple items will just stack one on top of the other. Settings this to `false` will show them in `grouped` state, where they will split the items space between them.
 ## Chart state customizations 
 
 #### Chart options

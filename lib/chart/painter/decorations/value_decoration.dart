@@ -23,6 +23,12 @@ class ValueDecoration extends DecorationPainter {
     return this;
   }
 
+  @override
+  void initDecoration(ChartState state) {
+    super.initDecoration(state);
+    assert(state.items.length > valueKey, 'Value key is not in the list!\nCheck the `valueKey` you are passing.');
+  }
+
   void _paintText(Canvas canvas, Size size, ChartItem item, double width, double verticalMultiplier, double minValue) {
     final _maxValuePainter = ValueDecoration.makeTextPainter(
       '${item.max.toInt()}',
@@ -49,7 +55,7 @@ class ValueDecoration extends DecorationPainter {
     final _verticalMultiplier = _size.height / _maxValue;
     final _minValue = state.minValue * _verticalMultiplier;
 
-    final int _listSize = state.items.values.fold(0, (previousValue, element) => max(previousValue, element.length));
+    final int _listSize = state.items.fold(0, (previousValue, element) => max(previousValue, element.length));
     final _itemWidth = _size.width / _listSize;
 
     state.items[valueKey].forEach((value) {

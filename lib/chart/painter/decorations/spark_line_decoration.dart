@@ -43,7 +43,7 @@ class SparkLineDecoration<T> extends DecorationPainter {
 
   final int lineKey;
 
-  Map<int, List<ChartItem<T>>> items;
+  List<List<ChartItem<T>>> items;
 
   @override
   void initDecoration(ChartState state) {
@@ -52,7 +52,7 @@ class SparkLineDecoration<T> extends DecorationPainter {
     }
 
     assert(items != null, 'No matching state for sparkline found!\nCheck if type `T` is set properly.');
-    assert(items.containsKey(lineKey), 'Line key is not in the list!\nCheck the `lineKey` you are passing.');
+    assert(items.length > lineKey, 'Line key is not in the list!\nCheck the `lineKey` you are passing.');
   }
 
   @override
@@ -68,7 +68,7 @@ class SparkLineDecoration<T> extends DecorationPainter {
 
     final List<Offset> _positions = <Offset>[];
 
-    final int _listSize = state.items.values.fold(0, (previousValue, element) => max(previousValue, element.length));
+    final int _listSize = state.items.fold(0, (previousValue, element) => max(previousValue, element.length));
 
     final _itemWidth = _size.width / _listSize;
 

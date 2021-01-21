@@ -54,10 +54,10 @@ class _LineChartScreenState extends State<LineChartScreen> {
     }).asMap());
   }
 
-  Map<int, List<BubbleValue<void>>> _getMap() {
-    return {
-      0: _values[0].toList(),
-      1: _values[1]
+  List<List<BubbleValue<void>>> _getMap() {
+    return [
+      _values[0].toList(),
+      _values[1]
           .asMap()
           .map<int, BubbleValue<void>>((index, e) {
             if (_stack) {
@@ -68,7 +68,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
           })
           .values
           .toList(),
-      2: _values[2]
+      _values[2]
           .asMap()
           .map<int, BubbleValue<void>>((index, e) {
             if (_stack) {
@@ -79,7 +79,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
           })
           .values
           .toList()
-    };
+    ];
   }
 
   @override

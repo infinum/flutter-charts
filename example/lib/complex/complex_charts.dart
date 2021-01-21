@@ -18,11 +18,11 @@ class ComplexCharts extends StatelessWidget {
               child: AnimatedChart(
                 duration: Duration(milliseconds: 550),
                 state: ChartState<void>(
-                  {
-                    0: [10, 12, 13, 11, 16].map((e) => BarValue<void>(e.toDouble())).toList(),
-                    1: [6, 8, 9, 7, 12].map((e) => BarValue<void>(e.toDouble())).toList(),
-                    2: [2, 4, 5, 3, 8].map((e) => BarValue<void>(e.toDouble())).toList(),
-                  },
+                  [
+                    [10, 12, 13, 11, 16].map((e) => BarValue<void>(e.toDouble())).toList(),
+                    [6, 8, 9, 7, 12].map((e) => BarValue<void>(e.toDouble())).toList(),
+                    [2, 4, 5, 3, 8].map((e) => BarValue<void>(e.toDouble())).toList(),
+                  ],
                   itemOptions: ChartItemOptions(
                       padding: const EdgeInsets.symmetric(horizontal: 2.0),
                       radius: BorderRadius.vertical(top: Radius.circular(12.0)),

@@ -17,7 +17,7 @@ class CandleChart<T> extends StatelessWidget {
     this.foregroundDecorations = const [],
     this.itemPainter = barItemPainter,
     Key key,
-  })  : _mappedValues = {0: data.map(dataToValue).toList()},
+  })  : _mappedValues = [data.map(dataToValue).toList()],
         super(key: key);
 
   final List<T> data;
@@ -31,7 +31,7 @@ class CandleChart<T> extends StatelessWidget {
   final ChartItemOptions chartItemOptions;
   final ChartItemPainter itemPainter;
 
-  final Map<int, List<CandleValue<T>>> _mappedValues;
+  final List<List<CandleValue<T>>> _mappedValues;
 
   @override
   Widget build(BuildContext context) {

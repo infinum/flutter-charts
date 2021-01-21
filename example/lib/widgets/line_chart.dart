@@ -20,7 +20,7 @@ class LineChart<T> extends StatelessWidget {
     this.smoothCurves,
     this.gradient,
     Key key,
-  })  : _mappedValues = {0: data.map((e) => BubbleValue<T>(dataToValue(e))).toList()},
+  })  : _mappedValues = [data.map((e) => BubbleValue<T>(dataToValue(e))).toList()],
         super(key: key);
 
   LineChart.multiple(
@@ -56,7 +56,7 @@ class LineChart<T> extends StatelessWidget {
   final ChartOptions chartOptions;
   final ChartItemOptions chartItemOptions;
 
-  final Map<int, List<ChartItem<T>>> _mappedValues;
+  final List<List<ChartItem<T>>> _mappedValues;
 
   @override
   Widget build(BuildContext context) {

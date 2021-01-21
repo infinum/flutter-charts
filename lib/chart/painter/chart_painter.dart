@@ -19,7 +19,7 @@ class ChartPainter extends CustomPainter {
 
     final _scrollableItemWidth = max(state?.itemOptions?.minBarWidth ?? 0.0, state?.itemOptions?.maxBarWidth ?? 0.0);
 
-    final int _listSize = state.items.values.fold(0, (previousValue, element) => max(previousValue, element.length));
+    final int _listSize = state.items.fold(0, (previousValue, element) => max(previousValue, element.length));
 
     size = Size(
         size.width +
@@ -42,7 +42,7 @@ class ChartPainter extends CustomPainter {
     state.backgroundDecorations.forEach(_drawDecoration);
 
     // Draw all chart items
-    state.items.forEach((key, element) {
+    state.items.asMap().forEach((key, element) {
       element.asMap().forEach((index, item) {
         // Use item painter from ItemOptions to draw the item on the chart
         final _item = state.itemPainter(item, state);
