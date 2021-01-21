@@ -203,8 +203,6 @@ class ChartItemsLerp {
   List<ChartItem<T>> _lerpItemList<T>(List<ChartItem<T>> a, List<ChartItem<T>> b, double t) {
     final double _listLength = lerpDouble(a.length, b.length, t);
 
-    print('Smaller list: $a - $b');
-
     /// Empty value for generated list.
     final BarValue<T> _emptyValue = BarValue<T>(0.0);
 

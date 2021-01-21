@@ -23,7 +23,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
   bool _showBars = true;
   bool _isScrollable = true;
   int minItems = 30;
-  int _selected = 0;
+  int _selected;
 
   final _controller = ScrollController();
 

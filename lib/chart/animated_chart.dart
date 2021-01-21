@@ -50,7 +50,7 @@ class _ChartState<T> extends AnimatedWidgetBaseState<AnimatedChart<T>> {
     _heightTween =
         visitor(_heightTween, widget.height, (dynamic value) => Tween<double>(begin: value as double)) as Tween<double>;
     _widthTween =
-        visitor(_widthTween, widget.height, (dynamic value) => Tween<double>(begin: value as double)) as Tween<double>;
+        visitor(_widthTween, widget.width, (dynamic value) => Tween<double>(begin: value as double)) as Tween<double>;
   }
 
   @override
