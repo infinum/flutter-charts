@@ -26,8 +26,9 @@ class TargetLineLegendDecoration extends DecorationPainter {
     final _minValue = state.minValue * scale;
 
     canvas.save();
-    canvas.translate(
-        state?.defaultPadding?.left ?? 0.0 + state.defaultMargin.left, size.height + state.defaultMargin.top);
+    canvas.translate(state.defaultMargin.left, size.height + state.defaultMargin.top);
+
+    size = state.defaultPadding.deflateSize(size);
 
     final _textPainter = TextPainter(
       text: TextSpan(
@@ -41,8 +42,7 @@ class TargetLineLegendDecoration extends DecorationPainter {
         maxWidth: size.width,
       );
 
-    canvas.translate(state?.defaultPadding?.left ?? 0.0 + padding.left,
-        -scale * legendTarget + _minValue + _textPainter.width + padding.top);
+    canvas.translate(-legendStyle.fontSize * 1.5, -scale * legendTarget + _minValue + _textPainter.width + padding.top);
     canvas.rotate(pi * 1.5);
 
     _textPainter.paint(

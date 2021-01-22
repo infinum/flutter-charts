@@ -162,6 +162,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(_isScrollable ? 0.5 : 0.8),
                   ),
                   BorderDecoration(
+                    endWithChart: true,
                     color: Theme.of(context).colorScheme.primaryVariant,
                   ),
                 ],
