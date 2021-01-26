@@ -117,7 +117,6 @@ class SparkLineDecoration<T> extends DecorationPainter {
       final Offset _p1 = _points[i % _points.length];
       final Offset _p2 = _points[(i + 1) % _points.length];
       final double controlPointX = _p1.dx + ((_p2.dx - _p1.dx) / 2) * _smoothPoints;
-      // _path.quadraticBezierTo(_p1.dx, _p1.dy, _mid.dx, _mid.dy);
       final Offset _mid = (_p1 + _p2) / 2;
       _path.cubicTo(controlPointX, _p1.dy, lerpDouble(_mid.dx, controlPointX, _smoothPoints),
           lerpDouble(_mid.dy, _p2.dy, _smoothPoints), _p2.dx, _p2.dy);

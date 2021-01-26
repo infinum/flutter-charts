@@ -36,6 +36,7 @@ class _ChartWidget extends StatelessWidget {
             _height);
         final _chart = CustomPaint(
           size: _size,
+          isComplex: true,
           painter: ChartPainter(state),
         );
 

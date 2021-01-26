@@ -58,17 +58,23 @@ class ValueDecoration extends DecorationPainter {
     final int _listSize = state.items.fold(0, (previousValue, element) => max(previousValue, element.length));
     final _itemWidth = _size.width / _listSize;
 
+    canvas.save();
+    canvas.translate((state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left - _itemWidth,
+        size.height + state.defaultMargin.top);
+
     state.items[valueKey].forEach((value) {
       final _index = state.items[valueKey].indexOf(value);
 
-      canvas.save();
+      // canvas.save();
       canvas.translate(
-        (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left + _itemWidth * _index,
-        size.height + state.defaultMargin.top,
+        _itemWidth,
+        0.0,
       );
       _paintText(canvas, Size(_index * _itemWidth, _size.height), value, _itemWidth, _verticalMultiplier, _minValue);
-      canvas.restore();
+      // canvas.restore();
     });
+
+    canvas.restore();
   }
 
   /// Get default text painter with set [value]
