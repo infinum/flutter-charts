@@ -51,6 +51,7 @@ class ChartPainter extends CustomPainter {
     final _stack = 1 - state.behaviour._multiValueStacked;
     final _width = _itemWidth / max(1, state.items.length * _stack);
 
+    // Save, and translate the canvas so [0,0] is top left of the first item
     canvas.save();
     canvas.translate(
       (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left - _width,
@@ -59,21 +60,25 @@ class ChartPainter extends CustomPainter {
 
     List.generate(_listSize, (index) {
       state.items.asMap().forEach((key, value) {
+        if (value.length <= index) {
+          // We don't have item at this position (in this list)
+          return;
+        }
+
         final item = value[index];
 
         // Use item painter from ItemOptions to draw the item on the chart
         final _item = state.itemPainter(item, state);
 
-        // Save, and translate the canvas so [0,0] is top left of item at [index] position
         // Go to next value only if we are not in the stack, or if this is the first item in the stack
-        canvas.translate(
-          _width * (key != 0 ? _stack : 1),
-          0.0,
-        );
+        canvas.translate(_width * (key != 0 ? _stack : 1), 0.0);
 
         // Draw the item on selected position
         _item.draw(
-            canvas, Size(_width, -_size.height), Paint()..color = state.itemOptions.getItemColor(_item.item, key));
+          canvas,
+          Size(_width, -_size.height),
+          Paint()..color = state.itemOptions.getItemColor(_item.item, key),
+        );
       });
     });
 
