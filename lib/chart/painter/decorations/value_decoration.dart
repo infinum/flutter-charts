@@ -65,13 +65,11 @@ class ValueDecoration extends DecorationPainter {
     state.items[valueKey].forEach((value) {
       final _index = state.items[valueKey].indexOf(value);
 
-      // canvas.save();
       canvas.translate(
         _itemWidth,
         0.0,
       );
       _paintText(canvas, Size(_index * _itemWidth, _size.height), value, _itemWidth, _verticalMultiplier, _minValue);
-      // canvas.restore();
     });
 
     canvas.restore();

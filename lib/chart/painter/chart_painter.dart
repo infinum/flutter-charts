@@ -22,8 +22,6 @@ class ChartPainter extends CustomPainter {
           Rect.fromPoints(Offset.zero, Offset(size.width, size.height)), Paint()..color = Colors.red.withOpacity(0.1));
     }
 
-    // canvas.clipRect(Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
-
     final _scrollableItemWidth = max(state?.itemOptions?.minBarWidth ?? 0.0, state?.itemOptions?.maxBarWidth ?? 0.0);
 
     final int _listSize = state.items.fold(0, (previousValue, element) => max(previousValue, element.length));
