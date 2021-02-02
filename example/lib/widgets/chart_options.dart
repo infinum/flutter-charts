@@ -82,12 +82,8 @@ class _ChartOptionsWidgetState extends State<ChartOptionsWidget> {
             thickness: 1.0,
             height: 1.0,
           ),
-          Expanded(
-            child: GridView(
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 300.0,
-                childAspectRatio: 300 / 80,
-              ),
+          Flexible(
+            child: ListView(
               children: widget.toggleItems,
               padding: EdgeInsets.zero,
             ),

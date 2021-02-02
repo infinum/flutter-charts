@@ -38,9 +38,7 @@ This is how you can start, this is simple bar chart with grid decoration:
             padding: const EdgeInsets.symmetric(horizontal: 2.0),
             radius: BorderRadius.vertical(top: Radius.circular(12.0)),
           ),
-          options: ChartOptions(
-            valueAxisMax: 8,
-          ),
+          options: ChartOptions(valueAxisMax: 8),
           backgroundDecorations: [
             GridDecoration(
               itemAxisStep: 1,
@@ -77,15 +75,16 @@ By replacing the `BarValue` to `BubbleValue` and changing `itemPainter` to `bubb
           [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
           itemOptions: ChartItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 2.0),
-            radius: BorderRadius.vertical(top: Radius.circular(12.0)),
+            /// REMOVED: Radius is ignored when using [bubbleItemPainter] so we can remove it
+            // radius: BorderRadius.vertical(top: Radius.circular(12.0)),
+
             /// ADDED: Make [BubbleValue] items smaller
             maxBarWidth: 4.0,
           ),
+
           /// ADDED: Add item painter for BubbleValue ([bubbleItemPainter])
           itemPainter: bubbleItemPainter,
-          options: ChartOptions(
-            valueAxisMax: 8,
-          ),
+          options: ChartOptions(valueAxisMax: 8),
           backgroundDecorations: [
             GridDecoration(
               itemAxisStep: 1,
@@ -94,12 +93,13 @@ By replacing the `BarValue` to `BubbleValue` and changing `itemPainter` to `bubb
             ),
           ],
           foregroundDecorations: [
-            /// ADDED: Add spark line decoration ([SparkLineDecoration]) on foreground
-            SparkLineDecoration<void>(),
             BorderDecoration(
               color: Theme.of(context).colorScheme.secondary,
               width: 2.0,
             ),
+
+            /// ADDED: Add spark line decoration ([SparkLineDecoration]) on foreground
+            SparkLineDecoration<void>(),
           ],
         ),
       ),
@@ -129,17 +129,15 @@ To turn any chart to multi value we need to use `ChartState` instead of `ChartSt
           ],
           itemOptions: ChartItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 2.0),
-            radius: BorderRadius.vertical(top: Radius.circular(12.0)),
             maxBarWidth: 4.0,
+
             /// ADDED: Color bubbles differently depending on List they came from. [ColorForIndex]
             colorForKey: (item, index) {
               return [Theme.of(context).colorScheme.primary, Theme.of(context).colorScheme.primaryVariant][index];
             },
           ),
           itemPainter: bubbleItemPainter,
-          options: ChartOptions(
-            valueAxisMax: 8,
-          ),
+          options: ChartOptions(valueAxisMax: 8),
           backgroundDecorations: [
             GridDecoration(
               itemAxisStep: 1,

@@ -106,7 +106,13 @@ class _LineChartScreenState extends State<LineChartScreen> {
                       maxBarWidth: _showLine ? 6.0 : 8.0,
                       color: Theme.of(context).colorScheme.secondary.withOpacity(0.4),
                     ),
-                    chartOptions: ChartOptions(),
+                    chartOptions: ChartOptions(
+                      valueAxisMax: _getMap().fold<double>(
+                              0,
+                              (previousValue, element) => max(previousValue,
+                                  element.reduce((prev, e) => BubbleValue<void>(max(prev.max, e.max))).max)) +
+                          2.0,
+                    ),
                     smoothCurves: _smoothPoints,
                     backgroundDecorations: [
                       GridDecoration(

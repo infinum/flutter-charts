@@ -23,7 +23,7 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
   int minItems = 6;
   bool _legendOnEnd = true;
   bool _legendOnBottom = true;
-  bool _stackItems = true;
+  bool _stackItems = false;
 
   @override
   void initState() {
@@ -134,7 +134,14 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),
                 ],
-                foregroundDecorations: [BorderDecoration()],
+                foregroundDecorations: [
+                  BorderDecoration(),
+                  ValueDecoration(
+                    alignment: Alignment.bottomCenter,
+                    textStyle:
+                        Theme.of(context).textTheme.button.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                  ),
+                ],
               ),
             ),
           ),
