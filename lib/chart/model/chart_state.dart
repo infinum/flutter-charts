@@ -237,7 +237,7 @@ class ChartItemsLerp {
           : _listLength.floor() >= index
               ? 0
               : t;
-      return a[index].animateTo(_emptyValue, _value);
+      return _emptyValue.animateFrom(a[index], _value);
     });
   }
 }

@@ -49,10 +49,14 @@ class ChartPainter extends CustomPainter {
     final _stack = 1 - state.behaviour._multiValueStacked;
     final _width = _itemWidth / max(1, state.items.length * _stack);
 
+    final _stackWidth = _width -
+        ((state?.itemOptions?.multiValuePadding?.horizontal ?? 0.0) / max(1, state.items.length * _stack)) * _stack;
+
     // Save, and translate the canvas so [0,0] is top left of the first item
+    final _itemPaint = Paint();
     canvas.save();
     canvas.translate(
-      (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left - _width,
+      (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left - _stackWidth,
       size.height - state.defaultPadding.bottom - state.defaultMargin.bottom,
     );
 
@@ -68,15 +72,22 @@ class ChartPainter extends CustomPainter {
         // Use item painter from ItemOptions to draw the item on the chart
         final _item = state.itemPainter(item, state);
 
+        final _shouldStack = (key == 0) ? _stack : 0.0;
         // Go to next value only if we are not in the stack, or if this is the first item in the stack
-        canvas.translate(_width * (key != 0 ? _stack : 1), 0.0);
+        canvas.translate(
+            ((state?.itemOptions?.multiValuePadding?.left ?? 0.0) * _shouldStack) +
+                _stackWidth * (key != 0 ? _stack : 1),
+            0.0);
 
         // Draw the item on selected position
         _item.draw(
           canvas,
-          Size(_width, -_size.height),
-          Paint()..color = state.itemOptions.getItemColor(_item.item, key),
+          Size(_stackWidth, -_size.height),
+          _itemPaint..color = state.itemOptions.getItemColor(_item.item, key),
         );
+
+        final _shouldStackLast = (key == state.items.length - 1) ? _stack : 0.0;
+        canvas.translate((state?.itemOptions?.multiValuePadding?.right ?? 0.0) * _shouldStackLast, 0.0);
       });
     });
 
@@ -90,5 +101,17 @@ class ChartPainter extends CustomPainter {
   @override
   bool shouldRepaint(ChartPainter oldDelegate) {
     return false;
+  }
+}
+
+class MoveTransformation extends GradientTransform {
+  MoveTransformation(this.x, this.y);
+
+  final double x;
+  final double y;
+
+  @override
+  Matrix4 transform(Rect bounds, {TextDirection textDirection}) {
+    return Matrix4.translationValues(x, y, 0.0);
   }
 }

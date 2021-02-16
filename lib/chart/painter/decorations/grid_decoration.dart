@@ -20,6 +20,7 @@ class GridDecoration extends DecorationPainter {
     this.verticalAxisValueFromIndex = defaultAxisValue,
     this.gridColor = Colors.grey,
     this.gridWidth = 1.0,
+    this.dashArray,
     this.itemAxisStep = 1,
     this.valueAxisStep = 1,
     this.horizontalLegendPosition = HorizontalLegendPosition.end,
@@ -37,6 +38,7 @@ class GridDecoration extends DecorationPainter {
       showTopValue: showTopHorizontalValue,
       horizontalAxisUnit: horizontalAxisUnit,
       gridColor: gridColor,
+      dashArray: dashArray,
       gridWidth: gridWidth,
       valueAxisStep: valueAxisStep,
       legendFontStyle: textStyle,
@@ -48,6 +50,7 @@ class GridDecoration extends DecorationPainter {
       showGrid: showVerticalGrid,
       endWithChart: endWithChart,
       gridColor: gridColor,
+      dashArray: dashArray,
       axisValueFromIndex: verticalAxisValueFromIndex,
       verticalLegendPosition: verticalLegendPosition,
       valuesPadding: verticalValuesPadding,
@@ -74,6 +77,7 @@ class GridDecoration extends DecorationPainter {
     this.gridWidth = 1.0,
     this.itemAxisStep = 1,
     this.valueAxisStep = 1,
+    this.dashArray,
     this.horizontalLegendPosition = HorizontalLegendPosition.end,
     this.verticalLegendPosition = VerticalLegendPosition.bottom,
     this.textStyle,
@@ -89,6 +93,7 @@ class GridDecoration extends DecorationPainter {
       horizontalAxisUnit: horizontalAxisUnit,
       valuesPadding: horizontalValuesPadding,
       gridColor: gridColor,
+      dashArray: dashArray,
       gridWidth: gridWidth,
       valueAxisStep: valueAxisStep,
       legendFontStyle: textStyle,
@@ -100,6 +105,7 @@ class GridDecoration extends DecorationPainter {
       showGrid: showVerticalGrid,
       endWithChart: _endWithChart,
       gridColor: gridColor,
+      dashArray: dashArray,
       axisValueFromIndex: verticalAxisValueFromIndex,
       valuesPadding: verticalValuesPadding,
       gridWidth: gridWidth,
@@ -126,6 +132,8 @@ class GridDecoration extends DecorationPainter {
   final bool showVerticalGrid;
   final bool showHorizontalGrid;
   final String horizontalAxisUnit;
+
+  final List<double> dashArray;
 
   HorizontalLegendPosition horizontalLegendPosition;
   VerticalLegendPosition verticalLegendPosition;
@@ -183,6 +191,7 @@ class GridDecoration extends DecorationPainter {
         horizontalLegendPosition: t < 0.5 ? horizontalLegendPosition : endValue.horizontalLegendPosition,
         verticalLegendPosition: t < 0.5 ? verticalLegendPosition : endValue.verticalLegendPosition,
         gridColor: Color.lerp(gridColor, endValue.gridColor, t),
+        dashArray: t < 0.5 ? dashArray : endValue.dashArray,
         gridWidth: lerpDouble(gridWidth, endValue.gridWidth, t),
         itemAxisStep: lerpDouble(itemAxisStep, endValue.itemAxisStep, t),
         valueAxisStep: lerpDouble(valueAxisStep, endValue.valueAxisStep, t),

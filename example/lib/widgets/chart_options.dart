@@ -14,7 +14,7 @@ class ChartOptionsWidget extends StatefulWidget {
   final VoidCallback onRefresh;
   final VoidCallback onAddItems;
   final VoidCallback onRemoveItems;
-  final List<ToggleItem> toggleItems;
+  final List<Widget> toggleItems;
 
   @override
   _ChartOptionsWidgetState createState() => _ChartOptionsWidgetState();

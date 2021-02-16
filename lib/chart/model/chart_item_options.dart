@@ -14,6 +14,7 @@ typedef ColorForIndex = Color Function(ChartItem item, int index);
 class ChartItemOptions {
   const ChartItemOptions({
     this.padding = EdgeInsets.zero,
+    this.multiValuePadding = EdgeInsets.zero,
     this.radius = BorderRadius.zero,
     this.color = Colors.red,
     this.maxBarWidth,
@@ -24,6 +25,7 @@ class ChartItemOptions {
 
   final BorderRadius radius;
   final EdgeInsets padding;
+  final EdgeInsets multiValuePadding;
 
   final Color color;
 
@@ -54,6 +56,7 @@ class ChartItemOptions {
   static ChartItemOptions lerp(ChartItemOptions a, ChartItemOptions b, double t) {
     return ChartItemOptions(
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      multiValuePadding: EdgeInsets.lerp(a.multiValuePadding, b.multiValuePadding, t),
       radius: BorderRadius.lerp(a.radius, b.radius, t),
       color: Color.lerp(a.color, b.color, t),
       maxBarWidth: lerpDouble(a.maxBarWidth, b.maxBarWidth, t),

@@ -25,6 +25,7 @@ class AnimatedChart<T> extends ImplicitlyAnimatedWidget {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<ChartState>('state', state));
     properties.add(DiagnosticsProperty<double>('height', height));
+    properties.add(DiagnosticsProperty<double>('width', width));
   }
 }
 

@@ -35,10 +35,8 @@ analyzer:
     sdk_version_async_exported_from_core: ignore
   exclude:
     - "bin/cache/**"
-    - "lib/util/localization/initialize_i18n/**"
     - "lib/assets.dart"
-    - "lib/**/*.g.dart"
-    - "lib/**/*.freezed.dart"
+    - "example/**"
 
 linter:
   rules:

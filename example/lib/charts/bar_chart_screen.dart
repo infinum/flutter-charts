@@ -129,6 +129,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   textStyle:
                       Theme.of(context).textTheme.button.copyWith(color: Theme.of(context).colorScheme.onPrimary),
                 ),
+                BorderDecoration(endWithChart: true)
               ],
             ),
           ),

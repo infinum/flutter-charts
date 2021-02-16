@@ -98,6 +98,7 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                 itemOptions: ChartItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     minBarWidth: 4.0,
+                    multiValuePadding: const EdgeInsets.symmetric(horizontal: 12.0),
                     // isTargetInclusive: true,
                     color: Theme.of(context).colorScheme.primary,
                     radius: const BorderRadius.vertical(

@@ -17,6 +17,11 @@ abstract class ItemPainter<T> {
   /// from [ChartPainter]
   void draw(Canvas canvas, Size size, Paint paint);
 
-  double itemWidth(Size size) => max(state.itemOptions.minBarWidth ?? 0.0,
-      min(state.itemOptions.maxBarWidth ?? double.infinity, size.width - state.itemOptions.padding.horizontal));
+  double itemWidth(Size size) {
+    final _size = (size.width - state.itemOptions.padding.horizontal).isNegative
+        ? size.width
+        : size.width - state.itemOptions.padding.horizontal;
+
+    return max(state.itemOptions.minBarWidth ?? 0.0, min(state.itemOptions.maxBarWidth ?? double.infinity, _size));
+  }
 }
