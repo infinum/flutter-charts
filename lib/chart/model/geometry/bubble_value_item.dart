@@ -5,7 +5,7 @@ class BubbleValue<T> extends ChartItem<T> {
   BubbleValue.withValue(T value, double max) : super(value, max, max);
 
   @override
-  BubbleValue<T> animateTo(ChartItem<T> endValue, double t) {
+  BubbleValue<T> animateTo<T>(ChartItem<T> endValue, double t) {
     return BubbleValue<T>.withValue(
       endValue.value,
       lerpDouble(this.max, endValue.max, t),

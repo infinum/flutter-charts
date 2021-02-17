@@ -1,7 +1,7 @@
 part of flutter_charts;
 
 /// Sparkline (Line graph) is considered to be just a decoration.
-/// You need to use [BarPainter] or [BubblePainter] in combination.
+/// You need to use [BarGeometryPainter] or [BubbleGeometryPainter] in combination.
 /// They can be transparent or be used to show values of the graph
 class SparkLineDecoration<T> extends DecorationPainter {
   SparkLineDecoration({
@@ -155,10 +155,12 @@ class SparkLineDecoration<T> extends DecorationPainter {
   bool isSameType(DecorationPainter other) {
     if (other is SparkLineDecoration) {
       if (id != null && other.id != null) {
-        return id == other.id;
+        return id == other.id && lineKey == other.lineKey;
       }
+
+      return lineKey == other.lineKey;
     }
 
-    return runtimeType == other.runtimeType;
+    return false;
   }
 }

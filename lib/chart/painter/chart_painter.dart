@@ -2,7 +2,7 @@ part of flutter_charts;
 
 /// Custom painter for charts
 class ChartPainter extends CustomPainter {
-  ChartPainter(this.state) : assert(state.itemPainter != null, 'You need to provide item painter!');
+  ChartPainter(this.state) : assert(state.geometryPainter != null, 'You need to provide item painter!');
 
   final ChartState state;
 
@@ -70,7 +70,7 @@ class ChartPainter extends CustomPainter {
         final item = value[index];
 
         // Use item painter from ItemOptions to draw the item on the chart
-        final _item = state.itemPainter(item, state);
+        final _item = state.geometryPainter(item, state);
 
         final _shouldStack = (key == 0) ? _stack : 0.0;
         // Go to next value only if we are not in the stack, or if this is the first item in the stack

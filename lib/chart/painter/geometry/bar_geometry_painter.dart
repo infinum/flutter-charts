@@ -22,8 +22,8 @@ part of flutter_charts;
 ///    │           │
 ///    └───────────┘ --> 0 or [ChartOptions.valueAxisMin]
 ///
-class BarPainter<T> extends ItemPainter<T> {
-  BarPainter(ChartItem<T> item, ChartState state) : super(item, state);
+class BarGeometryPainter<T> extends GeometryPainter<T> {
+  BarGeometryPainter(ChartItem<T> item, ChartState state) : super(item, state);
 
   @override
   void draw(Canvas canvas, Size size, Paint paint) {

@@ -1,14 +1,14 @@
 part of flutter_charts;
 
-/// Item painter, use [barItemPainter] or [barItemPainter].
-/// Custom painter can also be added by extending [ItemPainter]
-typedef ChartItemPainter<T> = ItemPainter<T> Function(ChartItem<T> item, ChartState state);
+/// Item painter, use [barPainter] or [barPainter].
+/// Custom painter can also be added by extending [GeometryPainter]
+typedef ChartGeometryPainter<T> = GeometryPainter<T> Function(ChartItem<T> item, ChartState state);
 
 /// Bar painter
-ItemPainter<T> barItemPainter<T>(ChartItem<T> item, ChartState<T> state) => BarPainter<T>(item, state);
+GeometryPainter<T> barPainter<T>(ChartItem<T> item, ChartState<T> state) => BarGeometryPainter<T>(item, state);
 
 /// Bubble painter
-ItemPainter<T> bubbleItemPainter<T>(ChartItem<T> item, ChartState<T> state) => BubblePainter<T>(item, state);
+GeometryPainter<T> bubblePainter<T>(ChartItem<T> item, ChartState<T> state) => BubbleGeometryPainter<T>(item, state);
 
 /// Main state of the charts. Painter will use this as state and it will format chart depending
 /// on options.
@@ -29,7 +29,7 @@ class ChartState<T> {
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const <DecorationPainter>[],
     this.foregroundDecorations = const <DecorationPainter>[],
-    this.itemPainter = barItemPainter,
+    this.geometryPainter = barPainter,
   })  : assert(items.isNotEmpty, 'No items!'),
         assert((options?.padding?.vertical ?? 0.0) == 0.0, 'Chart padding cannot be vertical!'),
         minValue = _getMinValue(
@@ -51,7 +51,7 @@ class ChartState<T> {
     ChartBehaviour behaviour = const ChartBehaviour(),
     List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
     List<DecorationPainter> foregroundDecorations = const <DecorationPainter>[],
-    ChartItemPainter itemPainter = barItemPainter,
+    ChartGeometryPainter geometryPainter = barPainter,
   }) =>
       ChartState<T>(
         [values],
@@ -60,7 +60,7 @@ class ChartState<T> {
         behaviour: behaviour,
         foregroundDecorations: foregroundDecorations,
         backgroundDecorations: backgroundDecorations,
-        itemPainter: itemPainter,
+        geometryPainter: geometryPainter,
       );
 
   ChartState._lerp(
@@ -74,20 +74,26 @@ class ChartState<T> {
     this.minValue,
     this.defaultMargin,
     this.defaultPadding,
-    this.itemPainter = barItemPainter,
+    this.geometryPainter = barPainter,
   }) {
     _initDecorations();
   }
 
+  /// Data
   final List<List<ChartItem<T>>> items;
 
-  final ChartItemPainter itemPainter;
+  /// Geometry
+  final ChartGeometryPainter geometryPainter;
+
+  /// Theme
   final ChartOptions options;
   final ChartItemOptions itemOptions;
   final ChartBehaviour behaviour;
+  // Theme Decorations
   final List<DecorationPainter> backgroundDecorations;
   final List<DecorationPainter> foregroundDecorations;
 
+  /// Scale
   final double minValue;
   final double maxValue;
 
@@ -181,11 +187,12 @@ class ChartState<T> {
       defaultPadding: EdgeInsets.lerp(a.defaultPadding, b.defaultPadding, t),
 
       // Lerp missing
-      itemPainter: t < 0.5 ? a.itemPainter : b.itemPainter,
+      geometryPainter: t < 0.5 ? a.geometryPainter : b.geometryPainter,
     );
   }
 }
 
+/// Lerp items in the charts
 class ChartItemsLerp {
   List<List<ChartItem<T>>> lerpValues<T>(List<List<ChartItem<T>>> a, List<List<ChartItem<T>>> b, double t) {
     /// Get list length in animation, we will add the items in steps.
@@ -210,7 +217,7 @@ class ChartItemsLerp {
       // If old list and new list have value at [index], then just animate from,
       // old list value to the new value
       if (index < a.length && index < b.length) {
-        return b[index].animateFrom(a[index], t);
+        return b[index].animateFrom<T>(a[index], t);
       }
 
       // If new list is larger, then check if item in the list is not empty
@@ -223,7 +230,7 @@ class ChartItemsLerp {
         // If item is appearing then it's time to animate is
         // from time it first showed to end of the animation.
         final double _value = _listLength.floor() == index ? ((_listLength - _listLength.floor()) * t) : t;
-        return b[index].animateFrom(_emptyValue, _value);
+        return b[index].animateFrom<T>(_emptyValue, _value);
       }
 
       // In case that our old list is bigger, and item is not empty
@@ -237,7 +244,7 @@ class ChartItemsLerp {
           : _listLength.floor() >= index
               ? 0
               : t;
-      return _emptyValue.animateFrom(a[index], _value);
+      return a[index].animateTo<T>(_emptyValue, _value);
     });
   }
 }

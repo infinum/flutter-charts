@@ -9,6 +9,12 @@ typedef ColorForIndex = Color Function(ChartItem item, int index);
 /// [radius] BorderRadius for drawn chart bar items
 /// [color] Color of bar item
 ///
+/// [maxBarWidth] - Maximum width that bar can be, this width will be applied if there is room on the chart
+/// [minBarWidth] - Minimum width that bar has to be, this will ignore padding of items if needed
+///
+/// [colorForValue] - Set item color based on value of the item
+/// [colorForKey] - Set item color based on list it came from
+///
 /// You can define target values they have ability to color your chart item
 /// different color if they missed the target.
 class ChartItemOptions {

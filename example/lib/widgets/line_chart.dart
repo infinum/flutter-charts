@@ -69,7 +69,7 @@ class LineChart<T> extends StatelessWidget {
       state: ChartState<T>(
         _mappedValues,
         options: chartOptions,
-        itemPainter: bubbleItemPainter,
+        geometryPainter: bubblePainter,
         itemOptions: chartItemOptions,
         foregroundDecorations: [
           SparkLineDecoration<T>(

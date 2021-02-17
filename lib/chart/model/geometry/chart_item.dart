@@ -9,9 +9,9 @@ abstract class ChartItem<T> {
 
   bool get isEmpty => (max ?? 0) == 0 && (min ?? 0) == 0;
 
-  ChartItem<T> animateTo(ChartItem<T> endValue, double t);
+  ChartItem<T> animateTo<T>(ChartItem<T> endValue, double t);
 
-  ChartItem<T> animateFrom(ChartItem<T> startValue, double t) {
+  ChartItem<T> animateFrom<T>(ChartItem<T> startValue, double t) {
     return animateTo(startValue, 1 - t);
   }
 

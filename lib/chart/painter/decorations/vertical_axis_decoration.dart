@@ -2,8 +2,6 @@ part of flutter_charts;
 
 typedef AxisValueFromIndex = String Function(int index);
 
-String defaultAxisValue(int index) => '$index';
-
 enum VerticalLegendPosition {
   top,
   bottom,
@@ -147,6 +145,11 @@ class VerticalAxisDecoration extends DecorationPainter {
       bottom: _isBottom ? _value : 0.0,
       top: !_isBottom ? _value : 0.0,
     );
+  }
+
+  @override
+  EdgeInsets paddingNeeded() {
+    return valuesPadding ?? EdgeInsets.zero;
   }
 
   @override

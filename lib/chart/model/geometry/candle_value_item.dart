@@ -5,7 +5,7 @@ class CandleValue<T> extends ChartItem<T> {
   CandleValue.withValue(T value, double min, double max) : super(value, min, max);
 
   @override
-  CandleValue<T> animateTo(ChartItem<T> endValue, double t) {
+  CandleValue<T> animateTo<T>(ChartItem<T> endValue, double t) {
     return CandleValue<T>.withValue(
       endValue?.value,
       lerpDouble(this.min, endValue.min, t),

@@ -90,7 +90,7 @@ class ShowList extends StatelessWidget {
                     color: Theme.of(context).accentColor,
                     maxBarWidth: 1.0,
                   ),
-                  itemPainter: bubbleItemPainter,
+                  geometryPainter: bubblePainter,
                   options: ChartOptions(
                     valueAxisMax: 9,
                   ),
@@ -145,7 +145,7 @@ class ShowList extends StatelessWidget {
                         targetLineColor: Theme.of(context).colorScheme.secondary,
                       ),
                       BorderDecoration(
-                        width: 1.5,
+                        borderWidth: 1.5,
                         color: Theme.of(context).primaryColorDark,
                       ),
                     ]),

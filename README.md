@@ -1,4 +1,5 @@
-# Flutter charts
+# ChArt
+![chart_image]
 
 Customizable charts library for flutter.
 
@@ -63,7 +64,7 @@ Code above will draw this:
 #### Line Chart
 To turn any chart to line chart we just need to add `SparklineDecoration` to `foregroundDecorations` or `backgroundDecorations`. This will add decoration line on top/bottom of the chart.
 
-By replacing the `BarValue` to `BubbleValue` and changing `itemPainter` to `bubblePainter` we can show nicer line chart with small bubbles on data points:
+By replacing the `BarValue` to `BubbleValue` and changing `geometryPainter` to `bubblePainter` we can show nicer line chart with small bubbles on data points:
 ```dart
   @override
   Widget build(BuildContext context) {
@@ -75,15 +76,15 @@ By replacing the `BarValue` to `BubbleValue` and changing `itemPainter` to `bubb
           [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
           itemOptions: ChartItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 2.0),
-            /// REMOVED: Radius is ignored when using [bubbleItemPainter] so we can remove it
+            /// REMOVED: Radius is ignored when using [bubblePainter] so we can remove it
             // radius: BorderRadius.vertical(top: Radius.circular(12.0)),
 
             /// ADDED: Make [BubbleValue] items smaller
             maxBarWidth: 4.0,
           ),
 
-          /// ADDED: Add item painter for BubbleValue ([bubbleItemPainter])
-          itemPainter: bubbleItemPainter,
+          /// ADDED: Add item painter for BubbleValue ([bubblePainter])
+          geometryPainter: bubblePainter,
           options: ChartOptions(valueAxisMax: 8),
           backgroundDecorations: [
             GridDecoration(
@@ -136,7 +137,7 @@ To turn any chart to multi value we need to use `ChartState` instead of `ChartSt
               return [Theme.of(context).colorScheme.primary, Theme.of(context).colorScheme.primaryVariant][index];
             },
           ),
-          itemPainter: bubbleItemPainter,
+          geometryPainter: bubblePainter,
           options: ChartOptions(valueAxisMax: 8),
           backgroundDecorations: [
             GridDecoration(
@@ -239,6 +240,7 @@ Bar chart with area [example code](example/lib/charts/bar_chart_screen.dart)
 Scrollable bar chart [example code](example/lib/charts/scrollable_chart_screen.dart)
 ![scrollable_chart]
 
+[chart_image]: ./assets/chart_image.png
 [simple_chart]: ./assets/simple_chart.png
 [simple_line_chart]: ./assets/simple_line_chart.png
 [simple_multi_line_chart]: ./assets/simple_multi_line_chart.png

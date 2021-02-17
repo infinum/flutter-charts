@@ -3,15 +3,15 @@ part of flutter_charts;
 /// Paints border around the whole chart
 class BorderDecoration extends DecorationPainter {
   BorderDecoration({
-    double width,
-    EdgeInsets borderWidth,
+    double borderWidth,
+    EdgeInsets sidesWidth,
     this.borderPadding = EdgeInsets.zero,
     this.color = Colors.black,
     bool endWithChart = false,
-  })  : assert(width == null || borderWidth == null, 'Can\'t use `borderWidth` and `width`!'),
+  })  : assert(borderWidth == null || sidesWidth == null, 'Can\'t use `borderWidth` and `width`!'),
         assert(endWithChart || borderPadding == EdgeInsets.zero),
         _endWithChart = endWithChart ? 1.0 : 0.0,
-        _borderWidth = borderWidth ?? EdgeInsets.all(width ?? 2.0);
+        _borderWidth = sidesWidth ?? EdgeInsets.all(borderWidth ?? 2.0);
 
   BorderDecoration._lerp({
     EdgeInsets borderWidth,
@@ -21,9 +21,10 @@ class BorderDecoration extends DecorationPainter {
   })  : _endWithChart = endWithChart,
         _borderWidth = borderWidth;
 
-  final EdgeInsets _borderWidth;
   final EdgeInsets borderPadding;
   final Color color;
+
+  final EdgeInsets _borderWidth;
   final double _endWithChart;
 
   @override
@@ -72,7 +73,8 @@ class BorderDecoration extends DecorationPainter {
       return;
     }
 
-    canvas.drawLine(p1, p2, p);
+    // canvas.drawLine(p1, p2, p);
+    canvas.drawRect(Rect.fromPoints(p1, p2), p);
   }
 
   @override

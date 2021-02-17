@@ -18,6 +18,7 @@ class GridDecoration extends DecorationPainter {
     this.horizontalValuesPadding,
     this.horizontalAxisUnit,
     this.verticalAxisValueFromIndex = defaultAxisValue,
+    this.horizontalAxisValueFromValue = defaultAxisValue,
     this.gridColor = Colors.grey,
     this.gridWidth = 1.0,
     this.dashArray,
@@ -41,6 +42,7 @@ class GridDecoration extends DecorationPainter {
       dashArray: dashArray,
       gridWidth: gridWidth,
       valueAxisStep: valueAxisStep,
+      axisValue: horizontalAxisValueFromValue,
       legendFontStyle: textStyle,
       horizontalLegendPosition: horizontalLegendPosition,
     );
@@ -73,6 +75,7 @@ class GridDecoration extends DecorationPainter {
     this.horizontalValuesPadding,
     this.horizontalAxisUnit,
     this.verticalAxisValueFromIndex = defaultAxisValue,
+    this.horizontalAxisValueFromValue = defaultAxisValue,
     this.gridColor = Colors.grey,
     this.gridWidth = 1.0,
     this.itemAxisStep = 1,
@@ -94,6 +97,7 @@ class GridDecoration extends DecorationPainter {
       valuesPadding: horizontalValuesPadding,
       gridColor: gridColor,
       dashArray: dashArray,
+      axisValue: horizontalAxisValueFromValue,
       gridWidth: gridWidth,
       valueAxisStep: valueAxisStep,
       legendFontStyle: textStyle,
@@ -142,6 +146,7 @@ class GridDecoration extends DecorationPainter {
   VerticalAxisDecoration _verticalAxisDecoration;
 
   final AxisValueFromIndex verticalAxisValueFromIndex;
+  final AxisValueFromValue horizontalAxisValueFromValue;
 
   final Color gridColor;
   final double gridWidth;
@@ -188,6 +193,7 @@ class GridDecoration extends DecorationPainter {
         showHorizontalGrid: t < 0.5 ? showHorizontalGrid : endValue.showHorizontalGrid,
         horizontalAxisUnit: t < 0.5 ? horizontalAxisUnit : endValue.horizontalAxisUnit,
         verticalAxisValueFromIndex: t < 0.5 ? verticalAxisValueFromIndex : endValue.verticalAxisValueFromIndex,
+        horizontalAxisValueFromValue: t < 0.5 ? horizontalAxisValueFromValue : endValue.horizontalAxisValueFromValue,
         horizontalLegendPosition: t < 0.5 ? horizontalLegendPosition : endValue.horizontalLegendPosition,
         verticalLegendPosition: t < 0.5 ? verticalLegendPosition : endValue.verticalLegendPosition,
         gridColor: Color.lerp(gridColor, endValue.gridColor, t),

@@ -2,6 +2,9 @@ part of flutter_charts;
 
 enum HorizontalLegendPosition { start, end }
 
+typedef AxisValueFromValue = String Function(int value);
+String defaultAxisValue(int index) => '$index';
+
 class HorizontalAxisDecoration extends DecorationPainter {
   HorizontalAxisDecoration({
     this.showValues = false,
@@ -14,6 +17,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.gridWidth = 1.0,
     this.horizontalAxisUnit,
     this.dashArray,
+    this.axisValue = defaultAxisValue,
     this.valueAxisStep = 1.0,
     this.horizontalLegendPosition = HorizontalLegendPosition.end,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
@@ -31,6 +35,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.horizontalAxisUnit,
     this.valueAxisStep = 1.0,
     this.dashArray,
+    this.axisValue = defaultAxisValue,
     this.horizontalLegendPosition = HorizontalLegendPosition.end,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
   }) : _endWithChart = endWithChart;
@@ -44,6 +49,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
   final EdgeInsets valuesPadding;
   final bool showTopValue;
   final HorizontalLegendPosition horizontalLegendPosition;
+  final AxisValueFromValue axisValue;
 
   final String horizontalAxisUnit;
 
@@ -60,7 +66,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
   void initDecoration(ChartState state) {
     super.initDecoration(state);
     if (showValues) {
-      _longestText = state.maxValue.toStringAsFixed(0);
+      _longestText = axisValue.call(state.maxValue.toInt()).toString();
 
       if (_longestText.length < (horizontalAxisUnit?.length ?? 0.0)) {
         _longestText = horizontalAxisUnit;
@@ -79,14 +85,14 @@ class HorizontalAxisDecoration extends DecorationPainter {
     canvas.translate(0.0 + state.defaultMargin.left, size.height + state.defaultMargin.top);
 
     final _maxValue = state.maxValue - state.minValue;
-    final _size = (state.defaultPadding * _endWithChart).deflateSize(size);
+    final _size = size;
     final scale = _size.height / _maxValue;
 
     final gridPath = Path();
 
     for (int i = 0; i <= _maxValue / valueAxisStep; i++) {
       if (showGrid) {
-        gridPath.moveTo(0.0, -valueAxisStep * i * scale + gridWidth / 2);
+        gridPath.moveTo(_endWithChart * state.defaultPadding.left, -valueAxisStep * i * scale + gridWidth / 2);
         gridPath.lineTo(_size.width, -valueAxisStep * i * scale + gridWidth / 2);
       }
 
@@ -99,7 +105,9 @@ class HorizontalAxisDecoration extends DecorationPainter {
       if (!showTopValue && i == _maxValue / valueAxisStep) {
         _text = null;
       } else {
-        _text = '${(valueAxisStep * i + state.minValue).toInt()}';
+        final _defaultValue = (valueAxisStep * i + state.minValue).toInt();
+        final _value = axisValue.call(_defaultValue);
+        _text = _value.toString();
       }
 
       if (_text == null) {
@@ -203,6 +211,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
         legendFontStyle: TextStyle.lerp(legendFontStyle, endValue.legendFontStyle, t),
         horizontalAxisUnit: t > 0.5 ? endValue.horizontalAxisUnit : horizontalAxisUnit,
         horizontalLegendPosition: t > 0.5 ? endValue.horizontalLegendPosition : horizontalLegendPosition,
+        axisValue: t > 0.5 ? endValue.axisValue : axisValue,
         showGrid: t > 0.5 ? endValue.showGrid : showGrid,
       );
     }

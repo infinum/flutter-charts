@@ -55,7 +55,7 @@ class ChartTypes extends StatelessWidget {
               child: Chart(
                 state: ChartState<void>.fromList(
                   [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
-                  itemPainter: bubbleItemPainter,
+                  geometryPainter: bubblePainter,
                   itemOptions: ChartItemOptions(
                     color: Theme.of(context).accentColor,
                     maxBarWidth: 8.0,
