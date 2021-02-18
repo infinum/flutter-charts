@@ -57,7 +57,7 @@ class ChartPainter extends CustomPainter {
     canvas.save();
     canvas.translate(
       (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left - _stackWidth,
-      size.height - state.defaultPadding.bottom - state.defaultMargin.bottom,
+      size.height - (state.defaultMargin.bottom + state.defaultPadding.bottom),
     );
 
     List.generate(_listSize, (index) {

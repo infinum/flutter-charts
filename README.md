@@ -42,8 +42,8 @@ This is how you can start, this is simple bar chart with grid decoration:
           options: ChartOptions(valueAxisMax: 8),
           backgroundDecorations: [
             GridDecoration(
-              itemAxisStep: 1,
-              valueAxisStep: 1,
+              verticalAxisStep: 1,
+              horizontalAxisStep: 1,
               gridColor: Theme.of(context).dividerColor,
             ),
           ],
@@ -88,8 +88,8 @@ By replacing the `BarValue` to `BubbleValue` and changing `geometryPainter` to `
           options: ChartOptions(valueAxisMax: 8),
           backgroundDecorations: [
             GridDecoration(
-              itemAxisStep: 1,
-              valueAxisStep: 1,
+              verticalAxisStep: 1,
+              horizontalAxisStep: 1,
               gridColor: Theme.of(context).dividerColor,
             ),
           ],
@@ -141,8 +141,8 @@ To turn any chart to multi value we need to use `ChartState` instead of `ChartSt
           options: ChartOptions(valueAxisMax: 8),
           backgroundDecorations: [
             GridDecoration(
-              itemAxisStep: 1,
-              valueAxisStep: 1,
+              verticalAxisStep: 1,
+              horizontalAxisStep: 1,
               gridColor: Theme.of(context).dividerColor,
             ),
           ],

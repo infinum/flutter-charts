@@ -41,7 +41,7 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
     }
     // If item is empty, or it's max value is below chart's minValue then don't draw it.
     // minValue can be below 0, this will just ensure that animation is drawn correctly.
-    if (item.isEmpty || item.max < state.data.minValue) {
+    if (item == null || item.isEmpty || item.max < state.data.minValue) {
       return;
     }
 

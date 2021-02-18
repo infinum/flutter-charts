@@ -24,23 +24,20 @@ GeometryPainter<T> bubblePainter<T>(ChartItem<T> item, ChartState<T> state) => B
 class ChartState<T> {
   ChartState(
     this.data, {
-    this.options = const ChartOptions(),
     this.itemOptions = const ChartItemOptions(),
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const <DecorationPainter>[],
     this.foregroundDecorations = const <DecorationPainter>[],
     this.geometryPainter = barPainter,
-  })  : assert(data.isNotEmpty, 'No items!'),
-        assert((options?.padding?.vertical ?? 0.0) == 0.0, 'Chart padding cannot be vertical!') {
+  }) : assert(data.isNotEmpty, 'No items!') {
     /// Set default padding and margin, decorations padding and margins will be added to this value
-    defaultPadding = options?.padding ?? EdgeInsets.zero;
+    defaultPadding = EdgeInsets.zero;
     defaultMargin = EdgeInsets.zero;
     _setUpDecorations();
   }
 
   ChartState._lerp(
     this.data, {
-    this.options = const ChartOptions(),
     this.itemOptions = const ChartItemOptions(),
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const [],
@@ -59,7 +56,6 @@ class ChartState<T> {
   final ChartGeometryPainter geometryPainter;
 
   /// Theme
-  final ChartOptions options;
   final ChartItemOptions itemOptions;
   final ChartBehaviour behaviour;
   // Theme Decorations
@@ -106,7 +102,6 @@ class ChartState<T> {
   static ChartState<T> lerp<T>(ChartState<T> a, ChartState<T> b, double t) {
     return ChartState<T>._lerp(
       ChartData.lerp(a.data, b.data, t),
-      options: ChartOptions.lerp(a.options, b.options, t),
       behaviour: ChartBehaviour.lerp(a.behaviour, b.behaviour, t),
       itemOptions: ChartItemOptions.lerp(a.itemOptions, b.itemOptions, t),
       // Find background matches, if found, then animate to them, else just show them.

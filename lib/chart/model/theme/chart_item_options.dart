@@ -44,6 +44,10 @@ class ChartItemOptions {
   final ColorForIndex colorForKey;
 
   Color getItemColor(ChartItem item, int index) {
+    if (item == null) {
+      return color;
+    }
+
     if (colorForKey != null) {
       return colorForKey(item, index);
     }

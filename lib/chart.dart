@@ -23,7 +23,6 @@ part 'chart/model/geometry/chart_item.dart';
 /// Theme
 part 'chart/model/theme/chart_behaviour.dart';
 part 'chart/model/theme/chart_item_options.dart';
-part 'chart/model/theme/chart_options.dart';
 
 /// Painters
 part 'chart/painter/chart_painter.dart';

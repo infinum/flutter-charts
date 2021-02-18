@@ -5,7 +5,6 @@ part of flutter_charts;
 /// They can be transparent or be used to show values of the graph
 class SparkLineDecoration<T> extends DecorationPainter {
   SparkLineDecoration({
-    this.items,
     this.id,
     this.fill = false,
     bool smoothPoints = false,
@@ -13,11 +12,10 @@ class SparkLineDecoration<T> extends DecorationPainter {
     this.lineColor = Colors.red,
     this.startPosition = 0.5,
     this.gradient,
-    this.lineKey = 0,
+    this.lineArrayIndex = 0,
   }) : _smoothPoints = smoothPoints ? 1.0 : 0.0;
 
   SparkLineDecoration._lerp({
-    this.items,
     this.id,
     this.fill = false,
     double smoothPoints = 0.0,
@@ -25,7 +23,7 @@ class SparkLineDecoration<T> extends DecorationPainter {
     this.lineColor = Colors.red,
     this.startPosition = 0.5,
     this.gradient,
-    this.lineKey = 0,
+    this.lineArrayIndex = 0,
   }) : _smoothPoints = smoothPoints;
 
   final bool fill;
@@ -41,7 +39,7 @@ class SparkLineDecoration<T> extends DecorationPainter {
   final double startPosition;
   final Gradient gradient;
 
-  final int lineKey;
+  final int lineArrayIndex;
 
   List<List<ChartItem<T>>> items;
 
@@ -52,7 +50,7 @@ class SparkLineDecoration<T> extends DecorationPainter {
     }
 
     assert(items != null, 'No matching state for sparkline found!\nCheck if type `T` is set properly.');
-    assert(items.length > lineKey, 'Line key is not in the list!\nCheck the `lineKey` you are passing.');
+    assert(items.length > lineArrayIndex, 'Line key is not in the list!\nCheck the `lineKey` you are passing.');
   }
 
   @override
@@ -76,14 +74,14 @@ class SparkLineDecoration<T> extends DecorationPainter {
       _paint.shader = gradient.createShader(Rect.fromPoints(Offset.zero, Offset(_size.width, -_size.height)));
     }
 
-    items[lineKey].asMap().forEach((key, value) {
-      if (fill && items[lineKey].first == value) {
-        _positions.add(Offset(_size.width * (key / items[lineKey].length) + _itemWidth * startPosition, 0.0));
+    items[lineArrayIndex].asMap().forEach((key, value) {
+      if (fill && items[lineArrayIndex].first == value) {
+        _positions.add(Offset(_size.width * (key / _listSize) + _itemWidth * startPosition, 0.0));
       }
-      _positions.add(Offset(_size.width * (key / items[lineKey].length) + _itemWidth * startPosition,
-          -(value.max - state.data.minValue) * scale));
-      if (fill && items[lineKey].last == value) {
-        _positions.add(Offset(_size.width * (key / items[lineKey].length) + _itemWidth * startPosition, 0.0));
+      _positions.add(Offset(_size.width * (key / _listSize) + _itemWidth * startPosition,
+          -((value?.max ?? 0.0) - state.data.minValue) * scale));
+      if (fill && items[lineArrayIndex].last == value) {
+        _positions.add(Offset(_size.width * (key / _listSize) + _itemWidth * startPosition, 0.0));
       }
     });
 
@@ -135,16 +133,15 @@ class SparkLineDecoration<T> extends DecorationPainter {
   @override
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
     if (endValue is SparkLineDecoration<T>) {
-      return SparkLineDecoration._lerp(
+      return SparkLineDecoration<T>._lerp(
         fill: t > 0.5 ? endValue.fill : fill,
         id: endValue.id,
         smoothPoints: lerpDouble(_smoothPoints, endValue._smoothPoints, t),
         lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t),
         startPosition: lerpDouble(startPosition, endValue.startPosition, t),
         lineColor: Color.lerp(lineColor, endValue.lineColor, t),
-        items: ChartItemsLerp().lerpValues<T>(items, endValue.items, t),
         gradient: Gradient.lerp(gradient, endValue.gradient, t),
-        lineKey: endValue.lineKey,
+        lineArrayIndex: endValue.lineArrayIndex,
       );
     }
 
@@ -155,10 +152,10 @@ class SparkLineDecoration<T> extends DecorationPainter {
   bool isSameType(DecorationPainter other) {
     if (other is SparkLineDecoration) {
       if (id != null && other.id != null) {
-        return id == other.id && lineKey == other.lineKey;
+        return id == other.id && lineArrayIndex == other.lineArrayIndex;
       }
 
-      return lineKey == other.lineKey;
+      return lineArrayIndex == other.lineArrayIndex;
     }
 
     return false;

@@ -5,43 +5,43 @@ enum DataStrategy {
   stack,
 }
 
-/// [valueAxisMin] - Min value that has to be displayed on the chart, if data contains value that is
-/// lower than [valueAxisMin] in that case [valueAxisMin] is ignored and actual min value is shown.
+/// [verticalAxisMin] - Min value that has to be displayed on the chart, if data contains value that is
+/// lower than [verticalAxisMin] in that case [verticalAxisMin] is ignored and actual min value is shown.
 ///
-/// [valueAxisMax] - Same as [valueAxisMin] but for max value.
+/// [verticalAxisMax] - Same as [verticalAxisMin] but for max value.
 class ChartData<T> {
   ChartData(
     this._items, {
     this.strategy = DataStrategy.none,
-    this.valueAxisMax,
+    this.verticalAxisMax,
     double valueAxisMaxOver,
-    this.valueAxisMin,
+    this.verticalAxisMin,
   })  : _strategyChange = strategy != DataStrategy.none ? 1.0 : 0.0,
         minValue = _getMinValue(
-            formatDataStrategy(_items, strategy != DataStrategy.none ? 1.0 : 0.0)
+            formatDataStrategy(_items, strategy)
                 .fold(<ChartItem<T>>[], (List<ChartItem<T>> list, element) => list..addAll(element)).toList(),
-            valueAxisMin),
+            verticalAxisMin),
         maxValue = _getMaxValue(
-                formatDataStrategy(_items, strategy != DataStrategy.none ? 1.0 : 0.0)
+                formatDataStrategy(_items, strategy)
                     .fold(<ChartItem<T>>[], (List<ChartItem<T>> list, element) => list..addAll(element)).toList(),
-                valueAxisMax) +
+                verticalAxisMax) +
             (valueAxisMaxOver ?? 0.0);
 
   factory ChartData.fromList(
     List<ChartItem<T>> items, {
     DataStrategy strategy = DataStrategy.none,
-    double valueAxisMax,
-    double valueAxisMin,
+    double axisMax,
+    double axisMin,
   }) {
-    return ChartData([items], strategy: strategy, valueAxisMin: valueAxisMin, valueAxisMax: valueAxisMax);
+    return ChartData([items], strategy: strategy, verticalAxisMin: axisMin, verticalAxisMax: axisMax);
   }
 
   ChartData._lerp(
     this._items,
     this._strategyChange, {
     this.strategy = DataStrategy.none,
-    this.valueAxisMax,
-    this.valueAxisMin,
+    this.verticalAxisMax,
+    this.verticalAxisMin,
     this.minValue,
     this.maxValue,
   });
@@ -54,37 +54,55 @@ class ChartData<T> {
   final double minValue;
   final double maxValue;
 
-  /// Max value that chart should show, in case that [valueAxisMax] is bellow
+  /// Max value that chart should show, in case that [verticalAxisMax] is bellow
   /// the value of value passed with data in the chart this will be ignored.
-  final double valueAxisMax;
+  final double verticalAxisMax;
 
   /// Min value of the chart, anything below that will not be shown and chart
-  /// x axis will start from [valueAxisMin] (default: 0)
-  final double valueAxisMin;
+  /// x axis will start from [verticalAxisMin] (default: 0)
+  final double verticalAxisMin;
 
   List<List<ChartItem<T>>> get items {
-    return formatDataStrategy(_items, _strategyChange);
+    return formatDataStrategy(_items, strategy, _strategyChange);
   }
 
-  static List<List<ChartItem<T>>> formatDataStrategy<T>(List<List<ChartItem<T>>> items, double strategy) {
-    final _incrementList = <ChartItem<T>>[];
-    return items.reversed
-        .map((entry) {
-          return entry.asMap().entries.map((e) {
-            if (_incrementList.length > e.key) {
-              final _newValue = e.value + _incrementList[e.key];
-              _incrementList[e.key] = (_incrementList[e.key] + e.value) * strategy;
-              return _newValue;
-            } else {
-              _incrementList.add(e.value * strategy);
-            }
+  static List<List<ChartItem<T>>> formatDataStrategy<T>(
+    List<List<ChartItem<T>>> items,
+    DataStrategy strategy, [
+    double _stackValue,
+  ]) {
+    switch (strategy) {
+      case DataStrategy.none:
+      case DataStrategy.stack:
+        _stackValue ??= strategy != DataStrategy.none ? 1.0 : 0.0;
 
-            return e.value;
-          }).toList();
-        })
-        .toList()
-        .reversed
-        .toList();
+        final _incrementList = <ChartItem<T>>[];
+        return items.reversed
+            .map((entry) {
+              return entry.asMap().entries.map((e) {
+                if (e.value == null) {
+                  return e.value;
+                }
+
+                if (_incrementList.length > e.key) {
+                  final _newValue = e.value + _incrementList[e.key];
+                  _incrementList[e.key] = (_incrementList[e.key] + e.value) * _stackValue;
+                  return _newValue;
+                } else {
+                  _incrementList.add(e.value * _stackValue);
+                }
+
+                return e.value;
+              }).toList();
+            })
+            .toList()
+            .reversed
+            .toList();
+
+      // Strategy not handled, return items
+      default:
+        return items;
+    }
   }
 
   bool get isEmpty => _items.isEmpty;
@@ -94,17 +112,17 @@ class ChartData<T> {
   int get stackSize => _items.length;
 
   /// Get max value of the chart
-  /// Max value is max data item from [items] or [ChartOptions.valueAxisMax]
+  /// Max value is max data item from [items] or [ChartOptions.verticalAxisMax]
   static double _getMaxValue<T>(List<ChartItem<T>> items, double valueAxisMax) {
-    return max(valueAxisMax ?? 0.0, items.map((e) => e.max ?? 0.0).reduce(max));
+    return max(valueAxisMax ?? 0.0, items.map((e) => e?.max ?? 0.0).reduce(max));
   }
 
   /// Get min value of the chart
-  /// Min value is min data item from [items] or [ChartOptions.valueAxisMin]
+  /// Min value is min data item from [items] or [ChartOptions.verticalAxisMin]
   static double _getMinValue<T>(List<ChartItem<T>> items, double valueAxisMin) {
     final _minItems = items
-        .where((e) => (e.min != null && e.min != 0.0) || (e.min == null && e.max != 0.0))
-        .map((e) => e.min ?? e.max ?? double.infinity);
+        .where((e) => (e?.min != null && e.min != 0.0) || (e?.min == null && e?.max != 0.0))
+        .map((e) => e?.min ?? e?.max ?? double.infinity);
     if (_minItems.isEmpty) {
       return valueAxisMin ?? 0.0;
     }
@@ -117,8 +135,8 @@ class ChartData<T> {
       ChartItemsLerp().lerpValues(a._items, b._items, t),
       lerpDouble(a._strategyChange, b._strategyChange, t),
       strategy: t > 0.5 ? b.strategy : a.strategy,
-      valueAxisMax: lerpDouble(a.valueAxisMax, b.valueAxisMax, t),
-      valueAxisMin: lerpDouble(a.valueAxisMin, b.valueAxisMin, t),
+      verticalAxisMax: lerpDouble(a.verticalAxisMax, b.verticalAxisMax, t),
+      verticalAxisMin: lerpDouble(a.verticalAxisMin, b.verticalAxisMin, t),
 
       /// Those are usually calculated, but we need to have a control over them in the animation
       maxValue: lerpDouble(a.maxValue, b.maxValue, t),
@@ -152,14 +170,22 @@ class ChartItemsLerp {
       // If old list and new list have value at [index], then just animate from,
       // old list value to the new value
       if (index < a.length && index < b.length) {
-        return b[index].animateFrom<T>(a[index], t);
+        if (b[index] != null && a[index] != null) {
+          return b[index].animateFrom<T>(a[index], t);
+        } else if (b[index] != null) {
+          return b[index].animateFrom<T>(_emptyValue, t);
+        } else if (a[index] != null) {
+          return a[index].animateTo<T>(_emptyValue, t);
+        }
+
+        return _emptyValue;
       }
 
       // If new list is larger, then check if item in the list is not empty
       // In case item is not empty then animate to it from our [_emptyValue]
       if (index < b.length) {
-        if (b[index].isEmpty) {
-          return b[index];
+        if (b[index] == null || b[index].isEmpty) {
+          return b[index] ?? _emptyValue;
         }
 
         // If item is appearing then it's time to animate is
@@ -170,8 +196,8 @@ class ChartItemsLerp {
 
       // In case that our old list is bigger, and item is not empty
       // then we need to animate to empty value from current item value
-      if (a[index].isEmpty) {
-        return a[index];
+      if (a[index] == null || a[index].isEmpty) {
+        return a[index] ?? _emptyValue;
       }
 
       final double _value = _listLength.floor() == index

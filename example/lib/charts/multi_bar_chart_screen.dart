@@ -112,14 +112,6 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                         Theme.of(context).colorScheme.secondary
                       ][index];
                     }),
-                chartOptions: ChartOptions(
-                  padding: _showValues
-                      ? EdgeInsets.only(right: _legendOnEnd ? 12.0 : 0.0, left: _legendOnEnd ? 0.0 : 12.0)
-                      : null,
-                ),
-                chartBehaviour: ChartBehaviour(
-                  multiItemStack: _stackItems,
-                ),
                 backgroundDecorations: [
                   GridDecoration(
                     showVerticalGrid: true,
@@ -130,8 +122,6 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                         _legendOnEnd ? HorizontalLegendPosition.end : HorizontalLegendPosition.start,
                     verticalLegendPosition:
                         _legendOnBottom ? VerticalLegendPosition.bottom : VerticalLegendPosition.top,
-                    valueAxisStep: 1,
-                    itemAxisStep: 1,
                     textStyle: Theme.of(context).textTheme.caption,
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),

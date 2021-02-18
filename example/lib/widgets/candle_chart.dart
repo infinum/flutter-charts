@@ -12,7 +12,6 @@ class CandleChart<T> extends StatelessWidget {
     this.height = 240.0,
     this.backgroundDecorations = const [],
     this.chartBehaviour,
-    this.chartOptions,
     this.chartItemOptions,
     this.foregroundDecorations = const [],
     this.geometryPainter = barPainter,
@@ -27,7 +26,6 @@ class CandleChart<T> extends StatelessWidget {
   final List<DecorationPainter> backgroundDecorations;
   final List<DecorationPainter> foregroundDecorations;
   final ChartBehaviour chartBehaviour;
-  final ChartOptions chartOptions;
   final ChartItemOptions chartItemOptions;
   final ChartGeometryPainter geometryPainter;
 
@@ -40,7 +38,6 @@ class CandleChart<T> extends StatelessWidget {
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
         ChartData(_mappedValues),
-        options: chartOptions,
         itemOptions: chartItemOptions,
         behaviour: chartBehaviour,
         geometryPainter: geometryPainter,

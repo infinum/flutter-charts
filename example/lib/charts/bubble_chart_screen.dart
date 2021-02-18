@@ -79,9 +79,6 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                     colorForValue: tad.getTargetItemColor(),
                     padding: EdgeInsets.symmetric(horizontal: (1 - (_values.length / 17)) * 8.0),
                   ),
-                  chartOptions: ChartOptions(
-                    padding: _showValues ? EdgeInsets.only(right: 12.0) : null,
-                  ),
                   dataToValue: (BubbleValue value) => value.max,
                   backgroundDecorations: [
                     GridDecoration(
@@ -90,7 +87,7 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                       showVerticalGrid: true,
                       showVerticalValues: _showValues,
                       verticalValuesPadding: EdgeInsets.only(left: 8.0),
-                      valueAxisStep: 2,
+                      verticalAxisStep: 2,
                       verticalTextAlign: TextAlign.start,
                       gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                       textStyle: Theme.of(context).textTheme.caption.copyWith(fontSize: 13.0),

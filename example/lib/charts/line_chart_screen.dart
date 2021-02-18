@@ -109,7 +109,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                         showTopHorizontalValue: _showValues,
                         showVerticalValues: _showValues,
                         showHorizontalValues: _showValues,
-                        valueAxisStep: _stack ? 3 : 1,
+                        horizontalAxisStep: _stack ? 3 : 1,
                         textStyle: Theme.of(context).textTheme.caption,
                         gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                       ),
@@ -122,7 +122,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                                 ? 1.0
                                 : 0.2
                             : 0.0),
-                        lineKey: 0,
+                        lineArrayIndex: 0,
                       ),
                       SparkLineDecoration<void>(
                         id: 'second_line_fill',
@@ -133,7 +133,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                                 ? 1.0
                                 : 0.2
                             : 0.0),
-                        lineKey: 1,
+                        lineArrayIndex: 1,
                       ),
                       SparkLineDecoration<void>(
                         id: 'third_line_fill',
@@ -146,7 +146,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                                 ? 1.0
                                 : 0.2
                             : 0.0),
-                        lineKey: 2,
+                        lineArrayIndex: 2,
                       ),
                     ],
                     foregroundDecorations: [
@@ -155,7 +155,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                         lineWidth: 2.0,
                         smoothPoints: _smoothPoints,
                         lineColor: Theme.of(context).colorScheme.primary.withOpacity(_showLine ? 1.0 : 0.0),
-                        lineKey: 1,
+                        lineArrayIndex: 1,
                       ),
                       SparkLineDecoration<void>(
                         id: 'third_line',
@@ -164,7 +164,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                         gradient: LinearGradient(
                             begin: Alignment.centerLeft, end: Alignment.centerRight, colors: Colors.accents),
                         lineColor: Theme.of(context).colorScheme.primary.withOpacity(_showLine ? 1.0 : 0.0),
-                        lineKey: 2,
+                        lineArrayIndex: 2,
                       ),
                     ],
                   ),

@@ -85,7 +85,7 @@ class ShowList extends StatelessWidget {
                 state: ChartState<void>(
                   ChartData.fromList(
                     [2, 7, 2, 4, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
-                    valueAxisMax: 9,
+                    axisMax: 9,
                   ),
                   itemOptions: ChartItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
@@ -97,7 +97,7 @@ class ShowList extends StatelessWidget {
                   backgroundDecorations: [
                     GridDecoration(
                       showVerticalGrid: false,
-                      valueAxisStep: 3,
+                      horizontalAxisStep: 3,
                       gridColor: Theme.of(context).dividerColor,
                     ),
                     SparkLineDecoration<void>(
@@ -124,7 +124,7 @@ class ShowList extends StatelessWidget {
                 state: ChartState<void>(
                     ChartData.fromList(
                       [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
-                      valueAxisMax: 8,
+                      axisMax: 8,
                     ),
                     itemOptions: ChartItemOptions(
                       padding: const EdgeInsets.symmetric(horizontal: 2.0),
@@ -133,8 +133,8 @@ class ShowList extends StatelessWidget {
                     ),
                     backgroundDecorations: [
                       GridDecoration(
-                        itemAxisStep: 1,
-                        valueAxisStep: 2,
+                        verticalAxisStep: 1,
+                        horizontalAxisStep: 2,
                         gridColor: Theme.of(context).dividerColor,
                       ),
                     ],
@@ -178,7 +178,7 @@ class ShowList extends StatelessWidget {
                 state: ChartState<void>(
                   ChartData.fromList(
                     [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
-                    valueAxisMax: 8,
+                    axisMax: 8,
                   ),
                   itemOptions: ChartItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
@@ -187,8 +187,8 @@ class ShowList extends StatelessWidget {
                   ),
                   backgroundDecorations: [
                     GridDecoration(
-                      itemAxisStep: 1,
-                      valueAxisStep: 4,
+                      verticalAxisStep: 1,
+                      horizontalAxisStep: 4,
                       gridColor: Theme.of(context).dividerColor,
                     ),
                     SparkLineDecoration<void>(

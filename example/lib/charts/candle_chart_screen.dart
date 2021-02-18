@@ -84,9 +84,6 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                     Radius.circular(100.0),
                   ),
                 ),
-                chartOptions: ChartOptions(
-                  padding: EdgeInsets.only(right: _showValues ? 12.0 : 0.0),
-                ),
                 chartBehaviour: ChartBehaviour(onItemClicked: (item) {
                   setState(() {
                     _selected = item;
@@ -98,7 +95,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                     showVerticalGrid: true,
                     showVerticalValues: _showValues,
                     verticalValuesPadding: EdgeInsets.only(left: 8.0),
-                    valueAxisStep: 5,
+                    horizontalAxisStep: 5,
                     verticalTextAlign: TextAlign.start,
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                     textStyle: Theme.of(context).textTheme.caption.copyWith(fontSize: 13.0),

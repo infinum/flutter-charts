@@ -18,8 +18,8 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.horizontalAxisUnit,
     this.dashArray,
     this.axisValue = defaultAxisValue,
-    this.valueAxisStep = 1.0,
-    this.horizontalLegendPosition = HorizontalLegendPosition.end,
+    this.axisStep = 1.0,
+    this.legendPosition = HorizontalLegendPosition.end,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
   }) : _endWithChart = endWithChart ? 1.0 : 0.0;
 
@@ -33,10 +33,10 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.gridColor = Colors.grey,
     this.gridWidth = 1.0,
     this.horizontalAxisUnit,
-    this.valueAxisStep = 1.0,
+    this.axisStep = 1.0,
     this.dashArray,
     this.axisValue = defaultAxisValue,
-    this.horizontalLegendPosition = HorizontalLegendPosition.end,
+    this.legendPosition = HorizontalLegendPosition.end,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
   }) : _endWithChart = endWithChart;
 
@@ -48,7 +48,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
   final TextAlign valuesAlign;
   final EdgeInsets valuesPadding;
   final bool showTopValue;
-  final HorizontalLegendPosition horizontalLegendPosition;
+  final HorizontalLegendPosition legendPosition;
   final AxisValueFromValue axisValue;
 
   final String horizontalAxisUnit;
@@ -56,7 +56,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
   final bool showGrid;
   final Color gridColor;
   final double gridWidth;
-  final double valueAxisStep;
+  final double axisStep;
 
   final TextStyle legendFontStyle;
 
@@ -90,10 +90,10 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
     final gridPath = Path();
 
-    for (int i = 0; i <= _maxValue / valueAxisStep; i++) {
+    for (int i = 0; i <= _maxValue / axisStep; i++) {
       if (showGrid) {
-        gridPath.moveTo(_endWithChart * state.defaultPadding.left, -valueAxisStep * i * scale + gridWidth / 2);
-        gridPath.lineTo(_size.width, -valueAxisStep * i * scale + gridWidth / 2);
+        gridPath.moveTo(_endWithChart * state.defaultPadding.left, -axisStep * i * scale + gridWidth / 2);
+        gridPath.lineTo(_size.width, -axisStep * i * scale + gridWidth / 2);
       }
 
       if (!showValues) {
@@ -102,10 +102,10 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
       String _text;
 
-      if (!showTopValue && i == _maxValue / valueAxisStep) {
+      if (!showTopValue && i == _maxValue / axisStep) {
         _text = null;
       } else {
-        final _defaultValue = (valueAxisStep * i + state.data.minValue).toInt();
+        final _defaultValue = (axisStep * i + state.data.minValue).toInt();
         final _value = axisValue.call(_defaultValue);
         _text = _value.toString();
       }
@@ -134,8 +134,8 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
       _textPainter.paint(
           canvas,
-          Offset(horizontalLegendPosition == HorizontalLegendPosition.end ? _positionEnd : _positionStart,
-              -valueAxisStep * i * scale - (_textPainter.height + (valuesPadding?.bottom ?? 0.0))));
+          Offset(legendPosition == HorizontalLegendPosition.end ? _positionEnd : _positionStart,
+              -axisStep * i * scale - (_textPainter.height + (valuesPadding?.bottom ?? 0.0))));
     }
 
     if (dashArray != null) {
@@ -187,7 +187,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
   @override
   EdgeInsets paddingNeeded() {
     final _textWidth = textWidth(_longestText, legendFontStyle) + (valuesPadding?.horizontal ?? 0.0);
-    final _isEnd = horizontalLegendPosition == HorizontalLegendPosition.end;
+    final _isEnd = legendPosition == HorizontalLegendPosition.end;
 
     return EdgeInsets.only(
       right: _isEnd ? _textWidth : 0.0,
@@ -207,10 +207,10 @@ class HorizontalAxisDecoration extends DecorationPainter {
         gridColor: Color.lerp(gridColor, endValue.gridColor, t),
         gridWidth: lerpDouble(gridWidth, endValue.gridWidth, t),
         dashArray: t < 0.5 ? dashArray : endValue.dashArray,
-        valueAxisStep: lerpDouble(valueAxisStep, endValue.valueAxisStep, t),
+        axisStep: lerpDouble(axisStep, endValue.axisStep, t),
         legendFontStyle: TextStyle.lerp(legendFontStyle, endValue.legendFontStyle, t),
         horizontalAxisUnit: t > 0.5 ? endValue.horizontalAxisUnit : horizontalAxisUnit,
-        horizontalLegendPosition: t > 0.5 ? endValue.horizontalLegendPosition : horizontalLegendPosition,
+        legendPosition: t > 0.5 ? endValue.legendPosition : legendPosition,
         axisValue: t > 0.5 ? endValue.axisValue : axisValue,
         showGrid: t > 0.5 ? endValue.showGrid : showGrid,
       );

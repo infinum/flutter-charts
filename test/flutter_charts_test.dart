@@ -26,57 +26,57 @@ void main() {
     group('[ChartState] Min value tests', () {
       group('[ChartState] Value min value is item', () {
         test('[Bar] Value min value is item', () {
-          final _state = ChartState<void>(ChartData.fromList([BarValue<void>(2)], valueAxisMin: 1));
+          final _state = ChartState<void>(ChartData.fromList([BarValue<void>(2)], axisMin: 1));
           expect(_state.data.isEmpty, false);
           expect(_state.data.minValue, 1);
         });
 
         test('[Candle] Value min value is item', () {
-          final _state = ChartState<void>(ChartData.fromList([CandleValue<void>(5, 2)], valueAxisMin: 1));
+          final _state = ChartState<void>(ChartData.fromList([CandleValue<void>(5, 2)], axisMin: 1));
           expect(_state.data.isEmpty, false);
           expect(_state.data.minValue, 1);
         });
 
         test('[Bubble] Value min value is item', () {
-          final _state = ChartState<void>(ChartData.fromList([BubbleValue<void>(2)], valueAxisMin: 1));
+          final _state = ChartState<void>(ChartData.fromList([BubbleValue<void>(2)], axisMin: 1));
           expect(_state.data.isEmpty, false);
           expect(_state.data.minValue, 1);
         });
       });
       group('[ChartState] Min value is min value', () {
         test('[Bar] Min value is min value', () {
-          final _state = ChartState<void>(ChartData.fromList([BarValue<void>(2)], valueAxisMin: 10));
+          final _state = ChartState<void>(ChartData.fromList([BarValue<void>(2)], axisMin: 10));
           expect(_state.data.isEmpty, false);
           expect(_state.data.minValue, 2);
         });
 
         test('[Candle] Min value is min value', () {
-          final _state = ChartState<void>(ChartData.fromList([CandleValue<void>(2, 5)], valueAxisMin: 10));
+          final _state = ChartState<void>(ChartData.fromList([CandleValue<void>(2, 5)], axisMin: 10));
           expect(_state.data.isEmpty, false);
           expect(_state.data.minValue, 2);
         });
 
         test('[Bubble] Min value is min value', () {
-          final _state = ChartState<void>(ChartData.fromList([BubbleValue<void>(2)], valueAxisMin: 10));
+          final _state = ChartState<void>(ChartData.fromList([BubbleValue<void>(2)], axisMin: 10));
           expect(_state.data.isEmpty, false);
           expect(_state.data.minValue, 2);
         });
       });
       group('[ChartState] Min can go negative', () {
         test('[Bar] Min can go negative', () {
-          final _state = ChartState<void>(ChartData.fromList([BarValue<void>(-2)], valueAxisMin: 10));
+          final _state = ChartState<void>(ChartData.fromList([BarValue<void>(-2)], axisMin: 10));
           expect(_state.data.isEmpty, false);
           expect(_state.data.minValue, -2);
         });
 
         test('[Candle] Min can go negative', () {
-          final _state = ChartState<void>(ChartData.fromList([CandleValue<void>(-2, 5)], valueAxisMin: 10));
+          final _state = ChartState<void>(ChartData.fromList([CandleValue<void>(-2, 5)], axisMin: 10));
           expect(_state.data.isEmpty, false);
           expect(_state.data.minValue, -2);
         });
 
         test('[Bubble] Min can go negative', () {
-          final _state = ChartState<void>(ChartData.fromList([BubbleValue<void>(-2)], valueAxisMin: 10));
+          final _state = ChartState<void>(ChartData.fromList([BubbleValue<void>(-2)], axisMin: 10));
           expect(_state.data.isEmpty, false);
           expect(_state.data.minValue, -2);
         });
@@ -86,38 +86,38 @@ void main() {
     group('[ChartState] Max value tests', () {
       group('[ChartState] Value max value is item', () {
         test('[Bar] Value max value is item', () {
-          final _state = ChartState<void>(ChartData.fromList([BarValue<void>(2)], valueAxisMax: 1));
+          final _state = ChartState<void>(ChartData.fromList([BarValue<void>(2)], axisMax: 1));
           expect(_state.data.isEmpty, false);
           expect(_state.data.maxValue, 2);
         });
 
         test('[Candle] Value max value is item', () {
-          final _state = ChartState<void>(ChartData.fromList([CandleValue<void>(2, 5)], valueAxisMax: 1));
+          final _state = ChartState<void>(ChartData.fromList([CandleValue<void>(2, 5)], axisMax: 1));
           expect(_state.data.isEmpty, false);
           expect(_state.data.maxValue, 5);
         });
 
         test('[Bubble] Value max value is item', () {
-          final _state = ChartState<void>(ChartData.fromList([BubbleValue<void>(2)], valueAxisMax: 1));
+          final _state = ChartState<void>(ChartData.fromList([BubbleValue<void>(2)], axisMax: 1));
           expect(_state.data.isEmpty, false);
           expect(_state.data.maxValue, 2);
         });
       });
       group('[ChartState] Max value is max value', () {
         test('[Bar] Max value is max value', () {
-          final _state = ChartState<void>(ChartData.fromList([BarValue<void>(2)], valueAxisMax: 10));
+          final _state = ChartState<void>(ChartData.fromList([BarValue<void>(2)], axisMax: 10));
           expect(_state.data.isEmpty, false);
           expect(_state.data.maxValue, 10);
         });
 
         test('[Candle] Max value is max value', () {
-          final _state = ChartState<void>(ChartData.fromList([CandleValue<void>(2, 5)], valueAxisMax: 10));
+          final _state = ChartState<void>(ChartData.fromList([CandleValue<void>(2, 5)], axisMax: 10));
           expect(_state.data.isEmpty, false);
           expect(_state.data.maxValue, 10);
         });
 
         test('[Bubble] Max value is max value', () {
-          final _state = ChartState<void>(ChartData.fromList([BubbleValue<void>(2)], valueAxisMax: 10));
+          final _state = ChartState<void>(ChartData.fromList([BubbleValue<void>(2)], axisMax: 10));
           expect(_state.data.isEmpty, false);
           expect(_state.data.maxValue, 10);
         });
@@ -129,7 +129,7 @@ void main() {
     test('[Animation] Lerp items, min, max', () {
       final _firstState = ChartState<void>(ChartData.fromList([BarValue<void>(10)]));
       final _secondState = ChartState<void>(
-        ChartData.fromList([BarValue<void>(10), BarValue<void>(20), BarValue<void>(15)], valueAxisMin: 10),
+        ChartData.fromList([BarValue<void>(10), BarValue<void>(20), BarValue<void>(15)], axisMin: 10),
       );
 
       expect(_firstState.data.items[0].length, 1);

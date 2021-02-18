@@ -22,7 +22,7 @@ class ChartTypes extends StatelessWidget {
                 state: ChartState<void>(
                   ChartData.fromList(
                     [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
-                    valueAxisMax: 9,
+                    axisMax: 9,
                   ),
                   itemOptions: ChartItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
@@ -32,8 +32,8 @@ class ChartTypes extends StatelessWidget {
                   ),
                   backgroundDecorations: [
                     GridDecoration(
-                      itemAxisStep: 1,
-                      valueAxisStep: 1.5,
+                      verticalAxisStep: 1,
+                      horizontalAxisStep: 1.5,
                       gridColor: Theme.of(context).dividerColor,
                     ),
                   ],
@@ -56,7 +56,7 @@ class ChartTypes extends StatelessWidget {
                 state: ChartState<void>(
                   ChartData.fromList(
                     [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
-                    valueAxisMax: 9,
+                    axisMax: 9,
                   ),
                   geometryPainter: bubblePainter,
                   itemOptions: ChartItemOptions(
@@ -65,8 +65,8 @@ class ChartTypes extends StatelessWidget {
                   ),
                   backgroundDecorations: [
                     GridDecoration(
-                      itemAxisStep: 3,
-                      valueAxisStep: 3,
+                      verticalAxisStep: 3,
+                      horizontalAxisStep: 3,
                       gridColor: Theme.of(context).dividerColor,
                     ),
                   ],
@@ -89,7 +89,7 @@ class ChartTypes extends StatelessWidget {
                 state: ChartState<void>(
                   ChartData.fromList(
                     [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => CandleValue<void>(e.toDouble() + 6, e.toDouble())).toList(),
-                    valueAxisMax: 15,
+                    axisMax: 15,
                   ),
                   itemOptions: ChartItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
@@ -98,8 +98,8 @@ class ChartTypes extends StatelessWidget {
                   ),
                   backgroundDecorations: [
                     GridDecoration(
-                      itemAxisStep: 1,
-                      valueAxisStep: 3,
+                      verticalAxisStep: 1,
+                      horizontalAxisStep: 3,
                       gridColor: Theme.of(context).dividerColor,
                     ),
                   ],

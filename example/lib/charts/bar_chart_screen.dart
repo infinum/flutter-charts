@@ -68,7 +68,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
             child: BarChart(
               data: _values,
               height: MediaQuery.of(context).size.height * 0.4,
-              dataToValue: (BarValue value) => value.max,
+              dataToValue: (BarValue value) => value?.max ?? 0.0,
               itemOptions: ChartItemOptions(
                 padding: const EdgeInsets.symmetric(horizontal: 2.0),
                 minBarWidth: 4.0,
@@ -84,11 +84,6 @@ class _BarChartScreenState extends State<BarChartScreen> {
                       }
                     : null,
               ),
-              chartOptions: ChartOptions(
-                padding: _showValues
-                    ? EdgeInsets.only(right: _legendOnEnd ? 12.0 : 0.0, left: _legendOnEnd ? 0.0 : 12.0)
-                    : null,
-              ),
               backgroundDecorations: [
                 GridDecoration(
                   showHorizontalValues: _showValues,
@@ -97,8 +92,8 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   horizontalLegendPosition:
                       _legendOnEnd ? HorizontalLegendPosition.end : HorizontalLegendPosition.start,
                   verticalLegendPosition: _legendOnBottom ? VerticalLegendPosition.bottom : VerticalLegendPosition.top,
-                  valueAxisStep: 1,
-                  itemAxisStep: 1,
+                  horizontalAxisStep: 1,
+                  verticalAxisStep: 1,
                   verticalValuesPadding: const EdgeInsets.symmetric(vertical: 4.0),
                   horizontalValuesPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                   textStyle: Theme.of(context).textTheme.caption,

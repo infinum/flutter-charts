@@ -100,20 +100,17 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                     });
                   },
                 ),
-                chartOptions: ChartOptions(
-                  padding: _showValues ? EdgeInsets.only(right: 12.0) : null,
-                ),
                 backgroundDecorations: [
                   HorizontalAxisDecoration(
                     endWithChart: false,
                     gridWidth: 2.0,
-                    valueAxisStep: 2,
+                    axisStep: 2,
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),
                   VerticalAxisDecoration(
                     endWithChart: false,
                     gridWidth: 2.0,
-                    itemAxisStep: 7,
+                    axisStep: 7,
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.8),
                   ),
                   GridDecoration(
@@ -121,8 +118,8 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                     showVerticalGrid: true,
                     showHorizontalValues: _showValues,
                     showVerticalValues: _showValues,
-                    valueAxisStep: 1,
-                    itemAxisStep: 1,
+                    verticalAxisStep: 1,
+                    horizontalAxisStep: 1,
                     textStyle: Theme.of(context).textTheme.caption,
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),

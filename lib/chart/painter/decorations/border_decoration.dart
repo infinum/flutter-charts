@@ -36,7 +36,7 @@ class BorderDecoration extends DecorationPainter {
     canvas.save();
 
     canvas.translate((state.defaultPadding.left + state.defaultMargin.left) * _endWithChart,
-        state.defaultPadding.top + (state.defaultMargin.top) * _endWithChart);
+        (state.defaultPadding.top + state.defaultMargin.top) * _endWithChart);
     size = (state.defaultPadding * _endWithChart).deflateSize(size);
 
     final _height = size.height + (state.defaultMargin.vertical * (1 - _endWithChart)) + _borderWidth.vertical / 2;

@@ -14,7 +14,6 @@ class LineChart<T> extends StatelessWidget {
     this.itemColor,
     this.backgroundDecorations,
     this.foregroundDecorations,
-    this.chartOptions,
     this.chartItemOptions,
     this.chartBehaviour,
     this.smoothCurves,
@@ -31,7 +30,6 @@ class LineChart<T> extends StatelessWidget {
     this.itemColor,
     this.backgroundDecorations,
     this.foregroundDecorations,
-    this.chartOptions,
     this.chartItemOptions,
     this.chartBehaviour,
     this.smoothCurves,
@@ -56,7 +54,6 @@ class LineChart<T> extends StatelessWidget {
   final List<DecorationPainter> backgroundDecorations;
   final List<DecorationPainter> foregroundDecorations;
   final ChartBehaviour chartBehaviour;
-  final ChartOptions chartOptions;
   final ChartItemOptions chartItemOptions;
 
   final List<List<ChartItem<T>>> _mappedValues;
@@ -71,7 +68,6 @@ class LineChart<T> extends StatelessWidget {
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
         ChartData(_mappedValues, strategy: stack ? DataStrategy.stack : DataStrategy.none),
-        options: chartOptions,
         geometryPainter: bubblePainter,
         itemOptions: chartItemOptions,
         foregroundDecorations: [
