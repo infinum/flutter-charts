@@ -19,6 +19,7 @@ class LineChart<T> extends StatelessWidget {
     this.chartBehaviour,
     this.smoothCurves,
     this.gradient,
+    this.stack = false,
     Key key,
   })  : _mappedValues = [data.map((e) => BubbleValue<T>(dataToValue(e))).toList()],
         super(key: key);
@@ -35,6 +36,7 @@ class LineChart<T> extends StatelessWidget {
     this.chartBehaviour,
     this.smoothCurves,
     this.gradient,
+    this.stack = false,
     Key key,
   })  : data = null,
         dataToValue = null,
@@ -49,6 +51,7 @@ class LineChart<T> extends StatelessWidget {
   final Color itemColor;
   final Gradient gradient;
   final double lineWidth;
+  final bool stack;
 
   final List<DecorationPainter> backgroundDecorations;
   final List<DecorationPainter> foregroundDecorations;
@@ -67,7 +70,7 @@ class LineChart<T> extends StatelessWidget {
       height: height,
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
-        ChartData(_mappedValues),
+        ChartData(_mappedValues, strategy: stack ? DataStrategy.stack : DataStrategy.none),
         options: chartOptions,
         geometryPainter: bubblePainter,
         itemOptions: chartItemOptions,

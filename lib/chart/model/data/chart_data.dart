@@ -16,12 +16,13 @@ class ChartData<T> {
     this.valueAxisMax,
     double valueAxisMaxOver,
     this.valueAxisMin,
-  })  : minValue = _getMinValue(
-            formatDataStrategy(_items, strategy)
+  })  : _strategyChange = strategy != DataStrategy.none ? 1.0 : 0.0,
+        minValue = _getMinValue(
+            formatDataStrategy(_items, strategy != DataStrategy.none ? 1.0 : 0.0)
                 .fold(<ChartItem<T>>[], (List<ChartItem<T>> list, element) => list..addAll(element)).toList(),
             valueAxisMin),
         maxValue = _getMaxValue(
-                formatDataStrategy(_items, strategy)
+                formatDataStrategy(_items, strategy != DataStrategy.none ? 1.0 : 0.0)
                     .fold(<ChartItem<T>>[], (List<ChartItem<T>> list, element) => list..addAll(element)).toList(),
                 valueAxisMax) +
             (valueAxisMaxOver ?? 0.0);
@@ -36,7 +37,8 @@ class ChartData<T> {
   }
 
   ChartData._lerp(
-    this._items, {
+    this._items,
+    this._strategyChange, {
     this.strategy = DataStrategy.none,
     this.valueAxisMax,
     this.valueAxisMin,
@@ -46,6 +48,7 @@ class ChartData<T> {
 
   final List<List<ChartItem<T>>> _items;
   final DataStrategy strategy;
+  final double _strategyChange;
 
   /// Scale
   final double minValue;
@@ -60,32 +63,28 @@ class ChartData<T> {
   final double valueAxisMin;
 
   List<List<ChartItem<T>>> get items {
-    return formatDataStrategy(_items, strategy);
+    return formatDataStrategy(_items, _strategyChange);
   }
 
-  static List<List<ChartItem<T>>> formatDataStrategy<T>(List<List<ChartItem<T>>> items, DataStrategy strategy) {
-    switch (strategy) {
-      case DataStrategy.none:
-        return items;
-      case DataStrategy.stack:
-        final List<ChartItem<T>> _incrementList = [];
-
-        return items.asMap().entries.map((entry) {
-          return entry.value.asMap().entries.map((e) {
+  static List<List<ChartItem<T>>> formatDataStrategy<T>(List<List<ChartItem<T>>> items, double strategy) {
+    final _incrementList = <ChartItem<T>>[];
+    return items.reversed
+        .map((entry) {
+          return entry.asMap().entries.map((e) {
             if (_incrementList.length > e.key) {
               final _newValue = e.value + _incrementList[e.key];
-              _incrementList[e.key] = _incrementList[e.key] + e.value;
+              _incrementList[e.key] = (_incrementList[e.key] + e.value) * strategy;
               return _newValue;
             } else {
-              _incrementList.add(e.value);
+              _incrementList.add(e.value * strategy);
             }
 
             return e.value;
           }).toList();
-        }).toList();
-    }
-
-    return null;
+        })
+        .toList()
+        .reversed
+        .toList();
   }
 
   bool get isEmpty => _items.isEmpty;
@@ -116,6 +115,7 @@ class ChartData<T> {
   static ChartData<T> lerp<T>(ChartData<T> a, ChartData<T> b, double t) {
     return ChartData._lerp(
       ChartItemsLerp().lerpValues(a._items, b._items, t),
+      lerpDouble(a._strategyChange, b._strategyChange, t),
       strategy: t > 0.5 ? b.strategy : a.strategy,
       valueAxisMax: lerpDouble(a.valueAxisMax, b.valueAxisMax, t),
       valueAxisMin: lerpDouble(a.valueAxisMin, b.valueAxisMin, t),

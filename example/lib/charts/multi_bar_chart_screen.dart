@@ -94,6 +94,7 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
               padding: const EdgeInsets.all(12.0),
               child: BarChart.map(
                 _getMap(),
+                stack: _stackItems,
                 height: MediaQuery.of(context).size.height * 0.4,
                 itemOptions: ChartItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),

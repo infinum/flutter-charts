@@ -15,6 +15,7 @@ class BarChart<T> extends StatelessWidget {
     this.chartBehaviour = const ChartBehaviour(),
     this.itemOptions = const ChartItemOptions(),
     this.chartOptions = const ChartOptions(),
+    this.stack = false,
     Key key,
   })  : _mappedValues = [data.map((e) => BarValue<T>(dataToValue(e))).toList()],
         super(key: key);
@@ -27,6 +28,7 @@ class BarChart<T> extends StatelessWidget {
     this.chartBehaviour = const ChartBehaviour(),
     this.itemOptions = const ChartItemOptions(),
     this.chartOptions = const ChartOptions(),
+    this.stack = false,
     Key key,
   })  : dataToValue = null,
         super(key: key);
@@ -35,6 +37,7 @@ class BarChart<T> extends StatelessWidget {
   final List<List<ChartItem<T>>> _mappedValues;
   final double height;
 
+  final bool stack;
   final ChartItemOptions itemOptions;
   final ChartOptions chartOptions;
   final ChartBehaviour chartBehaviour;
@@ -51,7 +54,7 @@ class BarChart<T> extends StatelessWidget {
       width: MediaQuery.of(context).size.width - 24.0,
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
-        ChartData(_mappedValues, valueAxisMaxOver: 1.5, strategy: DataStrategy.none),
+        ChartData(_mappedValues, valueAxisMaxOver: 1.5, strategy: stack ? DataStrategy.stack : DataStrategy.none),
         options: chartOptions,
         itemOptions: itemOptions,
         behaviour: chartBehaviour,

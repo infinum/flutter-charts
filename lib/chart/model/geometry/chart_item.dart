@@ -48,6 +48,25 @@ class ChartItem<T> {
   }
 
   @override
+  ChartItem<T> operator *(Object other) {
+    if (other is ChartItem<T>) {
+      return ChartItem<T>(
+        other.value,
+        (other?.min ?? 0.0) * (min ?? 0.0),
+        (other?.max ?? 0.0) * (max ?? 0.0),
+      );
+    } else if (other is num) {
+      return ChartItem<T>(
+        value,
+        (other ?? 0.0).toDouble() * (min ?? 0.0),
+        (other ?? 0.0).toDouble() * (max ?? 0.0),
+      );
+    }
+
+    return this;
+  }
+
+  @override
   String toString() {
     return 'ChartItem(min: $min, max: $max, value: $value)';
   }
