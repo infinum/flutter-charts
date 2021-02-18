@@ -101,13 +101,6 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                   },
                 ),
                 chartOptions: ChartOptions(
-                  valueAxisMax: max(
-                      _values.fold<double>(
-                              0,
-                              (double previousValue, double element) =>
-                                  previousValue = max(previousValue, element ?? 0)) +
-                          1,
-                      targetMax + 3),
                   padding: _showValues ? EdgeInsets.only(right: 12.0) : null,
                 ),
                 backgroundDecorations: [
@@ -154,7 +147,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                     lineColor: Theme.of(context).primaryColor.withOpacity(!_showBars ? 1.0 : 0.0),
                     smoothPoints: _smoothPoints,
                   ),
-                  CupertinoSelectedPainter(
+                  SelectedItemDecoration(
                     _selected,
                     textSize: 28.0,
                     animate: true,

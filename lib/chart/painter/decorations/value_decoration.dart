@@ -29,7 +29,7 @@ class ValueDecoration extends DecorationPainter {
   @override
   void initDecoration(ChartState state) {
     super.initDecoration(state);
-    assert(state.items.length > valueKey, 'Value key is not in the list!\nCheck the `valueKey` you are passing.');
+    assert(state.data.stackSize > valueKey, 'Value key is not in the list!\nCheck the `valueKey` you are passing.');
   }
 
   void _paintText(Canvas canvas, Size size, ChartItem item, double width, double verticalMultiplier, double minValue) {
@@ -54,25 +54,23 @@ class ValueDecoration extends DecorationPainter {
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
     final _size = state.defaultPadding.deflateSize(size) ?? size;
-    final _maxValue = state.maxValue - state.minValue;
+    final _maxValue = state.data.maxValue - state.data.minValue;
     final _verticalMultiplier = _size.height / _maxValue;
-    final _minValue = state.minValue * _verticalMultiplier;
+    final _minValue = state.data.minValue * _verticalMultiplier;
 
-    final int _listSize = state.items.fold(0, (previousValue, element) => max(previousValue, element.length));
+    final int _listSize = state.data.listSize;
     final _itemWidth = _size.width / _listSize;
 
     canvas.save();
     canvas.translate((state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left - _itemWidth,
         size.height + state.defaultMargin.top);
 
-    state.items[valueKey].forEach((value) {
-      final _index = state.items[valueKey].indexOf(value);
-
+    state.data.items[valueKey].asMap().forEach((index, value) {
       canvas.translate(
         _itemWidth,
         0.0,
       );
-      _paintText(canvas, Size(_index * _itemWidth, _size.height), value, _itemWidth, _verticalMultiplier, _minValue);
+      _paintText(canvas, Size(index * _itemWidth, _size.height), value, _itemWidth, _verticalMultiplier, _minValue);
     });
 
     canvas.restore();

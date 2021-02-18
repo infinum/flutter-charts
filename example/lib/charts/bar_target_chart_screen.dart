@@ -85,13 +85,6 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                   colorForValue: _targetDecoration.getTargetItemColor(),
                 ),
                 chartOptions: ChartOptions(
-                  valueAxisMax: max(
-                      _values.fold<double>(
-                              0,
-                              (double previousValue, BarValue element) =>
-                                  previousValue = max(previousValue, element?.max ?? 0)) +
-                          1,
-                      targetMax + 3),
                   padding: _showValues ? EdgeInsets.only(right: 12.0) : null,
                 ),
                 backgroundDecorations: [

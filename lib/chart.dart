@@ -11,6 +11,9 @@ import 'package:path_drawing/path_drawing.dart';
 /// State
 part 'chart/model/chart_state.dart';
 
+/// Data
+part 'chart/model/data/chart_data.dart';
+
 /// Geometries
 part 'chart/model/geometry/bar_value_item.dart';
 part 'chart/model/geometry/bubble_value_item.dart';

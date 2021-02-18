@@ -85,13 +85,6 @@ class _BarChartScreenState extends State<BarChartScreen> {
                     : null,
               ),
               chartOptions: ChartOptions(
-                valueAxisMax: max(
-                    _values.fold<double>(
-                            0,
-                            (double previousValue, BarValue element) =>
-                                previousValue = max(previousValue, element?.max ?? 0)) +
-                        1,
-                    targetMax + 3),
                 padding: _showValues
                     ? EdgeInsets.only(right: _legendOnEnd ? 12.0 : 0.0, left: _legendOnEnd ? 0.0 : 12.0)
                     : null,
@@ -106,6 +99,8 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   verticalLegendPosition: _legendOnBottom ? VerticalLegendPosition.bottom : VerticalLegendPosition.top,
                   valueAxisStep: 1,
                   itemAxisStep: 1,
+                  verticalValuesPadding: const EdgeInsets.symmetric(vertical: 4.0),
+                  horizontalValuesPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                   textStyle: Theme.of(context).textTheme.caption,
                   gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                 ),

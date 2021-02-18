@@ -8,8 +8,8 @@ class CandleValue<T> extends ChartItem<T> {
   CandleValue<T> animateTo<T>(ChartItem<T> endValue, double t) {
     return CandleValue<T>.withValue(
       endValue?.value,
-      lerpDouble(this.min, endValue.min, t),
-      lerpDouble(this.max, endValue.max, t),
+      lerpDouble(this.min, endValue?.min ?? 0.0, t),
+      lerpDouble(this.max, endValue?.max ?? 0.0, t),
     );
   }
 }

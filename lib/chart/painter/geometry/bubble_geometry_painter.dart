@@ -16,9 +16,9 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
 
   @override
   void draw(Canvas canvas, Size size, Paint paint) {
-    final _maxValue = state.maxValue - state.minValue;
+    final _maxValue = state.data.maxValue - state.data.minValue;
     final _verticalMultiplier = size.height / _maxValue;
-    final _minValue = state.minValue * _verticalMultiplier;
+    final _minValue = state.data.minValue * _verticalMultiplier;
 
     final _padding = state?.itemOptions?.padding ?? EdgeInsets.zero;
 
@@ -29,7 +29,7 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
 
     // If item is empty, or it's max value is below chart's minValue then don't draw it.
     // minValue can be below 0, this will just ensure that animation is drawn correctly.
-    if (item.isEmpty || item.max < state?.minValue) {
+    if (item.isEmpty || item.max < state.data.minValue) {
       return;
     }
 

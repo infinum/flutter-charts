@@ -50,6 +50,15 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final tad = TargetAreaDecoration(
+      targetMax: targetMax,
+      targetMin: targetMin,
+      colorOverTarget: Theme.of(context).colorScheme.secondary,
+      targetLineColor: Theme.of(context).colorScheme.secondary,
+      targetAreaFillColor: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+      targetAreaRadius: BorderRadius.circular(8.0),
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -67,16 +76,10 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                   height: MediaQuery.of(context).size.height * 0.3,
                   itemOptions: ChartItemOptions(
                     color: Theme.of(context).colorScheme.primary,
+                    colorForValue: tad.getTargetItemColor(),
                     padding: EdgeInsets.symmetric(horizontal: (1 - (_values.length / 17)) * 8.0),
                   ),
                   chartOptions: ChartOptions(
-                    valueAxisMax: max(
-                        _values.fold<double>(
-                                0,
-                                (double previousValue, BubbleValue element) =>
-                                    previousValue = max(previousValue, element?.max ?? 0)) +
-                            1,
-                        targetMax + 3),
                     padding: _showValues ? EdgeInsets.only(right: 12.0) : null,
                   ),
                   dataToValue: (BubbleValue value) => value.max,
@@ -87,19 +90,12 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                       showVerticalGrid: true,
                       showVerticalValues: _showValues,
                       verticalValuesPadding: EdgeInsets.only(left: 8.0),
-                      valueAxisStep: 1,
+                      valueAxisStep: 2,
                       verticalTextAlign: TextAlign.start,
                       gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                       textStyle: Theme.of(context).textTheme.caption.copyWith(fontSize: 13.0),
                     ),
-                    TargetAreaDecoration(
-                      targetMax: targetMax,
-                      targetMin: targetMin,
-                      colorOverTarget: Theme.of(context).colorScheme.secondary,
-                      targetLineColor: Theme.of(context).colorScheme.secondary,
-                      targetAreaFillColor: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
-                      targetAreaRadius: BorderRadius.circular(8.0),
-                    ),
+                    tad,
                   ],
                 ),
               ),

@@ -19,16 +19,16 @@ class ChartTypes extends StatelessWidget {
             child: Container(
               width: 100.0,
               child: Chart(
-                state: ChartState<void>.fromList(
-                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
+                state: ChartState<void>(
+                  ChartData.fromList(
+                    [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
+                    valueAxisMax: 9,
+                  ),
                   itemOptions: ChartItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     radius: BorderRadius.vertical(top: Radius.circular(12.0)),
                     color: Theme.of(context).accentColor,
                     maxBarWidth: 8.0,
-                  ),
-                  options: ChartOptions(
-                    valueAxisMax: 9,
                   ),
                   backgroundDecorations: [
                     GridDecoration(
@@ -53,15 +53,15 @@ class ChartTypes extends StatelessWidget {
             child: Container(
               width: 100.0,
               child: Chart(
-                state: ChartState<void>.fromList(
-                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+                state: ChartState<void>(
+                  ChartData.fromList(
+                    [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+                    valueAxisMax: 9,
+                  ),
                   geometryPainter: bubblePainter,
                   itemOptions: ChartItemOptions(
                     color: Theme.of(context).accentColor,
                     maxBarWidth: 8.0,
-                  ),
-                  options: ChartOptions(
-                    valueAxisMax: 9,
                   ),
                   backgroundDecorations: [
                     GridDecoration(
@@ -86,9 +86,9 @@ class ChartTypes extends StatelessWidget {
             child: Container(
               width: 100.0,
               child: Chart(
-                state: ChartState<void>.fromList(
-                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => CandleValue<void>(e.toDouble() + 6, e.toDouble())).toList(),
-                  options: ChartOptions(
+                state: ChartState<void>(
+                  ChartData.fromList(
+                    [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => CandleValue<void>(e.toDouble() + 6, e.toDouble())).toList(),
                     valueAxisMax: 15,
                   ),
                   itemOptions: ChartItemOptions(

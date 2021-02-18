@@ -38,7 +38,7 @@ class BubbleChart<T> extends StatelessWidget {
       height: height,
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
-        _mappedValues,
+        ChartData(_mappedValues, valueAxisMaxOver: 5.0),
         geometryPainter: bubblePainter,
         options: chartOptions,
         itemOptions: itemOptions,

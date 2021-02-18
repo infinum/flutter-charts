@@ -27,9 +27,9 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
 
   @override
   void draw(Canvas canvas, Size size, Paint paint) {
-    final _maxValue = state.maxValue - state.minValue;
+    final _maxValue = state.data.maxValue - state.data.minValue;
     final _verticalMultiplier = size.height / _maxValue;
-    final _minValue = state.minValue * _verticalMultiplier;
+    final _minValue = state.data.minValue * _verticalMultiplier;
 
     EdgeInsets _padding = state?.itemOptions?.padding ?? EdgeInsets.zero;
     final _radius = state?.itemOptions?.radius ?? BorderRadius.zero;
@@ -41,7 +41,7 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
     }
     // If item is empty, or it's max value is below chart's minValue then don't draw it.
     // minValue can be below 0, this will just ensure that animation is drawn correctly.
-    if (item.isEmpty || item.max < state?.minValue) {
+    if (item.isEmpty || item.max < state.data.minValue) {
       return;
     }
 
@@ -50,7 +50,7 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
         Rect.fromPoints(
           Offset(
             _padding.left,
-            max(state?.minValue ?? 0.0, item.min ?? 0.0) * _verticalMultiplier - _minValue,
+            max(state.data.minValue ?? 0.0, item.min ?? 0.0) * _verticalMultiplier - _minValue,
           ),
           Offset(
             _itemWidth + _padding.left,

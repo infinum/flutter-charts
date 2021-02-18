@@ -24,7 +24,7 @@ class ChartPainter extends CustomPainter {
 
     final _scrollableItemWidth = max(state?.itemOptions?.minBarWidth ?? 0.0, state?.itemOptions?.maxBarWidth ?? 0.0);
 
-    final int _listSize = state.items.fold(0, (previousValue, element) => max(previousValue, element.length));
+    final int _listSize = state.data.listSize;
 
     size = Size(
         size.width +
@@ -47,10 +47,10 @@ class ChartPainter extends CustomPainter {
     state.backgroundDecorations.forEach(_drawDecoration);
 
     final _stack = 1 - state.behaviour._multiValueStacked;
-    final _width = _itemWidth / max(1, state.items.length * _stack);
+    final _width = _itemWidth / max(1, state.data.stackSize * _stack);
 
     final _stackWidth = _width -
-        ((state?.itemOptions?.multiValuePadding?.horizontal ?? 0.0) / max(1, state.items.length * _stack)) * _stack;
+        ((state?.itemOptions?.multiValuePadding?.horizontal ?? 0.0) / max(1, state.data.stackSize * _stack)) * _stack;
 
     // Save, and translate the canvas so [0,0] is top left of the first item
     final _itemPaint = Paint();
@@ -61,7 +61,7 @@ class ChartPainter extends CustomPainter {
     );
 
     List.generate(_listSize, (index) {
-      state.items.asMap().forEach((key, value) {
+      state.data.items.asMap().forEach((key, value) {
         if (value.length <= index) {
           // We don't have item at this position (in this list)
           return;
@@ -86,7 +86,7 @@ class ChartPainter extends CustomPainter {
           _itemPaint..color = state.itemOptions.getItemColor(_item.item, key),
         );
 
-        final _shouldStackLast = (key == state.items.length - 1) ? _stack : 0.0;
+        final _shouldStackLast = (key == state.data.stackSize - 1) ? _stack : 0.0;
         canvas.translate((state?.itemOptions?.multiValuePadding?.right ?? 0.0) * _shouldStackLast, 0.0);
       });
     });

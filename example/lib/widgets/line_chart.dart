@@ -67,7 +67,7 @@ class LineChart<T> extends StatelessWidget {
       height: height,
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
-        _mappedValues,
+        ChartData(_mappedValues),
         options: chartOptions,
         geometryPainter: bubblePainter,
         itemOptions: chartItemOptions,

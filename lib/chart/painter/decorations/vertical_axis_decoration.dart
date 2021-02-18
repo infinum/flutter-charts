@@ -60,7 +60,7 @@ class VerticalAxisDecoration extends DecorationPainter {
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
     final _size = state.defaultPadding.deflateSize(size) ?? size;
-    final int _listSize = state.items.fold(0, (previousValue, element) => max(previousValue, element.length));
+    final int _listSize = state.data.listSize;
     final _itemWidth = (_size.width - gridWidth) / _listSize;
 
     final _paint = Paint()

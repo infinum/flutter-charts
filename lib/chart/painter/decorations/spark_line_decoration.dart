@@ -48,7 +48,7 @@ class SparkLineDecoration<T> extends DecorationPainter {
   @override
   void initDecoration(ChartState state) {
     if (state is ChartState<T>) {
-      items ??= state.items;
+      items ??= state.data.items;
     }
 
     assert(items != null, 'No matching state for sparkline found!\nCheck if type `T` is set properly.');
@@ -63,12 +63,12 @@ class SparkLineDecoration<T> extends DecorationPainter {
       ..strokeWidth = lineWidth;
 
     final _size = state?.defaultPadding?.deflateSize(size) ?? size;
-    final _maxValue = state.maxValue - state.minValue;
+    final _maxValue = state.data.maxValue - state.data.minValue;
     final scale = _size.height / _maxValue;
 
     final List<Offset> _positions = <Offset>[];
 
-    final int _listSize = state.items.fold(0, (previousValue, element) => max(previousValue, element.length));
+    final int _listSize = state.data.listSize;
 
     final _itemWidth = _size.width / _listSize;
 
@@ -81,7 +81,7 @@ class SparkLineDecoration<T> extends DecorationPainter {
         _positions.add(Offset(_size.width * (key / items[lineKey].length) + _itemWidth * startPosition, 0.0));
       }
       _positions.add(Offset(_size.width * (key / items[lineKey].length) + _itemWidth * startPosition,
-          -(value.max - state.minValue) * scale));
+          -(value.max - state.data.minValue) * scale));
       if (fill && items[lineKey].last == value) {
         _positions.add(Offset(_size.width * (key / items[lineKey].length) + _itemWidth * startPosition, 0.0));
       }

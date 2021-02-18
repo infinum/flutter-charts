@@ -86,13 +86,6 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                 ),
                 chartOptions: ChartOptions(
                   padding: EdgeInsets.only(right: _showValues ? 12.0 : 0.0),
-                  valueAxisMax: max(
-                      _values.fold<double>(
-                              0,
-                              (double previousValue, CandleItem element) =>
-                                  previousValue = max(previousValue, element?.max ?? 0)) +
-                          1,
-                      targetMax + 3),
                 ),
                 chartBehaviour: ChartBehaviour(onItemClicked: (item) {
                   setState(() {
@@ -121,7 +114,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                   ),
                 ],
                 foregroundDecorations: [
-                  CupertinoSelectedPainter(
+                  SelectedItemDecoration(
                     _selected,
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
                   ),

@@ -39,7 +39,7 @@ class CandleChart<T> extends StatelessWidget {
       height: height,
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
-        _mappedValues,
+        ChartData(_mappedValues),
         options: chartOptions,
         itemOptions: chartItemOptions,
         behaviour: chartBehaviour,

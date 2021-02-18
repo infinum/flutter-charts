@@ -1,8 +1,8 @@
 part of flutter_charts;
 
 /// Show selected item in Cupertino style (Health app)
-class CupertinoSelectedPainter extends DecorationPainter {
-  CupertinoSelectedPainter(
+class SelectedItemDecoration extends DecorationPainter {
+  SelectedItemDecoration(
     this.selectedIndex, {
     this.selectedColor = Colors.red,
     this.backgroundColor = Colors.grey,
@@ -24,13 +24,13 @@ class CupertinoSelectedPainter extends DecorationPainter {
   @override
   void initDecoration(ChartState state) {
     super.initDecoration(state);
-    assert(
-        state.items.length > selectedKey, 'Selected key is not in the list!\nCheck the `selectedKey` you are passing.');
+    assert(state.data.stackSize > selectedKey,
+        'Selected key is not in the list!\nCheck the `selectedKey` you are passing.');
   }
 
   void _drawText(Canvas canvas, Size size, double width, double totalWidth, ChartState state) {
     final _maxValuePainter = ValueDecoration.makeTextPainter(
-      state.items[selectedKey][selectedIndex].max.toStringAsFixed(2),
+      state.data.items[selectedKey][selectedIndex].max.toStringAsFixed(2),
       width,
       TextStyle(
         fontSize: textSize,
@@ -66,7 +66,7 @@ class CupertinoSelectedPainter extends DecorationPainter {
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
-    final int _listSize = state.items.fold(0, (previousValue, element) => max(previousValue, element.length));
+    final int _listSize = state.data.listSize;
 
     if (selectedIndex == null || _listSize <= selectedIndex || selectedIndex.isNegative) {
       return;
@@ -96,13 +96,13 @@ class CupertinoSelectedPainter extends DecorationPainter {
         min(state?.itemOptions?.maxBarWidth ?? double.infinity, size.width - _padding.horizontal));
 
     const _size = 2.0;
-    final _maxValue = state.maxValue - state.minValue;
+    final _maxValue = state.data.maxValue - state.data.minValue;
     final scale = size.height / _maxValue;
 
-    final _item = state.items[selectedKey][selectedIndex];
+    final _item = state.data.items[selectedKey][selectedIndex];
     // If item is empty, or it's max value is below chart's minValue then don't draw it.
     // minValue can be below 0, this will just ensure that animation is drawn correctly.
-    if (_item.isEmpty || _item.max < state?.minValue) {
+    if (_item.isEmpty || _item.max < state.data.minValue) {
       return;
     }
 
@@ -151,8 +151,8 @@ class CupertinoSelectedPainter extends DecorationPainter {
 
   @override
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
-    if (endValue is CupertinoSelectedPainter) {
-      return CupertinoSelectedPainter(
+    if (endValue is SelectedItemDecoration) {
+      return SelectedItemDecoration(
         animate
             ? lerpDouble(selectedIndex?.toDouble(), endValue.selectedIndex?.toDouble(), t)?.round()
             : endValue.selectedIndex,

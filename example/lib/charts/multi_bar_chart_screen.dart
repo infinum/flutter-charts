@@ -64,14 +64,14 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
       _values[0]
           .asMap()
           .map<int, BarValue<void>>((index, e) {
-            return MapEntry(index, BarValue<void>(e.max + _values[1][index].max + _values[2][index].max));
+            return MapEntry(index, BarValue<void>(e.max));
           })
           .values
           .toList(),
       _values[1]
           .asMap()
           .map<int, BarValue<void>>((index, e) {
-            return MapEntry(index, BarValue<void>(e.max + _values[2][index].max));
+            return MapEntry(index, BarValue<void>(e.max));
           })
           .values
           .toList(),
@@ -84,7 +84,7 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Bar chart',
+          'Multi bar chart',
         ),
       ),
       body: Column(
@@ -139,8 +139,24 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                   BorderDecoration(),
                   ValueDecoration(
                     alignment: Alignment.bottomCenter,
-                    textStyle:
-                        Theme.of(context).textTheme.button.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .button
+                        .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(_stackItems ? 1.0 : 0.0)),
+                  ),
+                  ValueDecoration(
+                    valueKey: 1,
+                    alignment: Alignment.bottomCenter,
+                    textStyle: Theme.of(context).textTheme.button.copyWith(
+                        color: Theme.of(context).colorScheme.onSecondary.withOpacity(_stackItems ? 1.0 : 0.0)),
+                  ),
+                  ValueDecoration(
+                    valueKey: 2,
+                    alignment: Alignment.bottomCenter,
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .button
+                        .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(_stackItems ? 1.0 : 0.0)),
                   ),
                 ],
               ),

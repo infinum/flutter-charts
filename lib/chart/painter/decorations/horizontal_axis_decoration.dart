@@ -66,7 +66,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
   void initDecoration(ChartState state) {
     super.initDecoration(state);
     if (showValues) {
-      _longestText = axisValue.call(state.maxValue.toInt()).toString();
+      _longestText = axisValue.call(state.data.maxValue.toInt()).toString();
 
       if (_longestText.length < (horizontalAxisUnit?.length ?? 0.0)) {
         _longestText = horizontalAxisUnit;
@@ -82,10 +82,10 @@ class HorizontalAxisDecoration extends DecorationPainter {
       ..strokeWidth = gridWidth;
 
     canvas.save();
-    canvas.translate(0.0 + state.defaultMargin.left, size.height + state.defaultMargin.top);
+    canvas.translate(0.0 + state.defaultMargin.left, size.height + state.defaultMargin.top - state.defaultPadding.top);
 
-    final _maxValue = state.maxValue - state.minValue;
-    final _size = size;
+    final _maxValue = state.data.maxValue - state.data.minValue;
+    final _size = EdgeInsets.only(top: state.defaultPadding.top, bottom: state.defaultPadding.bottom).deflateSize(size);
     final scale = _size.height / _maxValue;
 
     final gridPath = Path();
@@ -105,7 +105,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
       if (!showTopValue && i == _maxValue / valueAxisStep) {
         _text = null;
       } else {
-        final _defaultValue = (valueAxisStep * i + state.minValue).toInt();
+        final _defaultValue = (valueAxisStep * i + state.data.minValue).toInt();
         final _value = axisValue.call(_defaultValue);
         _text = _value.toString();
       }
