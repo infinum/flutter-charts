@@ -43,6 +43,22 @@ class ChartData<T> {
     );
   }
 
+  factory ChartData.randomBarValues({
+    int items = 10,
+    double maxValue = 20,
+    double minValue = 0,
+    double valueAxisMaxOver,
+  }) {
+    return ChartData<T>(
+      [
+        List.generate(
+                items, (index) => BarValue<T>((Random().nextDouble() * (maxValue - minValue)) + minValue))
+            .toList()
+      ],
+      valueAxisMaxOver: valueAxisMaxOver,
+    );
+  }
+
   ChartData._lerp(
     this._items,
     this._strategyChange, {

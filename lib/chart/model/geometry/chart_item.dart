@@ -34,7 +34,6 @@ class ChartItem<T> {
     return false;
   }
 
-  @override
   ChartItem<T> operator +(Object other) {
     if (other is ChartItem<T>) {
       return ChartItem<T>(
@@ -47,7 +46,6 @@ class ChartItem<T> {
     return this;
   }
 
-  @override
   ChartItem<T> operator *(Object other) {
     if (other is ChartItem<T>) {
       return ChartItem<T>(
