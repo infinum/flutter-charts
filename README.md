@@ -24,6 +24,19 @@ flutter packages get
 ## Drawing charts
 Now you are ready to use charts lib. If chart needs to animate the state changes then use `AnimatedChart<T>` widget instead of `Chart<T>` widget.
 
+### Simple charts
+In case you need charts ASAP and don't have time to decorate, we have you covered with simple charts.
+```dart
+@override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SimpleLineChart([1, 3, 4, 2, 7, 6, 2, 5, 4]),
+    );
+  }
+```
+
+
 `AnimatedChart<T>` needs to specify `Duration` and it can accept `Curve` for animation.
 #### Bar Chart
 This is how you can start, this is simple bar chart with grid decoration:

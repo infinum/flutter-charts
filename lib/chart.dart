@@ -46,3 +46,5 @@ part 'chart/painter/geometry/geometry_painter.dart';
 part 'chart/widgets/animated_chart.dart';
 part 'chart/widgets/chart.dart';
 part 'chart/widgets/chart_widget.dart';
+part 'chart/widgets/simple_charts/simple_bar_chart.dart';
+part 'chart/widgets/simple_charts/simple_line_chart.dart';

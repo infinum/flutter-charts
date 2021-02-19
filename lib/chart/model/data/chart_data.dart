@@ -32,8 +32,15 @@ class ChartData<T> {
     DataStrategy strategy = DataStrategy.none,
     double axisMax,
     double axisMin,
+    double valueAxisMaxOver,
   }) {
-    return ChartData([items], strategy: strategy, verticalAxisMin: axisMin, verticalAxisMax: axisMax);
+    return ChartData(
+      [items],
+      strategy: strategy,
+      verticalAxisMin: axisMin,
+      verticalAxisMax: axisMax,
+      valueAxisMaxOver: valueAxisMaxOver,
+    );
   }
 
   ChartData._lerp(
