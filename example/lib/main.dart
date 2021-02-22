@@ -214,10 +214,6 @@ class ShowList extends StatelessWidget {
         ),
         Divider(),
         ComplexCharts(),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SimpleLineChart([1, 3, 4, 2, 7, 6, 2, 5, 4]),
-        ),
       ],
     );
   }
