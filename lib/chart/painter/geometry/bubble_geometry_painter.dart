@@ -39,7 +39,7 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
     final _circleSize = _itemWidth / 2;
 
     canvas.drawCircle(
-      Offset(size.width * 0.5, item.min * _verticalMultiplier - _minValue),
+      Offset(size.width * 0.5, item.max * _verticalMultiplier - _minValue),
       _circleSize,
       paint,
     );
@@ -51,7 +51,7 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
       _borderPaint.strokeWidth = options.border.width;
 
       canvas.drawCircle(
-        Offset(size.width * 0.5, item.min * _verticalMultiplier - _minValue),
+        Offset(size.width * 0.5, item.max * _verticalMultiplier - _minValue),
         _circleSize,
         _borderPaint,
       );

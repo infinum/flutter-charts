@@ -45,7 +45,7 @@ Widget build(BuildContext context) {
   return Chart(
     state: ChartState.bar(
       ChartData.fromList(
-        <double>[1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e)).toList(),
+        <double>[1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e)).toList(),
       ),
     ),
   );

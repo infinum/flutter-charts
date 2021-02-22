@@ -38,8 +38,8 @@ class ChartState<T> {
       data,
       itemOptions: itemOptions,
       behaviour: behaviour,
-      backgroundDecorations: [...backgroundDecorations, GridDecoration()],
-      foregroundDecorations: [...foregroundDecorations, SparkLineDecoration()],
+      backgroundDecorations: backgroundDecorations.isEmpty ? [GridDecoration()] : backgroundDecorations,
+      foregroundDecorations: foregroundDecorations.isEmpty ? [SparkLineDecoration()] : foregroundDecorations,
     );
   }
 
@@ -56,7 +56,7 @@ class ChartState<T> {
       data,
       itemOptions: itemOptions,
       behaviour: behaviour,
-      backgroundDecorations: [...backgroundDecorations, GridDecoration()],
+      backgroundDecorations: backgroundDecorations.isEmpty ? [GridDecoration()] : backgroundDecorations,
       foregroundDecorations: foregroundDecorations,
     );
   }
