@@ -11,7 +11,7 @@ GeometryPainter<T> barPainter<T>(ChartItem<T> item, ChartState<T> state) => BarG
 /// [border] Define border width and color
 /// [gradient] Item can have gradient color
 class BarItemOptions extends ItemOptions {
-  BarItemOptions({
+  const BarItemOptions({
     EdgeInsets padding = EdgeInsets.zero,
     EdgeInsets multiValuePadding = EdgeInsets.zero,
     double maxBarWidth,

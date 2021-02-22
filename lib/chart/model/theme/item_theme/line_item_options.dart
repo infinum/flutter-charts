@@ -5,7 +5,7 @@ GeometryPainter<T> bubblePainter<T>(ChartItem<T> item, ChartState<T> state) => B
 
 /// Options for [BubbleGeometryPainter]
 class BubbleItemOptions extends ItemOptions {
-  BubbleItemOptions({
+  const BubbleItemOptions({
     EdgeInsets padding = EdgeInsets.zero,
     EdgeInsets multiValuePadding = EdgeInsets.zero,
     double maxBarWidth,
