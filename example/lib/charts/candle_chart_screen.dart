@@ -76,7 +76,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                 data: _values,
                 height: MediaQuery.of(context).size.height * 0.4,
                 dataToValue: (CandleItem value) => CandleValue(value.min, value.max),
-                chartItemOptions: ChartItemOptions(
+                chartItemOptions: BarItemOptions(
                   minBarWidth: 4.0,
                   padding: EdgeInsets.symmetric(horizontal: 2.0),
                   color: Theme.of(context).colorScheme.primary.withOpacity(1.0),

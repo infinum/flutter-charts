@@ -1,15 +1,5 @@
 part of flutter_charts;
 
-/// Item painter, use [barPainter] or [barPainter].
-/// Custom painter can also be added by extending [GeometryPainter]
-typedef ChartGeometryPainter<T> = GeometryPainter<T> Function(ChartItem<T> item, ChartState state);
-
-/// Bar painter
-GeometryPainter<T> barPainter<T>(ChartItem<T> item, ChartState<T> state) => BarGeometryPainter<T>(item, state);
-
-/// Bubble painter
-GeometryPainter<T> bubblePainter<T>(ChartItem<T> item, ChartState<T> state) => BubbleGeometryPainter<T>(item, state);
-
 /// Main state of the charts. Painter will use this as state and it will format chart depending
 /// on options.
 ///
@@ -24,11 +14,10 @@ GeometryPainter<T> bubblePainter<T>(ChartItem<T> item, ChartState<T> state) => B
 class ChartState<T> {
   ChartState(
     this.data, {
-    this.itemOptions = const ChartItemOptions(),
+    this.itemOptions = const ItemOptions(geometryPainter: barPainter),
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const <DecorationPainter>[],
     this.foregroundDecorations = const <DecorationPainter>[],
-    this.geometryPainter = barPainter,
   }) : assert(data.isNotEmpty, 'No items!') {
     /// Set default padding and margin, decorations padding and margins will be added to this value
     defaultPadding = EdgeInsets.zero;
@@ -38,13 +27,12 @@ class ChartState<T> {
 
   ChartState._lerp(
     this.data, {
-    this.itemOptions = const ChartItemOptions(),
+    this.itemOptions = const ItemOptions(geometryPainter: barPainter),
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const [],
     this.foregroundDecorations = const [],
     this.defaultMargin,
     this.defaultPadding,
-    this.geometryPainter = barPainter,
   }) {
     _initDecorations();
   }
@@ -52,11 +40,8 @@ class ChartState<T> {
   /// Data
   final ChartData<T> data;
 
-  /// Geometry
-  final ChartGeometryPainter geometryPainter;
-
   /// Theme
-  final ChartItemOptions itemOptions;
+  final ItemOptions itemOptions;
   final ChartBehaviour behaviour;
   // Theme Decorations
   final List<DecorationPainter> backgroundDecorations;
@@ -103,7 +88,7 @@ class ChartState<T> {
     return ChartState<T>._lerp(
       ChartData.lerp(a.data, b.data, t),
       behaviour: ChartBehaviour.lerp(a.behaviour, b.behaviour, t),
-      itemOptions: ChartItemOptions.lerp(a.itemOptions, b.itemOptions, t),
+      itemOptions: a.itemOptions.animateTo(b.itemOptions, t),
       // Find background matches, if found, then animate to them, else just show them.
       backgroundDecorations: b.backgroundDecorations.map((e) {
         final DecorationPainter _match =
@@ -127,9 +112,6 @@ class ChartState<T> {
 
       defaultMargin: EdgeInsets.lerp(a.defaultMargin, b.defaultMargin, t),
       defaultPadding: EdgeInsets.lerp(a.defaultPadding, b.defaultPadding, t),
-
-      // Lerp missing
-      geometryPainter: t < 0.5 ? a.geometryPainter : b.geometryPainter,
     );
   }
 }

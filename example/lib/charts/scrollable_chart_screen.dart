@@ -82,7 +82,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                 data: _values,
                 height: MediaQuery.of(context).size.height * 0.4,
                 dataToValue: (double value) => value,
-                itemOptions: ChartItemOptions(
+                itemOptions: BarItemOptions(
                   padding: EdgeInsets.symmetric(horizontal: _isScrollable ? 12.0 : 2.0),
                   minBarWidth: _isScrollable ? 36.0 : 4.0,
                   // isTargetInclusive: true,

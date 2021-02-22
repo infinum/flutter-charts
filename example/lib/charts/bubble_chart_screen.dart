@@ -74,7 +74,7 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                 child: BubbleChart<BubbleValue>(
                   data: _values,
                   height: MediaQuery.of(context).size.height * 0.3,
-                  itemOptions: ChartItemOptions(
+                  itemOptions: BubbleItemOptions(
                     color: Theme.of(context).colorScheme.primary,
                     colorForValue: tad.getTargetItemColor(),
                     padding: EdgeInsets.symmetric(horizontal: (1 - (_values.length / 17)) * 8.0),

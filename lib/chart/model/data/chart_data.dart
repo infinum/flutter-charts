@@ -5,26 +5,26 @@ enum DataStrategy {
   stack,
 }
 
-/// [verticalAxisMin] - Min value that has to be displayed on the chart, if data contains value that is
-/// lower than [verticalAxisMin] in that case [verticalAxisMin] is ignored and actual min value is shown.
+/// [axisMin] - Min value that has to be displayed on the chart, if data contains value that is
+/// lower than [axisMin] in that case [axisMin] is ignored and actual min value is shown.
 ///
-/// [verticalAxisMax] - Same as [verticalAxisMin] but for max value.
+/// [axisMax] - Same as [axisMin] but for max value.
 class ChartData<T> {
   ChartData(
     this._items, {
     this.strategy = DataStrategy.none,
-    this.verticalAxisMax,
+    this.axisMax,
     double valueAxisMaxOver,
-    this.verticalAxisMin,
+    this.axisMin,
   })  : _strategyChange = strategy != DataStrategy.none ? 1.0 : 0.0,
         minValue = _getMinValue(
             formatDataStrategy(_items, strategy)
                 .fold(<ChartItem<T>>[], (List<ChartItem<T>> list, element) => list..addAll(element)).toList(),
-            verticalAxisMin),
+            axisMin),
         maxValue = _getMaxValue(
                 formatDataStrategy(_items, strategy)
                     .fold(<ChartItem<T>>[], (List<ChartItem<T>> list, element) => list..addAll(element)).toList(),
-                verticalAxisMax) +
+                axisMax) +
             (valueAxisMaxOver ?? 0.0);
 
   factory ChartData.fromList(
@@ -37,8 +37,8 @@ class ChartData<T> {
     return ChartData(
       [items],
       strategy: strategy,
-      verticalAxisMin: axisMin,
-      verticalAxisMax: axisMax,
+      axisMin: axisMin,
+      axisMax: axisMax,
       valueAxisMaxOver: valueAxisMaxOver,
     );
   }
@@ -51,8 +51,7 @@ class ChartData<T> {
   }) {
     return ChartData<T>(
       [
-        List.generate(
-                items, (index) => BarValue<T>((Random().nextDouble() * (maxValue - minValue)) + minValue))
+        List.generate(items, (index) => BarValue<T>((Random().nextDouble() * (maxValue - minValue)) + minValue))
             .toList()
       ],
       valueAxisMaxOver: valueAxisMaxOver,
@@ -63,8 +62,8 @@ class ChartData<T> {
     this._items,
     this._strategyChange, {
     this.strategy = DataStrategy.none,
-    this.verticalAxisMax,
-    this.verticalAxisMin,
+    this.axisMax,
+    this.axisMin,
     this.minValue,
     this.maxValue,
   });
@@ -77,13 +76,13 @@ class ChartData<T> {
   final double minValue;
   final double maxValue;
 
-  /// Max value that chart should show, in case that [verticalAxisMax] is bellow
+  /// Max value that chart should show, in case that [axisMax] is bellow
   /// the value of value passed with data in the chart this will be ignored.
-  final double verticalAxisMax;
+  final double axisMax;
 
   /// Min value of the chart, anything below that will not be shown and chart
-  /// x axis will start from [verticalAxisMin] (default: 0)
-  final double verticalAxisMin;
+  /// x axis will start from [axisMin] (default: 0)
+  final double axisMin;
 
   List<List<ChartItem<T>>> get items {
     return formatDataStrategy(_items, strategy, _strategyChange);
@@ -135,13 +134,13 @@ class ChartData<T> {
   int get stackSize => _items.length;
 
   /// Get max value of the chart
-  /// Max value is max data item from [items] or [ChartOptions.verticalAxisMax]
+  /// Max value is max data item from [items] or [ChartOptions.axisMax]
   static double _getMaxValue<T>(List<ChartItem<T>> items, double valueAxisMax) {
     return max(valueAxisMax ?? 0.0, items.map((e) => e?.max ?? 0.0).reduce(max));
   }
 
   /// Get min value of the chart
-  /// Min value is min data item from [items] or [ChartOptions.verticalAxisMin]
+  /// Min value is min data item from [items] or [ChartOptions.axisMin]
   static double _getMinValue<T>(List<ChartItem<T>> items, double valueAxisMin) {
     final _minItems = items
         .where((e) => (e?.min != null && e.min != 0.0) || (e?.min == null && e?.max != 0.0))
@@ -158,8 +157,8 @@ class ChartData<T> {
       ChartItemsLerp().lerpValues(a._items, b._items, t),
       lerpDouble(a._strategyChange, b._strategyChange, t),
       strategy: t > 0.5 ? b.strategy : a.strategy,
-      verticalAxisMax: lerpDouble(a.verticalAxisMax, b.verticalAxisMax, t),
-      verticalAxisMin: lerpDouble(a.verticalAxisMin, b.verticalAxisMin, t),
+      axisMax: lerpDouble(a.axisMax, b.axisMax, t),
+      axisMin: lerpDouble(a.axisMin, b.axisMin, t),
 
       /// Those are usually calculated, but we need to have a control over them in the animation
       maxValue: lerpDouble(a.maxValue, b.maxValue, t),

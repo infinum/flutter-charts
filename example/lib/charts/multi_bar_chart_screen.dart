@@ -96,7 +96,7 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                 _getMap(),
                 stack: _stackItems,
                 height: MediaQuery.of(context).size.height * 0.4,
-                itemOptions: ChartItemOptions(
+                itemOptions: BarItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     minBarWidth: 4.0,
                     multiValuePadding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -112,6 +112,9 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                         Theme.of(context).colorScheme.secondary
                       ][index];
                     }),
+                chartBehaviour: ChartBehaviour(
+                  multiItemStack: _stackItems,
+                ),
                 backgroundDecorations: [
                   GridDecoration(
                     showVerticalGrid: true,

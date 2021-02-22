@@ -87,13 +87,11 @@ class ShowList extends StatelessWidget {
                     [2, 7, 2, 4, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
                     axisMax: 9,
                   ),
-                  itemOptions: ChartItemOptions(
+                  itemOptions: BubbleItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    radius: BorderRadius.all(Radius.circular(12.0)),
                     color: Theme.of(context).accentColor,
                     maxBarWidth: 1.0,
                   ),
-                  geometryPainter: bubblePainter,
                   backgroundDecorations: [
                     GridDecoration(
                       showVerticalGrid: false,
@@ -126,7 +124,7 @@ class ShowList extends StatelessWidget {
                       [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
                       axisMax: 8,
                     ),
-                    itemOptions: ChartItemOptions(
+                    itemOptions: BarItemOptions(
                       padding: const EdgeInsets.symmetric(horizontal: 2.0),
                       color: Theme.of(context).accentColor,
                       maxBarWidth: 4.0,
@@ -180,7 +178,7 @@ class ShowList extends StatelessWidget {
                     [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
                     axisMax: 8,
                   ),
-                  itemOptions: ChartItemOptions(
+                  itemOptions: BarItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     radius: BorderRadius.vertical(top: Radius.circular(12.0)),
                     color: Theme.of(context).accentColor,
@@ -219,7 +217,7 @@ class ShowList extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: SimpleLineChart([1, 3, 4, 2, 7, 6, 2, 5, 4]),
-        )
+        ),
       ],
     );
   }

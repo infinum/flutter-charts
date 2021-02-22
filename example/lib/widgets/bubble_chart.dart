@@ -22,7 +22,7 @@ class BubbleChart<T> extends StatelessWidget {
   final List<List<ChartItem<T>>> _mappedValues;
 
   final double height;
-  final ChartItemOptions itemOptions;
+  final ItemOptions itemOptions;
 
   final List<DecorationPainter> backgroundDecorations;
   final List<DecorationPainter> foregroundDecorations;
@@ -37,7 +37,6 @@ class BubbleChart<T> extends StatelessWidget {
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
         ChartData(_mappedValues, valueAxisMaxOver: 5.0),
-        geometryPainter: bubblePainter,
         itemOptions: itemOptions,
         foregroundDecorations: _foregroundDecorations,
         backgroundDecorations: [

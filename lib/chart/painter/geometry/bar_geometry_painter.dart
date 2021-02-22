@@ -27,12 +27,15 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
 
   @override
   void draw(Canvas canvas, Size size, Paint paint) {
+    assert(state.itemOptions is BarItemOptions);
+    final options = state.itemOptions as BarItemOptions;
+
     final _maxValue = state.data.maxValue - state.data.minValue;
     final _verticalMultiplier = size.height / _maxValue;
     final _minValue = state.data.minValue * _verticalMultiplier;
 
-    EdgeInsets _padding = state?.itemOptions?.padding ?? EdgeInsets.zero;
-    final _radius = state?.itemOptions?.radius ?? BorderRadius.zero;
+    EdgeInsets _padding = options.padding ?? EdgeInsets.zero;
+    final _radius = options.radius ?? BorderRadius.zero;
 
     final _itemWidth = itemWidth(size);
 
@@ -64,5 +67,32 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
       ),
       paint,
     );
+
+    if (options.border != null && options.border.style == BorderStyle.solid) {
+      final _borderPaint = Paint();
+      _borderPaint.style = PaintingStyle.stroke;
+      _borderPaint.color = options.border.color;
+      _borderPaint.strokeWidth = options.border.width;
+
+      canvas.drawRRect(
+        RRect.fromRectAndCorners(
+          Rect.fromPoints(
+            Offset(
+              _padding.left,
+              max(state.data.minValue ?? 0.0, item.min ?? 0.0) * _verticalMultiplier - _minValue,
+            ),
+            Offset(
+              _itemWidth + _padding.left,
+              item.max * _verticalMultiplier - _minValue,
+            ),
+          ),
+          bottomLeft: item.max.isNegative ? _radius.topLeft : _radius.bottomLeft,
+          bottomRight: item.max.isNegative ? _radius.topRight : _radius.bottomRight,
+          topLeft: item.max.isNegative ? _radius.bottomLeft : _radius.topLeft,
+          topRight: item.max.isNegative ? _radius.bottomRight : _radius.topRight,
+        ),
+        _borderPaint,
+      );
+    }
   }
 }

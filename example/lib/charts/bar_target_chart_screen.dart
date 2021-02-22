@@ -74,7 +74,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                 data: _values,
                 height: MediaQuery.of(context).size.height * 0.4,
                 dataToValue: (BarValue value) => value.max,
-                itemOptions: ChartItemOptions(
+                itemOptions: BarItemOptions(
                   padding: const EdgeInsets.symmetric(horizontal: 2.0),
                   minBarWidth: 4.0,
                   // isTargetInclusive: true,

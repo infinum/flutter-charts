@@ -26,7 +26,7 @@ class CandleChart<T> extends StatelessWidget {
   final List<DecorationPainter> backgroundDecorations;
   final List<DecorationPainter> foregroundDecorations;
   final ChartBehaviour chartBehaviour;
-  final ChartItemOptions chartItemOptions;
+  final ItemOptions chartItemOptions;
   final ChartGeometryPainter geometryPainter;
 
   final List<List<CandleValue<T>>> _mappedValues;
@@ -40,7 +40,6 @@ class CandleChart<T> extends StatelessWidget {
         ChartData(_mappedValues),
         itemOptions: chartItemOptions,
         behaviour: chartBehaviour,
-        geometryPainter: geometryPainter,
         foregroundDecorations: foregroundDecorations,
         backgroundDecorations: backgroundDecorations,
       ),

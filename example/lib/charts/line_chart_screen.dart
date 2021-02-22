@@ -95,12 +95,11 @@ class _LineChartScreenState extends State<LineChartScreen> {
                     height: MediaQuery.of(context).size.height * 0.4,
                     itemColor: Theme.of(context).colorScheme.secondary.withOpacity(_showLine ? 1.0 : 0.0),
                     lineWidth: 2.0,
-                    chartItemOptions: ChartItemOptions(
+                    chartItemOptions: BubbleItemOptions(
                       maxBarWidth: _showLine ? 0.0 : 6.0,
                       colorForKey: (item, key) {
                         return [Colors.black, Colors.red, Colors.blue][key];
                       },
-                      color: Theme.of(context).colorScheme.secondary.withOpacity(0.4),
                     ),
                     smoothCurves: _smoothPoints,
                     backgroundDecorations: [

@@ -2,7 +2,7 @@ part of flutter_charts;
 
 /// Custom painter for charts
 class ChartPainter extends CustomPainter {
-  ChartPainter(this.state) : assert(state.geometryPainter != null, 'You need to provide item painter!');
+  ChartPainter(this.state) : assert(state.itemOptions?.geometryPainter != null, 'You need to provide item painter!');
 
   final ChartState state;
 
@@ -53,7 +53,6 @@ class ChartPainter extends CustomPainter {
         ((state?.itemOptions?.multiValuePadding?.horizontal ?? 0.0) / max(1, state.data.stackSize * _stack)) * _stack;
 
     // Save, and translate the canvas so [0,0] is top left of the first item
-    final _itemPaint = Paint();
     canvas.save();
     canvas.translate(
       (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left - _stackWidth,
@@ -70,7 +69,7 @@ class ChartPainter extends CustomPainter {
         final item = value[index];
 
         // Use item painter from ItemOptions to draw the item on the chart
-        final _item = state.geometryPainter(item, state);
+        final _item = state.itemOptions.geometryPainter(item, state);
 
         final _shouldStack = (key == 0) ? _stack : 0.0;
         // Go to next value only if we are not in the stack, or if this is the first item in the stack
@@ -83,7 +82,7 @@ class ChartPainter extends CustomPainter {
         _item.draw(
           canvas,
           Size(_stackWidth, -_size.height),
-          _itemPaint..color = state.itemOptions.getItemColor(_item.item, key),
+          state.itemOptions.getPaintForItem(_item.item, Size(_stackWidth, -_size.height), key),
         );
 
         final _shouldStackLast = (key == state.data.stackSize - 1) ? _stack : 0.0;

@@ -44,8 +44,7 @@ class SimpleLineChart extends StatelessWidget {
             axisMax: axisMax,
             axisMin: axisMin,
           ),
-          itemOptions: const ChartItemOptions(maxBarWidth: 0.0),
-          geometryPainter: bubblePainter,
+          itemOptions: BubbleItemOptions(maxBarWidth: 0.0),
           backgroundDecorations: [
             ...backgroundDecorations,
             GridDecoration(

@@ -24,9 +24,9 @@ class ComplexCharts extends StatelessWidget {
                       [6, 8, 9, 7, 12].map((e) => BarValue<void>(e.toDouble())).toList(),
                       [2, 4, 5, 3, 8].map((e) => BarValue<void>(e.toDouble())).toList(),
                     ],
-                    verticalAxisMax: 9.0,
+                    axisMax: 9.0,
                   ),
-                  itemOptions: ChartItemOptions(
+                  itemOptions: BarItemOptions(
                       padding: const EdgeInsets.symmetric(horizontal: 2.0),
                       radius: BorderRadius.vertical(top: Radius.circular(12.0)),
                       color: Theme.of(context).accentColor,

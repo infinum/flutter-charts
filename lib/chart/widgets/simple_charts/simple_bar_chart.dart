@@ -15,8 +15,8 @@ class SimpleBarChart extends StatelessWidget {
     this.axisMin,
     this.itemRadius,
     this.itemPadding = const EdgeInsets.symmetric(horizontal: 4.0),
-        this.maxItemWidth,
-        this.minItemWidth,
+    this.maxItemWidth,
+    this.minItemWidth,
   }) : super(key: key);
 
   final List<double> data;
@@ -49,7 +49,7 @@ class SimpleBarChart extends StatelessWidget {
           axisMax: axisMax,
           axisMin: axisMin,
         ),
-        itemOptions: ChartItemOptions(
+        itemOptions: BarItemOptions(
           color: itemColor ?? Theme.of(context).accentColor,
           radius: itemRadius,
           padding: itemPadding,

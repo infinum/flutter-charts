@@ -13,7 +13,7 @@ class BarChart<T> extends StatelessWidget {
     this.backgroundDecorations,
     this.foregroundDecorations,
     this.chartBehaviour = const ChartBehaviour(),
-    this.itemOptions = const ChartItemOptions(),
+    this.itemOptions = const ItemOptions(),
     this.stack = false,
     Key key,
   })  : _mappedValues = [data.map((e) => BarValue<T>(dataToValue(e))).toList()],
@@ -25,7 +25,7 @@ class BarChart<T> extends StatelessWidget {
     this.backgroundDecorations,
     this.foregroundDecorations,
     this.chartBehaviour = const ChartBehaviour(),
-    this.itemOptions = const ChartItemOptions(),
+    this.itemOptions = const ItemOptions(),
     this.stack = false,
     Key key,
   })  : dataToValue = null,
@@ -36,7 +36,7 @@ class BarChart<T> extends StatelessWidget {
   final double height;
 
   final bool stack;
-  final ChartItemOptions itemOptions;
+  final ItemOptions itemOptions;
   final ChartBehaviour chartBehaviour;
   final List<DecorationPainter> backgroundDecorations;
   final List<DecorationPainter> foregroundDecorations;
