@@ -1,14 +1,14 @@
 part of flutter_charts;
 
-/// Extend [ImplicitlyAnimatedWidget], that way every change on
-/// [ChartState] that is included in lerp function will get animated.
+/// Extended [ImplicitlyAnimatedWidget], that will animate the chart on every change of the [ChartState].
 class AnimatedChart<T> extends ImplicitlyAnimatedWidget {
+  /// Default constructor for animated chart [state] and [duration] are required
   const AnimatedChart({
+    @required this.state,
+    @required Duration duration,
     this.height = 240.0,
     this.width,
-    this.state,
     Curve curve = Curves.linear,
-    @required Duration duration,
     VoidCallback onEnd,
     Key key,
   }) : super(duration: duration, curve: curve, onEnd: onEnd, key: key);

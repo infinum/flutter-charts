@@ -1,7 +1,11 @@
 part of flutter_charts;
 
+/// Data strategy to use for [ChartData]
 enum DataStrategy {
+  /// Data will be the same as it was passed
   none,
+
+  /// Data will be 'stacked' one on top of the other
   stack,
 }
 
@@ -9,7 +13,9 @@ enum DataStrategy {
 /// lower than [axisMin] in that case [axisMin] is ignored and actual min value is shown.
 ///
 /// [axisMax] - Same as [axisMin] but for max value.
+/// [valueAxisMaxOver] - How much should chart draw above max value in the chart
 class ChartData<T> {
+  /// Takes [List<List<ChartItem<T>>>] to make chart, this is used for multiple list charts
   ChartData(
     this._items, {
     this.strategy = DataStrategy.none,
@@ -18,31 +24,32 @@ class ChartData<T> {
     this.axisMin,
   })  : _strategyChange = strategy != DataStrategy.none ? 1.0 : 0.0,
         minValue = _getMinValue(
-            formatDataStrategy(_items, strategy)
+            _formatDataStrategy(_items, strategy)
                 .fold(<ChartItem<T>>[], (List<ChartItem<T>> list, element) => list..addAll(element)).toList(),
             axisMin),
         maxValue = _getMaxValue(
-                formatDataStrategy(_items, strategy)
+                _formatDataStrategy(_items, strategy)
                     .fold(<ChartItem<T>>[], (List<ChartItem<T>> list, element) => list..addAll(element)).toList(),
                 axisMax) +
             (valueAxisMaxOver ?? 0.0);
 
+  /// Make chart data from list of [ChartItem]'s
   factory ChartData.fromList(
     List<ChartItem<T>> items, {
-    DataStrategy strategy = DataStrategy.none,
     double axisMax,
     double axisMin,
     double valueAxisMaxOver,
   }) {
     return ChartData(
       [items],
-      strategy: strategy,
+      strategy: DataStrategy.none,
       axisMin: axisMin,
       axisMax: axisMax,
       valueAxisMaxOver: valueAxisMaxOver,
     );
   }
 
+  /// Generate a list of random [BarValue] items for the chart
   factory ChartData.randomBarValues({
     int items = 10,
     double maxValue = 20,
@@ -69,11 +76,19 @@ class ChartData<T> {
   });
 
   final List<List<ChartItem<T>>> _items;
-  final DataStrategy strategy;
   final double _strategyChange;
 
-  /// Scale
+  /// Data strategy to use on items
+  /// Defaults to [DataStrategy.none]
+  final DataStrategy strategy;
+
+  // Scale
+  /// Min value that chart should show.
+  /// In case chart shouldn't start from 0 use this to specify new min starting point
+  /// If data has value that goes below [minValue] then [minValue] is ignored
   final double minValue;
+  /// Max value to show on the chart, in case data has point higher then
+  /// specified [maxValue] then [maxValue] is ignored
   final double maxValue;
 
   /// Max value that chart should show, in case that [axisMax] is bellow
@@ -84,11 +99,13 @@ class ChartData<T> {
   /// x axis will start from [axisMin] (default: 0)
   final double axisMin;
 
+  /// Return [List<List<ChartItem<T>>>] as formatted data defined by [DataStrategy]
   List<List<ChartItem<T>>> get items {
-    return formatDataStrategy(_items, strategy, _strategyChange);
+    return _formatDataStrategy(_items, strategy, _strategyChange);
   }
 
-  static List<List<ChartItem<T>>> formatDataStrategy<T>(
+  /// Format items according to currently selected [DataStrategy]
+  static List<List<ChartItem<T>>> _formatDataStrategy<T>(
     List<List<ChartItem<T>>> items,
     DataStrategy strategy, [
     double _stackValue,
@@ -127,10 +144,16 @@ class ChartData<T> {
     }
   }
 
+  /// Returns true if there is no items in the [ChartData]
   bool get isEmpty => _items.isEmpty;
+
+  /// Returns true if there is at least one item in the [ChartData]
   bool get isNotEmpty => !isEmpty;
 
+  /// Get max list size
   int get listSize => _items.fold(0, (previousValue, element) => max(previousValue, element.length));
+
+  /// Get number of data lists in the chart
   int get stackSize => _items.length;
 
   /// Get max value of the chart
@@ -152,9 +175,13 @@ class ChartData<T> {
     return min(valueAxisMin ?? 0.0, _minItems.reduce(min));
   }
 
+  /// Linearly interpolate between two [ChartData], `a` and `b`, by an extrapolation
+  /// factor `t`.
+  ///
+  /// This will animate changes in the [ChartData]
   static ChartData<T> lerp<T>(ChartData<T> a, ChartData<T> b, double t) {
     return ChartData._lerp(
-      ChartItemsLerp().lerpValues(a._items, b._items, t),
+      ChartItemsLerp.lerpValues(a._items, b._items, t),
       lerpDouble(a._strategyChange, b._strategyChange, t),
       strategy: t > 0.5 ? b.strategy : a.strategy,
       axisMax: lerpDouble(a.axisMax, b.axisMax, t),
@@ -169,7 +196,8 @@ class ChartData<T> {
 
 /// Lerp items in the charts
 class ChartItemsLerp {
-  List<List<ChartItem<T>>> lerpValues<T>(List<List<ChartItem<T>>> a, List<List<ChartItem<T>>> b, double t) {
+  /// Lerp chart items
+  static List<List<ChartItem<T>>> lerpValues<T>(List<List<ChartItem<T>>> a, List<List<ChartItem<T>>> b, double t) {
     /// Get list length in animation, we will add the items in steps.
     final double _listLength = lerpDouble(a.length, b.length, t);
 
@@ -182,7 +210,7 @@ class ChartItemsLerp {
     });
   }
 
-  List<ChartItem<T>> _lerpItemList<T>(List<ChartItem<T>> a, List<ChartItem<T>> b, double t) {
+  static List<ChartItem<T>> _lerpItemList<T>(List<ChartItem<T>> a, List<ChartItem<T>> b, double t) {
     final double _listLength = lerpDouble(a.length, b.length, t);
 
     /// Empty value for generated list.

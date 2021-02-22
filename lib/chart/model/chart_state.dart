@@ -12,6 +12,7 @@ part of flutter_charts;
 ///
 /// More different decorations can be added by extending [DecorationPainter]
 class ChartState<T> {
+  /// Chart state constructor
   ChartState(
     this.data, {
     this.itemOptions = const ItemOptions(geometryPainter: barPainter),
@@ -23,6 +24,41 @@ class ChartState<T> {
     defaultPadding = EdgeInsets.zero;
     defaultMargin = EdgeInsets.zero;
     _setUpDecorations();
+  }
+
+  /// Create line chart with foreground sparkline decoration and background grid decoration
+  factory ChartState.line(
+    ChartData<T> data, {
+    ItemOptions itemOptions = const ItemOptions(geometryPainter: bubblePainter, maxBarWidth: 2.0),
+    ChartBehaviour behaviour = const ChartBehaviour(),
+    List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
+    List<DecorationPainter> foregroundDecorations = const <DecorationPainter>[],
+  }) {
+    return ChartState(
+      data,
+      itemOptions: itemOptions,
+      behaviour: behaviour,
+      backgroundDecorations: [...backgroundDecorations, GridDecoration()],
+      foregroundDecorations: [...foregroundDecorations, SparkLineDecoration()],
+    );
+  }
+
+  /// Create bar chart with background grid decoration
+  factory ChartState.bar(
+    ChartData<T> data, {
+    ItemOptions itemOptions =
+        const ItemOptions(geometryPainter: barPainter, padding: EdgeInsets.symmetric(horizontal: 4.0)),
+    ChartBehaviour behaviour = const ChartBehaviour(),
+    List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
+    List<DecorationPainter> foregroundDecorations = const <DecorationPainter>[],
+  }) {
+    return ChartState(
+      data,
+      itemOptions: itemOptions,
+      behaviour: behaviour,
+      backgroundDecorations: [...backgroundDecorations, GridDecoration()],
+      foregroundDecorations: foregroundDecorations,
+    );
   }
 
   ChartState._lerp(
@@ -37,14 +73,22 @@ class ChartState<T> {
     _initDecorations();
   }
 
-  /// Data
+  // Data layer
+  /// [ChartData] data that chart will show
   final ChartData<T> data;
 
-  /// Theme
+  // Theme layer
+  /// [ItemOptions] define how each item is painted
   final ItemOptions itemOptions;
+
+  /// [ChartBehaviour] define how chart behaves and how it should react
   final ChartBehaviour behaviour;
+
   // Theme Decorations
+  /// Decorations for chart background, the go below the items
   final List<DecorationPainter> backgroundDecorations;
+
+  /// Decorations for chart foreground, they are drawn last, and the go above items
   final List<DecorationPainter> foregroundDecorations;
 
   /// Margin of chart drawing area where items are drawn. This is so decorations
@@ -55,7 +99,8 @@ class ChartState<T> {
   /// Unlike [defaultMargin] decorations can draw inside the padding area.
   EdgeInsets defaultPadding;
 
-  List<DecorationPainter> get allDecorations => [...foregroundDecorations, ...backgroundDecorations];
+  /// Get all decorations. This will return list of [backgroundDecorations] and [foregroundDecorations] as one list.
+  List<DecorationPainter> get _allDecorations => [...foregroundDecorations, ...backgroundDecorations];
 
   /// Set up decorations and calculate chart's [defaultPadding] and [defaultMargin]
   /// Decorations are a bit special, calling init on them with current state
@@ -75,13 +120,13 @@ class ChartState<T> {
 
   /// Init all decorations, pass current chart state so each decoration can access data it requires
   /// to set up it's padding and margin values
-  void _initDecorations() => allDecorations.forEach((decoration) => decoration.initDecoration(this));
+  void _initDecorations() => _allDecorations.forEach((decoration) => decoration.initDecoration(this));
 
   /// Get total padding needed by all decorations
-  void _getDecorationsMargin() => allDecorations.forEach((element) => defaultMargin += element.marginNeeded());
+  void _getDecorationsMargin() => _allDecorations.forEach((element) => defaultMargin += element.marginNeeded());
 
   /// Get total margin needed by all decorations
-  void _getDecorationsPadding() => allDecorations.forEach((element) => defaultPadding += element.paddingNeeded());
+  void _getDecorationsPadding() => _allDecorations.forEach((element) => defaultPadding += element.paddingNeeded());
 
   /// For later in case charts will have to animate between states.
   static ChartState<T> lerp<T>(ChartState<T> a, ChartState<T> b, double t) {

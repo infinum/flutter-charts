@@ -1,11 +1,12 @@
 part of flutter_charts;
 
-/// Item painter, use [barPainter] or [barPainter].
+/// Item painter, use [barPainter] or [bubblePainter].
 /// Custom painter can also be added by extending [GeometryPainter]
 typedef ChartGeometryPainter<T> = GeometryPainter<T> Function(ChartItem<T> item, ChartState state);
 
 /// Get color for current item value
 typedef ColorForValue = Color Function(Color defaultColor, double value, [double min]);
+
 /// Get color gor current item key (multiple lists)
 typedef ColorForKey = Color Function(ChartItem item, int index);
 

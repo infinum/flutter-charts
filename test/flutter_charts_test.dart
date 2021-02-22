@@ -2,6 +2,40 @@ import 'package:flutter_charts/chart.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  group('[ChartData] Chart data', () {
+    test('[ChartData] Data max is max', () {
+      final _data = ChartData([
+        [2, 4, 6].map((e) => BarValue<void>(e.toDouble())).toList()
+      ]);
+
+      expect(_data.maxValue, 6);
+    });
+
+    test('[ChartData] 0 is min', () {
+      final _data = ChartData([
+        [2, 4, 6].map((e) => BarValue<void>(e.toDouble())).toList()
+      ]);
+
+      expect(_data.minValue, 0);
+    });
+
+    test('[ChartData] Negative data is new min', () {
+      final _data = ChartData([
+        [-2, 4, 6].map((e) => BarValue<void>(e.toDouble())).toList()
+      ]);
+
+      expect(_data.minValue, -2);
+    });
+
+    test('[ChartData] Value over axis adds to max value', () {
+      final _data = ChartData([
+        [2, 4, 6].map((e) => BarValue<void>(e.toDouble())).toList()
+      ], valueAxisMaxOver: 2);
+
+      expect(_data.maxValue, 8);
+    });
+  });
+
   group('[ChartState] Chart state', () {
     group('[ChartState] Default min value is 0', () {
       test('[Bar] Default min value is 0', () {
@@ -153,7 +187,7 @@ void main() {
 
       final _middleState = ChartState.lerp<void>(_firstState, _secondState, 0.5);
 
-      expect(_middleState.data.items[0], [BarValue<void>(15), BarValue<void>(5)]);
+      expect(_middleState.data.items[0], [ChartItem<void>(null, null, 15), ChartItem<void>(null, 0.0, 5)]);
     });
 
     test('[Animation] Bar -> Bubble animates different type items', () {
@@ -163,7 +197,7 @@ void main() {
       final _middleState = ChartState.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.data.items[0], [BubbleValue<void>(15)]);
+      expect(_middleState.data.items[0], [ChartItem<void>(null, 10, 15)]);
     });
 
     test('[Animation] Bubble -> Bar animates different type items', () {
@@ -173,7 +207,7 @@ void main() {
       final _middleState = ChartState.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.data.items[0], [BarValue<void>(15)]);
+      expect(_middleState.data.items[0], [ChartItem<void>(null, 5, 15)]);
     });
 
     test('[Animation] Bar -> Candle animates different type items', () {
@@ -193,7 +227,7 @@ void main() {
       final _middleState = ChartState.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.data.items[0], [BarValue<void>(15)]);
+      expect(_middleState.data.items[0], [ChartItem<void>(null, 5, 15)]);
     });
 
     test('[Animation] Bubble -> Candle animates different type items', () {
@@ -213,7 +247,7 @@ void main() {
       final _middleState = ChartState.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.data.items[0], [BubbleValue<void>(15)]);
+      expect(_middleState.data.items[0], [ChartItem<void>(null, 10, 15)]);
     });
   });
 }

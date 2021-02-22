@@ -3,7 +3,7 @@ part of flutter_charts;
 /// Sparkline (Line graph) is considered to be just a decoration.
 /// You need to use [BarGeometryPainter] or [BubbleGeometryPainter] in combination.
 /// They can be transparent or be used to show values of the graph
-class SparkLineDecoration<T> extends DecorationPainter {
+class SparkLineDecoration extends DecorationPainter {
   SparkLineDecoration({
     this.id,
     this.fill = false,
@@ -41,18 +41,6 @@ class SparkLineDecoration<T> extends DecorationPainter {
 
   final int lineArrayIndex;
 
-  List<List<ChartItem<T>>> items;
-
-  @override
-  void initDecoration(ChartState state) {
-    if (state is ChartState<T>) {
-      items ??= state.data.items;
-    }
-
-    assert(items != null, 'No matching state for sparkline found!\nCheck if type `T` is set properly.');
-    assert(items.length > lineArrayIndex, 'Line key is not in the list!\nCheck the `lineKey` you are passing.');
-  }
-
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
     final _paint = Paint()
@@ -74,13 +62,13 @@ class SparkLineDecoration<T> extends DecorationPainter {
       _paint.shader = gradient.createShader(Rect.fromPoints(Offset.zero, Offset(_size.width, -_size.height)));
     }
 
-    items[lineArrayIndex].asMap().forEach((key, value) {
-      if (fill && items[lineArrayIndex].first == value) {
+    state.data.items[lineArrayIndex].asMap().forEach((key, value) {
+      if (fill && state.data.items[lineArrayIndex].first == value) {
         _positions.add(Offset(_size.width * (key / _listSize) + _itemWidth * startPosition, 0.0));
       }
       _positions.add(Offset(_size.width * (key / _listSize) + _itemWidth * startPosition,
           -((value?.max ?? 0.0) - state.data.minValue) * scale));
-      if (fill && items[lineArrayIndex].last == value) {
+      if (fill && state.data.items[lineArrayIndex].last == value) {
         _positions.add(Offset(_size.width * (key / _listSize) + _itemWidth * startPosition, 0.0));
       }
     });
@@ -132,8 +120,8 @@ class SparkLineDecoration<T> extends DecorationPainter {
 
   @override
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
-    if (endValue is SparkLineDecoration<T>) {
-      return SparkLineDecoration<T>._lerp(
+    if (endValue is SparkLineDecoration) {
+      return SparkLineDecoration._lerp(
         fill: t > 0.5 ? endValue.fill : fill,
         id: endValue.id,
         smoothPoints: lerpDouble(_smoothPoints, endValue._smoothPoints, t),

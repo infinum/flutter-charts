@@ -139,8 +139,8 @@ class GridDecoration extends DecorationPainter {
 
   final List<double> dashArray;
 
-  HorizontalLegendPosition horizontalLegendPosition;
-  VerticalLegendPosition verticalLegendPosition;
+  final HorizontalLegendPosition horizontalLegendPosition;
+  final VerticalLegendPosition verticalLegendPosition;
 
   HorizontalAxisDecoration _horizontalAxisDecoration;
   VerticalAxisDecoration _verticalAxisDecoration;

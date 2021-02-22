@@ -98,7 +98,7 @@ class ShowList extends StatelessWidget {
                       horizontalAxisStep: 3,
                       gridColor: Theme.of(context).dividerColor,
                     ),
-                    SparkLineDecoration<void>(
+                    SparkLineDecoration(
                       lineWidth: 2.0,
                       lineColor: Theme.of(context).colorScheme.primary,
                     ),
@@ -189,7 +189,7 @@ class ShowList extends StatelessWidget {
                       horizontalAxisStep: 4,
                       gridColor: Theme.of(context).dividerColor,
                     ),
-                    SparkLineDecoration<void>(
+                    SparkLineDecoration(
                       lineColor: Theme.of(context).accentColor,
                     ),
                   ],

@@ -102,15 +102,3 @@ class ChartPainter extends CustomPainter {
     return false;
   }
 }
-
-class MoveTransformation extends GradientTransform {
-  MoveTransformation(this.x, this.y);
-
-  final double x;
-  final double y;
-
-  @override
-  Matrix4 transform(Rect bounds, {TextDirection textDirection}) {
-    return Matrix4.translationValues(x, y, 0.0);
-  }
-}

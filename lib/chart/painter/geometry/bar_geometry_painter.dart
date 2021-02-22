@@ -27,15 +27,14 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
 
   @override
   void draw(Canvas canvas, Size size, Paint paint) {
-    assert(state.itemOptions is BarItemOptions);
-    final options = state.itemOptions as BarItemOptions;
+    final options = state.itemOptions;
 
     final _maxValue = state.data.maxValue - state.data.minValue;
     final _verticalMultiplier = size.height / _maxValue;
     final _minValue = state.data.minValue * _verticalMultiplier;
 
-    EdgeInsets _padding = options.padding ?? EdgeInsets.zero;
-    final _radius = options.radius ?? BorderRadius.zero;
+    EdgeInsets _padding = state.itemOptions.padding ?? EdgeInsets.zero;
+    final _radius = options is BarItemOptions ? (options.radius ?? BorderRadius.zero) : BorderRadius.zero;
 
     final _itemWidth = itemWidth(size);
 
@@ -68,7 +67,7 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
       paint,
     );
 
-    if (options.border != null && options.border.style == BorderStyle.solid) {
+    if (options is BarItemOptions && options.border != null && options.border.style == BorderStyle.solid) {
       final _borderPaint = Paint();
       _borderPaint.style = PaintingStyle.stroke;
       _borderPaint.color = options.border.color;

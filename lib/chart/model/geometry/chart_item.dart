@@ -1,6 +1,8 @@
 part of flutter_charts;
 
+/// Default `ChartItem`
 class ChartItem<T> {
+  /// Protected constructor for animations
   @protected
   ChartItem(this.value, this.min, this.max);
 
@@ -10,14 +12,16 @@ class ChartItem<T> {
 
   bool get isEmpty => (max ?? 0) == 0 && (min ?? 0) == 0;
 
+  /// Animate to [endValue] with factor `t`
   ChartItem<T> animateTo<T>(ChartItem<T> endValue, double t) {
-    return ChartItem(
+    return ChartItem<T>(
       endValue.value,
       lerpDouble(min, endValue.min, t),
       lerpDouble(max, endValue.max, t),
     );
   }
 
+  /// Animate from [startValue] to this with factor `t`
   ChartItem<T> animateFrom<T>(ChartItem<T> startValue, double t) {
     return animateTo(startValue, 1 - t);
   }
@@ -34,6 +38,8 @@ class ChartItem<T> {
     return false;
   }
 
+  /// Add two [ChartItem]'s together
+  /// `T` value is taken from [other]
   ChartItem<T> operator +(Object other) {
     if (other is ChartItem<T>) {
       return ChartItem<T>(
@@ -46,6 +52,7 @@ class ChartItem<T> {
     return this;
   }
 
+  /// Multiply [ChartItem] with another [ChartItem] of number
   ChartItem<T> operator *(Object other) {
     if (other is ChartItem<T>) {
       return ChartItem<T>(

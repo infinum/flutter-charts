@@ -16,9 +16,7 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
 
   @override
   void draw(Canvas canvas, Size size, Paint paint) {
-    assert(state.itemOptions is BubbleItemOptions);
-
-    final options = state.itemOptions as BubbleItemOptions;
+    final options = state.itemOptions;
 
     final _maxValue = state.data.maxValue - state.data.minValue;
     final _verticalMultiplier = size.height / _maxValue;
@@ -46,7 +44,7 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
       paint,
     );
 
-    if (options.border != null && options.border.style == BorderStyle.solid) {
+    if (options is BubbleItemOptions && options.border != null && options.border.style == BorderStyle.solid) {
       final _borderPaint = Paint();
       _borderPaint.style = PaintingStyle.stroke;
       _borderPaint.color = options.border.color;

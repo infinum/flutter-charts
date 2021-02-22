@@ -98,7 +98,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                   _targetDecoration,
                 ],
                 foregroundDecorations: [
-                  SparkLineDecoration<BarValue<dynamic>>(
+                  SparkLineDecoration(
                     lineWidth: 4.0,
                     lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
                     smoothPoints: _smoothPoints,

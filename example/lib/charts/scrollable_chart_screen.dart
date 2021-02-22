@@ -124,7 +124,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),
                   targetArea,
-                  SparkLineDecoration<double>(
+                  SparkLineDecoration(
                     fill: true,
                     lineColor: Theme.of(context).primaryColor.withOpacity(!_showBars ? 0.2 : 0.0),
                     smoothPoints: _smoothPoints,
@@ -139,7 +139,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                                 : Theme.of(context).colorScheme.primary)
                             .withOpacity(_isScrollable ? 1.0 : 0.0)),
                   ),
-                  SparkLineDecoration<double>(
+                  SparkLineDecoration(
                     lineWidth: 2.0,
                     lineColor: Theme.of(context).primaryColor.withOpacity(!_showBars ? 1.0 : 0.0),
                     smoothPoints: _smoothPoints,

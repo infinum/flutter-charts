@@ -112,7 +112,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                         textStyle: Theme.of(context).textTheme.caption,
                         gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                       ),
-                      SparkLineDecoration<void>(
+                      SparkLineDecoration(
                         id: 'first_line_fill',
                         smoothPoints: _smoothPoints,
                         fill: true,
@@ -123,7 +123,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                             : 0.0),
                         lineArrayIndex: 0,
                       ),
-                      SparkLineDecoration<void>(
+                      SparkLineDecoration(
                         id: 'second_line_fill',
                         smoothPoints: _smoothPoints,
                         fill: true,
@@ -134,7 +134,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                             : 0.0),
                         lineArrayIndex: 1,
                       ),
-                      SparkLineDecoration<void>(
+                      SparkLineDecoration(
                         id: 'third_line_fill',
                         smoothPoints: _smoothPoints,
                         fill: true,
@@ -149,14 +149,14 @@ class _LineChartScreenState extends State<LineChartScreen> {
                       ),
                     ],
                     foregroundDecorations: [
-                      SparkLineDecoration<void>(
+                      SparkLineDecoration(
                         id: 'second_line',
                         lineWidth: 2.0,
                         smoothPoints: _smoothPoints,
                         lineColor: Theme.of(context).colorScheme.primary.withOpacity(_showLine ? 1.0 : 0.0),
                         lineArrayIndex: 1,
                       ),
-                      SparkLineDecoration<void>(
+                      SparkLineDecoration(
                         id: 'third_line',
                         lineWidth: 2.0,
                         smoothPoints: _smoothPoints,

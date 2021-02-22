@@ -1,6 +1,13 @@
 part of flutter_charts;
 
-enum HorizontalLegendPosition { start, end }
+/// Position of legend in [HorizontalAxisDecoration]
+enum HorizontalLegendPosition {
+  /// Show axis legend at the start of the chart
+  start,
+
+  /// Show legend at the end of the decoration
+  end,
+}
 
 typedef AxisValueFromValue = String Function(int value);
 String defaultAxisValue(int index) => '$index';
@@ -85,7 +92,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     canvas.translate(0.0 + state.defaultMargin.left, size.height + state.defaultMargin.top - state.defaultPadding.top);
 
     final _maxValue = state.data.maxValue - state.data.minValue;
-    final _size = EdgeInsets.only(top: state.defaultPadding.top, bottom: state.defaultPadding.bottom).deflateSize(size);
+    final _size = (state.defaultPadding * _endWithChart).deflateSize(size);
     final scale = _size.height / _maxValue;
 
     final gridPath = Path();

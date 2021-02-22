@@ -22,6 +22,8 @@ class ChartBehaviour {
   final double _isScrollable;
   final double _multiValueStacked;
 
+  /// Return index of item clicked. Since graph can be multi value, user
+  /// will have to handle clicked index to show data they want to show
   final ValueChanged<int> onItemClicked;
 
   bool get isScrollable => _isScrollable > 0.5;

@@ -70,7 +70,7 @@ class LineChart<T> extends StatelessWidget {
         ChartData(_mappedValues, strategy: stack ? DataStrategy.stack : DataStrategy.none),
         itemOptions: chartItemOptions,
         foregroundDecorations: [
-          SparkLineDecoration<T>(
+          SparkLineDecoration(
             id: 'chart_decoration',
             lineWidth: lineWidth,
             lineColor: itemColor,
