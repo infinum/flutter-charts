@@ -18,12 +18,15 @@ class ComplexCharts extends StatelessWidget {
               child: AnimatedChart(
                 duration: Duration(milliseconds: 550),
                 state: ChartState<void>(
-                  [
-                    [10, 12, 13, 11, 16].map((e) => BarValue<void>(e.toDouble())).toList(),
-                    [6, 8, 9, 7, 12].map((e) => BarValue<void>(e.toDouble())).toList(),
-                    [2, 4, 5, 3, 8].map((e) => BarValue<void>(e.toDouble())).toList(),
-                  ],
-                  itemOptions: ChartItemOptions(
+                  ChartData(
+                    [
+                      [10, 12, 13, 11, 16].map((e) => BarValue<void>(e.toDouble())).toList(),
+                      [6, 8, 9, 7, 12].map((e) => BarValue<void>(e.toDouble())).toList(),
+                      [2, 4, 5, 3, 8].map((e) => BarValue<void>(e.toDouble())).toList(),
+                    ],
+                    axisMax: 9.0,
+                  ),
+                  itemOptions: BarItemOptions(
                       padding: const EdgeInsets.symmetric(horizontal: 2.0),
                       radius: BorderRadius.vertical(top: Radius.circular(12.0)),
                       color: Theme.of(context).accentColor,
@@ -35,13 +38,10 @@ class ComplexCharts extends StatelessWidget {
                           Theme.of(context).colorScheme.primaryVariant,
                         ][key];
                       }),
-                  options: ChartOptions(
-                    valueAxisMax: 9,
-                  ),
                   backgroundDecorations: [
                     GridDecoration(
-                      itemAxisStep: 1,
-                      valueAxisStep: 4,
+                      verticalAxisStep: 1,
+                      horizontalAxisStep: 4,
                       gridColor: Theme.of(context).dividerColor,
                     ),
                   ],

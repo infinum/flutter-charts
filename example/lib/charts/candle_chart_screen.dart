@@ -76,23 +76,13 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                 data: _values,
                 height: MediaQuery.of(context).size.height * 0.4,
                 dataToValue: (CandleItem value) => CandleValue(value.min, value.max),
-                chartItemOptions: ChartItemOptions(
+                chartItemOptions: BarItemOptions(
                   minBarWidth: 4.0,
                   padding: EdgeInsets.symmetric(horizontal: 2.0),
                   color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
                   radius: BorderRadius.all(
                     Radius.circular(100.0),
                   ),
-                ),
-                chartOptions: ChartOptions(
-                  padding: EdgeInsets.only(right: _showValues ? 12.0 : 0.0),
-                  valueAxisMax: max(
-                      _values.fold<double>(
-                              0,
-                              (double previousValue, CandleItem element) =>
-                                  previousValue = max(previousValue, element?.max ?? 0)) +
-                          1,
-                      targetMax + 3),
                 ),
                 chartBehaviour: ChartBehaviour(onItemClicked: (item) {
                   setState(() {
@@ -105,7 +95,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                     showVerticalGrid: true,
                     showVerticalValues: _showValues,
                     verticalValuesPadding: EdgeInsets.only(left: 8.0),
-                    valueAxisStep: 5,
+                    horizontalAxisStep: 5,
                     verticalTextAlign: TextAlign.start,
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                     textStyle: Theme.of(context).textTheme.caption.copyWith(fontSize: 13.0),
@@ -121,11 +111,11 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                   ),
                 ],
                 foregroundDecorations: [
-                  CupertinoSelectedPainter(
+                  SelectedItemDecoration(
                     _selected,
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
                   ),
-                  BorderDecoration(width: 1, color: Theme.of(context).colorScheme.secondaryVariant),
+                  BorderDecoration(borderWidth: 1, color: Theme.of(context).colorScheme.secondaryVariant),
                 ],
               ),
             ),

@@ -2,7 +2,7 @@ part of flutter_charts;
 
 /// Custom painter for charts
 class ChartPainter extends CustomPainter {
-  ChartPainter(this.state) : assert(state.itemPainter != null, 'You need to provide item painter!');
+  ChartPainter(this.state) : assert(state.itemOptions?.geometryPainter != null, 'You need to provide item painter!');
 
   final ChartState state;
 
@@ -24,7 +24,7 @@ class ChartPainter extends CustomPainter {
 
     final _scrollableItemWidth = max(state?.itemOptions?.minBarWidth ?? 0.0, state?.itemOptions?.maxBarWidth ?? 0.0);
 
-    final int _listSize = state.items.fold(0, (previousValue, element) => max(previousValue, element.length));
+    final int _listSize = state.data.listSize;
 
     size = Size(
         size.width +
@@ -47,17 +47,20 @@ class ChartPainter extends CustomPainter {
     state.backgroundDecorations.forEach(_drawDecoration);
 
     final _stack = 1 - state.behaviour._multiValueStacked;
-    final _width = _itemWidth / max(1, state.items.length * _stack);
+    final _width = _itemWidth / max(1, state.data.stackSize * _stack);
+
+    final _stackWidth = _width -
+        ((state?.itemOptions?.multiValuePadding?.horizontal ?? 0.0) / max(1, state.data.stackSize * _stack)) * _stack;
 
     // Save, and translate the canvas so [0,0] is top left of the first item
     canvas.save();
     canvas.translate(
-      (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left - _width,
-      size.height - state.defaultPadding.bottom - state.defaultMargin.bottom,
+      (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left - _stackWidth,
+      size.height - (state.defaultMargin.bottom + state.defaultPadding.bottom),
     );
 
     List.generate(_listSize, (index) {
-      state.items.asMap().forEach((key, value) {
+      state.data.items.asMap().forEach((key, value) {
         if (value.length <= index) {
           // We don't have item at this position (in this list)
           return;
@@ -66,17 +69,24 @@ class ChartPainter extends CustomPainter {
         final item = value[index];
 
         // Use item painter from ItemOptions to draw the item on the chart
-        final _item = state.itemPainter(item, state);
+        final _item = state.itemOptions.geometryPainter(item, state);
 
+        final _shouldStack = (key == 0) ? _stack : 0.0;
         // Go to next value only if we are not in the stack, or if this is the first item in the stack
-        canvas.translate(_width * (key != 0 ? _stack : 1), 0.0);
+        canvas.translate(
+            ((state?.itemOptions?.multiValuePadding?.left ?? 0.0) * _shouldStack) +
+                _stackWidth * (key != 0 ? _stack : 1),
+            0.0);
 
         // Draw the item on selected position
         _item.draw(
           canvas,
-          Size(_width, -_size.height),
-          Paint()..color = state.itemOptions.getItemColor(_item.item, key),
+          Size(_stackWidth, -_size.height),
+          state.itemOptions.getPaintForItem(_item.item, Size(_stackWidth, -_size.height), key),
         );
+
+        final _shouldStackLast = (key == state.data.stackSize - 1) ? _stack : 0.0;
+        canvas.translate((state?.itemOptions?.multiValuePadding?.right ?? 0.0) * _shouldStackLast, 0.0);
       });
     });
 

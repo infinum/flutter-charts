@@ -14,11 +14,11 @@ class LineChart<T> extends StatelessWidget {
     this.itemColor,
     this.backgroundDecorations,
     this.foregroundDecorations,
-    this.chartOptions,
     this.chartItemOptions,
     this.chartBehaviour,
     this.smoothCurves,
     this.gradient,
+    this.stack = false,
     Key key,
   })  : _mappedValues = [data.map((e) => BubbleValue<T>(dataToValue(e))).toList()],
         super(key: key);
@@ -30,11 +30,11 @@ class LineChart<T> extends StatelessWidget {
     this.itemColor,
     this.backgroundDecorations,
     this.foregroundDecorations,
-    this.chartOptions,
     this.chartItemOptions,
     this.chartBehaviour,
     this.smoothCurves,
     this.gradient,
+    this.stack = false,
     Key key,
   })  : data = null,
         dataToValue = null,
@@ -49,12 +49,12 @@ class LineChart<T> extends StatelessWidget {
   final Color itemColor;
   final Gradient gradient;
   final double lineWidth;
+  final bool stack;
 
   final List<DecorationPainter> backgroundDecorations;
   final List<DecorationPainter> foregroundDecorations;
   final ChartBehaviour chartBehaviour;
-  final ChartOptions chartOptions;
-  final ChartItemOptions chartItemOptions;
+  final ItemOptions chartItemOptions;
 
   final List<List<ChartItem<T>>> _mappedValues;
 
@@ -67,12 +67,10 @@ class LineChart<T> extends StatelessWidget {
       height: height,
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
-        _mappedValues,
-        options: chartOptions,
-        itemPainter: bubbleItemPainter,
+        ChartData(_mappedValues, strategy: stack ? DataStrategy.stack : DataStrategy.none),
         itemOptions: chartItemOptions,
         foregroundDecorations: [
-          SparkLineDecoration<T>(
+          SparkLineDecoration(
             id: 'chart_decoration',
             lineWidth: lineWidth,
             lineColor: itemColor,

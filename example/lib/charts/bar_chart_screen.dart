@@ -68,8 +68,8 @@ class _BarChartScreenState extends State<BarChartScreen> {
             child: BarChart(
               data: _values,
               height: MediaQuery.of(context).size.height * 0.4,
-              dataToValue: (BarValue value) => value.max,
-              itemOptions: ChartItemOptions(
+              dataToValue: (BarValue value) => value?.max ?? 0.0,
+              itemOptions: BarItemOptions(
                 padding: const EdgeInsets.symmetric(horizontal: 2.0),
                 minBarWidth: 4.0,
                 // isTargetInclusive: true,
@@ -84,18 +84,6 @@ class _BarChartScreenState extends State<BarChartScreen> {
                       }
                     : null,
               ),
-              chartOptions: ChartOptions(
-                valueAxisMax: max(
-                    _values.fold<double>(
-                            0,
-                            (double previousValue, BarValue element) =>
-                                previousValue = max(previousValue, element?.max ?? 0)) +
-                        1,
-                    targetMax + 3),
-                padding: _showValues
-                    ? EdgeInsets.only(right: _legendOnEnd ? 12.0 : 0.0, left: _legendOnEnd ? 0.0 : 12.0)
-                    : null,
-              ),
               backgroundDecorations: [
                 GridDecoration(
                   showHorizontalValues: _showValues,
@@ -104,8 +92,10 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   horizontalLegendPosition:
                       _legendOnEnd ? HorizontalLegendPosition.end : HorizontalLegendPosition.start,
                   verticalLegendPosition: _legendOnBottom ? VerticalLegendPosition.bottom : VerticalLegendPosition.top,
-                  valueAxisStep: 1,
-                  itemAxisStep: 1,
+                  horizontalAxisStep: 1,
+                  verticalAxisStep: 1,
+                  verticalValuesPadding: const EdgeInsets.symmetric(vertical: 4.0),
+                  horizontalValuesPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                   textStyle: Theme.of(context).textTheme.caption,
                   gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                 ),
@@ -119,7 +109,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
                 ),
               ],
               foregroundDecorations: [
-                SparkLineDecoration<BarValue<dynamic>>(
+                SparkLineDecoration(
                   lineWidth: 4.0,
                   lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
                   smoothPoints: _smoothPoints,
@@ -129,6 +119,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   textStyle:
                       Theme.of(context).textTheme.button.copyWith(color: Theme.of(context).colorScheme.onPrimary),
                 ),
+                BorderDecoration(endWithChart: true)
               ],
             ),
           ),

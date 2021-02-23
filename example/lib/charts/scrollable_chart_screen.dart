@@ -82,7 +82,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                 data: _values,
                 height: MediaQuery.of(context).size.height * 0.4,
                 dataToValue: (double value) => value,
-                itemOptions: ChartItemOptions(
+                itemOptions: BarItemOptions(
                   padding: EdgeInsets.symmetric(horizontal: _isScrollable ? 12.0 : 2.0),
                   minBarWidth: _isScrollable ? 36.0 : 4.0,
                   // isTargetInclusive: true,
@@ -100,27 +100,17 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                     });
                   },
                 ),
-                chartOptions: ChartOptions(
-                  valueAxisMax: max(
-                      _values.fold<double>(
-                              0,
-                              (double previousValue, double element) =>
-                                  previousValue = max(previousValue, element ?? 0)) +
-                          1,
-                      targetMax + 3),
-                  padding: _showValues ? EdgeInsets.only(right: 12.0) : null,
-                ),
                 backgroundDecorations: [
                   HorizontalAxisDecoration(
                     endWithChart: false,
                     gridWidth: 2.0,
-                    valueAxisStep: 2,
+                    axisStep: 2,
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),
                   VerticalAxisDecoration(
                     endWithChart: false,
                     gridWidth: 2.0,
-                    itemAxisStep: 7,
+                    axisStep: 7,
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.8),
                   ),
                   GridDecoration(
@@ -128,13 +118,13 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                     showVerticalGrid: true,
                     showHorizontalValues: _showValues,
                     showVerticalValues: _showValues,
-                    valueAxisStep: 1,
-                    itemAxisStep: 1,
+                    verticalAxisStep: 1,
+                    horizontalAxisStep: 1,
                     textStyle: Theme.of(context).textTheme.caption,
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),
                   targetArea,
-                  SparkLineDecoration<double>(
+                  SparkLineDecoration(
                     fill: true,
                     lineColor: Theme.of(context).primaryColor.withOpacity(!_showBars ? 0.2 : 0.0),
                     smoothPoints: _smoothPoints,
@@ -149,12 +139,12 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                                 : Theme.of(context).colorScheme.primary)
                             .withOpacity(_isScrollable ? 1.0 : 0.0)),
                   ),
-                  SparkLineDecoration<double>(
+                  SparkLineDecoration(
                     lineWidth: 2.0,
                     lineColor: Theme.of(context).primaryColor.withOpacity(!_showBars ? 1.0 : 0.0),
                     smoothPoints: _smoothPoints,
                   ),
-                  CupertinoSelectedPainter(
+                  SelectedItemDecoration(
                     _selected,
                     textSize: 28.0,
                     animate: true,

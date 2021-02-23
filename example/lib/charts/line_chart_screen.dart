@@ -60,10 +60,6 @@ class _LineChartScreenState extends State<LineChartScreen> {
       _values[1]
           .asMap()
           .map<int, BubbleValue<void>>((index, e) {
-            if (_stack) {
-              return MapEntry(index, BubbleValue<void>(e.max + _values[0][index].max));
-            }
-
             return MapEntry(index, e);
           })
           .values
@@ -71,10 +67,6 @@ class _LineChartScreenState extends State<LineChartScreen> {
       _values[2]
           .asMap()
           .map<int, BubbleValue<void>>((index, e) {
-            if (_stack) {
-              return MapEntry(index, BubbleValue<void>(e.max + _values[0][index].max + _values[1][index].max));
-            }
-
             return MapEntry(index, e);
           })
           .values
@@ -99,19 +91,15 @@ class _LineChartScreenState extends State<LineChartScreen> {
                 children: [
                   LineChart<void>.multiple(
                     _getMap(),
+                    stack: _stack,
                     height: MediaQuery.of(context).size.height * 0.4,
                     itemColor: Theme.of(context).colorScheme.secondary.withOpacity(_showLine ? 1.0 : 0.0),
                     lineWidth: 2.0,
-                    chartItemOptions: ChartItemOptions(
-                      maxBarWidth: _showLine ? 6.0 : 8.0,
-                      color: Theme.of(context).colorScheme.secondary.withOpacity(0.4),
-                    ),
-                    chartOptions: ChartOptions(
-                      valueAxisMax: _getMap().fold<double>(
-                              0,
-                              (previousValue, element) => max(previousValue,
-                                  element.reduce((prev, e) => BubbleValue<void>(max(prev.max, e.max))).max)) +
-                          2.0,
+                    chartItemOptions: BubbleItemOptions(
+                      maxBarWidth: _showLine ? 0.0 : 6.0,
+                      colorForKey: (item, key) {
+                        return [Colors.black, Colors.red, Colors.blue][key];
+                      },
                     ),
                     smoothCurves: _smoothPoints,
                     backgroundDecorations: [
@@ -120,11 +108,33 @@ class _LineChartScreenState extends State<LineChartScreen> {
                         showTopHorizontalValue: _showValues,
                         showVerticalValues: _showValues,
                         showHorizontalValues: _showValues,
-                        valueAxisStep: _stack ? 3 : 1,
+                        horizontalAxisStep: _stack ? 3 : 1,
                         textStyle: Theme.of(context).textTheme.caption,
                         gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                       ),
-                      SparkLineDecoration<void>(
+                      SparkLineDecoration(
+                        id: 'first_line_fill',
+                        smoothPoints: _smoothPoints,
+                        fill: true,
+                        lineColor: Theme.of(context).colorScheme.secondary.withOpacity(_fillLine
+                            ? _stack
+                                ? 1.0
+                                : 0.2
+                            : 0.0),
+                        lineArrayIndex: 0,
+                      ),
+                      SparkLineDecoration(
+                        id: 'second_line_fill',
+                        smoothPoints: _smoothPoints,
+                        fill: true,
+                        lineColor: Theme.of(context).colorScheme.primary.withOpacity(_fillLine
+                            ? _stack
+                                ? 1.0
+                                : 0.2
+                            : 0.0),
+                        lineArrayIndex: 1,
+                      ),
+                      SparkLineDecoration(
                         id: 'third_line_fill',
                         smoothPoints: _smoothPoints,
                         fill: true,
@@ -135,47 +145,25 @@ class _LineChartScreenState extends State<LineChartScreen> {
                                 ? 1.0
                                 : 0.2
                             : 0.0),
-                        lineKey: 2,
-                      ),
-                      SparkLineDecoration<void>(
-                        id: 'second_line_fill',
-                        smoothPoints: _smoothPoints,
-                        fill: true,
-                        lineColor: Theme.of(context).colorScheme.primary.withOpacity(_fillLine
-                            ? _stack
-                                ? 1.0
-                                : 0.2
-                            : 0.0),
-                        lineKey: 1,
-                      ),
-                      SparkLineDecoration<void>(
-                        id: 'first_line_fill',
-                        smoothPoints: _smoothPoints,
-                        fill: true,
-                        lineColor: Theme.of(context).colorScheme.secondary.withOpacity(_fillLine
-                            ? _stack
-                                ? 1.0
-                                : 0.2
-                            : 0.0),
-                        lineKey: 0,
+                        lineArrayIndex: 2,
                       ),
                     ],
                     foregroundDecorations: [
-                      SparkLineDecoration<void>(
+                      SparkLineDecoration(
                         id: 'second_line',
                         lineWidth: 2.0,
                         smoothPoints: _smoothPoints,
                         lineColor: Theme.of(context).colorScheme.primary.withOpacity(_showLine ? 1.0 : 0.0),
-                        lineKey: 1,
+                        lineArrayIndex: 1,
                       ),
-                      SparkLineDecoration<void>(
+                      SparkLineDecoration(
                         id: 'third_line',
                         lineWidth: 2.0,
                         smoothPoints: _smoothPoints,
                         gradient: LinearGradient(
                             begin: Alignment.centerLeft, end: Alignment.centerRight, colors: Colors.accents),
                         lineColor: Theme.of(context).colorScheme.primary.withOpacity(_showLine ? 1.0 : 0.0),
-                        lineKey: 2,
+                        lineArrayIndex: 2,
                       ),
                     ],
                   ),

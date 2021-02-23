@@ -1,6 +1,6 @@
 part of flutter_charts;
 
-/// Draws a grid with [itemAxisStep] and [valueAxisStep] as spacers
+/// Draws a grid with [verticalAxisStep] and [horizontalAxisStep] as spacers
 /// Grid will stretch across whole graph and it will ignore the padding from
 /// [ChartOptions].
 /// That will allow for Legend to be inserted as well.
@@ -18,10 +18,12 @@ class GridDecoration extends DecorationPainter {
     this.horizontalValuesPadding,
     this.horizontalAxisUnit,
     this.verticalAxisValueFromIndex = defaultAxisValue,
+    this.horizontalAxisValueFromValue = defaultAxisValue,
     this.gridColor = Colors.grey,
     this.gridWidth = 1.0,
-    this.itemAxisStep = 1,
-    this.valueAxisStep = 1,
+    this.dashArray,
+    this.verticalAxisStep = 1,
+    this.horizontalAxisStep = 1,
     this.horizontalLegendPosition = HorizontalLegendPosition.end,
     this.verticalLegendPosition = VerticalLegendPosition.bottom,
     this.textStyle,
@@ -37,10 +39,12 @@ class GridDecoration extends DecorationPainter {
       showTopValue: showTopHorizontalValue,
       horizontalAxisUnit: horizontalAxisUnit,
       gridColor: gridColor,
+      dashArray: dashArray,
       gridWidth: gridWidth,
-      valueAxisStep: valueAxisStep,
+      axisStep: horizontalAxisStep,
+      axisValue: horizontalAxisValueFromValue,
       legendFontStyle: textStyle,
-      horizontalLegendPosition: horizontalLegendPosition,
+      legendPosition: horizontalLegendPosition,
     );
     _verticalAxisDecoration = VerticalAxisDecoration(
       showValues: showVerticalValues,
@@ -48,11 +52,12 @@ class GridDecoration extends DecorationPainter {
       showGrid: showVerticalGrid,
       endWithChart: endWithChart,
       gridColor: gridColor,
-      axisValueFromIndex: verticalAxisValueFromIndex,
-      verticalLegendPosition: verticalLegendPosition,
+      dashArray: dashArray,
+      valueFromIndex: verticalAxisValueFromIndex,
+      legendPosition: verticalLegendPosition,
       valuesPadding: verticalValuesPadding,
       gridWidth: gridWidth,
-      itemAxisStep: itemAxisStep,
+      axisStep: verticalAxisStep,
       legendFontStyle: textStyle,
     );
   }
@@ -70,10 +75,12 @@ class GridDecoration extends DecorationPainter {
     this.horizontalValuesPadding,
     this.horizontalAxisUnit,
     this.verticalAxisValueFromIndex = defaultAxisValue,
+    this.horizontalAxisValueFromValue = defaultAxisValue,
     this.gridColor = Colors.grey,
     this.gridWidth = 1.0,
-    this.itemAxisStep = 1,
-    this.valueAxisStep = 1,
+    this.verticalAxisStep = 1,
+    this.horizontalAxisStep = 1,
+    this.dashArray,
     this.horizontalLegendPosition = HorizontalLegendPosition.end,
     this.verticalLegendPosition = VerticalLegendPosition.bottom,
     this.textStyle,
@@ -89,10 +96,12 @@ class GridDecoration extends DecorationPainter {
       horizontalAxisUnit: horizontalAxisUnit,
       valuesPadding: horizontalValuesPadding,
       gridColor: gridColor,
+      dashArray: dashArray,
+      axisValue: horizontalAxisValueFromValue,
       gridWidth: gridWidth,
-      valueAxisStep: valueAxisStep,
+      axisStep: horizontalAxisStep,
       legendFontStyle: textStyle,
-      horizontalLegendPosition: horizontalLegendPosition,
+      legendPosition: horizontalLegendPosition,
     );
     _verticalAxisDecoration = VerticalAxisDecoration._lerp(
       showValues: showVerticalValues,
@@ -100,11 +109,12 @@ class GridDecoration extends DecorationPainter {
       showGrid: showVerticalGrid,
       endWithChart: _endWithChart,
       gridColor: gridColor,
-      axisValueFromIndex: verticalAxisValueFromIndex,
+      dashArray: dashArray,
+      valueFromIndex: verticalAxisValueFromIndex,
       valuesPadding: verticalValuesPadding,
       gridWidth: gridWidth,
-      verticalLegendPosition: verticalLegendPosition,
-      itemAxisStep: itemAxisStep,
+      legendPosition: verticalLegendPosition,
+      axisStep: verticalAxisStep,
       legendFontStyle: textStyle,
     );
   }
@@ -127,22 +137,25 @@ class GridDecoration extends DecorationPainter {
   final bool showHorizontalGrid;
   final String horizontalAxisUnit;
 
-  HorizontalLegendPosition horizontalLegendPosition;
-  VerticalLegendPosition verticalLegendPosition;
+  final List<double> dashArray;
+
+  final HorizontalLegendPosition horizontalLegendPosition;
+  final VerticalLegendPosition verticalLegendPosition;
 
   HorizontalAxisDecoration _horizontalAxisDecoration;
   VerticalAxisDecoration _verticalAxisDecoration;
 
   final AxisValueFromIndex verticalAxisValueFromIndex;
+  final AxisValueFromValue horizontalAxisValueFromValue;
 
   final Color gridColor;
   final double gridWidth;
 
   /// Change step for y axis (1 by default) used in [GridDecoration], [VerticalAxisDecoration] and [HorizontalAxisDecoration]
-  final double itemAxisStep;
+  final double verticalAxisStep;
 
   /// Change step for x axis (1 by default) used in [GridDecoration], [VerticalAxisDecoration] and [HorizontalAxisDecoration]
-  final double valueAxisStep;
+  final double horizontalAxisStep;
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
@@ -180,12 +193,14 @@ class GridDecoration extends DecorationPainter {
         showHorizontalGrid: t < 0.5 ? showHorizontalGrid : endValue.showHorizontalGrid,
         horizontalAxisUnit: t < 0.5 ? horizontalAxisUnit : endValue.horizontalAxisUnit,
         verticalAxisValueFromIndex: t < 0.5 ? verticalAxisValueFromIndex : endValue.verticalAxisValueFromIndex,
+        horizontalAxisValueFromValue: t < 0.5 ? horizontalAxisValueFromValue : endValue.horizontalAxisValueFromValue,
         horizontalLegendPosition: t < 0.5 ? horizontalLegendPosition : endValue.horizontalLegendPosition,
         verticalLegendPosition: t < 0.5 ? verticalLegendPosition : endValue.verticalLegendPosition,
         gridColor: Color.lerp(gridColor, endValue.gridColor, t),
+        dashArray: t < 0.5 ? dashArray : endValue.dashArray,
         gridWidth: lerpDouble(gridWidth, endValue.gridWidth, t),
-        itemAxisStep: lerpDouble(itemAxisStep, endValue.itemAxisStep, t),
-        valueAxisStep: lerpDouble(valueAxisStep, endValue.valueAxisStep, t),
+        verticalAxisStep: lerpDouble(verticalAxisStep, endValue.verticalAxisStep, t),
+        horizontalAxisStep: lerpDouble(horizontalAxisStep, endValue.horizontalAxisStep, t),
         verticalValuesPadding: EdgeInsets.lerp(verticalValuesPadding, endValue.verticalValuesPadding, t),
         horizontalValuesPadding: EdgeInsets.lerp(horizontalValuesPadding, endValue.horizontalValuesPadding, t),
         textStyle: TextStyle.lerp(textStyle, endValue.textStyle, t),

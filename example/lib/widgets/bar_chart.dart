@@ -13,8 +13,8 @@ class BarChart<T> extends StatelessWidget {
     this.backgroundDecorations,
     this.foregroundDecorations,
     this.chartBehaviour = const ChartBehaviour(),
-    this.itemOptions = const ChartItemOptions(),
-    this.chartOptions = const ChartOptions(),
+    this.itemOptions = const BarItemOptions(),
+    this.stack = false,
     Key key,
   })  : _mappedValues = [data.map((e) => BarValue<T>(dataToValue(e))).toList()],
         super(key: key);
@@ -25,8 +25,8 @@ class BarChart<T> extends StatelessWidget {
     this.backgroundDecorations,
     this.foregroundDecorations,
     this.chartBehaviour = const ChartBehaviour(),
-    this.itemOptions = const ChartItemOptions(),
-    this.chartOptions = const ChartOptions(),
+    this.itemOptions = const BarItemOptions(),
+    this.stack = false,
     Key key,
   })  : dataToValue = null,
         super(key: key);
@@ -35,8 +35,8 @@ class BarChart<T> extends StatelessWidget {
   final List<List<ChartItem<T>>> _mappedValues;
   final double height;
 
-  final ChartItemOptions itemOptions;
-  final ChartOptions chartOptions;
+  final bool stack;
+  final ItemOptions itemOptions;
   final ChartBehaviour chartBehaviour;
   final List<DecorationPainter> backgroundDecorations;
   final List<DecorationPainter> foregroundDecorations;
@@ -51,8 +51,7 @@ class BarChart<T> extends StatelessWidget {
       width: MediaQuery.of(context).size.width - 24.0,
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
-        _mappedValues,
-        options: chartOptions,
+        ChartData(_mappedValues, valueAxisMaxOver: 1.5, strategy: stack ? DataStrategy.stack : DataStrategy.none),
         itemOptions: itemOptions,
         behaviour: chartBehaviour,
         foregroundDecorations: _foregroundDecorations,

@@ -1,11 +1,10 @@
 part of flutter_charts;
 
 /// Sparkline (Line graph) is considered to be just a decoration.
-/// You need to use [BarPainter] or [BubblePainter] in combination.
+/// You need to use [BarGeometryPainter] or [BubbleGeometryPainter] in combination.
 /// They can be transparent or be used to show values of the graph
-class SparkLineDecoration<T> extends DecorationPainter {
+class SparkLineDecoration extends DecorationPainter {
   SparkLineDecoration({
-    this.items,
     this.id,
     this.fill = false,
     bool smoothPoints = false,
@@ -13,11 +12,10 @@ class SparkLineDecoration<T> extends DecorationPainter {
     this.lineColor = Colors.red,
     this.startPosition = 0.5,
     this.gradient,
-    this.lineKey = 0,
+    this.lineArrayIndex = 0,
   }) : _smoothPoints = smoothPoints ? 1.0 : 0.0;
 
   SparkLineDecoration._lerp({
-    this.items,
     this.id,
     this.fill = false,
     double smoothPoints = 0.0,
@@ -25,7 +23,7 @@ class SparkLineDecoration<T> extends DecorationPainter {
     this.lineColor = Colors.red,
     this.startPosition = 0.5,
     this.gradient,
-    this.lineKey = 0,
+    this.lineArrayIndex = 0,
   }) : _smoothPoints = smoothPoints;
 
   final bool fill;
@@ -41,19 +39,7 @@ class SparkLineDecoration<T> extends DecorationPainter {
   final double startPosition;
   final Gradient gradient;
 
-  final int lineKey;
-
-  List<List<ChartItem<T>>> items;
-
-  @override
-  void initDecoration(ChartState state) {
-    if (state is ChartState<T>) {
-      items ??= state.items;
-    }
-
-    assert(items != null, 'No matching state for sparkline found!\nCheck if type `T` is set properly.');
-    assert(items.length > lineKey, 'Line key is not in the list!\nCheck the `lineKey` you are passing.');
-  }
+  final int lineArrayIndex;
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
@@ -63,12 +49,12 @@ class SparkLineDecoration<T> extends DecorationPainter {
       ..strokeWidth = lineWidth;
 
     final _size = state?.defaultPadding?.deflateSize(size) ?? size;
-    final _maxValue = state.maxValue - state.minValue;
+    final _maxValue = state.data.maxValue - state.data.minValue;
     final scale = _size.height / _maxValue;
 
     final List<Offset> _positions = <Offset>[];
 
-    final int _listSize = state.items.fold(0, (previousValue, element) => max(previousValue, element.length));
+    final int _listSize = state.data.listSize;
 
     final _itemWidth = _size.width / _listSize;
 
@@ -76,14 +62,14 @@ class SparkLineDecoration<T> extends DecorationPainter {
       _paint.shader = gradient.createShader(Rect.fromPoints(Offset.zero, Offset(_size.width, -_size.height)));
     }
 
-    items[lineKey].asMap().forEach((key, value) {
-      if (fill && items[lineKey].first == value) {
-        _positions.add(Offset(_size.width * (key / items[lineKey].length) + _itemWidth * startPosition, 0.0));
+    state.data.items[lineArrayIndex].asMap().forEach((key, value) {
+      if (fill && state.data.items[lineArrayIndex].first == value) {
+        _positions.add(Offset(_size.width * (key / _listSize) + _itemWidth * startPosition, 0.0));
       }
-      _positions.add(Offset(_size.width * (key / items[lineKey].length) + _itemWidth * startPosition,
-          -(value.max - state.minValue) * scale));
-      if (fill && items[lineKey].last == value) {
-        _positions.add(Offset(_size.width * (key / items[lineKey].length) + _itemWidth * startPosition, 0.0));
+      _positions.add(Offset(_size.width * (key / _listSize) + _itemWidth * startPosition,
+          -((value?.max ?? 0.0) - state.data.minValue) * scale));
+      if (fill && state.data.items[lineArrayIndex].last == value) {
+        _positions.add(Offset(_size.width * (key / _listSize) + _itemWidth * startPosition, 0.0));
       }
     });
 
@@ -134,7 +120,7 @@ class SparkLineDecoration<T> extends DecorationPainter {
 
   @override
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
-    if (endValue is SparkLineDecoration<T>) {
+    if (endValue is SparkLineDecoration) {
       return SparkLineDecoration._lerp(
         fill: t > 0.5 ? endValue.fill : fill,
         id: endValue.id,
@@ -142,9 +128,8 @@ class SparkLineDecoration<T> extends DecorationPainter {
         lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t),
         startPosition: lerpDouble(startPosition, endValue.startPosition, t),
         lineColor: Color.lerp(lineColor, endValue.lineColor, t),
-        items: ChartItemsLerp().lerpValues<T>(items, endValue.items, t),
         gradient: Gradient.lerp(gradient, endValue.gradient, t),
-        lineKey: endValue.lineKey,
+        lineArrayIndex: endValue.lineArrayIndex,
       );
     }
 
@@ -155,10 +140,12 @@ class SparkLineDecoration<T> extends DecorationPainter {
   bool isSameType(DecorationPainter other) {
     if (other is SparkLineDecoration) {
       if (id != null && other.id != null) {
-        return id == other.id;
+        return id == other.id && lineArrayIndex == other.lineArrayIndex;
       }
+
+      return lineArrayIndex == other.lineArrayIndex;
     }
 
-    return runtimeType == other.runtimeType;
+    return false;
   }
 }

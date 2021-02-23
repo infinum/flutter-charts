@@ -37,7 +37,7 @@ abstract class DecorationPainter {
   DecorationPainter animateTo(DecorationPainter endValue, double t);
 
   /// Used for animating, we just need to find matching type, don't actually check for equality since we want to animate
-  /// from one state to other.
+  /// from one state to other. Some decorations may consider overriding this in case multiples are used
   bool isSameType(DecorationPainter other) {
     return runtimeType == other.runtimeType;
   }

@@ -19,21 +19,21 @@ class ChartTypes extends StatelessWidget {
             child: Container(
               width: 100.0,
               child: Chart(
-                state: ChartState<void>.fromList(
-                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
-                  itemOptions: ChartItemOptions(
+                state: ChartState<void>(
+                  ChartData.fromList(
+                    [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
+                    axisMax: 9,
+                  ),
+                  itemOptions: BarItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     radius: BorderRadius.vertical(top: Radius.circular(12.0)),
                     color: Theme.of(context).accentColor,
                     maxBarWidth: 8.0,
                   ),
-                  options: ChartOptions(
-                    valueAxisMax: 9,
-                  ),
                   backgroundDecorations: [
                     GridDecoration(
-                      itemAxisStep: 1,
-                      valueAxisStep: 1.5,
+                      verticalAxisStep: 1,
+                      horizontalAxisStep: 1.5,
                       gridColor: Theme.of(context).dividerColor,
                     ),
                   ],
@@ -53,20 +53,19 @@ class ChartTypes extends StatelessWidget {
             child: Container(
               width: 100.0,
               child: Chart(
-                state: ChartState<void>.fromList(
-                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
-                  itemPainter: bubbleItemPainter,
-                  itemOptions: ChartItemOptions(
+                state: ChartState<void>(
+                  ChartData.fromList(
+                    [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+                    axisMax: 9,
+                  ),
+                  itemOptions: BubbleItemOptions(
                     color: Theme.of(context).accentColor,
                     maxBarWidth: 8.0,
                   ),
-                  options: ChartOptions(
-                    valueAxisMax: 9,
-                  ),
                   backgroundDecorations: [
                     GridDecoration(
-                      itemAxisStep: 3,
-                      valueAxisStep: 3,
+                      verticalAxisStep: 3,
+                      horizontalAxisStep: 3,
                       gridColor: Theme.of(context).dividerColor,
                     ),
                   ],
@@ -86,20 +85,20 @@ class ChartTypes extends StatelessWidget {
             child: Container(
               width: 100.0,
               child: Chart(
-                state: ChartState<void>.fromList(
-                  [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => CandleValue<void>(e.toDouble() + 6, e.toDouble())).toList(),
-                  options: ChartOptions(
-                    valueAxisMax: 15,
+                state: ChartState<void>(
+                  ChartData.fromList(
+                    [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => CandleValue<void>(e.toDouble() + 6, e.toDouble())).toList(),
+                    axisMax: 15,
                   ),
-                  itemOptions: ChartItemOptions(
+                  itemOptions: BarItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     radius: BorderRadius.all(Radius.circular(12.0)),
                     color: Theme.of(context).accentColor,
                   ),
                   backgroundDecorations: [
                     GridDecoration(
-                      itemAxisStep: 1,
-                      valueAxisStep: 3,
+                      verticalAxisStep: 1,
+                      horizontalAxisStep: 3,
                       gridColor: Theme.of(context).dividerColor,
                     ),
                   ],

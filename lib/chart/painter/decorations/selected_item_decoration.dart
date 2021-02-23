@@ -1,36 +1,36 @@
 part of flutter_charts;
 
 /// Show selected item in Cupertino style (Health app)
-class CupertinoSelectedPainter extends DecorationPainter {
-  CupertinoSelectedPainter(
-    this.selectedIndex, {
+class SelectedItemDecoration extends DecorationPainter {
+  SelectedItemDecoration(
+    this.selectedItem, {
     this.selectedColor = Colors.red,
     this.backgroundColor = Colors.grey,
     this.textColor = Colors.white,
     this.textSize = 28.0,
     this.animate = false,
-    this.selectedKey = 0,
+    this.selectedArrayIndex = 0,
   });
 
-  final int selectedIndex;
+  final int selectedItem;
   final Color selectedColor;
   final Color backgroundColor;
   final bool animate;
 
   final Color textColor;
   final double textSize;
-  final int selectedKey;
+  final int selectedArrayIndex;
 
   @override
   void initDecoration(ChartState state) {
     super.initDecoration(state);
-    assert(
-        state.items.length > selectedKey, 'Selected key is not in the list!\nCheck the `selectedKey` you are passing.');
+    assert(state.data.stackSize > selectedArrayIndex,
+        'Selected key is not in the list!\nCheck the `selectedKey` you are passing.');
   }
 
   void _drawText(Canvas canvas, Size size, double width, double totalWidth, ChartState state) {
     final _maxValuePainter = ValueDecoration.makeTextPainter(
-      state.items[selectedKey][selectedIndex].max.toStringAsFixed(2),
+      state.data.items[selectedArrayIndex][selectedItem].max.toStringAsFixed(2),
       width,
       TextStyle(
         fontSize: textSize,
@@ -66,9 +66,9 @@ class CupertinoSelectedPainter extends DecorationPainter {
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
-    final int _listSize = state.items.fold(0, (previousValue, element) => max(previousValue, element.length));
+    final int _listSize = state.data.listSize;
 
-    if (selectedIndex == null || _listSize <= selectedIndex || selectedIndex.isNegative) {
+    if (selectedItem == null || _listSize <= selectedItem || selectedItem.isNegative) {
       return;
     }
 
@@ -78,7 +78,7 @@ class CupertinoSelectedPainter extends DecorationPainter {
     // Save, and translate the canvas so [0,0] is top left of item at [index] position
     canvas.save();
     canvas.translate(
-      (state?.defaultPadding?.left ?? 0.0) + (_itemWidth * selectedIndex) + state.defaultMargin.left,
+      (state?.defaultPadding?.left ?? 0.0) + (_itemWidth * selectedItem) + state.defaultMargin.left,
       size.height + state.defaultMargin.top + state.defaultPadding.top,
     );
 
@@ -96,13 +96,13 @@ class CupertinoSelectedPainter extends DecorationPainter {
         min(state?.itemOptions?.maxBarWidth ?? double.infinity, size.width - _padding.horizontal));
 
     const _size = 2.0;
-    final _maxValue = state.maxValue - state.minValue;
+    final _maxValue = state.data.maxValue - state.data.minValue;
     final scale = size.height / _maxValue;
 
-    final _item = state.items[selectedKey][selectedIndex];
+    final _item = state.data.items[selectedArrayIndex][selectedItem];
     // If item is empty, or it's max value is below chart's minValue then don't draw it.
     // minValue can be below 0, this will just ensure that animation is drawn correctly.
-    if (_item.isEmpty || _item.max < state?.minValue) {
+    if (_item.isEmpty || _item.max < state.data.minValue) {
       return;
     }
 
@@ -151,17 +151,17 @@ class CupertinoSelectedPainter extends DecorationPainter {
 
   @override
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
-    if (endValue is CupertinoSelectedPainter) {
-      return CupertinoSelectedPainter(
+    if (endValue is SelectedItemDecoration) {
+      return SelectedItemDecoration(
         animate
-            ? lerpDouble(selectedIndex?.toDouble(), endValue.selectedIndex?.toDouble(), t)?.round()
-            : endValue.selectedIndex,
+            ? lerpDouble(selectedItem?.toDouble(), endValue.selectedItem?.toDouble(), t)?.round()
+            : endValue.selectedItem,
         selectedColor: Color.lerp(selectedColor, endValue.selectedColor, t),
         backgroundColor: Color.lerp(backgroundColor, endValue.backgroundColor, t),
         textColor: Color.lerp(textColor, endValue.textColor, t),
         textSize: lerpDouble(textSize, endValue.textSize, t),
         animate: endValue.animate,
-        selectedKey: endValue.selectedKey,
+        selectedArrayIndex: endValue.selectedArrayIndex,
       );
     }
 

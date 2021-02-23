@@ -1,12 +1,11 @@
 part of flutter_charts;
 
-/// Extend [ImplicitlyAnimatedWidget], that way every change on
-/// [ChartState] that is included in lerp function will get animated.
+/// Draw [_ChartWidget] with set [state], [width] and [height] for the chart
 class Chart<T> extends StatelessWidget {
   const Chart({
+    @required this.state,
     this.height = 240.0,
     this.width,
-    this.state,
     Key key,
   }) : super(key: key);
 

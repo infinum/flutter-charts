@@ -64,14 +64,14 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
       _values[0]
           .asMap()
           .map<int, BarValue<void>>((index, e) {
-            return MapEntry(index, BarValue<void>(e.max + _values[1][index].max + _values[2][index].max));
+            return MapEntry(index, BarValue<void>(e.max));
           })
           .values
           .toList(),
       _values[1]
           .asMap()
           .map<int, BarValue<void>>((index, e) {
-            return MapEntry(index, BarValue<void>(e.max + _values[2][index].max));
+            return MapEntry(index, BarValue<void>(e.max));
           })
           .values
           .toList(),
@@ -84,7 +84,7 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Bar chart',
+          'Multi bar chart',
         ),
       ),
       body: Column(
@@ -94,10 +94,12 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
               padding: const EdgeInsets.all(12.0),
               child: BarChart.map(
                 _getMap(),
+                stack: _stackItems,
                 height: MediaQuery.of(context).size.height * 0.4,
-                itemOptions: ChartItemOptions(
+                itemOptions: BarItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     minBarWidth: 4.0,
+                    multiValuePadding: const EdgeInsets.symmetric(horizontal: 12.0),
                     // isTargetInclusive: true,
                     color: Theme.of(context).colorScheme.primary,
                     radius: const BorderRadius.vertical(
@@ -110,11 +112,6 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                         Theme.of(context).colorScheme.secondary
                       ][index];
                     }),
-                chartOptions: ChartOptions(
-                  padding: _showValues
-                      ? EdgeInsets.only(right: _legendOnEnd ? 12.0 : 0.0, left: _legendOnEnd ? 0.0 : 12.0)
-                      : null,
-                ),
                 chartBehaviour: ChartBehaviour(
                   multiItemStack: _stackItems,
                 ),
@@ -128,8 +125,6 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                         _legendOnEnd ? HorizontalLegendPosition.end : HorizontalLegendPosition.start,
                     verticalLegendPosition:
                         _legendOnBottom ? VerticalLegendPosition.bottom : VerticalLegendPosition.top,
-                    valueAxisStep: 1,
-                    itemAxisStep: 1,
                     textStyle: Theme.of(context).textTheme.caption,
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),
@@ -138,8 +133,24 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                   BorderDecoration(),
                   ValueDecoration(
                     alignment: Alignment.bottomCenter,
-                    textStyle:
-                        Theme.of(context).textTheme.button.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .button
+                        .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(_stackItems ? 1.0 : 0.0)),
+                  ),
+                  ValueDecoration(
+                    valueKey: 1,
+                    alignment: Alignment.bottomCenter,
+                    textStyle: Theme.of(context).textTheme.button.copyWith(
+                        color: Theme.of(context).colorScheme.onSecondary.withOpacity(_stackItems ? 1.0 : 0.0)),
+                  ),
+                  ValueDecoration(
+                    valueKey: 2,
+                    alignment: Alignment.bottomCenter,
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .button
+                        .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(_stackItems ? 1.0 : 0.0)),
                   ),
                 ],
               ),

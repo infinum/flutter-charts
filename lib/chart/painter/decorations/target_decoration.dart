@@ -68,9 +68,9 @@ class TargetLineDecoration extends DecorationPainter {
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
-    final _maxValue = state.maxValue - state.minValue;
+    final _maxValue = state.data.maxValue - state.data.minValue;
     final scale = size.height / _maxValue;
-    final _minValue = state.minValue * scale;
+    final _minValue = state.data.minValue * scale;
 
     final _linePaint = Paint()
       ..color = targetLineColor
@@ -162,9 +162,9 @@ class TargetAreaDecoration extends DecorationPainter {
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
     final _size = state?.defaultPadding?.deflateSize(size) ?? size;
-    final _maxValue = state.maxValue - state.minValue;
+    final _maxValue = state.data.maxValue - state.data.minValue;
     final scale = _size.height / _maxValue;
-    final _minValue = state.minValue * scale;
+    final _minValue = state.data.minValue * scale;
 
     canvas.save();
     canvas.translate(areaPadding.left + (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left,

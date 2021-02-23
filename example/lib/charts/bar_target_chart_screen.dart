@@ -74,7 +74,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                 data: _values,
                 height: MediaQuery.of(context).size.height * 0.4,
                 dataToValue: (BarValue value) => value.max,
-                itemOptions: ChartItemOptions(
+                itemOptions: BarItemOptions(
                   padding: const EdgeInsets.symmetric(horizontal: 2.0),
                   minBarWidth: 4.0,
                   // isTargetInclusive: true,
@@ -84,31 +84,21 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                   ),
                   colorForValue: _targetDecoration.getTargetItemColor(),
                 ),
-                chartOptions: ChartOptions(
-                  valueAxisMax: max(
-                      _values.fold<double>(
-                              0,
-                              (double previousValue, BarValue element) =>
-                                  previousValue = max(previousValue, element?.max ?? 0)) +
-                          1,
-                      targetMax + 3),
-                  padding: _showValues ? EdgeInsets.only(right: 12.0) : null,
-                ),
                 backgroundDecorations: [
                   GridDecoration(
                     showVerticalGrid: true,
                     showHorizontalValues: _showValues,
                     showVerticalValues: _showValues,
                     showTopHorizontalValue: _showValues,
-                    valueAxisStep: 1,
-                    itemAxisStep: 1,
+                    horizontalAxisStep: 1,
+                    verticalAxisStep: 1,
                     textStyle: Theme.of(context).textTheme.caption,
                     gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),
                   _targetDecoration,
                 ],
                 foregroundDecorations: [
-                  SparkLineDecoration<BarValue<dynamic>>(
+                  SparkLineDecoration(
                     lineWidth: 4.0,
                     lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
                     smoothPoints: _smoothPoints,
@@ -117,11 +107,11 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                     legendDescription: 'Target line 👇',
                     legendTarget: targetMax,
                     legendStyle: Theme.of(context).textTheme.overline.copyWith(fontSize: 14),
-                    padding: EdgeInsets.only(top: -7),
+                    padding: EdgeInsets.only(top: -8),
                   ),
                   BorderDecoration(
                     endWithChart: true,
-                    borderWidth: EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
+                    sidesWidth: EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
                     color: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.4),
                   ),
                 ],
