@@ -1,6 +1,6 @@
 name: flutter_charts
 description: Highly customizable charts library for flutter
-version: 0.1.0
+version: 1.0.0
 homepage: https://github.com/infinum/flutter-charts
 repository: https://github.com/infinum/flutter-charts
 
@@ -18,6 +18,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   golden_toolkit: ^0.8.0
+  pedantic: ^1.9.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

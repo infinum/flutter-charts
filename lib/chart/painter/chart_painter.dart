@@ -24,7 +24,7 @@ class _ChartPainter extends CustomPainter {
 
     final _scrollableItemWidth = max(state?.itemOptions?.minBarWidth ?? 0.0, state?.itemOptions?.maxBarWidth ?? 0.0);
 
-    final int _listSize = state.data.listSize;
+    final _listSize = state.data.listSize;
 
     size = Size(
         size.width +

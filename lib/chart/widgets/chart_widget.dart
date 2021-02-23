@@ -27,7 +27,7 @@ class _ChartWidget extends StatelessWidget {
         final _height = constraints.maxHeight.isFinite ? constraints.maxHeight : height;
         assert(_width != null, 'Parent has infinite width! Charts need finite width!');
 
-        final int _listSize = state.data.listSize;
+        final _listSize = state.data.listSize;
 
         final _size = Size(
             _width +

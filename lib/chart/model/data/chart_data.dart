@@ -201,10 +201,10 @@ class ChartItemsLerp {
   /// Lerp chart items
   static List<List<ChartItem<T>>> lerpValues<T>(List<List<ChartItem<T>>> a, List<List<ChartItem<T>>> b, double t) {
     /// Get list length in animation, we will add the items in steps.
-    final double _listLength = lerpDouble(a.length, b.length, t);
+    final _listLength = lerpDouble(a.length, b.length, t);
 
     /// Empty value for generated list.
-    final List<BarValue<T>> _emptyList = [];
+    final _emptyList = <BarValue<T>>[];
 
     /// Generate new list fot animation step, add items depending on current [_listLength]
     return List<List<ChartItem<T>>>.generate(_listLength.ceil(), (int index) {
@@ -213,21 +213,21 @@ class ChartItemsLerp {
   }
 
   static List<ChartItem<T>> _lerpItemList<T>(List<ChartItem<T>> a, List<ChartItem<T>> b, double t) {
-    final double _listLength = lerpDouble(a.length, b.length, t);
+    final _listLength = lerpDouble(a.length, b.length, t);
 
     /// Empty value for generated list.
-    final ChartItem<T> _emptyValue = ChartItem<T>(null, 0.0, 0.0);
+    final _emptyValue = ChartItem<T>(null, 0.0, 0.0);
 
     return List<ChartItem<T>>.generate(_listLength.ceil(), (int index) {
       // If old list and new list have value at [index], then just animate from,
       // old list value to the new value
       if (index < a.length && index < b.length) {
         if (b[index] != null && a[index] != null) {
-          return b[index].animateFrom<T>(a[index], t);
+          return b[index].animateFrom(a[index], t);
         } else if (b[index] != null) {
-          return b[index].animateFrom<T>(_emptyValue, t);
+          return b[index].animateFrom(_emptyValue, t);
         } else if (a[index] != null) {
-          return a[index].animateTo<T>(_emptyValue, t);
+          return a[index].animateTo(_emptyValue, t);
         }
 
         return _emptyValue;
@@ -242,8 +242,8 @@ class ChartItemsLerp {
 
         // If item is appearing then it's time to animate is
         // from time it first showed to end of the animation.
-        final double _value = _listLength.floor() == index ? ((_listLength - _listLength.floor()) * t) : t;
-        return b[index].animateFrom<T>(_emptyValue, _value);
+        final _value = _listLength.floor() == index ? ((_listLength - _listLength.floor()) * t) : t;
+        return b[index].animateFrom(_emptyValue, _value);
       }
 
       // In case that our old list is bigger, and item is not empty
@@ -252,12 +252,12 @@ class ChartItemsLerp {
         return a[index] ?? _emptyValue;
       }
 
-      final double _value = _listLength.floor() == index
+      final _value = _listLength.floor() == index
           ? min(1, (1 - (_listLength - _listLength.floor())) + t / _listLength)
           : _listLength.floor() >= index
               ? 0
               : t;
-      return a[index].animateTo<T>(_emptyValue, _value);
+      return a[index].animateTo(_emptyValue, _value.toDouble());
     });
   }
 }

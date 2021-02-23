@@ -135,7 +135,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
     final gridPath = Path();
 
-    for (int i = 0; i <= _maxValue / axisStep; i++) {
+    for (var i = 0; i <= _maxValue / axisStep; i++) {
       if (showLines) {
         gridPath.moveTo(_endWithChart * state.defaultPadding.left, -axisStep * i * scale + lineWidth / 2);
         gridPath.lineTo(_size.width, -axisStep * i * scale + lineWidth / 2);
@@ -217,7 +217,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
   /// Get width of longest text on axis
   double _textWidth(String text, TextStyle style) {
-    final TextPainter textPainter =
+    final textPainter =
         TextPainter(text: TextSpan(text: text, style: style), maxLines: 1, textDirection: TextDirection.ltr)..layout();
     return textPainter.size.width;
   }

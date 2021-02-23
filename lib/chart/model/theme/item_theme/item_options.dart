@@ -112,8 +112,8 @@ class ColorForValueLerp {
     }
 
     return (Color defaultColor, double value, [double min]) {
-      final Color _aColor = a._getColorForValue(value, min);
-      final Color _bColor = b._getColorForValue(value, min);
+      final _aColor = a._getColorForValue(value, min);
+      final _bColor = b._getColorForValue(value, min);
 
       return Color.lerp(_aColor, _bColor, t);
     };
@@ -129,8 +129,8 @@ class ColorForKeyLerp {
     }
 
     return (ChartItem item, int index) {
-      final Color _aColor = a.getItemColor(item, index);
-      final Color _bColor = b.getItemColor(item, index);
+      final _aColor = a.getItemColor(item, index);
+      final _bColor = b.getItemColor(item, index);
 
       return Color.lerp(_aColor, _bColor, t);
     };

@@ -34,8 +34,9 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
     final _verticalMultiplier = size.height / _maxValue;
     final _minValue = state.data.minValue * _verticalMultiplier;
 
-    EdgeInsets _padding = state.itemOptions.padding ?? EdgeInsets.zero;
     final _radius = options is BarItemOptions ? (options.radius ?? BorderRadius.zero) : BorderRadius.zero;
+
+    var _padding = state.itemOptions.padding ?? EdgeInsets.zero;
 
     final _itemWidth = itemWidth(size);
 

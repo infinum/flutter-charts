@@ -93,7 +93,7 @@ class VerticalAxisDecoration extends DecorationPainter {
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
     final _size = state.defaultPadding.deflateSize(size) ?? size;
-    final int _listSize = state.data.listSize;
+    final _listSize = state.data.listSize;
     final _itemWidth = (_size.width - lineWidth) / _listSize;
 
     final _paint = Paint()
@@ -109,7 +109,7 @@ class VerticalAxisDecoration extends DecorationPainter {
 
     final gridPath = Path();
 
-    for (int i = 0; i <= _listSize / axisStep; i++) {
+    for (var i = 0; i <= _listSize / axisStep; i++) {
       if (showLines) {
         final _showValuesBottom = showValues ? (state.defaultMargin.bottom * (1 - _endWithChart)) : lineWidth;
         final _showValuesTop = -size.height - (showValues ? (state.defaultMargin.top * (1 - _endWithChart)) : 0.0);

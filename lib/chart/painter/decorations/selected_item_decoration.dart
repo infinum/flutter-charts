@@ -80,7 +80,7 @@ class SelectedItemDecoration extends DecorationPainter {
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
-    final int _listSize = state.data.listSize;
+    final _listSize = state.data.listSize;
 
     if (selectedItem == null || _listSize <= selectedItem || selectedItem.isNegative) {
       return;

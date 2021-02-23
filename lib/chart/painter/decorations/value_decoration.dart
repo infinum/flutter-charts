@@ -67,7 +67,7 @@ class ValueDecoration extends DecorationPainter {
     final _verticalMultiplier = _size.height / _maxValue;
     final _minValue = state.data.minValue * _verticalMultiplier;
 
-    final int _listSize = state.data.listSize;
+    final _listSize = state.data.listSize;
     final _itemWidth = _size.width / _listSize;
 
     canvas.save();
