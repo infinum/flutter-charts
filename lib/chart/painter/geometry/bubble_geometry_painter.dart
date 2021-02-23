@@ -12,6 +12,7 @@ part of flutter_charts;
 ///    └───────────┘ --> 0 or [ChartOptions.valueAxisMin]
 ///
 class BubbleGeometryPainter<T> extends GeometryPainter<T> {
+  /// Constructor for bubble painter
   BubbleGeometryPainter(ChartItem<T> item, ChartState state) : super(item, state);
 
   @override

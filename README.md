@@ -6,7 +6,7 @@ Customizable charts library for flutter.
 Idea behind this lib is to allow highly customizable charts. By having decorations painters (foreground and background) and item painters that can be easily changed. Customizing and adding new decorations will require some CustomPainter knowledge.
 
 ## Showcase
-Showcase some charts, animations and decorations
+![showcase]
 
 ## Usage
 Add it to your package's pubspec.yaml file
@@ -290,3 +290,4 @@ Scrollable bar chart [example code](example/lib/charts/scrollable_chart_screen.d
 
 [basic_line]: ./assets/basic/basic_line.png
 [basic_bar]: ./assets/basic/basic_bar.png
+[showcase]: ./assets/showcase.gif

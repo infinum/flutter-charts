@@ -23,6 +23,7 @@ part of flutter_charts;
 ///    └───────────┘ --> 0 or [ChartOptions.valueAxisMin]
 ///
 class BarGeometryPainter<T> extends GeometryPainter<T> {
+  /// Constructor for Bar painter
   BarGeometryPainter(ChartItem<T> item, ChartState state) : super(item, state);
 
   @override

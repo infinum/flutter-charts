@@ -1,6 +1,6 @@
 part of flutter_charts;
 
-/// Chart widget will initiate [ChartPainter] with passed state
+/// Chart widget will initiate [_ChartPainter] with passed state
 /// chart size and [GestureDetector] are added here as well
 ///
 // TODO(lukaknezic): Add ScrollView here as well? We already have access to [ChartState.behaviour.isScrollable]
@@ -37,7 +37,7 @@ class _ChartWidget extends StatelessWidget {
         final _chart = CustomPaint(
           size: _size,
           isComplex: true,
-          painter: ChartPainter(state),
+          painter: _ChartPainter(state),
         );
 
         // If chart is clickable, then wrap it with [GestureDetector]
@@ -51,9 +51,9 @@ class _ChartWidget extends StatelessWidget {
 
           return GestureDetector(
             onTapDown: (tapDetails) =>
-                state.behaviour.onChartItemClicked(_getClickLocation(_itemWidth, tapDetails.localPosition)),
+                state.behaviour._onChartItemClicked(_getClickLocation(_itemWidth, tapDetails.localPosition)),
             onPanUpdate: (panUpdate) =>
-                state.behaviour.onChartItemClicked(_getClickLocation(_itemWidth, panUpdate.localPosition)),
+                state.behaviour._onChartItemClicked(_getClickLocation(_itemWidth, panUpdate.localPosition)),
             child: _chart,
           );
         }

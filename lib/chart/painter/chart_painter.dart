@@ -1,8 +1,8 @@
 part of flutter_charts;
 
 /// Custom painter for charts
-class ChartPainter extends CustomPainter {
-  ChartPainter(this.state) : assert(state.itemOptions?.geometryPainter != null, 'You need to provide item painter!');
+class _ChartPainter extends CustomPainter {
+  _ChartPainter(this.state) : assert(state.itemOptions?.geometryPainter != null, 'You need to provide item painter!');
 
   final ChartState state;
 
@@ -98,7 +98,7 @@ class ChartPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(ChartPainter oldDelegate) {
+  bool shouldRepaint(_ChartPainter oldDelegate) {
     return false;
   }
 }

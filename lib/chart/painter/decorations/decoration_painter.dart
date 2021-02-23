@@ -1,5 +1,7 @@
 part of flutter_charts;
 
+/// Abstract class for decorations
+/// Decorations are placed under and/or above items in the charts
 abstract class DecorationPainter {
   /// Draw decoration.
   /// Decoration can be foreground or background decoration that will be drawn on the chart

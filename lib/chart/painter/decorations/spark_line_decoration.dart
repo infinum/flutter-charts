@@ -4,6 +4,7 @@ part of flutter_charts;
 /// You need to use [BarGeometryPainter] or [BubbleGeometryPainter] in combination.
 /// They can be transparent or be used to show values of the graph
 class SparkLineDecoration extends DecorationPainter {
+  /// Constructor for sparkline decoration
   SparkLineDecoration({
     this.id,
     this.fill = false,
@@ -26,19 +27,41 @@ class SparkLineDecoration extends DecorationPainter {
     this.lineArrayIndex = 0,
   }) : _smoothPoints = smoothPoints;
 
+  /// Is line or fill, line will have [lineWidth], setting
+  /// [fill] to true will ignore [lineWidth]
   final bool fill;
 
+  /// Is sparkline curve smooth (bezier) or lines
   bool get smoothPoints => _smoothPoints > 0.5;
 
+  /// If od sparkline, with different ID's you can have more [SparkLineDecoration]
+  /// on same data with different settings. (ex. One to fill and another for just line)
   final String id;
   final double _smoothPoints;
 
+  /// Set sparkline width
   final double lineWidth;
+
+  /// Set sparkline color
   final Color lineColor;
 
+  /// Set sparkline start position.
+  /// This value ranges from 0.0 - 1.0.
+  ///
+  /// 0.0 means that start position is right most point of the item,
+  /// 1.0 means left most point.
+  ///
+  /// By default this is set to 0.5, so points are located in center of each [ChartItem]
   final double startPosition;
+
+  /// Gradient color to take.
+  ///
+  /// Gradient is added as shader, [lineColor] can be used to change how shader is shown
   final Gradient gradient;
 
+  /// Index of list in items, this is used if there are multiple lists in the chart
+  ///
+  /// By default this will show first list and value will be 0
   final int lineArrayIndex;
 
   @override

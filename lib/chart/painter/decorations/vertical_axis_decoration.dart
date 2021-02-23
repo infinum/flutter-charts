@@ -2,21 +2,30 @@ part of flutter_charts;
 
 typedef AxisValueFromIndex = String Function(int index);
 
+/// Position of legend in [VerticalAxisDecoration]
 enum VerticalLegendPosition {
+  /// Show vertical axis above the chart
   top,
+
+  /// Show vertical axis below the chart
   bottom,
 }
 
+/// Decoration for drawing vertical lines on the chart, decoration can add vertical axis legend
+///
+/// This can be used if you don't need anything from [HorizontalAxisDecoration], otherwise you might
+/// consider using [GridDecoration]
 class VerticalAxisDecoration extends DecorationPainter {
+  /// Constructor for vertical axis decoration
   VerticalAxisDecoration({
-    this.showGrid = true,
+    this.showLines = true,
     this.showValues = false,
     bool endWithChart = false,
     this.valuesAlign = TextAlign.center,
     this.valuesPadding = EdgeInsets.zero,
     this.valueFromIndex = defaultAxisValue,
-    this.gridColor = Colors.grey,
-    this.gridWidth = 1.0,
+    this.lineColor = Colors.grey,
+    this.lineWidth = 1.0,
     this.dashArray,
     this.axisStep = 1,
     this.legendPosition = VerticalLegendPosition.bottom,
@@ -24,49 +33,73 @@ class VerticalAxisDecoration extends DecorationPainter {
   }) : _endWithChart = endWithChart ? 1.0 : 0.0;
 
   VerticalAxisDecoration._lerp({
-    this.showGrid = true,
+    this.showLines = true,
     this.showValues = false,
     double endWithChart = 0.0,
     this.valuesAlign = TextAlign.center,
     this.valuesPadding = EdgeInsets.zero,
     this.valueFromIndex = defaultAxisValue,
-    this.gridColor = Colors.grey,
-    this.gridWidth = 1.0,
+    this.lineColor = Colors.grey,
+    this.lineWidth = 1.0,
     this.dashArray,
     this.axisStep = 1,
     this.legendPosition = VerticalLegendPosition.bottom,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
   }) : _endWithChart = endWithChart;
 
+  /// This decoration can continue beyond padding set by [ChartState]
+  /// setting this to true will stop drawing on padding, and will end
+  /// at same place where the chart will end
+  ///
+  /// This does not apply to axis legend text, text can still be shown on the padding part
   bool get endWithChart => _endWithChart > 0.5;
   final double _endWithChart;
 
+  /// Dashed array for showing lines, if this is not set the line is solid
   final List<double> dashArray;
 
-  final bool showGrid;
+  /// Show vertical lines
+  final bool showLines;
+
+  /// Show axis legend values
   final bool showValues;
+
+  /// Align text on the axis legend
   final TextAlign valuesAlign;
+
+  /// Padding for the values in the axis legend
   final EdgeInsets valuesPadding;
 
-  final Color gridColor;
-  final double gridWidth;
+  /// Set color to paint horizontal lines with
+  final Color lineColor;
+
+  /// Set line width
+  final double lineWidth;
+
+  /// Step for lines
   final double axisStep;
 
+  /// Position of vertical legend
+  /// Default: [VerticalLegendPosition.bottom]
+  /// Can be [VerticalLegendPosition.bottom] or [VerticalLegendPosition.top]
   final VerticalLegendPosition legendPosition;
+
+  /// Text style for axis legend
   final TextStyle legendFontStyle;
 
+  /// Generate vertical axis legend from index steps
   final AxisValueFromIndex valueFromIndex;
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
     final _size = state.defaultPadding.deflateSize(size) ?? size;
     final int _listSize = state.data.listSize;
-    final _itemWidth = (_size.width - gridWidth) / _listSize;
+    final _itemWidth = (_size.width - lineWidth) / _listSize;
 
     final _paint = Paint()
-      ..color = gridColor
+      ..color = lineColor
       ..style = PaintingStyle.stroke
-      ..strokeWidth = gridWidth;
+      ..strokeWidth = lineWidth;
 
     canvas.save();
     canvas.translate(
@@ -77,12 +110,12 @@ class VerticalAxisDecoration extends DecorationPainter {
     final gridPath = Path();
 
     for (int i = 0; i <= _listSize / axisStep; i++) {
-      if (showGrid) {
-        final _showValuesBottom = showValues ? (state.defaultMargin.bottom * (1 - _endWithChart)) : gridWidth;
+      if (showLines) {
+        final _showValuesBottom = showValues ? (state.defaultMargin.bottom * (1 - _endWithChart)) : lineWidth;
         final _showValuesTop = -size.height - (showValues ? (state.defaultMargin.top * (1 - _endWithChart)) : 0.0);
 
-        gridPath.moveTo(_itemWidth * i * axisStep + gridWidth / 2, _showValuesBottom);
-        gridPath.lineTo(_itemWidth * i * axisStep + gridWidth / 2, _showValuesTop);
+        gridPath.moveTo(_itemWidth * i * axisStep + lineWidth / 2, _showValuesBottom);
+        gridPath.lineTo(_itemWidth * i * axisStep + lineWidth / 2, _showValuesTop);
       }
 
       if (!showValues || i == _listSize / axisStep) {
@@ -151,12 +184,12 @@ class VerticalAxisDecoration extends DecorationPainter {
   VerticalAxisDecoration animateTo(DecorationPainter endValue, double t) {
     if (endValue is VerticalAxisDecoration) {
       return VerticalAxisDecoration._lerp(
-        gridColor: Color.lerp(gridColor, endValue.gridColor, t),
-        gridWidth: lerpDouble(gridWidth, endValue.gridWidth, t),
+        lineColor: Color.lerp(lineColor, endValue.lineColor, t),
+        lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t),
         axisStep: lerpDouble(axisStep, endValue.axisStep, t),
         endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t),
         valuesPadding: EdgeInsets.lerp(valuesPadding, endValue.valuesPadding, t),
-        showGrid: t > 0.5 ? endValue.showGrid : showGrid,
+        showLines: t > 0.5 ? endValue.showLines : showLines,
         dashArray: t < 0.5 ? dashArray : endValue.dashArray,
         showValues: t > 0.5 ? endValue.showValues : showValues,
         valuesAlign: t > 0.5 ? endValue.valuesAlign : valuesAlign,

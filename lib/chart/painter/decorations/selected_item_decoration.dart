@@ -2,6 +2,7 @@ part of flutter_charts;
 
 /// Show selected item in Cupertino style (Health app)
 class SelectedItemDecoration extends DecorationPainter {
+  /// Constructor for selected item decoration
   SelectedItemDecoration(
     this.selectedItem, {
     this.selectedColor = Colors.red,
@@ -12,13 +13,26 @@ class SelectedItemDecoration extends DecorationPainter {
     this.selectedArrayIndex = 0,
   });
 
+  /// Index of selected item
   final int selectedItem;
+
+  /// Color of selected indicator and text background
   final Color selectedColor;
+
+  /// Color for selected item, this color is shown as overlay, use with alpha!
   final Color backgroundColor;
+
+  /// Should [selectedItem] animate from one item to next
   final bool animate;
 
+  /// Color of selected item text
   final Color textColor;
+
+  /// Size for selected item text
   final double textSize;
+
+  /// Index of list whose data to show
+  /// By default it will use first list to this value will be `0`
   final int selectedArrayIndex;
 
   @override

@@ -5,6 +5,9 @@ part of flutter_charts;
 ///
 /// Text will be rotated 90 CCW
 class TargetLineLegendDecoration extends DecorationPainter {
+  /// Target line legend constructor
+  ///
+  /// [legendDescription] and [legendStyle] are required
   TargetLineLegendDecoration({
     @required this.legendDescription,
     @required this.legendStyle,
@@ -12,11 +15,16 @@ class TargetLineLegendDecoration extends DecorationPainter {
     this.padding = EdgeInsets.zero,
   }) : assert(legendStyle.fontSize != null, 'You must specify fontSize when using TargetLineLegendDecoration');
 
+  /// Label to show at [target]
   final String legendDescription;
+
+  /// Legend text style
   final TextStyle legendStyle;
 
+  /// Label padding
   final EdgeInsets padding;
 
+  /// Target value where to show the label
   final double legendTarget;
 
   @override

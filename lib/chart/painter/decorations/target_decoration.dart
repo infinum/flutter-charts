@@ -39,6 +39,9 @@ Color _getColorForTarget(
 /// In order to change the color of item when it didn't meet the target criteria, you will need
 /// to add [getTargetItemColor] to [ChartItemOptions.colorForValue]
 class TargetLineDecoration extends DecorationPainter {
+  /// Constructor for target line decoration
+  ///
+  /// [target] is required
   TargetLineDecoration({
     @required this.target,
     this.dashArray,
@@ -48,9 +51,13 @@ class TargetLineDecoration extends DecorationPainter {
     this.isTargetInclusive = true,
   });
 
+  /// Dash pattern for the line, if left empty line will be solid
   final List<double> dashArray;
+
+  /// Width of the target line
   final double lineWidth;
 
+  /// Target value for the line
   final double target;
 
   /// In case you want to change how value acts on the target value
@@ -61,8 +68,13 @@ class TargetLineDecoration extends DecorationPainter {
   /// Color for target line, this will modify [TargetLineDecoration] and [TargetAreaDecoration]
   final Color targetLineColor;
 
+  /// Color item should take once target is missed
   final Color colorOverTarget;
 
+  /// Return [ColorForValue] set up to pair with this decoration
+  ///
+  /// Pass this to [ItemOptions.colorForValue] and chart will update item colors
+  /// based on target line
   ColorForValue getTargetItemColor() => (Color defaultColor, double max, [double min]) =>
       _getColorForTarget(defaultColor, colorOverTarget, isTargetInclusive, target, null, max, min);
 
@@ -121,9 +133,12 @@ class TargetLineDecoration extends DecorationPainter {
 ///
 /// Target range is defined by [ChartItemOptions.targetMin] and [ChartItemOptions.targetMax]
 class TargetAreaDecoration extends DecorationPainter {
+  /// Constructor for target area
+  ///
+  /// [targetMin] and [targetMax] are required
   TargetAreaDecoration({
-    this.targetMin,
-    this.targetMax,
+    @required this.targetMin,
+    @required this.targetMax,
     this.isTargetInclusive = true,
     this.dashArray,
     this.lineWidth = 2.0,
@@ -134,20 +149,30 @@ class TargetAreaDecoration extends DecorationPainter {
     this.targetAreaFillColor,
   }) : assert(areaPadding.vertical == 0, 'Vertical padding cannot be applied here!');
 
+  /// Dash pattern for the line, if left empty line will be solid
   final List<double> dashArray;
+
+  /// Width of the target area border
   final double lineWidth;
 
-  /// Color for target line
+  /// Color for target border
   final Color targetLineColor;
 
+  /// Min target value for the area
   final double targetMin;
+
+  /// Max target value for the area
   final double targetMax;
 
   /// In case you want to change how value acts on the target value
   /// by default this is true, meaning that when the target is the same
   /// as the value then the value and it's not using [colorOverTarget] or [valueColorOver]
   final bool isTargetInclusive;
+
+  /// Color item should take once target is missed
   final Color colorOverTarget;
+
+  /// Padding for target area
   final EdgeInsets areaPadding;
 
   /// Border radius for [TargetAreaDecoration]
@@ -156,6 +181,10 @@ class TargetAreaDecoration extends DecorationPainter {
   /// Fill color for [TargetAreaDecoration]
   final Color targetAreaFillColor;
 
+  /// Return [ColorForValue] set up to pair with this decoration
+  ///
+  /// Pass this to [ItemOptions.colorForValue] and chart will update item colors
+  /// based on target area
   ColorForValue getTargetItemColor() => (Color defaultColor, double max, [double min]) =>
       _getColorForTarget(defaultColor, colorOverTarget, isTargetInclusive, targetMin, targetMax, max, min);
 
@@ -191,8 +220,8 @@ class TargetAreaDecoration extends DecorationPainter {
     final _rectPath = Path()
       ..addRRect(RRect.fromRectAndCorners(
         Rect.fromPoints(
-          Offset(0.0, -scale * (targetMin ?? 0.0) + _minValue),
-          Offset(_size.width, -scale * (targetMax ?? 0.0) + _minValue),
+          Offset(0.0, -scale * targetMin + _minValue),
+          Offset(_size.width, -scale * targetMax + _minValue),
         ),
         bottomLeft: targetAreaRadius?.bottomLeft ?? Radius.zero,
         bottomRight: targetAreaRadius?.bottomRight ?? Radius.zero,

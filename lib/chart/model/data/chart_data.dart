@@ -87,6 +87,7 @@ class ChartData<T> {
   /// In case chart shouldn't start from 0 use this to specify new min starting point
   /// If data has value that goes below [minValue] then [minValue] is ignored
   final double minValue;
+
   /// Max value to show on the chart, in case data has point higher then
   /// specified [maxValue] then [maxValue] is ignored
   final double maxValue;

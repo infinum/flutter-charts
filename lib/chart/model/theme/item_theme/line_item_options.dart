@@ -3,8 +3,14 @@ part of flutter_charts;
 /// Bubble painter
 GeometryPainter<T> bubblePainter<T>(ChartItem<T> item, ChartState<T> state) => BubbleGeometryPainter<T>(item, state);
 
-/// Options for [BubbleGeometryPainter]
+/// Extension options for bar items
+/// [geometryPainter] is set to [BubbleGeometryPainter]
+///
+/// Extra options included in [BubbleGeometryPainter] are:
+/// [border] Define border width and color
+/// [gradient] Item can have gradient color
 class BubbleItemOptions extends ItemOptions {
+  /// Constructor for bubble item options, has some options just for [BubbleGeometryPainter]
   const BubbleItemOptions({
     EdgeInsets padding = EdgeInsets.zero,
     EdgeInsets multiValuePadding = EdgeInsets.zero,
@@ -26,7 +32,10 @@ class BubbleItemOptions extends ItemOptions {
           geometryPainter: bubblePainter,
         );
 
+  /// Set gradient for each bubble item
   final Gradient gradient;
+
+  /// Draw border on bubble items
   final BorderSide border;
 
   @override
