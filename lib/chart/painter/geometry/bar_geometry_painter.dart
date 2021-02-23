@@ -3,24 +3,24 @@ part of flutter_charts;
 /// Paint bar value item. This is painter used for [BarValue] and [CandleValue]
 ///
 /// Bar value:
-///    ┌───────────┐ --> Max value in set or [ChartOptions.valueAxisMax]
+///    ┌───────────┐ --> Max value in set or from [ChartData.axisMax]
 ///    │           │
 ///    │   ┌───┐   │ --> Bar value
 ///    │   │   │   │
 ///    │   │   │   │
 ///    │   │   │   │
 ///    │   │   │   │
-///    └───┴───┴───┘ --> 0 or [ChartOptions.valueAxisMin]
+///    └───┴───┴───┘ --> 0 or [ChartData.axisMin]
 ///
 /// Candle value:
-///    ┌───────────┐ --> Max value in set or [ChartOptions.valueAxisMax]
+///    ┌───────────┐ --> Max value in set or [ChartData.axisMax]
 ///    │           │
 ///    │   ┌───┐   │ --> Candle max value
 ///    │   │   │   │
 ///    │   │   │   │
 ///    │   └───┘   │ --> Candle min value
 ///    │           │
-///    └───────────┘ --> 0 or [ChartOptions.valueAxisMin]
+///    └───────────┘ --> 0 or [ChartData.axisMin]
 ///
 class BarGeometryPainter<T> extends GeometryPainter<T> {
   /// Constructor for Bar painter

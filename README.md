@@ -255,15 +255,15 @@ Code above will make this multi line graph:
 
 ## More examples
 ### Line charts
-Line chart with multiple values [example code](example/lib/charts/line_chart_screen.dart)
+Line chart with multiple values [example code](./example/lib/charts/line_chart_screen.dart)
 ![line_chart_animating]
 
 ### Bar charts
-Bar chart with area [example code](example/lib/charts/bar_chart_screen.dart)
+Bar chart with area [example code](./example/lib/charts/bar_chart_screen.dart)
 ![bar_chart_animating]
 
 ### Scrollable chart
-Scrollable bar chart [example code](example/lib/charts/scrollable_chart_screen.dart)
+Scrollable bar chart [example code](./example/lib/charts/scrollable_chart_screen.dart)
 ![scrollable_chart]
 
 [chart_image]: ./assets/chart_image.png

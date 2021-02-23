@@ -13,9 +13,10 @@ enum DataStrategy {
 /// lower than [axisMin] in that case [axisMin] is ignored and actual min value is shown.
 ///
 /// [axisMax] - Same as [axisMin] but for max value.
-/// [valueAxisMaxOver] - How much should chart draw above max value in the chart
 class ChartData<T> {
-  /// Takes [List<List<ChartItem<T>>>] to make chart, this is used for multiple list charts
+  /// Takes {List<List<ChartItem<T>>>} to make chart, this is used for multiple list charts
+  ///
+  /// [valueAxisMaxOver] - How much should chart draw above max value in the chart
   ChartData(
     this._items, {
     this.strategy = DataStrategy.none,
@@ -100,7 +101,7 @@ class ChartData<T> {
   /// x axis will start from [axisMin] (default: 0)
   final double axisMin;
 
-  /// Return [List<List<ChartItem<T>>>] as formatted data defined by [DataStrategy]
+  /// Return {List<List<ChartItem<T>>>} as formatted data defined by [DataStrategy]
   List<List<ChartItem<T>>> get items {
     return _formatDataStrategy(_items, strategy, _strategyChange);
   }

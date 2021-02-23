@@ -5,8 +5,7 @@ part of flutter_charts;
 abstract class DecorationPainter {
   /// Draw decoration.
   /// Decoration can be foreground or background decoration that will be drawn on the chart
-  /// decorations will ignore padding from the user [ChartOptions.padding] and can use
-  /// whole available canvas to draw.
+  /// decorations can ignore padding and can use whole available canvas to draw.
   void draw(Canvas canvas, Size size, ChartState state);
 
   /// Get extra margin (not definable by the user). This makes sure that any decoration

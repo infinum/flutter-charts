@@ -25,7 +25,7 @@ class BorderDecoration extends DecorationPainter {
   /// Set additional padding to border
   final EdgeInsets borderPadding;
 
-  /// Color for border, individual side colors can be set with [sidesWidth] otherwise this color
+  /// Color for border, individual side colors can be set with [_borderWidth] otherwise this color
   /// is used as fallback
   final Color color;
 

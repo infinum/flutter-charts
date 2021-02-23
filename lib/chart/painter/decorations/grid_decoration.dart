@@ -1,8 +1,7 @@
 part of flutter_charts;
 
 /// Draws a grid with [verticalAxisStep] and [horizontalAxisStep] as spacers
-/// Grid will stretch across whole graph and it will ignore the padding from
-/// [ChartOptions].
+///
 /// That will allow for Legend to be inserted as well.
 class GridDecoration extends DecorationPainter {
   /// Make grid decoration for the chart

@@ -1,7 +1,7 @@
 part of flutter_charts;
 
 /// Draw value of the items on them.
-/// Use this only as [foregroundDecoration] in order to be visible at all locations
+/// Use this only as [ChartState.foregroundDecorations] in order to be visible at all locations
 /// Exact alignment can be set with [alignment]
 class ValueDecoration extends DecorationPainter {
   /// Constructor for values decoration

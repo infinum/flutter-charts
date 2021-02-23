@@ -25,10 +25,11 @@ class AnimatedChart<T> extends ImplicitlyAnimatedWidget {
   @override
   _ChartState<T> createState() => _ChartState<T>();
 
+  /// Fill debug properties for animated chart
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<ChartState>('state', state));
+    properties.add(DiagnosticsProperty<ChartState<T>>('state', state));
     properties.add(DiagnosticsProperty<double>('height', height));
     properties.add(DiagnosticsProperty<double>('width', width));
   }

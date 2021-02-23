@@ -29,15 +29,12 @@ Color _getColorForTarget(
 }
 
 /// Target line decoration will draw target line horizontally across the chart
-/// height of the line is defined by [ChartItemOptions.targetMin] or if target min is missing
-/// then [ChartItemOptions.targetMax] is used
+/// height of the line is defined by [target]
 ///
-///
-/// If you provide [targetMax] or/and [targetMin] then [colorOverTarget] color will
-/// be applied to items that missed the target.
+/// [colorOverTarget] color will be applied to items that missed the target.
 ///
 /// In order to change the color of item when it didn't meet the target criteria, you will need
-/// to add [getTargetItemColor] to [ChartItemOptions.colorForValue]
+/// to add [getTargetItemColor] to [ItemOptions.colorForValue]
 class TargetLineDecoration extends DecorationPainter {
   /// Constructor for target line decoration
   ///
@@ -60,9 +57,9 @@ class TargetLineDecoration extends DecorationPainter {
   /// Target value for the line
   final double target;
 
-  /// In case you want to change how value acts on the target value
-  /// by default this is true, meaning that when the target is the same
-  /// as the value then the value and it's not using [colorOverTarget] or [valueColorOver]
+  /// In case you want to change how value acts when it's exactly on the target value.
+  ///
+  /// By default this is true, meaning that when the target is the same as the value then the value and it's not using [colorOverTarget]
   final bool isTargetInclusive;
 
   /// Color for target line, this will modify [TargetLineDecoration] and [TargetAreaDecoration]
@@ -129,9 +126,9 @@ class TargetLineDecoration extends DecorationPainter {
 }
 
 /// Target area decoration, draw a RRect on the chart as `target range`
-/// To actually change item colors you have to also set [ChartItemOptions.colorOverTarget]
+/// To actually change item colors you have to also set [colorOverTarget]
 ///
-/// Target range is defined by [ChartItemOptions.targetMin] and [ChartItemOptions.targetMax]
+/// Target range is defined by [targetMin] and [targetMax]
 class TargetAreaDecoration extends DecorationPainter {
   /// Constructor for target area
   ///
@@ -166,7 +163,7 @@ class TargetAreaDecoration extends DecorationPainter {
 
   /// In case you want to change how value acts on the target value
   /// by default this is true, meaning that when the target is the same
-  /// as the value then the value and it's not using [colorOverTarget] or [valueColorOver]
+  /// as the value then the value and it's not using [colorOverTarget]
   final bool isTargetInclusive;
 
   /// Color item should take once target is missed

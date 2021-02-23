@@ -3,9 +3,9 @@ part of flutter_charts;
 /// Main state of the charts. Painter will use this as state and it will format chart depending
 /// on options.
 ///
-/// [options] Modifiers for chart
-///
 /// [itemOptions] Contains all modifiers for separate bar item
+///
+/// [behaviour] How chart reacts and sizes itself
 ///
 /// [foregroundDecorations] and [backgroundDecorations] decorations that aren't connected directly to the
 /// chart but can show important info (Axis, target line...)

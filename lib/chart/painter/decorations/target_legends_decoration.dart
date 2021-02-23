@@ -15,7 +15,7 @@ class TargetLineLegendDecoration extends DecorationPainter {
     this.padding = EdgeInsets.zero,
   }) : assert(legendStyle.fontSize != null, 'You must specify fontSize when using TargetLineLegendDecoration');
 
-  /// Label to show at [target]
+  /// Label to show at [legendTarget]
   final String legendDescription;
 
   /// Legend text style

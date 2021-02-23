@@ -2,14 +2,14 @@ part of flutter_charts;
 
 /// Paint bubble value item.
 ///
-///    ┌───────────┐ --> Max value in set or [ChartOptions.valueAxisMax]
+///    ┌───────────┐ --> Max value in set or [ChartData.axisMax]
 ///    │           │
 ///    │           │
 ///    │    /⎺⎺\   │ --> Bubble value
 ///    │    \__/   │
 ///    │           │
 ///    │           │
-///    └───────────┘ --> 0 or [ChartOptions.valueAxisMin]
+///    └───────────┘ --> 0 or [ChartData.axisMin]
 ///
 class BubbleGeometryPainter<T> extends GeometryPainter<T> {
   /// Constructor for bubble painter

@@ -13,7 +13,7 @@ typedef ColorForKey = Color Function(ChartItem item, int index);
 /// Options for drawing the items
 /// Need to provide [ChartGeometryPainter]
 ///
-/// Extend this to make your custom options if needed. For example see [BarItemOptions] or [LineItemOptions]
+/// Extend this to make your custom options if needed. For example see [BarItemOptions] or [BubbleItemOptions]
 class ItemOptions {
   /// Default constructor for ItemOptions
   /// It's recommended to make/use custom item options for custom painters.
