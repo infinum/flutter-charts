@@ -12,7 +12,7 @@ Idea behind this lib is to allow highly customizable charts. By having decoratio
 Add it to your package's pubspec.yaml file
 ```yaml
 dependencies:
-  flutter_charts: ^0.1.0
+  flutter_charts: ^1.0.0
 ```
 
 Install packages from the command line
