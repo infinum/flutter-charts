@@ -3,9 +3,9 @@ part of flutter_charts;
 /// Main state of the charts. Painter will use this as state and it will format chart depending
 /// on options.
 ///
-/// [options] Modifiers for chart
-///
 /// [itemOptions] Contains all modifiers for separate bar item
+///
+/// [behaviour] How chart reacts and sizes itself
 ///
 /// [foregroundDecorations] and [backgroundDecorations] decorations that aren't connected directly to the
 /// chart but can show important info (Axis, target line...)
@@ -136,8 +136,7 @@ class ChartState<T> {
       itemOptions: a.itemOptions.animateTo(b.itemOptions, t),
       // Find background matches, if found, then animate to them, else just show them.
       backgroundDecorations: b.backgroundDecorations.map((e) {
-        final DecorationPainter _match =
-            a.backgroundDecorations.firstWhere((element) => element.isSameType(e), orElse: () => null);
+        final _match = a.backgroundDecorations.firstWhere((element) => element.isSameType(e), orElse: () => null);
         if (_match != null) {
           return _match.animateTo(e, t);
         }
@@ -146,8 +145,7 @@ class ChartState<T> {
       }).toList(),
       // Find foreground matches, if found, then animate to them, else just show them.
       foregroundDecorations: b.foregroundDecorations.map((e) {
-        final DecorationPainter _match =
-            a.foregroundDecorations.firstWhere((element) => element.isSameType(e), orElse: () => null);
+        final _match = a.foregroundDecorations.firstWhere((element) => element.isSameType(e), orElse: () => null);
         if (_match != null) {
           return _match.animateTo(e, t);
         }

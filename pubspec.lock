@@ -60,13 +60,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  golden_toolkit:
-    dependency: "direct dev"
-    description:
-      name: golden_toolkit
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.8.0"
   matcher:
     dependency: transitive
     description:
@@ -102,6 +95,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.4"
+  pedantic:
+    dependency: "direct dev"
+    description:
+      name: pedantic
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.9.2"
   sky_engine:
     dependency: transitive
     description: flutter

@@ -4,6 +4,7 @@ part of flutter_charts;
 /// You need to use [BarGeometryPainter] or [BubbleGeometryPainter] in combination.
 /// They can be transparent or be used to show values of the graph
 class SparkLineDecoration extends DecorationPainter {
+  /// Constructor for sparkline decoration
   SparkLineDecoration({
     this.id,
     this.fill = false,
@@ -26,19 +27,41 @@ class SparkLineDecoration extends DecorationPainter {
     this.lineArrayIndex = 0,
   }) : _smoothPoints = smoothPoints;
 
+  /// Is line or fill, line will have [lineWidth], setting
+  /// [fill] to true will ignore [lineWidth]
   final bool fill;
 
+  /// Is sparkline curve smooth (bezier) or lines
   bool get smoothPoints => _smoothPoints > 0.5;
 
+  /// If od sparkline, with different ID's you can have more [SparkLineDecoration]
+  /// on same data with different settings. (ex. One to fill and another for just line)
   final String id;
   final double _smoothPoints;
 
+  /// Set sparkline width
   final double lineWidth;
+
+  /// Set sparkline color
   final Color lineColor;
 
+  /// Set sparkline start position.
+  /// This value ranges from 0.0 - 1.0.
+  ///
+  /// 0.0 means that start position is right most point of the item,
+  /// 1.0 means left most point.
+  ///
+  /// By default this is set to 0.5, so points are located in center of each [ChartItem]
   final double startPosition;
+
+  /// Gradient color to take.
+  ///
+  /// Gradient is added as shader, [lineColor] can be used to change how shader is shown
   final Gradient gradient;
 
+  /// Index of list in items, this is used if there are multiple lists in the chart
+  ///
+  /// By default this will show first list and value will be 0
   final int lineArrayIndex;
 
   @override
@@ -52,9 +75,9 @@ class SparkLineDecoration extends DecorationPainter {
     final _maxValue = state.data.maxValue - state.data.minValue;
     final scale = _size.height / _maxValue;
 
-    final List<Offset> _positions = <Offset>[];
+    final _positions = <Offset>[];
 
-    final int _listSize = state.data.listSize;
+    final _listSize = state.data.listSize;
 
     final _itemWidth = _size.width / _listSize;
 
@@ -73,7 +96,7 @@ class SparkLineDecoration extends DecorationPainter {
       }
     });
 
-    final Path _path = _getPoints(_positions, fill);
+    final _path = _getPoints(_positions, fill);
 
     canvas.save();
     canvas.translate(
@@ -87,9 +110,9 @@ class SparkLineDecoration extends DecorationPainter {
   /// Smooth out points and return path in turn
   /// Smoothing is done with quadratic bezier
   Path _getPoints(List<Offset> points, bool fill) {
-    final List<Offset> _points = fill ? points.getRange(1, points.length - 1).toList() : points;
+    final _points = fill ? points.getRange(1, points.length - 1).toList() : points;
 
-    final Path _path = Path();
+    final _path = Path();
     if (fill) {
       _path.moveTo(_points[0].dx, 0.0);
       _path.lineTo(_points[0].dx, _points[0].dy);
@@ -99,11 +122,11 @@ class SparkLineDecoration extends DecorationPainter {
       _path.lineTo(_points.first.dx, _points.first.dy);
     }
 
-    for (int i = 0; i < _points.length - 1; i++) {
-      final Offset _p1 = _points[i % _points.length];
-      final Offset _p2 = _points[(i + 1) % _points.length];
-      final double controlPointX = _p1.dx + ((_p2.dx - _p1.dx) / 2) * _smoothPoints;
-      final Offset _mid = (_p1 + _p2) / 2;
+    for (var i = 0; i < _points.length - 1; i++) {
+      final _p1 = _points[i % _points.length];
+      final _p2 = _points[(i + 1) % _points.length];
+      final controlPointX = _p1.dx + ((_p2.dx - _p1.dx) / 2) * _smoothPoints;
+      final _mid = (_p1 + _p2) / 2;
       _path.cubicTo(controlPointX, _p1.dy, lerpDouble(_mid.dx, controlPointX, _smoothPoints),
           lerpDouble(_mid.dy, _p2.dy, _smoothPoints), _p2.dx, _p2.dy);
 

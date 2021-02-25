@@ -1,3 +1,4 @@
+/// Library for creating highly customizable charts
 library flutter_charts;
 
 import 'dart:math';

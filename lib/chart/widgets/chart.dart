@@ -2,6 +2,7 @@ part of flutter_charts;
 
 /// Draw [_ChartWidget] with set [state], [width] and [height] for the chart
 class Chart<T> extends StatelessWidget {
+  /// Make chart widget
   const Chart({
     @required this.state,
     this.height = 240.0,
@@ -9,8 +10,13 @@ class Chart<T> extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
+  /// Chart height
   final double height;
+
+  /// Chart width
   final double width;
+
+  /// Chart state
   final ChartState<T> state;
 
   @override

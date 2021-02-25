@@ -111,7 +111,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                   ),
                   BorderDecoration(
                     endWithChart: true,
-                    sidesWidth: EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
+                    sidesWidth: Border.symmetric(vertical: BorderSide(width: 2.0), horizontal: BorderSide(width: 4.0)),
                     color: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.4),
                   ),
                 ],

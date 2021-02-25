@@ -3,26 +3,27 @@ part of flutter_charts;
 /// Paint bar value item. This is painter used for [BarValue] and [CandleValue]
 ///
 /// Bar value:
-///    ┌───────────┐ --> Max value in set or [ChartOptions.valueAxisMax]
+///    ┌───────────┐ --> Max value in set or from [ChartData.axisMax]
 ///    │           │
 ///    │   ┌───┐   │ --> Bar value
 ///    │   │   │   │
 ///    │   │   │   │
 ///    │   │   │   │
 ///    │   │   │   │
-///    └───┴───┴───┘ --> 0 or [ChartOptions.valueAxisMin]
+///    └───┴───┴───┘ --> 0 or [ChartData.axisMin]
 ///
 /// Candle value:
-///    ┌───────────┐ --> Max value in set or [ChartOptions.valueAxisMax]
+///    ┌───────────┐ --> Max value in set or [ChartData.axisMax]
 ///    │           │
 ///    │   ┌───┐   │ --> Candle max value
 ///    │   │   │   │
 ///    │   │   │   │
 ///    │   └───┘   │ --> Candle min value
 ///    │           │
-///    └───────────┘ --> 0 or [ChartOptions.valueAxisMin]
+///    └───────────┘ --> 0 or [ChartData.axisMin]
 ///
 class BarGeometryPainter<T> extends GeometryPainter<T> {
+  /// Constructor for Bar painter
   BarGeometryPainter(ChartItem<T> item, ChartState state) : super(item, state);
 
   @override
@@ -33,8 +34,9 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
     final _verticalMultiplier = size.height / _maxValue;
     final _minValue = state.data.minValue * _verticalMultiplier;
 
-    EdgeInsets _padding = state.itemOptions.padding ?? EdgeInsets.zero;
     final _radius = options is BarItemOptions ? (options.radius ?? BorderRadius.zero) : BorderRadius.zero;
+
+    var _padding = state.itemOptions.padding ?? EdgeInsets.zero;
 
     final _itemWidth = itemWidth(size);
 

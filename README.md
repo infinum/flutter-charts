@@ -6,13 +6,13 @@ Customizable charts library for flutter.
 Idea behind this lib is to allow highly customizable charts. By having decorations painters (foreground and background) and item painters that can be easily changed. Customizing and adding new decorations will require some CustomPainter knowledge.
 
 ## Showcase
-Showcase some charts, animations and decorations
+![showcase]
 
 ## Usage
 Add it to your package's pubspec.yaml file
 ```yaml
 dependencies:
-  flutter_charts: ^0.1.0
+  flutter_charts: ^1.0.0
 ```
 
 Install packages from the command line
@@ -255,15 +255,15 @@ Code above will make this multi line graph:
 
 ## More examples
 ### Line charts
-Line chart with multiple values [example code](example/lib/charts/line_chart_screen.dart)
+Line chart with multiple values [example code](./example/lib/charts/line_chart_screen.dart)
 ![line_chart_animating]
 
 ### Bar charts
-Bar chart with area [example code](example/lib/charts/bar_chart_screen.dart)
+Bar chart with area [example code](./example/lib/charts/bar_chart_screen.dart)
 ![bar_chart_animating]
 
 ### Scrollable chart
-Scrollable bar chart [example code](example/lib/charts/scrollable_chart_screen.dart)
+Scrollable bar chart [example code](./example/lib/charts/scrollable_chart_screen.dart)
 ![scrollable_chart]
 
 [chart_image]: ./assets/chart_image.png
@@ -290,3 +290,4 @@ Scrollable bar chart [example code](example/lib/charts/scrollable_chart_screen.d
 
 [basic_line]: ./assets/basic/basic_line.png
 [basic_bar]: ./assets/basic/basic_bar.png
+[showcase]: ./assets/showcase.gif

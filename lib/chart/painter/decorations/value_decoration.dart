@@ -1,18 +1,26 @@
 part of flutter_charts;
 
 /// Draw value of the items on them.
-/// Use this only as [foregroundDecoration] in order to be visible at all locations
+/// Use this only as [ChartState.foregroundDecorations] in order to be visible at all locations
 /// Exact alignment can be set with [alignment]
 class ValueDecoration extends DecorationPainter {
+  /// Constructor for values decoration
   ValueDecoration({
     this.textStyle,
     this.alignment = Alignment.topCenter,
-    this.valueKey = 0,
+    this.valueArrayIndex = 0,
   });
 
+  /// Style for values to use
   final TextStyle textStyle;
+
+  /// Alignment of the text based on item
   final Alignment alignment;
-  final int valueKey;
+
+  /// Index of list in items, this is used if there are multiple lists in the chart
+  ///
+  /// By default this will show first list and value will be 0
+  final int valueArrayIndex;
 
   @override
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
@@ -20,7 +28,7 @@ class ValueDecoration extends DecorationPainter {
       return ValueDecoration(
         textStyle: TextStyle.lerp(textStyle, endValue.textStyle, t),
         alignment: Alignment.lerp(alignment, endValue.alignment, t),
-        valueKey: endValue.valueKey,
+        valueArrayIndex: endValue.valueArrayIndex,
       );
     }
     return this;
@@ -29,7 +37,8 @@ class ValueDecoration extends DecorationPainter {
   @override
   void initDecoration(ChartState state) {
     super.initDecoration(state);
-    assert(state.data.stackSize > valueKey, 'Value key is not in the list!\nCheck the `valueKey` you are passing.');
+    assert(
+        state.data.stackSize > valueArrayIndex, 'Value key is not in the list!\nCheck the `valueKey` you are passing.');
   }
 
   void _paintText(Canvas canvas, Size size, ChartItem item, double width, double verticalMultiplier, double minValue) {
@@ -58,14 +67,14 @@ class ValueDecoration extends DecorationPainter {
     final _verticalMultiplier = _size.height / _maxValue;
     final _minValue = state.data.minValue * _verticalMultiplier;
 
-    final int _listSize = state.data.listSize;
+    final _listSize = state.data.listSize;
     final _itemWidth = _size.width / _listSize;
 
     canvas.save();
     canvas.translate((state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left - _itemWidth,
         size.height + state.defaultMargin.top);
 
-    state.data.items[valueKey].asMap().forEach((index, value) {
+    state.data.items[valueArrayIndex].asMap().forEach((index, value) {
       canvas.translate(
         _itemWidth,
         0.0,

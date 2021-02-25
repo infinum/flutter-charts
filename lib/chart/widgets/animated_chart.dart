@@ -13,17 +13,23 @@ class AnimatedChart<T> extends ImplicitlyAnimatedWidget {
     Key key,
   }) : super(duration: duration, curve: curve, onEnd: onEnd, key: key);
 
+  /// Chart height
   final double height;
+
+  /// Chart width
   final double width;
+
+  /// Current chart state
   final ChartState<T> state;
 
   @override
   _ChartState<T> createState() => _ChartState<T>();
 
+  /// Fill debug properties for animated chart
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<ChartState>('state', state));
+    properties.add(DiagnosticsProperty<ChartState<T>>('state', state));
     properties.add(DiagnosticsProperty<double>('height', height));
     properties.add(DiagnosticsProperty<double>('width', width));
   }
@@ -63,7 +69,9 @@ class _ChartState<T> extends AnimatedWidgetBaseState<AnimatedChart<T>> {
   }
 }
 
+/// Tween for animating between two different [ChartState]'s
 class ChartStateTween<T> extends Tween<ChartState<T>> {
+  /// Create [ChartStateTween] for [ImplicitlyAnimatedWidget]
   ChartStateTween({ChartState<T> begin, ChartState<T> end}) : super(begin: begin, end: end);
 
   @override

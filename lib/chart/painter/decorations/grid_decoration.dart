@@ -1,10 +1,12 @@
 part of flutter_charts;
 
 /// Draws a grid with [verticalAxisStep] and [horizontalAxisStep] as spacers
-/// Grid will stretch across whole graph and it will ignore the padding from
-/// [ChartOptions].
+///
 /// That will allow for Legend to be inserted as well.
 class GridDecoration extends DecorationPainter {
+  /// Make grid decoration for the chart
+  ///
+  /// Grid decoration is just merge of [HorizontalAxisDecoration] and [VerticalAxisDecoration]
   GridDecoration({
     this.showHorizontalValues = false,
     this.showVerticalValues = false,
@@ -33,14 +35,14 @@ class GridDecoration extends DecorationPainter {
     _horizontalAxisDecoration = HorizontalAxisDecoration(
       showValues: showHorizontalValues,
       endWithChart: endWithChart,
-      showGrid: showHorizontalGrid,
+      showLines: showHorizontalGrid,
       valuesAlign: horizontalTextAlign,
       valuesPadding: horizontalValuesPadding,
       showTopValue: showTopHorizontalValue,
       horizontalAxisUnit: horizontalAxisUnit,
-      gridColor: gridColor,
+      lineColor: gridColor,
       dashArray: dashArray,
-      gridWidth: gridWidth,
+      lineWidth: gridWidth,
       axisStep: horizontalAxisStep,
       axisValue: horizontalAxisValueFromValue,
       legendFontStyle: textStyle,
@@ -49,14 +51,14 @@ class GridDecoration extends DecorationPainter {
     _verticalAxisDecoration = VerticalAxisDecoration(
       showValues: showVerticalValues,
       valuesAlign: verticalTextAlign,
-      showGrid: showVerticalGrid,
+      showLines: showVerticalGrid,
       endWithChart: endWithChart,
-      gridColor: gridColor,
+      lineColor: gridColor,
       dashArray: dashArray,
       valueFromIndex: verticalAxisValueFromIndex,
       legendPosition: verticalLegendPosition,
       valuesPadding: verticalValuesPadding,
-      gridWidth: gridWidth,
+      lineWidth: gridWidth,
       axisStep: verticalAxisStep,
       legendFontStyle: textStyle,
     );
@@ -92,13 +94,13 @@ class GridDecoration extends DecorationPainter {
       endWithChart: _endWithChart,
       valuesAlign: horizontalTextAlign,
       showTopValue: showTopHorizontalValue,
-      showGrid: showHorizontalGrid,
+      showLines: showHorizontalGrid,
       horizontalAxisUnit: horizontalAxisUnit,
       valuesPadding: horizontalValuesPadding,
-      gridColor: gridColor,
+      lineColor: gridColor,
       dashArray: dashArray,
       axisValue: horizontalAxisValueFromValue,
-      gridWidth: gridWidth,
+      lineWidth: gridWidth,
       axisStep: horizontalAxisStep,
       legendFontStyle: textStyle,
       legendPosition: horizontalLegendPosition,
@@ -106,49 +108,93 @@ class GridDecoration extends DecorationPainter {
     _verticalAxisDecoration = VerticalAxisDecoration._lerp(
       showValues: showVerticalValues,
       valuesAlign: verticalTextAlign,
-      showGrid: showVerticalGrid,
+      showLines: showVerticalGrid,
       endWithChart: _endWithChart,
-      gridColor: gridColor,
+      lineColor: gridColor,
       dashArray: dashArray,
       valueFromIndex: verticalAxisValueFromIndex,
       valuesPadding: verticalValuesPadding,
-      gridWidth: gridWidth,
+      lineWidth: gridWidth,
       legendPosition: verticalLegendPosition,
       axisStep: verticalAxisStep,
       legendFontStyle: textStyle,
     );
   }
 
+  /// Should grid show horizontal axis values.
+  ///
+  /// Need to provide [textStyle] if this is set to true
   final bool showHorizontalValues;
+
+  /// Should grid show vertical axis values
+  ///
+  /// Need to provide [textStyle] if this is set to true
   final bool showVerticalValues;
+
+  /// This decoration can continue beyond padding set by [ChartState]
+  /// setting this to true will stop drawing on padding, and will end
+  /// at same place where the chart will end
+  ///
+  /// This does not apply to axis legend text, text can still be shown on the padding part
   bool get endWithChart => _endWithChart > 0.5;
   final double _endWithChart;
 
+  /// Align horizontal legend text
   final TextAlign horizontalTextAlign;
+
+  /// Align vertical legend text
   final TextAlign verticalTextAlign;
 
+  /// Text style for legends, same style is used for both [HorizontalAxisDecoration] and [VerticalAxisDecoration], if
+  /// both [showHorizontalValues] and [showVerticalValues] are set to true.
   final TextStyle textStyle;
 
+  /// Padding for horizontal values in axis legend
   final EdgeInsets horizontalValuesPadding;
+
+  /// Padding for vertical values in axis legend
   final EdgeInsets verticalValuesPadding;
 
+  /// Should top horizontal value be shown? This will increase padding such that
+  /// text fits above the chart and adds top most value on horizontal scale.
   final bool showTopHorizontalValue;
+
+  /// Hide or show vertical lines on the grid
   final bool showVerticalGrid;
+
+  /// Hide or show horizontal lines on the grid
   final bool showHorizontalGrid;
+
+  /// Label that is shown at the end of the chart on horizontal axis.
+  /// This is usually to show measure unit used for axis
   final String horizontalAxisUnit;
 
+  /// Dash array pattern for creating dashed grid
   final List<double> dashArray;
 
+  /// Position of horizontal legend
+  /// Default: [HorizontalLegendPosition.end]
+  /// Can be [HorizontalLegendPosition.start] or [HorizontalLegendPosition.end]
   final HorizontalLegendPosition horizontalLegendPosition;
+
+  /// Position of vertical legend
+  /// Default: [VerticalLegendPosition.bottom]
+  /// Can be [VerticalLegendPosition.bottom] or [VerticalLegendPosition.top]
   final VerticalLegendPosition verticalLegendPosition;
 
   HorizontalAxisDecoration _horizontalAxisDecoration;
   VerticalAxisDecoration _verticalAxisDecoration;
 
+  /// Generate vertical axis legend from item index
   final AxisValueFromIndex verticalAxisValueFromIndex;
+
+  /// Generate horizontal axis legend from value steps
   final AxisValueFromValue horizontalAxisValueFromValue;
 
+  /// Change grid color
   final Color gridColor;
+
+  /// Change grid line width
   final double gridWidth;
 
   /// Change step for y axis (1 by default) used in [GridDecoration], [VerticalAxisDecoration] and [HorizontalAxisDecoration]
