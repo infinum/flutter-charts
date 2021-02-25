@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Item painter, use [barPainter] or [bubblePainter].
 /// Custom painter can also be added by extending [GeometryPainter]

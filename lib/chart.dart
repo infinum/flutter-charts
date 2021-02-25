@@ -1,5 +1,5 @@
 /// Library for creating highly customizable charts
-library flutter_charts;
+library charts_painter;
 
 import 'dart:math';
 import 'dart:ui';

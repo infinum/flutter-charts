@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Abstract class for decorations
 /// Decorations are placed under and/or above items in the charts

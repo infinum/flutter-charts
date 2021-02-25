@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Paints border around the whole chart
 class BorderDecoration extends DecorationPainter {

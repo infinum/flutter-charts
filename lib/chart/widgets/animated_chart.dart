@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Extended [ImplicitlyAnimatedWidget], that will animate the chart on every change of the [ChartState].
 class AnimatedChart<T> extends ImplicitlyAnimatedWidget {

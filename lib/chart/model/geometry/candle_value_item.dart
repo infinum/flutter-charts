@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Candle value items have min and max set up
 /// Values can go negative

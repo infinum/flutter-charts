@@ -1,11 +1,11 @@
 import 'dart:math';
 
+import 'package:charts_painter/chart.dart';
 import 'package:example/widgets/chart_options.dart';
 import 'package:example/widgets/line_chart.dart';
 import 'package:example/widgets/toggle_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_charts/chart.dart';
 
 class LineChartScreen extends StatefulWidget {
   LineChartScreen({Key key}) : super(key: key);

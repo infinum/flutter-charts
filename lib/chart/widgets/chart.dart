@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Draw [_ChartWidget] with set [state], [width] and [height] for the chart
 class Chart<T> extends StatelessWidget {

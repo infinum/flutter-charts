@@ -1,4 +1,4 @@
-import 'package:flutter_charts/chart.dart';
+import 'package:charts_painter/chart.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

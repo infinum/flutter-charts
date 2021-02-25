@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Draws a grid with [verticalAxisStep] and [horizontalAxisStep] as spacers
 ///

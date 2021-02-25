@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Draw value of the items on them.
 /// Use this only as [ChartState.foregroundDecorations] in order to be visible at all locations

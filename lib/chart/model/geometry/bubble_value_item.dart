@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Bubble value items max values that are just shown as a point
 /// Values can go negative

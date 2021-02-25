@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Data strategy to use for [ChartData]
 enum DataStrategy {

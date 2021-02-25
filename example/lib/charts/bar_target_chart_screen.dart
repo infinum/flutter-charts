@@ -1,10 +1,10 @@
 import 'dart:math';
 
+import 'package:charts_painter/chart.dart';
 import 'package:example/widgets/chart_options.dart';
 import 'package:example/widgets/toggle_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_charts/chart.dart';
 
 import '../widgets/bar_chart.dart';
 

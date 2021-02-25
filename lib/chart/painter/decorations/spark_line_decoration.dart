@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Sparkline (Line graph) is considered to be just a decoration.
 /// You need to use [BarGeometryPainter] or [BubbleGeometryPainter] in combination.

@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Show selected item in Cupertino style (Health app)
 class SelectedItemDecoration extends DecorationPainter {
