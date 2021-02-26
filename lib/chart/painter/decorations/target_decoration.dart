@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Check iv item is inside the target
 bool _isInTarget(double max, {double min, double targetMin, double targetMax, bool inclusive = true}) {

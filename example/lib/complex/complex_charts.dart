@@ -1,6 +1,6 @@
+import 'package:charts_painter/chart.dart';
 import 'package:example/charts/multi_bar_chart_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_charts/chart.dart';
 
 class ComplexCharts extends StatelessWidget {
   const ComplexCharts({Key key}) : super(key: key);

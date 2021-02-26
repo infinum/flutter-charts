@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Paint bar value item. This is painter used for [BarValue] and [CandleValue]
 ///

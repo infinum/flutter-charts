@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Bar value items have min locked to 0.0 (or [ChartData.axisMin] if defined)
 /// Value for bar item can be negative

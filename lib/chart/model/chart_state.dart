@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Main state of the charts. Painter will use this as state and it will format chart depending
 /// on options.

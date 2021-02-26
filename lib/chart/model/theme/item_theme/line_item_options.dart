@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Bubble painter
 GeometryPainter<T> bubblePainter<T>(ChartItem<T> item, ChartState<T> state) => BubbleGeometryPainter<T>(item, state);

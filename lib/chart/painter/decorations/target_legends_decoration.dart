@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Show text on the left side of the chart, this text will be at
 /// [TargetLineDecoration] or at max value of [TargetAreaDecoration].

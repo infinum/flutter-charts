@@ -1,6 +1,6 @@
+import 'package:charts_painter/chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_charts/chart.dart';
 
 typedef DataToValue<T> = CandleValue<T> Function(T item);
 typedef DataToAxis<T> = String Function(int item);

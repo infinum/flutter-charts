@@ -1,5 +1,5 @@
+import 'package:charts_painter/chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_charts/chart.dart';
 
 import 'charts/bar_chart_screen.dart';
 import 'charts/bubble_chart_screen.dart';

@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Behaviour of the chart
 /// [isScrollable] - If chart is scrollable then width of canvas is ignored and

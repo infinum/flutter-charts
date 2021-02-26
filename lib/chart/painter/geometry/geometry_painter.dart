@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Item painter for charts
 /// Chart will slice the canvas and each item is painted has constraints (width / [itemWidth]) * height

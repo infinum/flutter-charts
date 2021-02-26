@@ -1,10 +1,10 @@
 import 'dart:math';
 
+import 'package:charts_painter/chart.dart';
 import 'package:example/widgets/chart_options.dart';
 import 'package:example/widgets/toggle_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_charts/chart.dart';
 
 import '../widgets/bar_chart.dart';
 
@@ -103,15 +103,15 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                 backgroundDecorations: [
                   HorizontalAxisDecoration(
                     endWithChart: false,
-                    gridWidth: 2.0,
+                    lineWidth: 2.0,
                     axisStep: 2,
-                    gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+                    lineColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),
                   VerticalAxisDecoration(
                     endWithChart: false,
-                    gridWidth: 2.0,
+                    lineWidth: 2.0,
                     axisStep: 7,
-                    gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.8),
+                    lineColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.8),
                   ),
                   GridDecoration(
                     endWithChart: false,

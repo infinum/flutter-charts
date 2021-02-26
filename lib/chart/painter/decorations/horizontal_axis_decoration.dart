@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Position of legend in [HorizontalAxisDecoration]
 enum HorizontalLegendPosition {

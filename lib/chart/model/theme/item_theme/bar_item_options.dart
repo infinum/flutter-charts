@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Bar painter
 GeometryPainter<T> barPainter<T>(ChartItem<T> item, ChartState<T> state) => BarGeometryPainter<T>(item, state);

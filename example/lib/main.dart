@@ -1,9 +1,9 @@
+import 'package:charts_painter/chart.dart';
 import 'package:example/chart_types.dart';
 import 'package:example/charts/bar_target_chart_screen.dart';
 import 'package:example/complex/complex_charts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_charts/chart.dart';
 
 import 'charts/line_chart_screen.dart';
 import 'charts/scrollable_chart_screen.dart';

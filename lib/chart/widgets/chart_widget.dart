@@ -1,4 +1,4 @@
-part of flutter_charts;
+part of charts_painter;
 
 /// Chart widget will initiate [_ChartPainter] with passed state
 /// chart size and [GestureDetector] are added here as well
