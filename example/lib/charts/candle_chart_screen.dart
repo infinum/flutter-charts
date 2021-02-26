@@ -75,7 +75,8 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
               child: CandleChart<CandleItem>(
                 data: _values,
                 height: MediaQuery.of(context).size.height * 0.4,
-                dataToValue: (CandleItem value) => CandleValue(value.min, value.max),
+                dataToValue: (CandleItem value) =>
+                    CandleValue(value.min, value.max),
                 chartItemOptions: BarItemOptions(
                   minBarWidth: 4.0,
                   padding: EdgeInsets.symmetric(horizontal: 2.0),
@@ -97,15 +98,25 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                     verticalValuesPadding: EdgeInsets.only(left: 8.0),
                     horizontalAxisStep: 5,
                     verticalTextAlign: TextAlign.start,
-                    gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
-                    textStyle: Theme.of(context).textTheme.caption.copyWith(fontSize: 13.0),
+                    gridColor: Theme.of(context)
+                        .colorScheme
+                        .primaryVariant
+                        .withOpacity(0.2),
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .caption
+                        .copyWith(fontSize: 13.0),
                   ),
                   TargetAreaDecoration(
                     targetMax: targetMax,
                     targetMin: targetMin,
-                    colorOverTarget: Theme.of(context).colorScheme.error.withOpacity(1.0),
+                    colorOverTarget:
+                        Theme.of(context).colorScheme.error.withOpacity(1.0),
                     targetLineColor: Theme.of(context).colorScheme.secondary,
-                    targetAreaFillColor: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
+                    targetAreaFillColor: Theme.of(context)
+                        .colorScheme
+                        .secondary
+                        .withOpacity(0.3),
                     lineWidth: 2.0,
                     targetAreaRadius: BorderRadius.circular(12.0),
                   ),
@@ -113,9 +124,13 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                 foregroundDecorations: [
                   SelectedItemDecoration(
                     _selected,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
+                    backgroundColor: Theme.of(context)
+                        .scaffoldBackgroundColor
+                        .withOpacity(0.5),
                   ),
-                  BorderDecoration(borderWidth: 1, color: Theme.of(context).colorScheme.secondaryVariant),
+                  BorderDecoration(
+                      borderWidth: 1,
+                      color: Theme.of(context).colorScheme.secondaryVariant),
                 ],
               ),
             ),

@@ -42,7 +42,8 @@ class SelectedItemDecoration extends DecorationPainter {
         'Selected key is not in the list!\nCheck the `selectedKey` you are passing.');
   }
 
-  void _drawText(Canvas canvas, Size size, double width, double totalWidth, ChartState state) {
+  void _drawText(Canvas canvas, Size size, double width, double totalWidth,
+      ChartState state) {
     final _maxValuePainter = ValueDecoration.makeTextPainter(
       state.data.items[selectedArrayIndex][selectedItem].max.toStringAsFixed(2),
       width,
@@ -82,7 +83,9 @@ class SelectedItemDecoration extends DecorationPainter {
   void draw(Canvas canvas, Size size, ChartState state) {
     final _listSize = state.data.listSize;
 
-    if (selectedItem == null || _listSize <= selectedItem || selectedItem.isNegative) {
+    if (selectedItem == null ||
+        _listSize <= selectedItem ||
+        selectedItem.isNegative) {
       return;
     }
 
@@ -92,12 +95,15 @@ class SelectedItemDecoration extends DecorationPainter {
     // Save, and translate the canvas so [0,0] is top left of item at [index] position
     canvas.save();
     canvas.translate(
-      (state?.defaultPadding?.left ?? 0.0) + (_itemWidth * selectedItem) + state.defaultMargin.left,
+      (state?.defaultPadding?.left ?? 0.0) +
+          (_itemWidth * selectedItem) +
+          state.defaultMargin.left,
       size.height + state.defaultMargin.top + state.defaultPadding.top,
     );
 
     _drawItem(canvas, Size(_itemWidth, -size.height), state);
-    _drawText(canvas, Size(_itemWidth, -size.height), _itemWidth, size.width, state);
+    _drawText(
+        canvas, Size(_itemWidth, -size.height), _itemWidth, size.width, state);
 
     // Restore canvas
     canvas.restore();
@@ -106,8 +112,10 @@ class SelectedItemDecoration extends DecorationPainter {
   void _drawItem(Canvas canvas, Size size, ChartState state) {
     final _padding = state?.itemOptions?.padding ?? EdgeInsets.zero;
 
-    final _itemWidth = max(state?.itemOptions?.minBarWidth ?? 0.0,
-        min(state?.itemOptions?.maxBarWidth ?? double.infinity, size.width - _padding.horizontal));
+    final _itemWidth = max(
+        state?.itemOptions?.minBarWidth ?? 0.0,
+        min(state?.itemOptions?.maxBarWidth ?? double.infinity,
+            size.width - _padding.horizontal));
 
     const _size = 2.0;
     final _maxValue = state.data.maxValue - state.data.minValue;
@@ -168,10 +176,13 @@ class SelectedItemDecoration extends DecorationPainter {
     if (endValue is SelectedItemDecoration) {
       return SelectedItemDecoration(
         animate
-            ? lerpDouble(selectedItem?.toDouble(), endValue.selectedItem?.toDouble(), t)?.round()
+            ? lerpDouble(selectedItem?.toDouble(),
+                    endValue.selectedItem?.toDouble(), t)
+                ?.round()
             : endValue.selectedItem,
         selectedColor: Color.lerp(selectedColor, endValue.selectedColor, t),
-        backgroundColor: Color.lerp(backgroundColor, endValue.backgroundColor, t),
+        backgroundColor:
+            Color.lerp(backgroundColor, endValue.backgroundColor, t),
         textColor: Color.lerp(textColor, endValue.textColor, t),
         textSize: lerpDouble(textSize, endValue.textSize, t),
         animate: endValue.animate,

@@ -27,6 +27,7 @@ abstract class GeometryPainter<T> {
         ? size.width
         : size.width - state.itemOptions.padding.horizontal;
 
-    return max(state.itemOptions.minBarWidth ?? 0.0, min(state.itemOptions.maxBarWidth ?? double.infinity, _size));
+    return max(state.itemOptions.minBarWidth ?? 0.0,
+        min(state.itemOptions.maxBarWidth ?? double.infinity, _size));
   }
 }

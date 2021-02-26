@@ -13,7 +13,8 @@ part of charts_painter;
 ///
 class BubbleGeometryPainter<T> extends GeometryPainter<T> {
   /// Constructor for bubble painter
-  BubbleGeometryPainter(ChartItem<T> item, ChartState state) : super(item, state);
+  BubbleGeometryPainter(ChartItem<T> item, ChartState state)
+      : super(item, state);
 
   @override
   void draw(Canvas canvas, Size size, Paint paint) {
@@ -27,8 +28,10 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
 
     final _itemWidth = max(
         options.minBarWidth ?? 0.0,
-        min(options.maxBarWidth ?? double.infinity,
-            size.width - (_padding.horizontal.isNegative ? 0.0 : _padding.horizontal)));
+        min(
+            options.maxBarWidth ?? double.infinity,
+            size.width -
+                (_padding.horizontal.isNegative ? 0.0 : _padding.horizontal)));
 
     // If item is empty, or it's max value is below chart's minValue then don't draw it.
     // minValue can be below 0, this will just ensure that animation is drawn correctly.
@@ -45,7 +48,9 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
       paint,
     );
 
-    if (options is BubbleItemOptions && options.border != null && options.border.style == BorderStyle.solid) {
+    if (options is BubbleItemOptions &&
+        options.border != null &&
+        options.border.style == BorderStyle.solid) {
       final _borderPaint = Paint();
       _borderPaint.style = PaintingStyle.stroke;
       _borderPaint.color = options.border.color;

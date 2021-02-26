@@ -20,9 +20,15 @@ class ComplexCharts extends StatelessWidget {
                 state: ChartState<void>(
                   ChartData(
                     [
-                      [10, 12, 13, 11, 16].map((e) => BarValue<void>(e.toDouble())).toList(),
-                      [6, 8, 9, 7, 12].map((e) => BarValue<void>(e.toDouble())).toList(),
-                      [2, 4, 5, 3, 8].map((e) => BarValue<void>(e.toDouble())).toList(),
+                      [10, 12, 13, 11, 16]
+                          .map((e) => BarValue<void>(e.toDouble()))
+                          .toList(),
+                      [6, 8, 9, 7, 12]
+                          .map((e) => BarValue<void>(e.toDouble()))
+                          .toList(),
+                      [2, 4, 5, 3, 8]
+                          .map((e) => BarValue<void>(e.toDouble()))
+                          .toList(),
                     ],
                     axisMax: 9.0,
                   ),
@@ -50,7 +56,8 @@ class ComplexCharts extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => MultiBarChartScreen()));
+            Navigator.of(context).push<void>(
+                MaterialPageRoute(builder: (_) => MultiBarChartScreen()));
           },
         ),
         Divider(),

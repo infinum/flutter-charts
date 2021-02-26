@@ -82,17 +82,21 @@ class SparkLineDecoration extends DecorationPainter {
     final _itemWidth = _size.width / _listSize;
 
     if (gradient != null) {
-      _paint.shader = gradient.createShader(Rect.fromPoints(Offset.zero, Offset(_size.width, -_size.height)));
+      _paint.shader = gradient.createShader(
+          Rect.fromPoints(Offset.zero, Offset(_size.width, -_size.height)));
     }
 
     state.data.items[lineArrayIndex].asMap().forEach((key, value) {
       if (fill && state.data.items[lineArrayIndex].first == value) {
-        _positions.add(Offset(_size.width * (key / _listSize) + _itemWidth * startPosition, 0.0));
+        _positions.add(Offset(
+            _size.width * (key / _listSize) + _itemWidth * startPosition, 0.0));
       }
-      _positions.add(Offset(_size.width * (key / _listSize) + _itemWidth * startPosition,
+      _positions.add(Offset(
+          _size.width * (key / _listSize) + _itemWidth * startPosition,
           -((value?.max ?? 0.0) - state.data.minValue) * scale));
       if (fill && state.data.items[lineArrayIndex].last == value) {
-        _positions.add(Offset(_size.width * (key / _listSize) + _itemWidth * startPosition, 0.0));
+        _positions.add(Offset(
+            _size.width * (key / _listSize) + _itemWidth * startPosition, 0.0));
       }
     });
 
@@ -100,7 +104,8 @@ class SparkLineDecoration extends DecorationPainter {
 
     canvas.save();
     canvas.translate(
-        (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left, _size.height + state.defaultMargin.top);
+        (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left,
+        _size.height + state.defaultMargin.top);
 
     canvas.drawPath(_path, _paint);
 
@@ -110,7 +115,8 @@ class SparkLineDecoration extends DecorationPainter {
   /// Smooth out points and return path in turn
   /// Smoothing is done with quadratic bezier
   Path _getPoints(List<Offset> points, bool fill) {
-    final _points = fill ? points.getRange(1, points.length - 1).toList() : points;
+    final _points =
+        fill ? points.getRange(1, points.length - 1).toList() : points;
 
     final _path = Path();
     if (fill) {
@@ -127,8 +133,13 @@ class SparkLineDecoration extends DecorationPainter {
       final _p2 = _points[(i + 1) % _points.length];
       final controlPointX = _p1.dx + ((_p2.dx - _p1.dx) / 2) * _smoothPoints;
       final _mid = (_p1 + _p2) / 2;
-      _path.cubicTo(controlPointX, _p1.dy, lerpDouble(_mid.dx, controlPointX, _smoothPoints),
-          lerpDouble(_mid.dy, _p2.dy, _smoothPoints), _p2.dx, _p2.dy);
+      _path.cubicTo(
+          controlPointX,
+          _p1.dy,
+          lerpDouble(_mid.dx, controlPointX, _smoothPoints),
+          lerpDouble(_mid.dy, _p2.dy, _smoothPoints),
+          _p2.dx,
+          _p2.dy);
 
       if (i == _points.length - 2) {
         _path.lineTo(_p2.dx, _p2.dy);
