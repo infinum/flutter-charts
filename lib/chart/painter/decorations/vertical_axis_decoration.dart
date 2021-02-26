@@ -111,11 +111,18 @@ class VerticalAxisDecoration extends DecorationPainter {
 
     for (var i = 0; i <= _listSize / axisStep; i++) {
       if (showLines) {
-        final _showValuesBottom = showValues ? (state.defaultMargin.bottom * (1 - _endWithChart)) : lineWidth;
-        final _showValuesTop = -size.height - (showValues ? (state.defaultMargin.top * (1 - _endWithChart)) : 0.0);
+        final _showValuesBottom = showValues
+            ? (state.defaultMargin.bottom * (1 - _endWithChart))
+            : lineWidth;
+        final _showValuesTop = -size.height -
+            (showValues
+                ? (state.defaultMargin.top * (1 - _endWithChart))
+                : 0.0);
 
-        gridPath.moveTo(_itemWidth * i * axisStep + lineWidth / 2, _showValuesBottom);
-        gridPath.lineTo(_itemWidth * i * axisStep + lineWidth / 2, _showValuesTop);
+        gridPath.moveTo(
+            _itemWidth * i * axisStep + lineWidth / 2, _showValuesBottom);
+        gridPath.lineTo(
+            _itemWidth * i * axisStep + lineWidth / 2, _showValuesTop);
       }
 
       if (!showValues || i == _listSize / axisStep) {
@@ -152,13 +159,19 @@ class VerticalAxisDecoration extends DecorationPainter {
         Offset(
             _itemWidth * i * axisStep + (valuesPadding?.left ?? 0.0),
             legendPosition == VerticalLegendPosition.top
-                ? -size.height - _textPainter.height - (valuesPadding?.bottom ?? 0.0)
-                : _textPainter.height - _textPainter.height + (valuesPadding?.top ?? 0.0)),
+                ? -size.height -
+                    _textPainter.height -
+                    (valuesPadding?.bottom ?? 0.0)
+                : _textPainter.height -
+                    _textPainter.height +
+                    (valuesPadding?.top ?? 0.0)),
       );
     }
 
     if (dashArray != null) {
-      canvas.drawPath(dashPath(gridPath, dashArray: CircularIntervalList(dashArray)), _paint);
+      canvas.drawPath(
+          dashPath(gridPath, dashArray: CircularIntervalList(dashArray)),
+          _paint);
     } else {
       canvas.drawPath(gridPath, _paint);
     }
@@ -188,14 +201,16 @@ class VerticalAxisDecoration extends DecorationPainter {
         lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t),
         axisStep: lerpDouble(axisStep, endValue.axisStep, t),
         endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t),
-        valuesPadding: EdgeInsets.lerp(valuesPadding, endValue.valuesPadding, t),
+        valuesPadding:
+            EdgeInsets.lerp(valuesPadding, endValue.valuesPadding, t),
         showLines: t > 0.5 ? endValue.showLines : showLines,
         dashArray: t < 0.5 ? dashArray : endValue.dashArray,
         showValues: t > 0.5 ? endValue.showValues : showValues,
         valuesAlign: t > 0.5 ? endValue.valuesAlign : valuesAlign,
         valueFromIndex: t > 0.5 ? endValue.valueFromIndex : valueFromIndex,
         legendPosition: t > 0.5 ? endValue.legendPosition : legendPosition,
-        legendFontStyle: TextStyle.lerp(legendFontStyle, endValue.legendFontStyle, t),
+        legendFontStyle:
+            TextStyle.lerp(legendFontStyle, endValue.legendFontStyle, t),
       );
     }
 

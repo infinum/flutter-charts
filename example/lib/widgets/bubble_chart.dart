@@ -14,7 +14,9 @@ class BubbleChart<T> extends StatelessWidget {
     this.backgroundDecorations,
     this.foregroundDecorations,
     Key key,
-  })  : _mappedValues = [data.map((e) => BubbleValue<T>(dataToValue(e))).toList()],
+  })  : _mappedValues = [
+          data.map((e) => BubbleValue<T>(dataToValue(e))).toList()
+        ],
         super(key: key);
 
   final List<T> data;
@@ -30,7 +32,8 @@ class BubbleChart<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _foregroundDecorations = <DecorationPainter>[];
-    final _backgroundDecorations = backgroundDecorations ?? <DecorationPainter>[];
+    final _backgroundDecorations =
+        backgroundDecorations ?? <DecorationPainter>[];
 
     return AnimatedChart<T>(
       height: height,

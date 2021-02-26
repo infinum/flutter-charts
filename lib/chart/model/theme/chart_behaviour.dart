@@ -17,7 +17,8 @@ class ChartBehaviour {
   })  : _isScrollable = isScrollable ? 1.0 : 0.0,
         _multiValueStacked = multiItemStack ? 1.0 : 0.0;
 
-  const ChartBehaviour._lerp(this._isScrollable, this.onItemClicked, this._multiValueStacked);
+  const ChartBehaviour._lerp(
+      this._isScrollable, this.onItemClicked, this._multiValueStacked);
 
   final double _isScrollable;
   final double _multiValueStacked;

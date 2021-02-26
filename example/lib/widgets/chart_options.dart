@@ -71,10 +71,14 @@ class _ChartOptionsWidgetState extends State<ChartOptionsWidget> {
           Container(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
               child: Text(
                 'OPTIONS',
-                style: Theme.of(context).textTheme.button.copyWith(color: Theme.of(context).disabledColor),
+                style: Theme.of(context)
+                    .textTheme
+                    .button
+                    .copyWith(color: Theme.of(context).disabledColor),
               ),
             ),
           ),
