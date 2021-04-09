@@ -71,7 +71,7 @@ class GridDecoration extends DecorationPainter {
   GridDecoration._lerp({
     this.showHorizontalValues = false,
     this.showVerticalValues = false,
-    double endWithChart = 0.0,
+    double? endWithChart = 0.0,
     this.horizontalTextAlign = TextAlign.end,
     this.showTopHorizontalValue = false,
     this.verticalTextAlign = TextAlign.center,
@@ -144,8 +144,8 @@ class GridDecoration extends DecorationPainter {
   /// at same place where the chart will end
   ///
   /// This does not apply to axis legend text, text can still be shown on the padding part
-  bool get endWithChart => _endWithChart > 0.5;
-  final double _endWithChart;
+  bool get endWithChart => _endWithChart! > 0.5;
+  final double? _endWithChart;
 
   /// Align horizontal legend text
   final TextAlign horizontalTextAlign;
@@ -155,13 +155,13 @@ class GridDecoration extends DecorationPainter {
 
   /// Text style for legends, same style is used for both [HorizontalAxisDecoration] and [VerticalAxisDecoration], if
   /// both [showHorizontalValues] and [showVerticalValues] are set to true.
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
   /// Padding for horizontal values in axis legend
-  final EdgeInsets horizontalValuesPadding;
+  final EdgeInsets? horizontalValuesPadding;
 
   /// Padding for vertical values in axis legend
-  final EdgeInsets verticalValuesPadding;
+  final EdgeInsets? verticalValuesPadding;
 
   /// Should top horizontal value be shown? This will increase padding such that
   /// text fits above the chart and adds top most value on horizontal scale.
@@ -175,10 +175,10 @@ class GridDecoration extends DecorationPainter {
 
   /// Label that is shown at the end of the chart on horizontal axis.
   /// This is usually to show measure unit used for axis
-  final String horizontalAxisUnit;
+  final String? horizontalAxisUnit;
 
   /// Dash array pattern for creating dashed grid
-  final List<double> dashArray;
+  final List<double>? dashArray;
 
   /// Position of horizontal legend
   /// Default: [HorizontalLegendPosition.end]
@@ -190,8 +190,8 @@ class GridDecoration extends DecorationPainter {
   /// Can be [VerticalLegendPosition.bottom] or [VerticalLegendPosition.top]
   final VerticalLegendPosition verticalLegendPosition;
 
-  HorizontalAxisDecoration _horizontalAxisDecoration;
-  VerticalAxisDecoration _verticalAxisDecoration;
+  late HorizontalAxisDecoration _horizontalAxisDecoration;
+  late VerticalAxisDecoration _verticalAxisDecoration;
 
   /// Generate vertical axis legend from item index
   final AxisValueFromIndex verticalAxisValueFromIndex;
@@ -200,16 +200,16 @@ class GridDecoration extends DecorationPainter {
   final AxisValueFromValue horizontalAxisValueFromValue;
 
   /// Change grid color
-  final Color gridColor;
+  final Color? gridColor;
 
   /// Change grid line width
-  final double gridWidth;
+  final double? gridWidth;
 
   /// Change step for y axis (1 by default) used in [GridDecoration], [VerticalAxisDecoration] and [HorizontalAxisDecoration]
-  final double verticalAxisStep;
+  final double? verticalAxisStep;
 
   /// Change step for x axis (1 by default) used in [GridDecoration], [VerticalAxisDecoration] and [HorizontalAxisDecoration]
-  final double horizontalAxisStep;
+  final double? horizontalAxisStep;
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {

@@ -7,10 +7,10 @@ class ChartItem<T> {
   ChartItem(this.value, this.min, this.max);
 
   /// Minimum chart item value
-  final double min;
+  final double? min;
 
   /// Maximum item value
-  final double max;
+  final double? max;
 
   /// Items can have value attached to them `T`
   final T value;
@@ -59,7 +59,7 @@ class ChartItem<T> {
   }
 
   /// Multiply [ChartItem] with another [ChartItem] of number
-  ChartItem<T> operator *(Object other) {
+  ChartItem<T> operator *(Object? other) {
     if (other is ChartItem<T>) {
       return ChartItem<T>(
         other.value,

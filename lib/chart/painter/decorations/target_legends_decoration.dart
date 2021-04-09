@@ -9,12 +9,11 @@ class TargetLineLegendDecoration extends DecorationPainter {
   ///
   /// [legendDescription] and [legendStyle] are required
   TargetLineLegendDecoration({
-    @required this.legendDescription,
-    @required this.legendStyle,
+    required this.legendDescription,
+    required this.legendStyle,
     this.legendTarget = 0,
     this.padding = EdgeInsets.zero,
-  }) : assert(legendStyle.fontSize != null,
-            'You must specify fontSize when using TargetLineLegendDecoration');
+  }) : assert(legendStyle.fontSize != null, 'You must specify fontSize when using TargetLineLegendDecoration');
 
   /// Label to show at [legendTarget]
   final String legendDescription;
@@ -23,10 +22,10 @@ class TargetLineLegendDecoration extends DecorationPainter {
   final TextStyle legendStyle;
 
   /// Label padding
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
 
   /// Target value where to show the label
-  final double legendTarget;
+  final double? legendTarget;
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
@@ -35,8 +34,7 @@ class TargetLineLegendDecoration extends DecorationPainter {
     final _minValue = state.data.minValue * scale;
 
     canvas.save();
-    canvas.translate(
-        state.defaultMargin.left, size.height + state.defaultMargin.top);
+    canvas.translate(state.defaultMargin.left, size.height + state.defaultMargin.top);
 
     size = state.defaultPadding.deflateSize(size);
 
@@ -52,8 +50,8 @@ class TargetLineLegendDecoration extends DecorationPainter {
         maxWidth: size.width,
       );
 
-    canvas.translate(-legendStyle.fontSize * 1.5,
-        -scale * legendTarget + _minValue + _textPainter.width + padding.top);
+    canvas.translate(
+        -legendStyle.fontSize! * 1.5, -scale * legendTarget! + _minValue + _textPainter.width + padding!.top);
     canvas.rotate(pi * 1.5);
 
     _textPainter.paint(
@@ -66,14 +64,14 @@ class TargetLineLegendDecoration extends DecorationPainter {
 
   @override
   EdgeInsets marginNeeded() {
-    return EdgeInsets.only(left: legendStyle.fontSize * 2);
+    return EdgeInsets.only(left: legendStyle.fontSize! * 2);
   }
 
   @override
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
     if (endValue is TargetLineLegendDecoration) {
       return TargetLineLegendDecoration(
-        legendStyle: TextStyle.lerp(legendStyle, endValue.legendStyle, t),
+        legendStyle: TextStyle.lerp(legendStyle, endValue.legendStyle, t)!,
         legendDescription: endValue.legendDescription,
         padding: EdgeInsets.lerp(padding, endValue.padding, t),
         legendTarget: lerpDouble(legendTarget, endValue.legendTarget, t),
