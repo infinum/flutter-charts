@@ -93,11 +93,11 @@ class ChartState<T> {
 
   /// Margin of chart drawing area where items are drawn. This is so decorations
   /// can be placed outside of the chart drawing area without actually scaling the chart.
-  late EdgeInsets defaultMargin;
+  late final EdgeInsets defaultMargin;
 
   /// Padding is used for decorations that want other decorations to be drawn on them.
   /// Unlike [defaultMargin] decorations can draw inside the padding area.
-  late EdgeInsets defaultPadding;
+  late final EdgeInsets defaultPadding;
 
   /// Get all decorations. This will return list of [backgroundDecorations] and [foregroundDecorations] as one list.
   List<DecorationPainter> get _allDecorations => [...foregroundDecorations, ...backgroundDecorations];

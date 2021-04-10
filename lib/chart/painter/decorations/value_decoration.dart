@@ -15,7 +15,7 @@ class ValueDecoration extends DecorationPainter {
   final TextStyle? textStyle;
 
   /// Alignment of the text based on item
-  final Alignment? alignment;
+  final Alignment alignment;
 
   /// Index of list in items, this is used if there are multiple lists in the chart
   ///
@@ -27,7 +27,7 @@ class ValueDecoration extends DecorationPainter {
     if (endValue is ValueDecoration) {
       return ValueDecoration(
         textStyle: TextStyle.lerp(textStyle, endValue.textStyle, t),
-        alignment: Alignment.lerp(alignment, endValue.alignment, t),
+        alignment: Alignment.lerp(alignment, endValue.alignment, t)!,
         valueArrayIndex: endValue.valueArrayIndex,
       );
     }
@@ -51,11 +51,11 @@ class ValueDecoration extends DecorationPainter {
     _maxValuePainter.paint(
       canvas,
       Offset(
-        width * alignment!.x,
+        width * alignment.x,
         -item.max! * verticalMultiplier -
             minValue -
             _maxValuePainter.height * 0.2 +
-            (_maxValuePainter.height * alignment!.y),
+            (_maxValuePainter.height * alignment.y),
       ),
     );
   }
@@ -71,8 +71,8 @@ class ValueDecoration extends DecorationPainter {
     final _itemWidth = _size.width / _listSize;
 
     canvas.save();
-    canvas.translate((state.defaultPadding.left ?? 0.0) + state.defaultMargin.left - _itemWidth,
-        size.height + state.defaultMargin.top);
+    canvas.translate(
+        state.defaultPadding.left + state.defaultMargin.left - _itemWidth, size.height + state.defaultMargin.top);
 
     state.data.items[valueArrayIndex].asMap().forEach((index, value) {
       canvas.translate(

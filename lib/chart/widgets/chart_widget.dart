@@ -14,7 +14,7 @@ class _ChartWidget<T> extends StatelessWidget {
 
   final double? height;
   final double? width;
-  final ChartState<T> state;
+  final ChartState<T?> state;
 
   @override
   Widget build(BuildContext context) {

@@ -42,18 +42,23 @@ class _ChartState<T> extends AnimatedWidgetBaseState<AnimatedChart<T>> {
 
   @override
   Widget build(BuildContext context) {
-    /// TODO(lukaknezic): NULLSAFETY - Remove !
+    final _chartState = (_chartStateTween?.evaluate(animation));
+
+    if (_chartState == null) {
+      return SizedBox.shrink();
+    }
+
     return _ChartWidget<T?>(
       width: _widthTween?.evaluate(animation),
       height: _heightTween?.evaluate(animation),
-      state: (_chartStateTween?.evaluate(animation))!,
+      state: _chartState,
     );
   }
 
   @override
   void forEachTween(visitor) {
     _chartStateTween =
-        visitor(_chartStateTween, widget.state, (dynamic value) => ChartStateTween<T>(begin: value as ChartState<T?>?))
+        visitor(_chartStateTween, widget.state, (dynamic value) => ChartStateTween<T>(begin: value as ChartState<T?>))
             as ChartStateTween<T>?;
     _heightTween = visitor(_heightTween, widget.height, (dynamic value) => Tween<double>(begin: value as double?))
         as Tween<double?>?;

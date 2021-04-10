@@ -76,7 +76,9 @@ class ChartData<T> {
     this.maxValue = 0,
   });
 
-  final List<List<ChartItem<T>>> _items;
+  /// Chart items, items in the list cannot be null, but ChartItem can be defined
+  /// with null values to represent gaps in the data
+  final List<List<ChartItem<T?>>> _items;
   final double? _strategyChange;
 
   /// Data strategy to use on items
@@ -121,10 +123,6 @@ class ChartData<T> {
         return items.reversed
             .map((entry) {
               return entry.asMap().entries.map((e) {
-                if (e.value == null) {
-                  return e.value;
-                }
-
                 if (_incrementList.length > e.key) {
                   final _newValue = e.value + _incrementList[e.key];
                   _incrementList[e.key] = (_incrementList[e.key] + e.value) * _stackValue;
@@ -166,7 +164,7 @@ class ChartData<T> {
 
   /// Get min value of the chart
   /// Min value is min data item from [items] or [ChartOptions.axisMin]
-  static double _getMinValue<T>(List<ChartItem<T>> items, double? valueAxisMin) {
+  static double _getMinValue<T>(List<ChartItem<T?>> items, double? valueAxisMin) {
     final _minItems = items
         .where((e) => (e.min != null && e.min != 0.0) || (e.min == null && e.max != 0.0))
         .map((e) => e.min ?? e.max ?? double.infinity);
@@ -213,7 +211,7 @@ class ChartItemsLerp {
     });
   }
 
-  static List<ChartItem<T?>> _lerpItemList<T>(List<ChartItem<T?>> a, List<ChartItem<T?>> b, double t) {
+  static List<ChartItem<T?>> _lerpItemList<T>(List<ChartItem<T?>?> a, List<ChartItem<T?>?> b, double t) {
     final _listLength = lerpDouble(a.length, b.length, t)!;
 
     /// Empty value for generated list.
@@ -222,13 +220,16 @@ class ChartItemsLerp {
     return List<ChartItem<T?>>.generate(_listLength.ceil(), (int index) {
       // If old list and new list have value at [index], then just animate from,
       // old list value to the new value
+      final _firstItem = index < a.length ? a[index] : null;
+      final _secondItem = index < b.length ? b[index] : null;
+
       if (index < a.length && index < b.length) {
-        if (b[index] != null && a[index] != null) {
-          return b[index].animateFrom(a[index], t);
-        } else if (b[index] != null) {
-          return b[index].animateFrom(_emptyValue, t);
-        } else if (a[index] != null) {
-          return a[index].animateTo(_emptyValue, t);
+        if (_secondItem != null && _firstItem != null) {
+          return _secondItem.animateFrom(_firstItem, t);
+        } else if (_secondItem != null) {
+          return _secondItem.animateFrom(_emptyValue, t);
+        } else if (_firstItem != null) {
+          return _firstItem.animateTo(_emptyValue, t);
         }
 
         return _emptyValue;
@@ -237,20 +238,20 @@ class ChartItemsLerp {
       // If new list is larger, then check if item in the list is not empty
       // In case item is not empty then animate to it from our [_emptyValue]
       if (index < b.length) {
-        if (b[index] == null || b[index].isEmpty) {
-          return b[index] ?? _emptyValue;
+        if (_secondItem == null || _secondItem.isEmpty) {
+          return _secondItem ?? _emptyValue;
         }
 
         // If item is appearing then it's time to animate is
         // from time it first showed to end of the animation.
         final _value = _listLength.floor() == index ? ((_listLength - _listLength.floor()) * t) : t;
-        return b[index].animateFrom(_emptyValue, _value);
+        return _secondItem.animateFrom(_emptyValue, _value);
       }
 
       // In case that our old list is bigger, and item is not empty
       // then we need to animate to empty value from current item value
-      if (a[index] == null || a[index].isEmpty) {
-        return a[index] ?? _emptyValue;
+      if (_firstItem == null || _firstItem.isEmpty) {
+        return _firstItem ?? _emptyValue;
       }
 
       final _value = _listLength.floor() == index
@@ -258,7 +259,7 @@ class ChartItemsLerp {
           : _listLength.floor() >= index
               ? 0
               : t;
-      return a[index].animateTo(_emptyValue, _value.toDouble());
+      return _firstItem.animateTo(_emptyValue, _value.toDouble());
     });
   }
 }

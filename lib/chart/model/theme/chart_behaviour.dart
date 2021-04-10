@@ -38,11 +38,15 @@ class ChartBehaviour {
 
   /// Animate Behaviour from one state to other
   static ChartBehaviour lerp(ChartBehaviour a, ChartBehaviour b, double t) {
-    /// TODO(lukaknezic): NULLSAFETY - Remove !
+    // This values should never return null, this is for null-safety
+    // But if it somehow does occur, then revert to default values
+    final _scrollableLerp = lerpDouble(a._isScrollable, b._isScrollable, t) ?? 0.0;
+    final _multiStackLerp = lerpDouble(a._multiValueStacked, b._multiValueStacked, t) ?? 1.0;
+
     return ChartBehaviour._lerp(
-      lerpDouble(a._isScrollable, b._isScrollable, t)!,
+      _scrollableLerp,
       t > 0.5 ? b.onItemClicked : a.onItemClicked,
-      lerpDouble(a._multiValueStacked, b._multiValueStacked, t)!,
+      _multiStackLerp,
     );
   }
 }

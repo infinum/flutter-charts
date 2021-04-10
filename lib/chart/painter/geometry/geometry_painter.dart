@@ -11,7 +11,7 @@ abstract class GeometryPainter<T> {
   final ChartState state;
 
   /// Current item being painted
-  final ChartItem<T> item;
+  final ChartItem<T?> item;
 
   /// Draw [ChartItem] on the canvas.
   /// Canvas with item size is passed, item's padding and margin need to be calculated

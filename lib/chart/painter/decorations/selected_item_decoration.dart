@@ -14,7 +14,7 @@ class SelectedItemDecoration extends DecorationPainter {
   });
 
   /// Index of selected item
-  final int? selectedItem;
+  final int selectedItem;
 
   /// Color of selected indicator and text background
   final Color? selectedColor;
@@ -43,8 +43,10 @@ class SelectedItemDecoration extends DecorationPainter {
   }
 
   void _drawText(Canvas canvas, Size size, double width, double totalWidth, ChartState state) {
+    final _selectedItem = state.data.items[selectedArrayIndex][selectedItem];
+
     final _maxValuePainter = ValueDecoration.makeTextPainter(
-      state.data.items[selectedArrayIndex][selectedItem!].max!.toStringAsFixed(2),
+      _selectedItem.max?.toStringAsFixed(2) ?? '',
       width,
       TextStyle(
         fontSize: textSize,
@@ -82,7 +84,7 @@ class SelectedItemDecoration extends DecorationPainter {
   void draw(Canvas canvas, Size size, ChartState state) {
     final _listSize = state.data.listSize;
 
-    if (selectedItem == null || _listSize <= selectedItem! || selectedItem!.isNegative) {
+    if (_listSize <= selectedItem || selectedItem.isNegative) {
       return;
     }
 
@@ -92,7 +94,7 @@ class SelectedItemDecoration extends DecorationPainter {
     // Save, and translate the canvas so [0,0] is top left of item at [index] position
     canvas.save();
     canvas.translate(
-      state.defaultPadding.left + (_itemWidth * selectedItem!) + state.defaultMargin.left,
+      state.defaultPadding.left + (_itemWidth * selectedItem) + state.defaultMargin.left,
       size.height + state.defaultMargin.top + state.defaultPadding.top,
     );
 
@@ -113,7 +115,8 @@ class SelectedItemDecoration extends DecorationPainter {
     final _maxValue = state.data.maxValue - state.data.minValue;
     final scale = size.height / _maxValue;
 
-    final _item = state.data.items[selectedArrayIndex][selectedItem!];
+    final _item = state.data.items[selectedArrayIndex][selectedItem];
+
     // If item is empty, or it's max value is below chart's minValue then don't draw it.
     // minValue can be below 0, this will just ensure that animation is drawn correctly.
     if (_item.isEmpty || _item.max! < state.data.minValue) {
@@ -168,7 +171,7 @@ class SelectedItemDecoration extends DecorationPainter {
     if (endValue is SelectedItemDecoration) {
       return SelectedItemDecoration(
         animate
-            ? lerpDouble(selectedItem?.toDouble(), endValue.selectedItem?.toDouble(), t)?.round()
+            ? lerpDouble(selectedItem.toDouble(), endValue.selectedItem.toDouble(), t)!.round()
             : endValue.selectedItem,
         selectedColor: Color.lerp(selectedColor, endValue.selectedColor, t),
         backgroundColor: Color.lerp(backgroundColor, endValue.backgroundColor, t),

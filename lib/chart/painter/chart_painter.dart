@@ -36,7 +36,7 @@ class _ChartPainter extends CustomPainter {
     final _paddingSize = state.defaultMargin.deflateSize(size);
 
     /// Final usable size for chart
-    final _size = state.defaultPadding.deflateSize(_paddingSize) ?? _paddingSize;
+    final _size = state.defaultPadding.deflateSize(_paddingSize);
 
     /// Final usable space for one item in the chart
     final _itemWidth = _size.width / _listSize;
