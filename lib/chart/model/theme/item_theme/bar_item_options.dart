@@ -13,8 +13,8 @@ GeometryPainter<T> barPainter<T>(ChartItem<T> item, ChartState<T> state) => BarG
 class BarItemOptions extends ItemOptions {
   /// Constructor for bar item options, has some extra options just for [BarGeometryPainter]
   const BarItemOptions({
-    EdgeInsets? padding = EdgeInsets.zero,
-    EdgeInsets? multiValuePadding = EdgeInsets.zero,
+    EdgeInsets padding = EdgeInsets.zero,
+    EdgeInsets multiValuePadding = EdgeInsets.zero,
     double? maxBarWidth,
     double? minBarWidth,
     Color color = Colors.red,
@@ -46,15 +46,15 @@ class BarItemOptions extends ItemOptions {
 
   @override
   ItemOptions animateTo(ItemOptions endValue, double t) {
+    final _itemColor = Color.lerp(color, endValue.color, t) ?? Colors.red;
+
     return BarItemOptions(
       gradient: Gradient.lerp(gradient, endValue is BarItemOptions ? endValue.gradient : null, t),
-
-      /// TODO(lukaknezic): NULLSAFETY - Remove !
-      color: Color.lerp(color, endValue.color, t)!,
+      color: _itemColor,
       colorForKey: ColorForKeyLerp.lerp(this, endValue, t),
       colorForValue: ColorForValueLerp.lerp(this, endValue, t),
-      padding: EdgeInsets.lerp(padding, endValue.padding, t),
-      multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t),
+      padding: EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero,
+      multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero,
       radius: BorderRadius.lerp(radius, endValue is BarItemOptions ? endValue.radius : null, t),
       maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
       minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
@@ -68,6 +68,7 @@ class BarItemOptions extends ItemOptions {
     final _paint = super.getPaintForItem(item, size, key);
 
     if (gradient != null) {
+      // Compiler complains that gradient could be null. But unless if fails us that will never be null.
       _paint.shader = gradient!.createShader(Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
     }
 

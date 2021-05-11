@@ -30,11 +30,11 @@ class ItemOptions {
 
   /// Item padding, if [minBarWidth] and [padding] are more then available space
   /// [padding] will get ignored
-  final EdgeInsets? padding;
+  final EdgeInsets padding;
 
   /// Multi value chart padding, this will `group` values with same index from different lists
   /// use to make space between index changes in multi value charts
-  final EdgeInsets? multiValuePadding;
+  final EdgeInsets multiValuePadding;
 
   /// Define color for value, this allows different colors for different values
   final Color color;
@@ -58,13 +58,16 @@ class ItemOptions {
   /// When making custom [ItemOptions] make sure to override this return custom painter
   /// with all available options, otherwise changes in options won't be animated
   ItemOptions animateTo(ItemOptions endValue, double t) {
+    final _itemColor = Color.lerp(color, endValue.color, t) ?? Colors.red;
+    final _itemPadding = EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero;
+    final _itemMultiValuePadding = EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero;
+
     return ItemOptions(
-      /// TODO(lukaknezic): NULLSAFETY - Remove !
-      color: Color.lerp(color, endValue.color, t)!,
+      color: _itemColor,
       colorForKey: ColorForKeyLerp.lerp(this, endValue, t),
       colorForValue: ColorForValueLerp.lerp(this, endValue, t),
-      padding: EdgeInsets.lerp(padding, endValue.padding, t),
-      multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t),
+      padding: _itemPadding,
+      multiValuePadding: _itemMultiValuePadding,
       maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
       minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
       geometryPainter: t > 0.5 ? endValue.geometryPainter : geometryPainter,
@@ -116,8 +119,7 @@ class ColorForValueLerp {
       final _aColor = a._getColorForValue(value, min);
       final _bColor = b._getColorForValue(value, min);
 
-      /// TODO(lukaknezic): NULLSAFETY - Remove !
-      return Color.lerp(_aColor, _bColor, t)!;
+      return Color.lerp(_aColor, _bColor, t) ?? _bColor;
     };
   }
 }
@@ -134,8 +136,7 @@ class ColorForKeyLerp {
       final _aColor = a.getItemColor(item, index);
       final _bColor = b.getItemColor(item, index);
 
-      /// TODO(lukaknezic): NULLSAFETY - Remove !
-      return Color.lerp(_aColor, _bColor, t)!;
+      return Color.lerp(_aColor, _bColor, t) ?? _bColor;
     };
   }
 }

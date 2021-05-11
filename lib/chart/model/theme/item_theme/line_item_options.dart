@@ -12,8 +12,8 @@ GeometryPainter<T> bubblePainter<T>(ChartItem<T> item, ChartState<T> state) => B
 class BubbleItemOptions extends ItemOptions {
   /// Constructor for bubble item options, has some options just for [BubbleGeometryPainter]
   const BubbleItemOptions({
-    EdgeInsets? padding = EdgeInsets.zero,
-    EdgeInsets? multiValuePadding = EdgeInsets.zero,
+    EdgeInsets padding = EdgeInsets.zero,
+    EdgeInsets multiValuePadding = EdgeInsets.zero,
     double? maxBarWidth,
     double? minBarWidth,
     Color color = Colors.red,
@@ -42,13 +42,11 @@ class BubbleItemOptions extends ItemOptions {
   ItemOptions animateTo(ItemOptions endValue, double t) {
     return BubbleItemOptions(
       gradient: Gradient.lerp(gradient, endValue is BubbleItemOptions ? endValue.gradient : null, t),
-
-      /// TODO(lukaknezic): NULLSAFETY - Remove !
-      color: Color.lerp(color, endValue.color, t)!,
+      color: Color.lerp(color, endValue.color, t) ?? endValue.color,
       colorForKey: ColorForKeyLerp.lerp(this, endValue, t),
       colorForValue: ColorForValueLerp.lerp(this, endValue, t),
-      padding: EdgeInsets.lerp(padding, endValue.padding, t),
-      multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t),
+      padding: EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero,
+      multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero,
       maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
       minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
       border: BorderSide.lerp(border ?? BorderSide.none,

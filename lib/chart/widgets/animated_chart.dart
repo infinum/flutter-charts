@@ -77,10 +77,11 @@ class _ChartState<T> extends AnimatedWidgetBaseState<AnimatedChart<T>> {
 
 /// Tween for animating between two different [ChartState]'s
 class ChartStateTween<T> extends Tween<ChartState<T?>?> {
+  final _defaultState = ChartState<T>(ChartData<T>([]));
+
   /// Create [ChartStateTween] for [ImplicitlyAnimatedWidget]
   ChartStateTween({ChartState<T?>? begin, ChartState<T?>? end}) : super(begin: begin, end: end);
 
-  /// TODO(lukaknezic): NULLSAFETY - Remove !
   @override
-  ChartState<T?> lerp(double t) => ChartState.lerp(begin!, end!, t);
+  ChartState<T?> lerp(double t) => ChartState.lerp(begin ?? _defaultState, end ?? _defaultState, t);
 }

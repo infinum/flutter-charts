@@ -171,8 +171,7 @@ class VerticalAxisDecoration extends DecorationPainter {
       return EdgeInsets.zero;
     }
 
-    /// TODO(lukaknezic): NULLSAFETY - Remove !
-    final _value = legendFontStyle!.fontSize! + (valuesPadding?.vertical ?? 0.0);
+    final _value = (legendFontStyle?.fontSize ?? 0.0) + (valuesPadding?.vertical ?? 0.0);
     final _isBottom = legendPosition == VerticalLegendPosition.bottom;
 
     return EdgeInsets.only(

@@ -45,13 +45,14 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
       paint,
     );
 
-    if (options is BubbleItemOptions && options.border != null && options.border?.style == BorderStyle.solid) {
+    final _border = options is BubbleItemOptions ? options.border : null;
+
+    if (_border != null && _border.style == BorderStyle.solid) {
       final _borderPaint = Paint();
       _borderPaint.style = PaintingStyle.stroke;
 
-      /// TODO(lukaknezic): NULLSAFETY - Remove !
-      _borderPaint.color = options.border!.color;
-      _borderPaint.strokeWidth = options.border!.width;
+      _borderPaint.color = _border.color;
+      _borderPaint.strokeWidth = _border.width;
 
       canvas.drawCircle(
         Offset(size.width * 0.5, item.max! * _verticalMultiplier - _minValue),

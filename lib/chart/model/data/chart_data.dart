@@ -188,9 +188,8 @@ class ChartData<T> {
       axisMin: lerpDouble(a.axisMin, b.axisMin, t),
 
       /// Those are usually calculated, but we need to have a control over them in the animation
-      /// TODO(lukaknezic): NULLSAFETY - Remove !
-      maxValue: lerpDouble(a.maxValue, b.maxValue, t)!,
-      minValue: lerpDouble(a.minValue, b.minValue, t)!,
+      maxValue: lerpDouble(a.maxValue, b.maxValue, t) ?? b.maxValue,
+      minValue: lerpDouble(a.minValue, b.minValue, t) ?? b.minValue,
     );
   }
 }

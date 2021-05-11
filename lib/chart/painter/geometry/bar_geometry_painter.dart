@@ -49,7 +49,8 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
       return;
     }
 
-    /// TODO(lukaknezic): NULLSAFETY - Remove !
+    final _itemMaxValue = item.max ?? 0.0;
+
     canvas.drawRRect(
       RRect.fromRectAndCorners(
         Rect.fromPoints(
@@ -59,22 +60,24 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
           ),
           Offset(
             _itemWidth + _padding.left,
-            item.max! * _verticalMultiplier - _minValue,
+            _itemMaxValue * _verticalMultiplier - _minValue,
           ),
         ),
-        bottomLeft: item.max!.isNegative ? _radius.topLeft : _radius.bottomLeft,
-        bottomRight: item.max!.isNegative ? _radius.topRight : _radius.bottomRight,
-        topLeft: item.max!.isNegative ? _radius.bottomLeft : _radius.topLeft,
-        topRight: item.max!.isNegative ? _radius.bottomRight : _radius.topRight,
+        bottomLeft: _itemMaxValue.isNegative ? _radius.topLeft : _radius.bottomLeft,
+        bottomRight: _itemMaxValue.isNegative ? _radius.topRight : _radius.bottomRight,
+        topLeft: _itemMaxValue.isNegative ? _radius.bottomLeft : _radius.topLeft,
+        topRight: _itemMaxValue.isNegative ? _radius.bottomRight : _radius.topRight,
       ),
       paint,
     );
 
-    if (options is BarItemOptions && options.border != null && options.border!.style == BorderStyle.solid) {
+    final _border = options is BarItemOptions ? options.border : null;
+
+    if (_border != null && _border.style == BorderStyle.solid) {
       final _borderPaint = Paint();
       _borderPaint.style = PaintingStyle.stroke;
-      _borderPaint.color = options.border!.color;
-      _borderPaint.strokeWidth = options.border!.width;
+      _borderPaint.color = _border.color;
+      _borderPaint.strokeWidth = _border.width;
 
       canvas.drawRRect(
         RRect.fromRectAndCorners(
