@@ -199,7 +199,7 @@ class ChartItemsLerp {
   /// Lerp chart items
   static List<List<ChartItem<T?>>> lerpValues<T>(List<List<ChartItem<T?>>> a, List<List<ChartItem<T?>>> b, double t) {
     /// Get list length in animation, we will add the items in steps.
-    final _listLength = lerpDouble(a.length, b.length, t)!;
+    final _listLength = lerpDouble(a.length, b.length, t) ?? b.length;
 
     /// Empty value for generated list.
     final _emptyList = <ChartItem<T>>[];
@@ -211,7 +211,7 @@ class ChartItemsLerp {
   }
 
   static List<ChartItem<T?>> _lerpItemList<T>(List<ChartItem<T?>?> a, List<ChartItem<T?>?> b, double t) {
-    final _listLength = lerpDouble(a.length, b.length, t)!;
+    final _listLength = lerpDouble(a.length, b.length, t) ?? b.length;
 
     /// Empty value for generated list.
     final _emptyValue = ChartItem<T?>(null, 0.0, 0.0);

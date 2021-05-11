@@ -39,7 +39,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
   HorizontalAxisDecoration._lerp({
     this.showValues = false,
-    double? endWithChart = 0.0,
+    double endWithChart = 0.0,
     this.showTopValue = false,
     this.showLines = true,
     this.valuesAlign = TextAlign.end,
@@ -59,8 +59,8 @@ class HorizontalAxisDecoration extends DecorationPainter {
   /// at same place where the chart will end
   ///
   /// This does not apply to axis legend text, text can still be shown on the padding part
-  bool get endWithChart => _endWithChart! > 0.5;
-  final double? _endWithChart;
+  bool get endWithChart => _endWithChart > 0.5;
+  final double _endWithChart;
 
   /// Dashed array for showing lines, if this is not set the line is solid
   final List<double>? dashArray;
@@ -94,13 +94,13 @@ class HorizontalAxisDecoration extends DecorationPainter {
   final bool showLines;
 
   /// Set color to paint horizontal lines with
-  final Color? lineColor;
+  final Color lineColor;
 
   /// Set line width
-  final double? lineWidth;
+  final double lineWidth;
 
   /// Step for lines
-  final double? axisStep;
+  final double axisStep;
 
   /// Text style for axis legend
   final TextStyle? legendFontStyle;
@@ -113,7 +113,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     if (showValues) {
       _longestText = axisValue.call(state.data.maxValue.toInt()).toString();
 
-      if (_longestText!.length < (horizontalAxisUnit?.length ?? 0.0)) {
+      if ((_longestText?.length ?? 0) < (horizontalAxisUnit?.length ?? 0.0)) {
         _longestText = horizontalAxisUnit;
       }
     }
@@ -122,23 +122,23 @@ class HorizontalAxisDecoration extends DecorationPainter {
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
     final _paint = Paint()
-      ..color = lineColor!
+      ..color = lineColor
       ..style = PaintingStyle.stroke
-      ..strokeWidth = lineWidth!;
+      ..strokeWidth = lineWidth;
 
     canvas.save();
     canvas.translate(0.0 + state.defaultMargin.left, size.height + state.defaultMargin.top - state.defaultPadding.top);
 
     final _maxValue = state.data.maxValue - state.data.minValue;
-    final _size = (state.defaultPadding * _endWithChart!).deflateSize(size);
+    final _size = (state.defaultPadding * _endWithChart).deflateSize(size);
     final scale = _size.height / _maxValue;
 
     final gridPath = Path();
 
-    for (var i = 0; i <= _maxValue / axisStep!; i++) {
+    for (var i = 0; i <= _maxValue / axisStep; i++) {
       if (showLines) {
-        gridPath.moveTo(_endWithChart! * state.defaultPadding.left, -axisStep! * i * scale + lineWidth! / 2);
-        gridPath.lineTo(_size.width, -axisStep! * i * scale + lineWidth! / 2);
+        gridPath.moveTo(_endWithChart * state.defaultPadding.left, -axisStep * i * scale + lineWidth / 2);
+        gridPath.lineTo(_size.width, -axisStep * i * scale + lineWidth / 2);
       }
 
       if (!showValues) {
@@ -147,10 +147,10 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
       String? _text;
 
-      if (!showTopValue && i == _maxValue / axisStep!) {
+      if (!showTopValue && i == _maxValue / axisStep) {
         _text = null;
       } else {
-        final _defaultValue = (axisStep! * i + state.data.minValue).toInt();
+        final _defaultValue = (axisStep * i + state.data.minValue).toInt();
         final _value = axisValue.call(_defaultValue);
         _text = _value.toString();
       }
@@ -180,7 +180,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
       _textPainter.paint(
           canvas,
           Offset(legendPosition == HorizontalLegendPosition.end ? _positionEnd : _positionStart,
-              -axisStep! * i * scale - (_textPainter.height + (valuesPadding?.bottom ?? 0.0))));
+              -axisStep * i * scale - (_textPainter.height + (valuesPadding?.bottom ?? 0.0))));
     }
 
     if (dashArray != null) {
@@ -226,7 +226,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
   EdgeInsets marginNeeded() {
     return EdgeInsets.only(
       top: showValues && showTopValue ? legendFontStyle?.fontSize ?? 13.0 : 0.0,
-      bottom: lineWidth!,
+      bottom: lineWidth,
     );
   }
 
@@ -246,14 +246,14 @@ class HorizontalAxisDecoration extends DecorationPainter {
     if (endValue is HorizontalAxisDecoration) {
       return HorizontalAxisDecoration._lerp(
         showValues: t < 0.5 ? showValues : endValue.showValues,
-        endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t),
+        endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t) ?? endValue._endWithChart,
         showTopValue: t < 0.5 ? showTopValue : endValue.showTopValue,
         valuesAlign: t < 0.5 ? valuesAlign : endValue.valuesAlign,
         valuesPadding: EdgeInsets.lerp(valuesPadding, endValue.valuesPadding, t),
-        lineColor: Color.lerp(lineColor, endValue.lineColor, t),
-        lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t),
+        lineColor: Color.lerp(lineColor, endValue.lineColor, t) ?? endValue.lineColor,
+        lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t) ?? endValue.lineWidth,
         dashArray: t < 0.5 ? dashArray : endValue.dashArray,
-        axisStep: lerpDouble(axisStep, endValue.axisStep, t),
+        axisStep: lerpDouble(axisStep, endValue.axisStep, t) ?? endValue.axisStep,
         legendFontStyle: TextStyle.lerp(legendFontStyle, endValue.legendFontStyle, t),
         horizontalAxisUnit: t > 0.5 ? endValue.horizontalAxisUnit : horizontalAxisUnit,
         legendPosition: t > 0.5 ? endValue.legendPosition : legendPosition,

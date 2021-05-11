@@ -14,7 +14,7 @@ abstract class DecorationPainter {
   ///
   /// Any decoration that needs space on side of the chart (any side) has to override this
   /// method and return how much space it needs and where as [EdgeInsets].
-  EdgeInsets? marginNeeded() {
+  EdgeInsets marginNeeded() {
     return EdgeInsets.zero;
   }
 

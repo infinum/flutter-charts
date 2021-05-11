@@ -35,7 +35,7 @@ class VerticalAxisDecoration extends DecorationPainter {
   VerticalAxisDecoration._lerp({
     this.showLines = true,
     this.showValues = false,
-    double? endWithChart = 0.0,
+    double endWithChart = 0.0,
     this.valuesAlign = TextAlign.center,
     this.valuesPadding = EdgeInsets.zero,
     this.valueFromIndex = defaultAxisValue,
@@ -52,8 +52,8 @@ class VerticalAxisDecoration extends DecorationPainter {
   /// at same place where the chart will end
   ///
   /// This does not apply to axis legend text, text can still be shown on the padding part
-  bool get endWithChart => _endWithChart! > 0.5;
-  final double? _endWithChart;
+  bool get endWithChart => _endWithChart > 0.5;
+  final double _endWithChart;
 
   /// Dashed array for showing lines, if this is not set the line is solid
   final List<double>? dashArray;
@@ -71,13 +71,13 @@ class VerticalAxisDecoration extends DecorationPainter {
   final EdgeInsets? valuesPadding;
 
   /// Set color to paint horizontal lines with
-  final Color? lineColor;
+  final Color lineColor;
 
   /// Set line width
-  final double? lineWidth;
+  final double lineWidth;
 
   /// Step for lines
-  final double? axisStep;
+  final double axisStep;
 
   /// Position of vertical legend
   /// Default: [VerticalLegendPosition.bottom]
@@ -94,12 +94,12 @@ class VerticalAxisDecoration extends DecorationPainter {
   void draw(Canvas canvas, Size size, ChartState state) {
     final _size = state.defaultPadding.deflateSize(size);
     final _listSize = state.data.listSize;
-    final _itemWidth = (_size.width - lineWidth!) / _listSize;
+    final _itemWidth = (_size.width - lineWidth) / _listSize;
 
     final _paint = Paint()
-      ..color = lineColor!
+      ..color = lineColor
       ..style = PaintingStyle.stroke
-      ..strokeWidth = lineWidth!;
+      ..strokeWidth = lineWidth;
 
     canvas.save();
     canvas.translate(
@@ -109,23 +109,23 @@ class VerticalAxisDecoration extends DecorationPainter {
 
     final gridPath = Path();
 
-    for (var i = 0; i <= _listSize / axisStep!; i++) {
+    for (var i = 0; i <= _listSize / axisStep; i++) {
       if (showLines) {
-        final _showValuesBottom = showValues ? (state.defaultMargin.bottom * (1 - _endWithChart!)) : lineWidth!;
-        final _showValuesTop = -size.height - (showValues ? (state.defaultMargin.top * (1 - _endWithChart!)) : 0.0);
+        final _showValuesBottom = showValues ? (state.defaultMargin.bottom * (1 - _endWithChart)) : lineWidth;
+        final _showValuesTop = -size.height - (showValues ? (state.defaultMargin.top * (1 - _endWithChart)) : 0.0);
 
-        gridPath.moveTo(_itemWidth * i * axisStep! + lineWidth! / 2, _showValuesBottom);
-        gridPath.lineTo(_itemWidth * i * axisStep! + lineWidth! / 2, _showValuesTop);
+        gridPath.moveTo(_itemWidth * i * axisStep + lineWidth / 2, _showValuesBottom);
+        gridPath.lineTo(_itemWidth * i * axisStep + lineWidth / 2, _showValuesTop);
       }
 
-      if (!showValues || i == _listSize / axisStep!) {
+      if (!showValues || i == _listSize / axisStep) {
         continue;
       }
 
       String? _text;
 
       try {
-        _text = valueFromIndex((axisStep! * i).toInt());
+        _text = valueFromIndex((axisStep * i).toInt());
       } catch (e) {
         /// Invalid value, index out of range can happen here.
       }
@@ -150,7 +150,7 @@ class VerticalAxisDecoration extends DecorationPainter {
       _textPainter.paint(
         canvas,
         Offset(
-            _itemWidth * i * axisStep! + (valuesPadding?.left ?? 0.0),
+            _itemWidth * i * axisStep + (valuesPadding?.left ?? 0.0),
             legendPosition == VerticalLegendPosition.top
                 ? -size.height - _textPainter.height - (valuesPadding?.bottom ?? 0.0)
                 : _textPainter.height - _textPainter.height + (valuesPadding?.top ?? 0.0)),
@@ -184,10 +184,10 @@ class VerticalAxisDecoration extends DecorationPainter {
   VerticalAxisDecoration animateTo(DecorationPainter endValue, double t) {
     if (endValue is VerticalAxisDecoration) {
       return VerticalAxisDecoration._lerp(
-        lineColor: Color.lerp(lineColor, endValue.lineColor, t),
-        lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t),
-        axisStep: lerpDouble(axisStep, endValue.axisStep, t),
-        endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t),
+        lineColor: Color.lerp(lineColor, endValue.lineColor, t) ?? endValue.lineColor,
+        lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t) ?? endValue.lineWidth,
+        axisStep: lerpDouble(axisStep, endValue.axisStep, t) ?? endValue.axisStep,
+        endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t) ?? endValue._endWithChart,
         valuesPadding: EdgeInsets.lerp(valuesPadding, endValue.valuesPadding, t),
         showLines: t > 0.5 ? endValue.showLines : showLines,
         dashArray: t < 0.5 ? dashArray : endValue.dashArray,

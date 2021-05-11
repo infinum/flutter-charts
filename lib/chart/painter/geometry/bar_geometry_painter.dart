@@ -36,20 +36,21 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
 
     final _radius = options is BarItemOptions ? (options.radius ?? BorderRadius.zero) : BorderRadius.zero;
 
-    var _padding = state.itemOptions.padding ?? EdgeInsets.zero;
+    var _padding = state.itemOptions.padding;
 
     final _itemWidth = itemWidth(size);
 
     if (size.width - _itemWidth - _padding.horizontal >= 0) {
       _padding = EdgeInsets.symmetric(horizontal: (size.width - _itemWidth) / 2);
     }
-    // If item is empty, or it's max value is below chart's minValue then don't draw it.
-    // minValue can be below 0, this will just ensure that animation is drawn correctly.
-    if (item.isEmpty || item.max! < state.data.minValue) {
-      return;
-    }
 
     final _itemMaxValue = item.max ?? 0.0;
+
+    // If item is empty, or it's max value is below chart's minValue then don't draw it.
+    // minValue can be below 0, this will just ensure that animation is drawn correctly.
+    if (item.isEmpty || _itemMaxValue < state.data.minValue) {
+      return;
+    }
 
     canvas.drawRRect(
       RRect.fromRectAndCorners(
@@ -88,13 +89,13 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
             ),
             Offset(
               _itemWidth + _padding.left,
-              item.max! * _verticalMultiplier - _minValue,
+              _itemMaxValue * _verticalMultiplier - _minValue,
             ),
           ),
-          bottomLeft: item.max!.isNegative ? _radius.topLeft : _radius.bottomLeft,
-          bottomRight: item.max!.isNegative ? _radius.topRight : _radius.bottomRight,
-          topLeft: item.max!.isNegative ? _radius.bottomLeft : _radius.topLeft,
-          topRight: item.max!.isNegative ? _radius.bottomRight : _radius.topRight,
+          bottomLeft: _itemMaxValue.isNegative ? _radius.topLeft : _radius.bottomLeft,
+          bottomRight: _itemMaxValue.isNegative ? _radius.topRight : _radius.bottomRight,
+          topLeft: _itemMaxValue.isNegative ? _radius.bottomLeft : _radius.topLeft,
+          topRight: _itemMaxValue.isNegative ? _radius.bottomRight : _radius.topRight,
         ),
         _borderPaint,
       );

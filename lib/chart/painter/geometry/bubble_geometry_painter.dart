@@ -23,16 +23,15 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
     final _verticalMultiplier = size.height / _maxValue;
     final _minValue = state.data.minValue * _verticalMultiplier;
 
-    final _padding = options.padding ?? EdgeInsets.zero;
-
     final _itemWidth = max(
         options.minBarWidth ?? 0.0,
         min(options.maxBarWidth ?? double.infinity,
-            size.width - (_padding.horizontal.isNegative ? 0.0 : _padding.horizontal)));
+            size.width - (options.padding.horizontal.isNegative ? 0.0 : options.padding.horizontal)));
 
+    final _itemMaxValue = item.max ?? 0.0;
     // If item is empty, or it's max value is below chart's minValue then don't draw it.
     // minValue can be below 0, this will just ensure that animation is drawn correctly.
-    if (item.isEmpty || item.max! < state.data.minValue) {
+    if (item.isEmpty || _itemMaxValue < state.data.minValue) {
       return;
     }
 
@@ -40,7 +39,7 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
     final _circleSize = _itemWidth / 2;
 
     canvas.drawCircle(
-      Offset(size.width * 0.5, item.max! * _verticalMultiplier - _minValue),
+      Offset(size.width * 0.5, _itemMaxValue * _verticalMultiplier - _minValue),
       _circleSize,
       paint,
     );
@@ -55,7 +54,7 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
       _borderPaint.strokeWidth = _border.width;
 
       canvas.drawCircle(
-        Offset(size.width * 0.5, item.max! * _verticalMultiplier - _minValue),
+        Offset(size.width * 0.5, _itemMaxValue * _verticalMultiplier - _minValue),
         _circleSize,
         _borderPaint,
       );

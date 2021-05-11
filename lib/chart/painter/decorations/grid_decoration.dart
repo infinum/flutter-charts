@@ -30,11 +30,7 @@ class GridDecoration extends DecorationPainter {
     this.verticalLegendPosition = VerticalLegendPosition.bottom,
     this.textStyle,
   })  : _endWithChart = endWithChart ? 1.0 : 0.0,
-        assert(
-            textStyle != null ||
-                !(showHorizontalValues ||
-                    showTopHorizontalValue ||
-                    showVerticalValues),
+        assert(textStyle != null || !(showHorizontalValues || showTopHorizontalValue || showVerticalValues),
             'Need to provide text style for values to be visible!') {
     _horizontalAxisDecoration = HorizontalAxisDecoration(
       showValues: showHorizontalValues,
@@ -71,7 +67,7 @@ class GridDecoration extends DecorationPainter {
   GridDecoration._lerp({
     this.showHorizontalValues = false,
     this.showVerticalValues = false,
-    double? endWithChart = 0.0,
+    double endWithChart = 0.0,
     this.horizontalTextAlign = TextAlign.end,
     this.showTopHorizontalValue = false,
     this.verticalTextAlign = TextAlign.center,
@@ -91,11 +87,7 @@ class GridDecoration extends DecorationPainter {
     this.verticalLegendPosition = VerticalLegendPosition.bottom,
     this.textStyle,
   })  : _endWithChart = endWithChart,
-        assert(
-            textStyle != null ||
-                !(showHorizontalValues ||
-                    showTopHorizontalValue ||
-                    showVerticalValues),
+        assert(textStyle != null || !(showHorizontalValues || showTopHorizontalValue || showVerticalValues),
             'Need to provide text style for values to be visible!') {
     _horizontalAxisDecoration = HorizontalAxisDecoration._lerp(
       showValues: showHorizontalValues,
@@ -144,8 +136,8 @@ class GridDecoration extends DecorationPainter {
   /// at same place where the chart will end
   ///
   /// This does not apply to axis legend text, text can still be shown on the padding part
-  bool get endWithChart => _endWithChart! > 0.5;
-  final double? _endWithChart;
+  bool get endWithChart => _endWithChart > 0.5;
+  final double _endWithChart;
 
   /// Align horizontal legend text
   final TextAlign horizontalTextAlign;
@@ -200,16 +192,16 @@ class GridDecoration extends DecorationPainter {
   final AxisValueFromValue horizontalAxisValueFromValue;
 
   /// Change grid color
-  final Color? gridColor;
+  final Color gridColor;
 
   /// Change grid line width
-  final double? gridWidth;
+  final double gridWidth;
 
   /// Change step for y axis (1 by default) used in [GridDecoration], [VerticalAxisDecoration] and [HorizontalAxisDecoration]
-  final double? verticalAxisStep;
+  final double verticalAxisStep;
 
   /// Change step for x axis (1 by default) used in [GridDecoration], [VerticalAxisDecoration] and [HorizontalAxisDecoration]
-  final double? horizontalAxisStep;
+  final double horizontalAxisStep;
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
@@ -219,14 +211,12 @@ class GridDecoration extends DecorationPainter {
 
   @override
   EdgeInsets marginNeeded() {
-    return _horizontalAxisDecoration.marginNeeded() +
-        _verticalAxisDecoration.marginNeeded();
+    return _horizontalAxisDecoration.marginNeeded() + _verticalAxisDecoration.marginNeeded();
   }
 
   @override
   EdgeInsets paddingNeeded() {
-    return _horizontalAxisDecoration.paddingNeeded() +
-        _verticalAxisDecoration.paddingNeeded();
+    return _horizontalAxisDecoration.paddingNeeded() + _verticalAxisDecoration.paddingNeeded();
   }
 
   @override
@@ -239,45 +229,27 @@ class GridDecoration extends DecorationPainter {
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
     if (endValue is GridDecoration) {
       return GridDecoration._lerp(
-        showHorizontalValues:
-            t < 0.5 ? showHorizontalValues : endValue.showHorizontalValues,
-        showVerticalValues:
-            t < 0.5 ? showVerticalValues : endValue.showVerticalValues,
-        endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t),
-        horizontalTextAlign:
-            t < 0.5 ? horizontalTextAlign : endValue.horizontalTextAlign,
-        showTopHorizontalValue:
-            t < 0.5 ? showTopHorizontalValue : endValue.showTopHorizontalValue,
-        verticalTextAlign:
-            t < 0.5 ? verticalTextAlign : endValue.verticalTextAlign,
-        showVerticalGrid:
-            t < 0.5 ? showVerticalGrid : endValue.showVerticalGrid,
-        showHorizontalGrid:
-            t < 0.5 ? showHorizontalGrid : endValue.showHorizontalGrid,
-        horizontalAxisUnit:
-            t < 0.5 ? horizontalAxisUnit : endValue.horizontalAxisUnit,
-        verticalAxisValueFromIndex: t < 0.5
-            ? verticalAxisValueFromIndex
-            : endValue.verticalAxisValueFromIndex,
-        horizontalAxisValueFromValue: t < 0.5
-            ? horizontalAxisValueFromValue
-            : endValue.horizontalAxisValueFromValue,
-        horizontalLegendPosition: t < 0.5
-            ? horizontalLegendPosition
-            : endValue.horizontalLegendPosition,
-        verticalLegendPosition:
-            t < 0.5 ? verticalLegendPosition : endValue.verticalLegendPosition,
-        gridColor: Color.lerp(gridColor, endValue.gridColor, t),
+        showHorizontalValues: t < 0.5 ? showHorizontalValues : endValue.showHorizontalValues,
+        showVerticalValues: t < 0.5 ? showVerticalValues : endValue.showVerticalValues,
+        endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t) ?? endValue._endWithChart,
+        horizontalTextAlign: t < 0.5 ? horizontalTextAlign : endValue.horizontalTextAlign,
+        showTopHorizontalValue: t < 0.5 ? showTopHorizontalValue : endValue.showTopHorizontalValue,
+        verticalTextAlign: t < 0.5 ? verticalTextAlign : endValue.verticalTextAlign,
+        showVerticalGrid: t < 0.5 ? showVerticalGrid : endValue.showVerticalGrid,
+        showHorizontalGrid: t < 0.5 ? showHorizontalGrid : endValue.showHorizontalGrid,
+        horizontalAxisUnit: t < 0.5 ? horizontalAxisUnit : endValue.horizontalAxisUnit,
+        verticalAxisValueFromIndex: t < 0.5 ? verticalAxisValueFromIndex : endValue.verticalAxisValueFromIndex,
+        horizontalAxisValueFromValue: t < 0.5 ? horizontalAxisValueFromValue : endValue.horizontalAxisValueFromValue,
+        horizontalLegendPosition: t < 0.5 ? horizontalLegendPosition : endValue.horizontalLegendPosition,
+        verticalLegendPosition: t < 0.5 ? verticalLegendPosition : endValue.verticalLegendPosition,
+        gridColor: Color.lerp(gridColor, endValue.gridColor, t) ?? endValue.gridColor,
         dashArray: t < 0.5 ? dashArray : endValue.dashArray,
-        gridWidth: lerpDouble(gridWidth, endValue.gridWidth, t),
-        verticalAxisStep:
-            lerpDouble(verticalAxisStep, endValue.verticalAxisStep, t),
+        gridWidth: lerpDouble(gridWidth, endValue.gridWidth, t) ?? endValue.gridWidth,
+        verticalAxisStep: lerpDouble(verticalAxisStep, endValue.verticalAxisStep, t) ?? endValue.verticalAxisStep,
         horizontalAxisStep:
-            lerpDouble(horizontalAxisStep, endValue.horizontalAxisStep, t),
-        verticalValuesPadding: EdgeInsets.lerp(
-            verticalValuesPadding, endValue.verticalValuesPadding, t),
-        horizontalValuesPadding: EdgeInsets.lerp(
-            horizontalValuesPadding, endValue.horizontalValuesPadding, t),
+            lerpDouble(horizontalAxisStep, endValue.horizontalAxisStep, t) ?? endValue.horizontalAxisStep,
+        verticalValuesPadding: EdgeInsets.lerp(verticalValuesPadding, endValue.verticalValuesPadding, t),
+        horizontalValuesPadding: EdgeInsets.lerp(horizontalValuesPadding, endValue.horizontalValuesPadding, t),
         textStyle: TextStyle.lerp(textStyle, endValue.textStyle, t),
       );
     }

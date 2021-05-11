@@ -27,7 +27,7 @@ class ValueDecoration extends DecorationPainter {
     if (endValue is ValueDecoration) {
       return ValueDecoration(
         textStyle: TextStyle.lerp(textStyle, endValue.textStyle, t),
-        alignment: Alignment.lerp(alignment, endValue.alignment, t)!,
+        alignment: Alignment.lerp(alignment, endValue.alignment, t) ?? endValue.alignment,
         valueArrayIndex: endValue.valueArrayIndex,
       );
     }
@@ -42,8 +42,10 @@ class ValueDecoration extends DecorationPainter {
   }
 
   void _paintText(Canvas canvas, Size size, ChartItem item, double width, double verticalMultiplier, double minValue) {
+    final _itemMaxValue = item.max ?? 0.0;
+
     final _maxValuePainter = ValueDecoration.makeTextPainter(
-      '${item.max!.toInt()}',
+      '${_itemMaxValue.toInt()}',
       width,
       textStyle,
     );
@@ -52,7 +54,7 @@ class ValueDecoration extends DecorationPainter {
       canvas,
       Offset(
         width * alignment.x,
-        -item.max! * verticalMultiplier -
+        -_itemMaxValue * verticalMultiplier -
             minValue -
             _maxValuePainter.height * 0.2 +
             (_maxValuePainter.height * alignment.y),

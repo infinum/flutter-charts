@@ -28,7 +28,7 @@ class _ChartPainter extends CustomPainter {
 
     size = Size(
         size.width +
-            (size.width - ((_scrollableItemWidth + state.itemOptions.padding!.horizontal) * _listSize)) *
+            (size.width - ((_scrollableItemWidth + state.itemOptions.padding.horizontal) * _listSize)) *
                 state.behaviour._isScrollable,
         size.height);
 
@@ -49,8 +49,8 @@ class _ChartPainter extends CustomPainter {
     final _stack = 1 - state.behaviour._multiValueStacked;
     final _width = _itemWidth / max(1, state.data.stackSize * _stack);
 
-    final _stackWidth = _width -
-        ((state.itemOptions.multiValuePadding?.horizontal ?? 0.0) / max(1, state.data.stackSize * _stack)) * _stack;
+    final _stackWidth =
+        _width - (state.itemOptions.multiValuePadding.horizontal / max(1, state.data.stackSize * _stack)) * _stack;
 
     // Save, and translate the canvas so [0,0] is top left of the first item
     canvas.save();
@@ -74,8 +74,7 @@ class _ChartPainter extends CustomPainter {
         final _shouldStack = (key == 0) ? _stack : 0.0;
         // Go to next value only if we are not in the stack, or if this is the first item in the stack
         canvas.translate(
-            ((state.itemOptions.multiValuePadding?.left ?? 0.0) * _shouldStack) + _stackWidth * (key != 0 ? _stack : 1),
-            0.0);
+            (state.itemOptions.multiValuePadding.left * _shouldStack) + _stackWidth * (key != 0 ? _stack : 1), 0.0);
 
         // Draw the item on selected position
         _item.draw(
@@ -85,7 +84,7 @@ class _ChartPainter extends CustomPainter {
         );
 
         final _shouldStackLast = (key == state.data.stackSize - 1) ? _stack : 0.0;
-        canvas.translate((state.itemOptions.multiValuePadding?.right ?? 0.0) * _shouldStackLast, 0.0);
+        canvas.translate(state.itemOptions.multiValuePadding.right * _shouldStackLast, 0.0);
       });
     });
 

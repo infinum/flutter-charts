@@ -149,16 +149,16 @@ class TargetAreaDecoration extends DecorationPainter {
   final List<double>? dashArray;
 
   /// Width of the target area border
-  final double? lineWidth;
+  final double lineWidth;
 
   /// Color for target border
-  final Color? targetLineColor;
+  final Color targetLineColor;
 
   /// Min target value for the area
-  final double? targetMin;
+  final double targetMin;
 
   /// Max target value for the area
-  final double? targetMax;
+  final double targetMax;
 
   /// In case you want to change how value acts on the target value
   /// by default this is true, meaning that when the target is the same
@@ -166,7 +166,7 @@ class TargetAreaDecoration extends DecorationPainter {
   final bool isTargetInclusive;
 
   /// Color item should take once target is missed
-  final Color? colorOverTarget;
+  final Color colorOverTarget;
 
   /// Padding for target area
   final EdgeInsets areaPadding;
@@ -199,8 +199,8 @@ class TargetAreaDecoration extends DecorationPainter {
       canvas.drawRRect(
         RRect.fromRectAndCorners(
           Rect.fromPoints(
-            Offset(0.0, -scale * targetMin! + _minValue),
-            Offset(_size.width - areaPadding.horizontal, -scale * targetMax! + _minValue),
+            Offset(0.0, -scale * targetMin + _minValue),
+            Offset(_size.width - areaPadding.horizontal, -scale * targetMax + _minValue),
           ),
           bottomLeft: targetAreaRadius?.bottomLeft ?? Radius.zero,
           bottomRight: targetAreaRadius?.bottomRight ?? Radius.zero,
@@ -216,8 +216,8 @@ class TargetAreaDecoration extends DecorationPainter {
     final _rectPath = Path()
       ..addRRect(RRect.fromRectAndCorners(
         Rect.fromPoints(
-          Offset(0.0, -scale * targetMin! + _minValue),
-          Offset(_size.width, -scale * targetMax! + _minValue),
+          Offset(0.0, -scale * targetMin + _minValue),
+          Offset(_size.width, -scale * targetMax + _minValue),
         ),
         bottomLeft: targetAreaRadius?.bottomLeft ?? Radius.zero,
         bottomRight: targetAreaRadius?.bottomRight ?? Radius.zero,
@@ -229,16 +229,16 @@ class TargetAreaDecoration extends DecorationPainter {
       canvas.drawPath(
         dashPath(_rectPath, dashArray: CircularIntervalList(dashArray!)),
         Paint()
-          ..color = targetLineColor!
-          ..strokeWidth = lineWidth!
+          ..color = targetLineColor
+          ..strokeWidth = lineWidth
           ..style = PaintingStyle.stroke,
       );
     } else {
       canvas.drawPath(
         _rectPath,
         Paint()
-          ..color = targetLineColor!
-          ..strokeWidth = lineWidth!
+          ..color = targetLineColor
+          ..strokeWidth = lineWidth
           ..style = PaintingStyle.stroke,
       );
     }
@@ -250,15 +250,15 @@ class TargetAreaDecoration extends DecorationPainter {
   TargetAreaDecoration animateTo(DecorationPainter endValue, double t) {
     if (endValue is TargetAreaDecoration) {
       return TargetAreaDecoration(
-        targetLineColor: Color.lerp(targetLineColor, endValue.targetLineColor, t),
-        lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t),
+        targetLineColor: Color.lerp(targetLineColor, endValue.targetLineColor, t) ?? endValue.targetLineColor,
+        lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t) ?? endValue.lineWidth,
         dashArray: t < 0.5 ? dashArray : endValue.dashArray,
         targetAreaFillColor: Color.lerp(targetAreaFillColor, endValue.targetAreaFillColor, t),
         targetAreaRadius: BorderRadius.lerp(targetAreaRadius, endValue.targetAreaRadius, t),
         areaPadding: EdgeInsets.lerp(areaPadding, endValue.areaPadding, t)!,
-        targetMin: lerpDouble(targetMin, endValue.targetMin, t),
-        targetMax: lerpDouble(targetMax, endValue.targetMax, t),
-        colorOverTarget: Color.lerp(colorOverTarget, endValue.colorOverTarget, t),
+        targetMin: lerpDouble(targetMin, endValue.targetMin, t) ?? endValue.targetMin,
+        targetMax: lerpDouble(targetMax, endValue.targetMax, t) ?? endValue.targetMax,
+        colorOverTarget: Color.lerp(colorOverTarget, endValue.colorOverTarget, t) ?? endValue.colorOverTarget,
       );
     }
 
@@ -267,6 +267,6 @@ class TargetAreaDecoration extends DecorationPainter {
 
   @override
   EdgeInsets marginNeeded() {
-    return EdgeInsets.symmetric(horizontal: lineWidth! / 2);
+    return EdgeInsets.symmetric(horizontal: lineWidth / 2);
   }
 }

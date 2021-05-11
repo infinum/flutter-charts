@@ -123,7 +123,7 @@ class ChartState<T> {
   void _initDecorations() => _allDecorations.forEach((decoration) => decoration.initDecoration(this));
 
   /// Get total padding needed by all decorations
-  void _getDecorationsMargin() => _allDecorations.forEach((element) => defaultMargin += element.marginNeeded()!);
+  void _getDecorationsMargin() => _allDecorations.forEach((element) => defaultMargin += element.marginNeeded());
 
   /// Get total margin needed by all decorations
   void _getDecorationsPadding() => _allDecorations.forEach((element) => defaultPadding += element.paddingNeeded());

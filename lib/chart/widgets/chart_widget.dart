@@ -30,7 +30,7 @@ class _ChartWidget<T> extends StatelessWidget {
 
         final _size = Size(
             _width +
-                (((_wantedItemWidth + (state.itemOptions.padding?.horizontal ?? 0.0)) * _listSize) - _width) *
+                (((_wantedItemWidth + state.itemOptions.padding.horizontal) * _listSize) - _width) *
                     state.behaviour._isScrollable,
             _height);
         final _chart = CustomPaint(

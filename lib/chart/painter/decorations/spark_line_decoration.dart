@@ -126,8 +126,10 @@ class SparkLineDecoration extends DecorationPainter {
       final _p2 = _points[(i + 1) % _points.length];
       final controlPointX = _p1.dx + ((_p2.dx - _p1.dx) / 2) * _smoothPoints;
       final _mid = (_p1 + _p2) / 2;
-      _path.cubicTo(controlPointX, _p1.dy, lerpDouble(_mid.dx, controlPointX, _smoothPoints)!,
-          lerpDouble(_mid.dy, _p2.dy, _smoothPoints)!, _p2.dx, _p2.dy);
+      final _firstLerpValue = lerpDouble(_mid.dx, controlPointX, _smoothPoints) ?? 0.0;
+      final _secondLerpValue = lerpDouble(_mid.dy, _p2.dy, _smoothPoints) ?? 0.0;
+
+      _path.cubicTo(controlPointX, _p1.dy, _firstLerpValue, _secondLerpValue, _p2.dx, _p2.dy);
 
       if (i == _points.length - 2) {
         _path.lineTo(_p2.dx, _p2.dy);

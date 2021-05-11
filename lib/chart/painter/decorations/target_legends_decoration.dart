@@ -22,10 +22,10 @@ class TargetLineLegendDecoration extends DecorationPainter {
   final TextStyle legendStyle;
 
   /// Label padding
-  final EdgeInsets? padding;
+  final EdgeInsets padding;
 
   /// Target value where to show the label
-  final double? legendTarget;
+  final double legendTarget;
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
@@ -51,7 +51,7 @@ class TargetLineLegendDecoration extends DecorationPainter {
       );
 
     canvas.translate(
-        -legendStyle.fontSize! * 1.5, -scale * legendTarget! + _minValue + _textPainter.width + padding!.top);
+        -(legendStyle.fontSize ?? 0) * 1.5, -scale * legendTarget + _minValue + _textPainter.width + padding.top);
     canvas.rotate(pi * 1.5);
 
     _textPainter.paint(
@@ -64,17 +64,17 @@ class TargetLineLegendDecoration extends DecorationPainter {
 
   @override
   EdgeInsets marginNeeded() {
-    return EdgeInsets.only(left: legendStyle.fontSize! * 2);
+    return EdgeInsets.only(left: (legendStyle.fontSize ?? 0) * 2);
   }
 
   @override
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
     if (endValue is TargetLineLegendDecoration) {
       return TargetLineLegendDecoration(
-        legendStyle: TextStyle.lerp(legendStyle, endValue.legendStyle, t)!,
+        legendStyle: TextStyle.lerp(legendStyle, endValue.legendStyle, t) ?? endValue.legendStyle,
         legendDescription: endValue.legendDescription,
-        padding: EdgeInsets.lerp(padding, endValue.padding, t),
-        legendTarget: lerpDouble(legendTarget, endValue.legendTarget, t),
+        padding: EdgeInsets.lerp(padding, endValue.padding, t) ?? endValue.padding,
+        legendTarget: lerpDouble(legendTarget, endValue.legendTarget, t) ?? endValue.legendTarget,
       );
     }
 

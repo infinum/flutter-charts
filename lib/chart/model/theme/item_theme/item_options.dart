@@ -87,7 +87,7 @@ class ItemOptions {
     }
 
     if (colorForKey != null) {
-      return colorForKey!(item, index);
+      return colorForKey?.call(item, index) ?? color;
     }
 
     return _getColorForValue(item.max, item.min);
@@ -95,7 +95,7 @@ class ItemOptions {
 
   Color _getColorForValue(double? max, [double? min]) {
     if (colorForValue != null) {
-      return colorForValue!(color, max, min);
+      return colorForValue?.call(color, max, min) ?? color;
     }
 
     return color;
