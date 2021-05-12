@@ -1,7 +1,8 @@
 part of charts_painter;
 
 /// Bar painter
-GeometryPainter<T> barPainter<T>(ChartItem<T> item, ChartState<T> state) => BarGeometryPainter<T>(item, state);
+GeometryPainter<T> barPainter<T>(ChartItem<T> item, ChartState<T> state) =>
+    BarGeometryPainter<T>(item, state);
 
 /// Extension options for bar items
 /// [geometryPainter] is set to [BarGeometryPainter]
@@ -49,17 +50,25 @@ class BarItemOptions extends ItemOptions {
     final _itemColor = Color.lerp(color, endValue.color, t) ?? Colors.red;
 
     return BarItemOptions(
-      gradient: Gradient.lerp(gradient, endValue is BarItemOptions ? endValue.gradient : null, t),
+      gradient: Gradient.lerp(
+          gradient, endValue is BarItemOptions ? endValue.gradient : null, t),
       color: _itemColor,
       colorForKey: ColorForKeyLerp.lerp(this, endValue, t),
       colorForValue: ColorForValueLerp.lerp(this, endValue, t),
       padding: EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero,
-      multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero,
-      radius: BorderRadius.lerp(radius, endValue is BarItemOptions ? endValue.radius : null, t),
+      multiValuePadding:
+          EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ??
+              EdgeInsets.zero,
+      radius: BorderRadius.lerp(
+          radius, endValue is BarItemOptions ? endValue.radius : null, t),
       maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
       minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
-      border: BorderSide.lerp(border ?? BorderSide.none,
-          endValue is BarItemOptions ? (endValue.border ?? BorderSide.none) : BorderSide.none, t),
+      border: BorderSide.lerp(
+          border ?? BorderSide.none,
+          endValue is BarItemOptions
+              ? (endValue.border ?? BorderSide.none)
+              : BorderSide.none,
+          t),
     );
   }
 
@@ -69,7 +78,8 @@ class BarItemOptions extends ItemOptions {
 
     if (gradient != null) {
       // Compiler complains that gradient could be null. But unless if fails us that will never be null.
-      _paint.shader = gradient!.createShader(Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
+      _paint.shader = gradient!.createShader(
+          Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
     }
 
     return _paint;

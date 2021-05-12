@@ -34,14 +34,17 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
     final _verticalMultiplier = size.height / _maxValue;
     final _minValue = state.data.minValue * _verticalMultiplier;
 
-    final _radius = options is BarItemOptions ? (options.radius ?? BorderRadius.zero) : BorderRadius.zero;
+    final _radius = options is BarItemOptions
+        ? (options.radius ?? BorderRadius.zero)
+        : BorderRadius.zero;
 
     var _padding = state.itemOptions.padding;
 
     final _itemWidth = itemWidth(size);
 
     if (size.width - _itemWidth - _padding.horizontal >= 0) {
-      _padding = EdgeInsets.symmetric(horizontal: (size.width - _itemWidth) / 2);
+      _padding =
+          EdgeInsets.symmetric(horizontal: (size.width - _itemWidth) / 2);
     }
 
     final _itemMaxValue = item.max ?? 0.0;
@@ -57,17 +60,22 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
         Rect.fromPoints(
           Offset(
             _padding.left,
-            max(state.data.minValue, item.min ?? 0.0) * _verticalMultiplier - _minValue,
+            max(state.data.minValue, item.min ?? 0.0) * _verticalMultiplier -
+                _minValue,
           ),
           Offset(
             _itemWidth + _padding.left,
             _itemMaxValue * _verticalMultiplier - _minValue,
           ),
         ),
-        bottomLeft: _itemMaxValue.isNegative ? _radius.topLeft : _radius.bottomLeft,
-        bottomRight: _itemMaxValue.isNegative ? _radius.topRight : _radius.bottomRight,
-        topLeft: _itemMaxValue.isNegative ? _radius.bottomLeft : _radius.topLeft,
-        topRight: _itemMaxValue.isNegative ? _radius.bottomRight : _radius.topRight,
+        bottomLeft:
+            _itemMaxValue.isNegative ? _radius.topLeft : _radius.bottomLeft,
+        bottomRight:
+            _itemMaxValue.isNegative ? _radius.topRight : _radius.bottomRight,
+        topLeft:
+            _itemMaxValue.isNegative ? _radius.bottomLeft : _radius.topLeft,
+        topRight:
+            _itemMaxValue.isNegative ? _radius.bottomRight : _radius.topRight,
       ),
       paint,
     );
@@ -85,17 +93,22 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
           Rect.fromPoints(
             Offset(
               _padding.left,
-              max(state.data.minValue, item.min ?? 0.0) * _verticalMultiplier - _minValue,
+              max(state.data.minValue, item.min ?? 0.0) * _verticalMultiplier -
+                  _minValue,
             ),
             Offset(
               _itemWidth + _padding.left,
               _itemMaxValue * _verticalMultiplier - _minValue,
             ),
           ),
-          bottomLeft: _itemMaxValue.isNegative ? _radius.topLeft : _radius.bottomLeft,
-          bottomRight: _itemMaxValue.isNegative ? _radius.topRight : _radius.bottomRight,
-          topLeft: _itemMaxValue.isNegative ? _radius.bottomLeft : _radius.topLeft,
-          topRight: _itemMaxValue.isNegative ? _radius.bottomRight : _radius.topRight,
+          bottomLeft:
+              _itemMaxValue.isNegative ? _radius.topLeft : _radius.bottomLeft,
+          bottomRight:
+              _itemMaxValue.isNegative ? _radius.topRight : _radius.bottomRight,
+          topLeft:
+              _itemMaxValue.isNegative ? _radius.bottomLeft : _radius.topLeft,
+          topRight:
+              _itemMaxValue.isNegative ? _radius.bottomRight : _radius.topRight,
         ),
         _borderPaint,
       );

@@ -42,7 +42,8 @@ class SelectedItemDecoration extends DecorationPainter {
         'Selected key is not in the list!\nCheck the `selectedKey` you are passing.');
   }
 
-  void _drawText(Canvas canvas, Size size, double width, double totalWidth, ChartState state) {
+  void _drawText(Canvas canvas, Size size, double width, double totalWidth,
+      ChartState state) {
     final _item = selectedItem;
     if (_item == null) {
       return;
@@ -100,20 +101,25 @@ class SelectedItemDecoration extends DecorationPainter {
     // Save, and translate the canvas so [0,0] is top left of item at [index] position
     canvas.save();
     canvas.translate(
-      state.defaultPadding.left + (_itemWidth * _item) + state.defaultMargin.left,
+      state.defaultPadding.left +
+          (_itemWidth * _item) +
+          state.defaultMargin.left,
       size.height + state.defaultMargin.top + state.defaultPadding.top,
     );
 
     _drawItem(canvas, Size(_itemWidth, -size.height), state);
-    _drawText(canvas, Size(_itemWidth, -size.height), _itemWidth, size.width, state);
+    _drawText(
+        canvas, Size(_itemWidth, -size.height), _itemWidth, size.width, state);
 
     // Restore canvas
     canvas.restore();
   }
 
   void _drawItem(Canvas canvas, Size size, ChartState state) {
-    final _itemWidth = max(state.itemOptions.minBarWidth ?? 0.0,
-        min(state.itemOptions.maxBarWidth ?? double.infinity, size.width - state.itemOptions.padding.horizontal));
+    final _itemWidth = max(
+        state.itemOptions.minBarWidth ?? 0.0,
+        min(state.itemOptions.maxBarWidth ?? double.infinity,
+            size.width - state.itemOptions.padding.horizontal));
 
     const _size = 2.0;
     final _maxValue = state.data.maxValue - state.data.minValue;
@@ -182,12 +188,20 @@ class SelectedItemDecoration extends DecorationPainter {
     if (endValue is SelectedItemDecoration) {
       return SelectedItemDecoration(
         animate
-            ? (lerpDouble(selectedItem?.toDouble(), endValue.selectedItem?.toDouble(), t) ?? 0).round()
+            ? (lerpDouble(selectedItem?.toDouble(),
+                        endValue.selectedItem?.toDouble(), t) ??
+                    0)
+                .round()
             : endValue.selectedItem,
-        selectedColor: Color.lerp(selectedColor, endValue.selectedColor, t) ?? endValue.selectedColor,
-        backgroundColor: Color.lerp(backgroundColor, endValue.backgroundColor, t) ?? endValue.backgroundColor,
-        textColor: Color.lerp(textColor, endValue.textColor, t) ?? endValue.textColor,
-        textSize: lerpDouble(textSize, endValue.textSize, t) ?? endValue.textSize,
+        selectedColor: Color.lerp(selectedColor, endValue.selectedColor, t) ??
+            endValue.selectedColor,
+        backgroundColor:
+            Color.lerp(backgroundColor, endValue.backgroundColor, t) ??
+                endValue.backgroundColor,
+        textColor:
+            Color.lerp(textColor, endValue.textColor, t) ?? endValue.textColor,
+        textSize:
+            lerpDouble(textSize, endValue.textSize, t) ?? endValue.textSize,
         animate: endValue.animate,
         selectedArrayIndex: endValue.selectedArrayIndex,
       );

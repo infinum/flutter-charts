@@ -17,7 +17,8 @@ class ChartBehaviour {
   })  : _isScrollable = isScrollable ? 1.0 : 0.0,
         _multiValueStacked = multiItemStack ? 1.0 : 0.0;
 
-  ChartBehaviour._lerp(this._isScrollable, this.onItemClicked, this._multiValueStacked);
+  ChartBehaviour._lerp(
+      this._isScrollable, this.onItemClicked, this._multiValueStacked);
 
   final double _isScrollable;
   final double _multiValueStacked;
@@ -40,8 +41,10 @@ class ChartBehaviour {
   static ChartBehaviour lerp(ChartBehaviour a, ChartBehaviour b, double t) {
     // This values should never return null, this is for null-safety
     // But if it somehow does occur, then revert to default values
-    final _scrollableLerp = lerpDouble(a._isScrollable, b._isScrollable, t) ?? 0.0;
-    final _multiStackLerp = lerpDouble(a._multiValueStacked, b._multiValueStacked, t) ?? 1.0;
+    final _scrollableLerp =
+        lerpDouble(a._isScrollable, b._isScrollable, t) ?? 0.0;
+    final _multiStackLerp =
+        lerpDouble(a._multiValueStacked, b._multiValueStacked, t) ?? 1.0;
 
     return ChartBehaviour._lerp(
       _scrollableLerp,

@@ -57,28 +57,38 @@ class _ChartState<T> extends AnimatedWidgetBaseState<AnimatedChart<T>> {
 
   @override
   void forEachTween(visitor) {
-    _chartStateTween =
-        visitor(_chartStateTween, widget.state, (dynamic value) => ChartStateTween<T>(begin: value as ChartState<T?>))
-            as ChartStateTween<T>?;
-    _heightTween = visitor(_heightTween, widget.height, (dynamic value) => Tween<double>(begin: value as double?))
+    _chartStateTween = visitor(
+            _chartStateTween,
+            widget.state,
+            (dynamic value) =>
+                ChartStateTween<T>(begin: value as ChartState<T?>))
+        as ChartStateTween<T>?;
+    _heightTween = visitor(_heightTween, widget.height,
+            (dynamic value) => Tween<double>(begin: value as double?))
         as Tween<double?>?;
-    _widthTween = visitor(_widthTween, widget.width, (dynamic value) => Tween<double>(begin: value as double?))
+    _widthTween = visitor(_widthTween, widget.width,
+            (dynamic value) => Tween<double>(begin: value as double?))
         as Tween<double?>?;
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder description) {
     super.debugFillProperties(description);
-    description.add(DiagnosticsProperty<ChartStateTween>('state', _chartStateTween, defaultValue: null));
-    description.add(DiagnosticsProperty<Tween<double?>>('height', _heightTween, defaultValue: null));
-    description.add(DiagnosticsProperty<Tween<double?>>('width', _widthTween, defaultValue: null));
+    description.add(DiagnosticsProperty<ChartStateTween>(
+        'state', _chartStateTween,
+        defaultValue: null));
+    description.add(DiagnosticsProperty<Tween<double?>>('height', _heightTween,
+        defaultValue: null));
+    description.add(DiagnosticsProperty<Tween<double?>>('width', _widthTween,
+        defaultValue: null));
   }
 }
 
 /// Tween for animating between two different [ChartState]'s
 class ChartStateTween<T> extends Tween<ChartState<T?>?> {
   /// Create [ChartStateTween] for [ImplicitlyAnimatedWidget]
-  ChartStateTween({ChartState<T?>? begin, ChartState<T?>? end}) : super(begin: begin, end: end);
+  ChartStateTween({ChartState<T?>? begin, ChartState<T?>? end})
+      : super(begin: begin, end: end);
 
   @override
   ChartState<T?>? lerp(double t) {

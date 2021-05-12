@@ -12,23 +12,29 @@ class _ChartPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     if (_debugBoundary) {
       canvas.drawRect(
-          Rect.fromPoints(Offset.zero, Offset(size.width, size.height)).inflate(2),
+          Rect.fromPoints(Offset.zero, Offset(size.width, size.height))
+              .inflate(2),
           Paint()
             ..color = Colors.red.withOpacity(0.4)
             ..strokeWidth = 4
             ..style = PaintingStyle.stroke);
 
       canvas.drawRect(
-          Rect.fromPoints(Offset.zero, Offset(size.width, size.height)), Paint()..color = Colors.red.withOpacity(0.1));
+          Rect.fromPoints(Offset.zero, Offset(size.width, size.height)),
+          Paint()..color = Colors.red.withOpacity(0.1));
     }
 
-    final _scrollableItemWidth = max(state.itemOptions.minBarWidth ?? 0.0, state.itemOptions.maxBarWidth ?? 0.0);
+    final _scrollableItemWidth = max(state.itemOptions.minBarWidth ?? 0.0,
+        state.itemOptions.maxBarWidth ?? 0.0);
 
     final _listSize = state.data.listSize;
 
     size = Size(
         size.width +
-            (size.width - ((_scrollableItemWidth + state.itemOptions.padding.horizontal) * _listSize)) *
+            (size.width -
+                    ((_scrollableItemWidth +
+                            state.itemOptions.padding.horizontal) *
+                        _listSize)) *
                 state.behaviour._isScrollable,
         size.height);
 
@@ -41,7 +47,8 @@ class _ChartPainter extends CustomPainter {
     /// Final usable space for one item in the chart
     final _itemWidth = _size.width / _listSize;
 
-    void _drawDecoration(DecorationPainter decoration) => decoration.draw(canvas, _paddingSize, state);
+    void _drawDecoration(DecorationPainter decoration) =>
+        decoration.draw(canvas, _paddingSize, state);
 
     // First draw background decorations
     state.backgroundDecorations.forEach(_drawDecoration);
@@ -49,8 +56,10 @@ class _ChartPainter extends CustomPainter {
     final _stack = 1 - state.behaviour._multiValueStacked;
     final _width = _itemWidth / max(1, state.data.stackSize * _stack);
 
-    final _stackWidth =
-        _width - (state.itemOptions.multiValuePadding.horizontal / max(1, state.data.stackSize * _stack)) * _stack;
+    final _stackWidth = _width -
+        (state.itemOptions.multiValuePadding.horizontal /
+                max(1, state.data.stackSize * _stack)) *
+            _stack;
 
     // Save, and translate the canvas so [0,0] is top left of the first item
     canvas.save();
@@ -74,17 +83,22 @@ class _ChartPainter extends CustomPainter {
         final _shouldStack = (key == 0) ? _stack : 0.0;
         // Go to next value only if we are not in the stack, or if this is the first item in the stack
         canvas.translate(
-            (state.itemOptions.multiValuePadding.left * _shouldStack) + _stackWidth * (key != 0 ? _stack : 1), 0.0);
+            (state.itemOptions.multiValuePadding.left * _shouldStack) +
+                _stackWidth * (key != 0 ? _stack : 1),
+            0.0);
 
         // Draw the item on selected position
         _item.draw(
           canvas,
           Size(_stackWidth, -_size.height),
-          state.itemOptions.getPaintForItem(_item.item, Size(_stackWidth, -_size.height), key),
+          state.itemOptions.getPaintForItem(
+              _item.item, Size(_stackWidth, -_size.height), key),
         );
 
-        final _shouldStackLast = (key == state.data.stackSize - 1) ? _stack : 0.0;
-        canvas.translate(state.itemOptions.multiValuePadding.right * _shouldStackLast, 0.0);
+        final _shouldStackLast =
+            (key == state.data.stackSize - 1) ? _stack : 0.0;
+        canvas.translate(
+            state.itemOptions.multiValuePadding.right * _shouldStackLast, 0.0);
       });
     });
 
