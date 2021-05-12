@@ -19,10 +19,10 @@ class ChartState<T> {
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const <DecorationPainter>[],
     this.foregroundDecorations = const <DecorationPainter>[],
-  }) : assert(data.isNotEmpty, 'No items!') {
+  })  : assert(data.isNotEmpty, 'No items!'),
+        defaultPadding = EdgeInsets.zero,
+        defaultMargin = EdgeInsets.zero {
     /// Set default padding and margin, decorations padding and margins will be added to this value
-    defaultPadding = EdgeInsets.zero;
-    defaultMargin = EdgeInsets.zero;
     _setUpDecorations();
   }
 
@@ -93,11 +93,11 @@ class ChartState<T> {
 
   /// Margin of chart drawing area where items are drawn. This is so decorations
   /// can be placed outside of the chart drawing area without actually scaling the chart.
-  late final EdgeInsets defaultMargin;
+  EdgeInsets defaultMargin;
 
   /// Padding is used for decorations that want other decorations to be drawn on them.
   /// Unlike [defaultMargin] decorations can draw inside the padding area.
-  late final EdgeInsets defaultPadding;
+  EdgeInsets defaultPadding;
 
   /// Get all decorations. This will return list of [backgroundDecorations] and [foregroundDecorations] as one list.
   List<DecorationPainter> get _allDecorations => [...foregroundDecorations, ...backgroundDecorations];

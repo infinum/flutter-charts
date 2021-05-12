@@ -14,7 +14,7 @@ class SelectedItemDecoration extends DecorationPainter {
   });
 
   /// Index of selected item
-  final int selectedItem;
+  final int? selectedItem;
 
   /// Color of selected indicator and text background
   final Color selectedColor;
@@ -43,7 +43,12 @@ class SelectedItemDecoration extends DecorationPainter {
   }
 
   void _drawText(Canvas canvas, Size size, double width, double totalWidth, ChartState state) {
-    final _selectedItem = state.data.items[selectedArrayIndex][selectedItem];
+    final _item = selectedItem;
+    if (_item == null) {
+      return;
+    }
+
+    final _selectedItem = state.data.items[selectedArrayIndex][_item];
 
     final _maxValuePainter = ValueDecoration.makeTextPainter(
       _selectedItem.max?.toStringAsFixed(2) ?? '',
@@ -83,8 +88,9 @@ class SelectedItemDecoration extends DecorationPainter {
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
     final _listSize = state.data.listSize;
+    final _item = selectedItem;
 
-    if (_listSize <= selectedItem || selectedItem.isNegative) {
+    if (_item == null || _listSize <= _item || _item.isNegative) {
       return;
     }
 
@@ -94,7 +100,7 @@ class SelectedItemDecoration extends DecorationPainter {
     // Save, and translate the canvas so [0,0] is top left of item at [index] position
     canvas.save();
     canvas.translate(
-      state.defaultPadding.left + (_itemWidth * selectedItem) + state.defaultMargin.left,
+      state.defaultPadding.left + (_itemWidth * _item) + state.defaultMargin.left,
       size.height + state.defaultMargin.top + state.defaultPadding.top,
     );
 
@@ -113,7 +119,12 @@ class SelectedItemDecoration extends DecorationPainter {
     final _maxValue = state.data.maxValue - state.data.minValue;
     final scale = size.height / _maxValue;
 
-    final _item = state.data.items[selectedArrayIndex][selectedItem];
+    final _selectedItem = selectedItem;
+    if (_selectedItem == null) {
+      return;
+    }
+
+    final _item = state.data.items[selectedArrayIndex][_selectedItem];
 
     final _itemMaxValue = _item.max ?? 0.0;
     final _itemMinValue = _item.min ?? 0.0;
@@ -171,7 +182,7 @@ class SelectedItemDecoration extends DecorationPainter {
     if (endValue is SelectedItemDecoration) {
       return SelectedItemDecoration(
         animate
-            ? (lerpDouble(selectedItem.toDouble(), endValue.selectedItem.toDouble(), t) ?? 0).round()
+            ? (lerpDouble(selectedItem?.toDouble(), endValue.selectedItem?.toDouble(), t) ?? 0).round()
             : endValue.selectedItem,
         selectedColor: Color.lerp(selectedColor, endValue.selectedColor, t) ?? endValue.selectedColor,
         backgroundColor: Color.lerp(backgroundColor, endValue.backgroundColor, t) ?? endValue.backgroundColor,
