@@ -101,14 +101,14 @@ packages:
       name: path_drawing
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.0-nullsafety.0"
+    version: "0.5.1"
   path_parsing:
     dependency: transitive
     description:
       name: path_parsing
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.0-nullsafety.0"
+    version: "0.2.1"
   sky_engine:
     dependency: transitive
     description: flutter
