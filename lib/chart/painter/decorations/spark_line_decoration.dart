@@ -82,6 +82,7 @@ class SparkLineDecoration extends DecorationPainter {
     final _itemWidth = _size.width / _listSize;
 
     if (gradient != null) {
+      // Compiler complains that gradient could be null. But unless if fails us that will never be null.
       _paint.shader = gradient!.createShader(Rect.fromPoints(Offset.zero, Offset(_size.width, -_size.height)));
     }
 

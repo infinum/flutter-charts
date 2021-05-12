@@ -59,6 +59,7 @@ class BubbleItemOptions extends ItemOptions {
     final _paint = super.getPaintForItem(item, size, key);
 
     if (gradient != null) {
+      // Compiler complains that gradient could be null. But unless if fails us that will never be null.
       _paint.shader = gradient!.createShader(Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
     }
 
