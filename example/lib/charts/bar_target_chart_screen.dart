@@ -21,7 +21,6 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
   double targetMin;
   bool _showValues = false;
   bool _smoothPoints = false;
-  bool _colorfulBars = false;
   bool _showLine = false;
   int minItems = 6;
 
@@ -34,12 +33,9 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
   void _updateValues() {
     final Random _rand = Random();
     final double _difference = _rand.nextDouble() * 10;
-    targetMax = 5 +
-        ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25))
-            .roundToDouble();
+    targetMax = 5 + ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25)).roundToDouble();
     _values.addAll(List.generate(minItems, (index) {
-      return BarValue<void>(
-          targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
+      return BarValue<void>(targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
     }));
     targetMin = targetMax - ((_rand.nextDouble() * 3) + (targetMax * 0.2));
   }
@@ -50,8 +46,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
         return _values[index];
       }
 
-      return BarValue<void>(
-          targetMax * 0.4 + Random().nextDouble() * targetMax * 0.9);
+      return BarValue<void>(targetMax * 0.4 + Random().nextDouble() * targetMax * 0.9);
     });
   }
 
@@ -97,39 +92,26 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                     horizontalAxisStep: 1,
                     verticalAxisStep: 1,
                     textStyle: Theme.of(context).textTheme.caption,
-                    gridColor: Theme.of(context)
-                        .colorScheme
-                        .primaryVariant
-                        .withOpacity(0.2),
+                    gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                   ),
                   _targetDecoration,
                 ],
                 foregroundDecorations: [
                   SparkLineDecoration(
                     lineWidth: 4.0,
-                    lineColor: Theme.of(context)
-                        .primaryColor
-                        .withOpacity(_showLine ? 1.0 : 0.0),
+                    lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
                     smoothPoints: _smoothPoints,
                   ),
                   TargetLineLegendDecoration(
                     legendDescription: 'Target line 👇',
                     legendTarget: targetMax,
-                    legendStyle: Theme.of(context)
-                        .textTheme
-                        .overline
-                        .copyWith(fontSize: 14),
+                    legendStyle: Theme.of(context).textTheme.overline.copyWith(fontSize: 14),
                     padding: EdgeInsets.only(top: -8),
                   ),
                   BorderDecoration(
                     endWithChart: true,
-                    sidesWidth: Border.symmetric(
-                        vertical: BorderSide(width: 2.0),
-                        horizontal: BorderSide(width: 4.0)),
-                    color: Theme.of(context)
-                        .colorScheme
-                        .primaryVariant
-                        .withOpacity(0.4),
+                    sidesWidth: Border.symmetric(vertical: BorderSide(width: 2.0), horizontal: BorderSide(width: 4.0)),
+                    color: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.4),
                   ),
                 ],
               ),
@@ -164,15 +146,6 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                   onChanged: (value) {
                     setState(() {
                       _showValues = value;
-                    });
-                  },
-                ),
-                ToggleItem(
-                  value: _colorfulBars,
-                  title: 'Rainbow bar items',
-                  onChanged: (value) {
-                    setState(() {
-                      _colorfulBars = value;
                     });
                   },
                 ),
