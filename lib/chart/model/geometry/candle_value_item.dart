@@ -2,7 +2,7 @@ part of charts_painter;
 
 /// Candle value items have min and max set up
 /// Values can go negative
-class CandleValue<T> extends ChartItem<T> {
+class CandleValue<T> extends ChartItem<T?> {
   /// Simple candle value with min and max values
   CandleValue(double min, double max) : super(null, min, max);
 

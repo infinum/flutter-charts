@@ -15,11 +15,11 @@ class BubbleItemOptions extends ItemOptions {
   const BubbleItemOptions({
     EdgeInsets padding = EdgeInsets.zero,
     EdgeInsets multiValuePadding = EdgeInsets.zero,
-    double maxBarWidth,
-    double minBarWidth,
+    double? maxBarWidth,
+    double? minBarWidth,
     Color color = Colors.red,
-    ColorForValue colorForValue,
-    ColorForKey colorForKey,
+    ColorForValue? colorForValue,
+    ColorForKey? colorForKey,
     this.gradient,
     this.border,
   }) : super(
@@ -34,22 +34,23 @@ class BubbleItemOptions extends ItemOptions {
         );
 
   /// Set gradient for each bubble item
-  final Gradient gradient;
+  final Gradient? gradient;
 
   /// Draw border on bubble items
-  final BorderSide border;
+  final BorderSide? border;
 
   @override
   ItemOptions animateTo(ItemOptions endValue, double t) {
     return BubbleItemOptions(
       gradient: Gradient.lerp(gradient,
           endValue is BubbleItemOptions ? endValue.gradient : null, t),
-      color: Color.lerp(color, endValue.color, t),
+      color: Color.lerp(color, endValue.color, t) ?? endValue.color,
       colorForKey: ColorForKeyLerp.lerp(this, endValue, t),
       colorForValue: ColorForValueLerp.lerp(this, endValue, t),
-      padding: EdgeInsets.lerp(padding, endValue.padding, t),
+      padding: EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero,
       multiValuePadding:
-          EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t),
+          EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ??
+              EdgeInsets.zero,
       maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
       minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
       border: BorderSide.lerp(
@@ -62,13 +63,13 @@ class BubbleItemOptions extends ItemOptions {
   }
 
   @override
-  Paint getPaintForItem(ChartItem<Object> item, Size size, int key) {
+  Paint getPaintForItem(ChartItem item, Size size, int key) {
     final _paint = super.getPaintForItem(item, size, key);
 
     if (gradient != null) {
-      _paint
-        ..shader = gradient.createShader(
-            Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
+      // Compiler complains that gradient could be null. But unless if fails us that will never be null.
+      _paint.shader = gradient!.createShader(
+          Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
     }
 
     return _paint;

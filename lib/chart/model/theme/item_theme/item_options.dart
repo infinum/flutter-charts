@@ -3,11 +3,11 @@ part of charts_painter;
 /// Item painter, use [barPainter] or [bubblePainter].
 /// Custom painter can also be added by extending [GeometryPainter]
 typedef ChartGeometryPainter<T> = GeometryPainter<T> Function(
-    ChartItem<T> item, ChartState state);
+    ChartItem<T?> item, ChartState state);
 
 /// Get color for current item value
-typedef ColorForValue = Color Function(Color defaultColor, double value,
-    [double min]);
+typedef ColorForValue = Color Function(Color defaultColor, double? value,
+    [double? min]);
 
 /// Get color gor current item key (multiple lists)
 typedef ColorForKey = Color Function(ChartItem item, int index);
@@ -20,7 +20,7 @@ class ItemOptions {
   /// Default constructor for ItemOptions
   /// It's recommended to make/use custom item options for custom painters.
   const ItemOptions({
-    @required this.geometryPainter,
+    required this.geometryPainter,
     this.padding = EdgeInsets.zero,
     this.multiValuePadding = EdgeInsets.zero,
     this.maxBarWidth,
@@ -42,16 +42,16 @@ class ItemOptions {
   final Color color;
 
   /// Generate item color from current value of the item
-  final ColorForValue colorForValue;
+  final ColorForValue? colorForValue;
 
   /// Generate item color from index of list it came from, this is for multiple values only.
-  final ColorForKey colorForKey;
+  final ColorForKey? colorForKey;
 
   /// Max width of item in the chart
-  final double maxBarWidth;
+  final double? maxBarWidth;
 
   /// Min width of item in the chart
-  final double minBarWidth;
+  final double? minBarWidth;
 
   /// Geometry
   final ChartGeometryPainter geometryPainter;
@@ -60,13 +60,19 @@ class ItemOptions {
   /// When making custom [ItemOptions] make sure to override this return custom painter
   /// with all available options, otherwise changes in options won't be animated
   ItemOptions animateTo(ItemOptions endValue, double t) {
+    final _itemColor = Color.lerp(color, endValue.color, t) ?? Colors.red;
+    final _itemPadding =
+        EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero;
+    final _itemMultiValuePadding =
+        EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ??
+            EdgeInsets.zero;
+
     return ItemOptions(
-      color: Color.lerp(color, endValue.color, t),
+      color: _itemColor,
       colorForKey: ColorForKeyLerp.lerp(this, endValue, t),
       colorForValue: ColorForValueLerp.lerp(this, endValue, t),
-      padding: EdgeInsets.lerp(padding, endValue.padding, t),
-      multiValuePadding:
-          EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t),
+      padding: _itemPadding,
+      multiValuePadding: _itemMultiValuePadding,
       maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
       minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
       geometryPainter: t > 0.5 ? endValue.geometryPainter : geometryPainter,
@@ -80,21 +86,21 @@ class ItemOptions {
   /// 2. [colorForKey] is set then return color we get from [colorForKey]
   /// 3. [colorForValue] is set then return color we get from [colorForValue]
   /// 4. both [colorForKey] and [colorForValue] are null then return [color]
-  Color getItemColor(ChartItem item, int index) {
+  Color getItemColor(ChartItem? item, int index) {
     if (item == null) {
       return color;
     }
 
     if (colorForKey != null) {
-      return colorForKey(item, index);
+      return colorForKey?.call(item, index) ?? color;
     }
 
     return _getColorForValue(item.max, item.min);
   }
 
-  Color _getColorForValue(double max, [double min]) {
+  Color _getColorForValue(double? max, [double? min]) {
     if (colorForValue != null) {
-      return colorForValue(color, max, min);
+      return colorForValue?.call(color, max, min) ?? color;
     }
 
     return color;
@@ -109,16 +115,16 @@ class ItemOptions {
 /// Lerp [ColorForValue] function to get color in the animation
 class ColorForValueLerp {
   /// Make new function that will return lerp color based on [a.colorForValue] and [b.colorForValue]
-  static ColorForValue lerp(ItemOptions a, ItemOptions b, double t) {
+  static ColorForValue? lerp(ItemOptions a, ItemOptions b, double t) {
     if (a.colorForValue == null && b.colorForValue == null) {
       return null;
     }
 
-    return (Color defaultColor, double value, [double min]) {
+    return (Color? defaultColor, double? value, [double? min]) {
       final _aColor = a._getColorForValue(value, min);
       final _bColor = b._getColorForValue(value, min);
 
-      return Color.lerp(_aColor, _bColor, t);
+      return Color.lerp(_aColor, _bColor, t) ?? _bColor;
     };
   }
 }
@@ -126,7 +132,7 @@ class ColorForValueLerp {
 /// Lerp [ColorForKey] function to get color for key in animation
 class ColorForKeyLerp {
   /// Make new function that will return lerp color based on [a.colorForKey] and [b.colorForKey]
-  static ColorForKey lerp(ItemOptions a, ItemOptions b, double t) {
+  static ColorForKey? lerp(ItemOptions a, ItemOptions b, double t) {
     if (a.colorForKey == null && b.colorForKey == null) {
       return null;
     }
@@ -135,7 +141,7 @@ class ColorForKeyLerp {
       final _aColor = a.getItemColor(item, index);
       final _bColor = b.getItemColor(item, index);
 
-      return Color.lerp(_aColor, _bColor, t);
+      return Color.lerp(_aColor, _bColor, t) ?? _bColor;
     };
   }
 }

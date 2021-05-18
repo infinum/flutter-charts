@@ -12,7 +12,7 @@ class ValueDecoration extends DecorationPainter {
   });
 
   /// Style for values to use
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
   /// Alignment of the text based on item
   final Alignment alignment;
@@ -27,7 +27,8 @@ class ValueDecoration extends DecorationPainter {
     if (endValue is ValueDecoration) {
       return ValueDecoration(
         textStyle: TextStyle.lerp(textStyle, endValue.textStyle, t),
-        alignment: Alignment.lerp(alignment, endValue.alignment, t),
+        alignment: Alignment.lerp(alignment, endValue.alignment, t) ??
+            endValue.alignment,
         valueArrayIndex: endValue.valueArrayIndex,
       );
     }
@@ -43,8 +44,10 @@ class ValueDecoration extends DecorationPainter {
 
   void _paintText(Canvas canvas, Size size, ChartItem item, double width,
       double verticalMultiplier, double minValue) {
+    final _itemMaxValue = item.max ?? 0.0;
+
     final _maxValuePainter = ValueDecoration.makeTextPainter(
-      '${item.max.toInt()}',
+      '${_itemMaxValue.toInt()}',
       width,
       textStyle,
     );
@@ -53,7 +56,7 @@ class ValueDecoration extends DecorationPainter {
       canvas,
       Offset(
         width * alignment.x,
-        -item.max * verticalMultiplier -
+        -_itemMaxValue * verticalMultiplier -
             minValue -
             _maxValuePainter.height * 0.2 +
             (_maxValuePainter.height * alignment.y),
@@ -63,7 +66,7 @@ class ValueDecoration extends DecorationPainter {
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
-    final _size = state.defaultPadding.deflateSize(size) ?? size;
+    final _size = state.defaultPadding.deflateSize(size);
     final _maxValue = state.data.maxValue - state.data.minValue;
     final _verticalMultiplier = _size.height / _maxValue;
     final _minValue = state.data.minValue * _verticalMultiplier;
@@ -73,9 +76,7 @@ class ValueDecoration extends DecorationPainter {
 
     canvas.save();
     canvas.translate(
-        (state?.defaultPadding?.left ?? 0.0) +
-            state.defaultMargin.left -
-            _itemWidth,
+        state.defaultPadding.left + state.defaultMargin.left - _itemWidth,
         size.height + state.defaultMargin.top);
 
     state.data.items[valueArrayIndex].asMap().forEach((index, value) {
@@ -93,7 +94,7 @@ class ValueDecoration extends DecorationPainter {
   /// Get default text painter with set [value]
   /// Helper for [_paintText]
   static TextPainter makeTextPainter(
-      String value, double width, TextStyle style,
+      String value, double width, TextStyle? style,
       {bool hasMaxWidth = true}) {
     final _painter = TextPainter(
       text: TextSpan(

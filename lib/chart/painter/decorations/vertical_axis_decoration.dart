@@ -56,7 +56,7 @@ class VerticalAxisDecoration extends DecorationPainter {
   final double _endWithChart;
 
   /// Dashed array for showing lines, if this is not set the line is solid
-  final List<double> dashArray;
+  final List<double>? dashArray;
 
   /// Show vertical lines
   final bool showLines;
@@ -68,7 +68,7 @@ class VerticalAxisDecoration extends DecorationPainter {
   final TextAlign valuesAlign;
 
   /// Padding for the values in the axis legend
-  final EdgeInsets valuesPadding;
+  final EdgeInsets? valuesPadding;
 
   /// Set color to paint horizontal lines with
   final Color lineColor;
@@ -85,14 +85,14 @@ class VerticalAxisDecoration extends DecorationPainter {
   final VerticalLegendPosition legendPosition;
 
   /// Text style for axis legend
-  final TextStyle legendFontStyle;
+  final TextStyle? legendFontStyle;
 
   /// Generate vertical axis legend from index steps
   final AxisValueFromIndex valueFromIndex;
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
-    final _size = state.defaultPadding.deflateSize(size) ?? size;
+    final _size = state.defaultPadding.deflateSize(size);
     final _listSize = state.data.listSize;
     final _itemWidth = (_size.width - lineWidth) / _listSize;
 
@@ -103,7 +103,7 @@ class VerticalAxisDecoration extends DecorationPainter {
 
     canvas.save();
     canvas.translate(
-      (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left,
+      (state.defaultPadding.left) + state.defaultMargin.left,
       size.height + state.defaultMargin.top,
     );
 
@@ -129,7 +129,7 @@ class VerticalAxisDecoration extends DecorationPainter {
         continue;
       }
 
-      String _text;
+      String? _text;
 
       try {
         _text = valueFromIndex((axisStep * i).toInt());
@@ -170,7 +170,7 @@ class VerticalAxisDecoration extends DecorationPainter {
 
     if (dashArray != null) {
       canvas.drawPath(
-          dashPath(gridPath, dashArray: CircularIntervalList(dashArray)),
+          dashPath(gridPath, dashArray: CircularIntervalList(dashArray!)),
           _paint);
     } else {
       canvas.drawPath(gridPath, _paint);
@@ -184,7 +184,8 @@ class VerticalAxisDecoration extends DecorationPainter {
       return EdgeInsets.zero;
     }
 
-    final _value = legendFontStyle.fontSize + (valuesPadding?.vertical ?? 0.0);
+    final _value =
+        (legendFontStyle?.fontSize ?? 0.0) + (valuesPadding?.vertical ?? 0.0);
     final _isBottom = legendPosition == VerticalLegendPosition.bottom;
 
     return EdgeInsets.only(
@@ -197,10 +198,14 @@ class VerticalAxisDecoration extends DecorationPainter {
   VerticalAxisDecoration animateTo(DecorationPainter endValue, double t) {
     if (endValue is VerticalAxisDecoration) {
       return VerticalAxisDecoration._lerp(
-        lineColor: Color.lerp(lineColor, endValue.lineColor, t),
-        lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t),
-        axisStep: lerpDouble(axisStep, endValue.axisStep, t),
-        endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t),
+        lineColor:
+            Color.lerp(lineColor, endValue.lineColor, t) ?? endValue.lineColor,
+        lineWidth:
+            lerpDouble(lineWidth, endValue.lineWidth, t) ?? endValue.lineWidth,
+        axisStep:
+            lerpDouble(axisStep, endValue.axisStep, t) ?? endValue.axisStep,
+        endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t) ??
+            endValue._endWithChart,
         valuesPadding:
             EdgeInsets.lerp(valuesPadding, endValue.valuesPadding, t),
         showLines: t > 0.5 ? endValue.showLines : showLines,

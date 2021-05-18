@@ -9,8 +9,8 @@ class TargetLineLegendDecoration extends DecorationPainter {
   ///
   /// [legendDescription] and [legendStyle] are required
   TargetLineLegendDecoration({
-    @required this.legendDescription,
-    @required this.legendStyle,
+    required this.legendDescription,
+    required this.legendStyle,
     this.legendTarget = 0,
     this.padding = EdgeInsets.zero,
   }) : assert(legendStyle.fontSize != null,
@@ -52,7 +52,7 @@ class TargetLineLegendDecoration extends DecorationPainter {
         maxWidth: size.width,
       );
 
-    canvas.translate(-legendStyle.fontSize * 1.5,
+    canvas.translate(-(legendStyle.fontSize ?? 0) * 1.5,
         -scale * legendTarget + _minValue + _textPainter.width + padding.top);
     canvas.rotate(pi * 1.5);
 
@@ -66,17 +66,20 @@ class TargetLineLegendDecoration extends DecorationPainter {
 
   @override
   EdgeInsets marginNeeded() {
-    return EdgeInsets.only(left: legendStyle.fontSize * 2);
+    return EdgeInsets.only(left: (legendStyle.fontSize ?? 0) * 2);
   }
 
   @override
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
     if (endValue is TargetLineLegendDecoration) {
       return TargetLineLegendDecoration(
-        legendStyle: TextStyle.lerp(legendStyle, endValue.legendStyle, t),
+        legendStyle: TextStyle.lerp(legendStyle, endValue.legendStyle, t) ??
+            endValue.legendStyle,
         legendDescription: endValue.legendDescription,
-        padding: EdgeInsets.lerp(padding, endValue.padding, t),
-        legendTarget: lerpDouble(legendTarget, endValue.legendTarget, t),
+        padding:
+            EdgeInsets.lerp(padding, endValue.padding, t) ?? endValue.padding,
+        legendTarget: lerpDouble(legendTarget, endValue.legendTarget, t) ??
+            endValue.legendTarget,
       );
     }
 

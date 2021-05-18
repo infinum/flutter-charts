@@ -19,10 +19,10 @@ class ChartState<T> {
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const <DecorationPainter>[],
     this.foregroundDecorations = const <DecorationPainter>[],
-  }) : assert(data.isNotEmpty, 'No items!') {
+  })  : assert(data.isNotEmpty, 'No items!'),
+        defaultPadding = EdgeInsets.zero,
+        defaultMargin = EdgeInsets.zero {
     /// Set default padding and margin, decorations padding and margins will be added to this value
-    defaultPadding = EdgeInsets.zero;
-    defaultMargin = EdgeInsets.zero;
     _setUpDecorations();
   }
 
@@ -75,8 +75,8 @@ class ChartState<T> {
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const [],
     this.foregroundDecorations = const [],
-    this.defaultMargin,
-    this.defaultPadding,
+    required this.defaultMargin,
+    required this.defaultPadding,
   }) {
     _initDecorations();
   }
@@ -141,15 +141,16 @@ class ChartState<T> {
       .forEach((element) => defaultPadding += element.paddingNeeded());
 
   /// For later in case charts will have to animate between states.
-  static ChartState<T> lerp<T>(ChartState<T> a, ChartState<T> b, double t) {
-    return ChartState<T>._lerp(
+  static ChartState<T?> lerp<T>(ChartState<T?> a, ChartState<T?> b, double t) {
+    return ChartState<T?>._lerp(
       ChartData.lerp(a.data, b.data, t),
       behaviour: ChartBehaviour.lerp(a.behaviour, b.behaviour, t),
       itemOptions: a.itemOptions.animateTo(b.itemOptions, t),
       // Find background matches, if found, then animate to them, else just show them.
-      backgroundDecorations: b.backgroundDecorations.map((e) {
+      backgroundDecorations:
+          b.backgroundDecorations.map<DecorationPainter>((e) {
         final _match = a.backgroundDecorations
-            .firstWhere((element) => element.isSameType(e), orElse: () => null);
+            .firstWhereOrNull((element) => element.isSameType(e));
         if (_match != null) {
           return _match.animateTo(e, t);
         }
@@ -159,7 +160,7 @@ class ChartState<T> {
       // Find foreground matches, if found, then animate to them, else just show them.
       foregroundDecorations: b.foregroundDecorations.map((e) {
         final _match = a.foregroundDecorations
-            .firstWhere((element) => element.isSameType(e), orElse: () => null);
+            .firstWhereOrNull((element) => element.isSameType(e));
         if (_match != null) {
           return _match.animateTo(e, t);
         }
@@ -167,8 +168,10 @@ class ChartState<T> {
         return e;
       }).toList(),
 
-      defaultMargin: EdgeInsets.lerp(a.defaultMargin, b.defaultMargin, t),
-      defaultPadding: EdgeInsets.lerp(a.defaultPadding, b.defaultPadding, t),
+      defaultMargin: EdgeInsets.lerp(a.defaultMargin, b.defaultMargin, t) ??
+          EdgeInsets.zero,
+      defaultPadding: EdgeInsets.lerp(a.defaultPadding, b.defaultPadding, t) ??
+          EdgeInsets.zero,
     );
   }
 }

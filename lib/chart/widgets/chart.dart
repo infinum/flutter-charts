@@ -4,17 +4,17 @@ part of charts_painter;
 class Chart<T> extends StatelessWidget {
   /// Make chart widget
   const Chart({
-    @required this.state,
+    required this.state,
     this.height = 240.0,
     this.width,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   /// Chart height
   final double height;
 
   /// Chart width
-  final double width;
+  final double? width;
 
   /// Chart state
   final ChartState<T> state;

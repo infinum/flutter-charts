@@ -21,19 +21,19 @@ class ChartData<T> {
     this._items, {
     this.strategy = DataStrategy.none,
     this.axisMax,
-    double valueAxisMaxOver,
+    double? valueAxisMaxOver,
     this.axisMin,
   })  : _strategyChange = strategy != DataStrategy.none ? 1.0 : 0.0,
         minValue = _getMinValue(
             _formatDataStrategy(_items, strategy).fold(
-                <ChartItem<T>>[],
-                (List<ChartItem<T>> list, element) =>
+                <ChartItem<T?>>[],
+                (List<ChartItem<T?>> list, element) =>
                     list..addAll(element)).toList(),
             axisMin),
         maxValue = _getMaxValue(
                 _formatDataStrategy(_items, strategy).fold(
-                    <ChartItem<T>>[],
-                    (List<ChartItem<T>> list, element) =>
+                    <ChartItem<T?>>[],
+                    (List<ChartItem<T?>> list, element) =>
                         list..addAll(element)).toList(),
                 axisMax) +
             (valueAxisMaxOver ?? 0.0);
@@ -41,9 +41,9 @@ class ChartData<T> {
   /// Make chart data from list of [ChartItem]'s
   factory ChartData.fromList(
     List<ChartItem<T>> items, {
-    double axisMax,
-    double axisMin,
-    double valueAxisMaxOver,
+    double? axisMax,
+    double? axisMin,
+    double? valueAxisMaxOver,
   }) {
     return ChartData(
       [items],
@@ -59,9 +59,9 @@ class ChartData<T> {
     int items = 10,
     double maxValue = 20,
     double minValue = 0,
-    double valueAxisMaxOver,
+    double? valueAxisMaxOver,
   }) {
-    return ChartData<T>(
+    return ChartData<T?>(
       [
         List.generate(
                 items,
@@ -70,7 +70,7 @@ class ChartData<T> {
             .toList()
       ],
       valueAxisMaxOver: valueAxisMaxOver,
-    );
+    ) as ChartData<T>;
   }
 
   ChartData._lerp(
@@ -79,12 +79,14 @@ class ChartData<T> {
     this.strategy = DataStrategy.none,
     this.axisMax,
     this.axisMin,
-    this.minValue,
-    this.maxValue,
+    this.minValue = 0,
+    this.maxValue = 0,
   });
 
-  final List<List<ChartItem<T>>> _items;
-  final double _strategyChange;
+  /// Chart items, items in the list cannot be null, but ChartItem can be defined
+  /// with null values to represent gaps in the data
+  final List<List<ChartItem<T?>>> _items;
+  final double? _strategyChange;
 
   /// Data strategy to use on items
   /// Defaults to [DataStrategy.none]
@@ -94,44 +96,40 @@ class ChartData<T> {
   /// Min value that chart should show.
   /// In case chart shouldn't start from 0 use this to specify new min starting point
   /// If data has value that goes below [minValue] then [minValue] is ignored
-  final double minValue;
+  late final double minValue;
 
   /// Max value to show on the chart, in case data has point higher then
   /// specified [maxValue] then [maxValue] is ignored
-  final double maxValue;
+  late final double maxValue;
 
   /// Max value that chart should show, in case that [axisMax] is bellow
   /// the value of value passed with data in the chart this will be ignored.
-  final double axisMax;
+  final double? axisMax;
 
   /// Min value of the chart, anything below that will not be shown and chart
   /// x axis will start from [axisMin] (default: 0)
-  final double axisMin;
+  final double? axisMin;
 
   /// Return list as formatted data defined by [DataStrategy]
-  List<List<ChartItem<T>>> get items {
+  List<List<ChartItem<T?>>> get items {
     return _formatDataStrategy(_items, strategy, _strategyChange);
   }
 
   /// Format items according to currently selected [DataStrategy]
-  static List<List<ChartItem<T>>> _formatDataStrategy<T>(
-    List<List<ChartItem<T>>> items,
+  static List<List<ChartItem<T?>>> _formatDataStrategy<T>(
+    List<List<ChartItem<T?>>> items,
     DataStrategy strategy, [
-    double _stackValue,
+    double? _stackValue,
   ]) {
     switch (strategy) {
       case DataStrategy.none:
       case DataStrategy.stack:
         _stackValue ??= strategy != DataStrategy.none ? 1.0 : 0.0;
 
-        final _incrementList = <ChartItem<T>>[];
+        final _incrementList = <ChartItem<T?>>[];
         return items.reversed
             .map((entry) {
               return entry.asMap().entries.map((e) {
-                if (e.value == null) {
-                  return e.value;
-                }
-
                 if (_incrementList.length > e.key) {
                   final _newValue = e.value + _incrementList[e.key];
                   _incrementList[e.key] =
@@ -169,19 +167,19 @@ class ChartData<T> {
 
   /// Get max value of the chart
   /// Max value is max data item from [items] or [ChartOptions.axisMax]
-  static double _getMaxValue<T>(List<ChartItem<T>> items, double valueAxisMax) {
-    return max(
-        valueAxisMax ?? 0.0, items.map((e) => e?.max ?? 0.0).reduce(max));
+  static double _getMaxValue<T>(
+      List<ChartItem<T>> items, double? valueAxisMax) {
+    return max(valueAxisMax ?? 0.0, items.map((e) => e.max ?? 0.0).reduce(max));
   }
 
   /// Get min value of the chart
   /// Min value is min data item from [items] or [ChartOptions.axisMin]
-  static double _getMinValue<T>(List<ChartItem<T>> items, double valueAxisMin) {
+  static double _getMinValue<T>(
+      List<ChartItem<T?>> items, double? valueAxisMin) {
     final _minItems = items
         .where((e) =>
-            (e?.min != null && e.min != 0.0) ||
-            (e?.min == null && e?.max != 0.0))
-        .map((e) => e?.min ?? e?.max ?? double.infinity);
+            (e.min != null && e.min != 0.0) || (e.min == null && e.max != 0.0))
+        .map((e) => e.min ?? e.max ?? double.infinity);
     if (_minItems.isEmpty) {
       return valueAxisMin ?? 0.0;
     }
@@ -193,7 +191,7 @@ class ChartData<T> {
   /// factor `t`.
   ///
   /// This will animate changes in the [ChartData]
-  static ChartData<T> lerp<T>(ChartData<T> a, ChartData<T> b, double t) {
+  static ChartData<T?> lerp<T>(ChartData<T?> a, ChartData<T?> b, double t) {
     return ChartData._lerp(
       ChartItemsLerp.lerpValues(a._items, b._items, t),
       lerpDouble(a._strategyChange, b._strategyChange, t),
@@ -202,8 +200,8 @@ class ChartData<T> {
       axisMin: lerpDouble(a.axisMin, b.axisMin, t),
 
       /// Those are usually calculated, but we need to have a control over them in the animation
-      maxValue: lerpDouble(a.maxValue, b.maxValue, t),
-      minValue: lerpDouble(a.minValue, b.minValue, t),
+      maxValue: lerpDouble(a.maxValue, b.maxValue, t) ?? b.maxValue,
+      minValue: lerpDouble(a.minValue, b.minValue, t) ?? b.minValue,
     );
   }
 }
@@ -211,38 +209,41 @@ class ChartData<T> {
 /// Lerp items in the charts
 class ChartItemsLerp {
   /// Lerp chart items
-  static List<List<ChartItem<T>>> lerpValues<T>(
-      List<List<ChartItem<T>>> a, List<List<ChartItem<T>>> b, double t) {
+  static List<List<ChartItem<T?>>> lerpValues<T>(
+      List<List<ChartItem<T?>>> a, List<List<ChartItem<T?>>> b, double t) {
     /// Get list length in animation, we will add the items in steps.
-    final _listLength = lerpDouble(a.length, b.length, t);
+    final _listLength = lerpDouble(a.length, b.length, t) ?? b.length;
 
     /// Empty value for generated list.
-    final _emptyList = <BarValue<T>>[];
+    final _emptyList = <ChartItem<T>>[];
 
     /// Generate new list fot animation step, add items depending on current [_listLength]
-    return List<List<ChartItem<T>>>.generate(_listLength.ceil(), (int index) {
+    return List<List<ChartItem<T?>>>.generate(_listLength.ceil(), (int index) {
       return _lerpItemList<T>(a.length > index ? a[index] : _emptyList,
           b.length > index ? b[index] : _emptyList, t);
     });
   }
 
-  static List<ChartItem<T>> _lerpItemList<T>(
-      List<ChartItem<T>> a, List<ChartItem<T>> b, double t) {
-    final _listLength = lerpDouble(a.length, b.length, t);
+  static List<ChartItem<T?>> _lerpItemList<T>(
+      List<ChartItem<T?>?> a, List<ChartItem<T?>?> b, double t) {
+    final _listLength = lerpDouble(a.length, b.length, t) ?? b.length;
 
     /// Empty value for generated list.
-    final _emptyValue = ChartItem<T>(null, 0.0, 0.0);
+    final _emptyValue = ChartItem<T?>(null, 0.0, 0.0);
 
-    return List<ChartItem<T>>.generate(_listLength.ceil(), (int index) {
+    return List<ChartItem<T?>>.generate(_listLength.ceil(), (int index) {
       // If old list and new list have value at [index], then just animate from,
       // old list value to the new value
+      final _firstItem = index < a.length ? a[index] : null;
+      final _secondItem = index < b.length ? b[index] : null;
+
       if (index < a.length && index < b.length) {
-        if (b[index] != null && a[index] != null) {
-          return b[index].animateFrom(a[index], t);
-        } else if (b[index] != null) {
-          return b[index].animateFrom(_emptyValue, t);
-        } else if (a[index] != null) {
-          return a[index].animateTo(_emptyValue, t);
+        if (_secondItem != null && _firstItem != null) {
+          return _secondItem.animateFrom(_firstItem, t);
+        } else if (_secondItem != null) {
+          return _secondItem.animateFrom(_emptyValue, t);
+        } else if (_firstItem != null) {
+          return _firstItem.animateTo(_emptyValue, t);
         }
 
         return _emptyValue;
@@ -251,8 +252,8 @@ class ChartItemsLerp {
       // If new list is larger, then check if item in the list is not empty
       // In case item is not empty then animate to it from our [_emptyValue]
       if (index < b.length) {
-        if (b[index] == null || b[index].isEmpty) {
-          return b[index] ?? _emptyValue;
+        if (_secondItem == null || _secondItem.isEmpty) {
+          return _secondItem ?? _emptyValue;
         }
 
         // If item is appearing then it's time to animate is
@@ -260,13 +261,13 @@ class ChartItemsLerp {
         final _value = _listLength.floor() == index
             ? ((_listLength - _listLength.floor()) * t)
             : t;
-        return b[index].animateFrom(_emptyValue, _value);
+        return _secondItem.animateFrom(_emptyValue, _value);
       }
 
       // In case that our old list is bigger, and item is not empty
       // then we need to animate to empty value from current item value
-      if (a[index] == null || a[index].isEmpty) {
-        return a[index] ?? _emptyValue;
+      if (_firstItem == null || _firstItem.isEmpty) {
+        return _firstItem ?? _emptyValue;
       }
 
       final _value = _listLength.floor() == index
@@ -274,7 +275,7 @@ class ChartItemsLerp {
           : _listLength.floor() >= index
               ? 0
               : t;
-      return a[index].animateTo(_emptyValue, _value.toDouble());
+      return _firstItem.animateTo(_emptyValue, _value.toDouble());
     });
   }
 }

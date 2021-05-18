@@ -38,7 +38,7 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
         ? (options.radius ?? BorderRadius.zero)
         : BorderRadius.zero;
 
-    var _padding = state.itemOptions.padding ?? EdgeInsets.zero;
+    var _padding = state.itemOptions.padding;
 
     final _itemWidth = itemWidth(size);
 
@@ -46,9 +46,12 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
       _padding =
           EdgeInsets.symmetric(horizontal: (size.width - _itemWidth) / 2);
     }
+
+    final _itemMaxValue = item.max ?? 0.0;
+
     // If item is empty, or it's max value is below chart's minValue then don't draw it.
     // minValue can be below 0, this will just ensure that animation is drawn correctly.
-    if (item == null || item.isEmpty || item.max < state.data.minValue) {
+    if (item.isEmpty || _itemMaxValue < state.data.minValue) {
       return;
     }
 
@@ -57,53 +60,55 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
         Rect.fromPoints(
           Offset(
             _padding.left,
-            max(state.data.minValue ?? 0.0, item.min ?? 0.0) *
-                    _verticalMultiplier -
+            max(state.data.minValue, item.min ?? 0.0) * _verticalMultiplier -
                 _minValue,
           ),
           Offset(
             _itemWidth + _padding.left,
-            item.max * _verticalMultiplier - _minValue,
+            _itemMaxValue * _verticalMultiplier - _minValue,
           ),
         ),
-        bottomLeft: item.max.isNegative ? _radius.topLeft : _radius.bottomLeft,
+        bottomLeft:
+            _itemMaxValue.isNegative ? _radius.topLeft : _radius.bottomLeft,
         bottomRight:
-            item.max.isNegative ? _radius.topRight : _radius.bottomRight,
-        topLeft: item.max.isNegative ? _radius.bottomLeft : _radius.topLeft,
-        topRight: item.max.isNegative ? _radius.bottomRight : _radius.topRight,
+            _itemMaxValue.isNegative ? _radius.topRight : _radius.bottomRight,
+        topLeft:
+            _itemMaxValue.isNegative ? _radius.bottomLeft : _radius.topLeft,
+        topRight:
+            _itemMaxValue.isNegative ? _radius.bottomRight : _radius.topRight,
       ),
       paint,
     );
 
-    if (options is BarItemOptions &&
-        options.border != null &&
-        options.border.style == BorderStyle.solid) {
+    final _border = options is BarItemOptions ? options.border : null;
+
+    if (_border != null && _border.style == BorderStyle.solid) {
       final _borderPaint = Paint();
       _borderPaint.style = PaintingStyle.stroke;
-      _borderPaint.color = options.border.color;
-      _borderPaint.strokeWidth = options.border.width;
+      _borderPaint.color = _border.color;
+      _borderPaint.strokeWidth = _border.width;
 
       canvas.drawRRect(
         RRect.fromRectAndCorners(
           Rect.fromPoints(
             Offset(
               _padding.left,
-              max(state.data.minValue ?? 0.0, item.min ?? 0.0) *
-                      _verticalMultiplier -
+              max(state.data.minValue, item.min ?? 0.0) * _verticalMultiplier -
                   _minValue,
             ),
             Offset(
               _itemWidth + _padding.left,
-              item.max * _verticalMultiplier - _minValue,
+              _itemMaxValue * _verticalMultiplier - _minValue,
             ),
           ),
           bottomLeft:
-              item.max.isNegative ? _radius.topLeft : _radius.bottomLeft,
+              _itemMaxValue.isNegative ? _radius.topLeft : _radius.bottomLeft,
           bottomRight:
-              item.max.isNegative ? _radius.topRight : _radius.bottomRight,
-          topLeft: item.max.isNegative ? _radius.bottomLeft : _radius.topLeft,
+              _itemMaxValue.isNegative ? _radius.topRight : _radius.bottomRight,
+          topLeft:
+              _itemMaxValue.isNegative ? _radius.bottomLeft : _radius.topLeft,
           topRight:
-              item.max.isNegative ? _radius.bottomRight : _radius.topRight,
+              _itemMaxValue.isNegative ? _radius.bottomRight : _radius.topRight,
         ),
         _borderPaint,
       );

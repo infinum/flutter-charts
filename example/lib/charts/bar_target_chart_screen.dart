@@ -21,7 +21,6 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
   double targetMin;
   bool _showValues = false;
   bool _smoothPoints = false;
-  bool _colorfulBars = false;
   bool _showLine = false;
   int minItems = 6;
 
@@ -164,15 +163,6 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                   onChanged: (value) {
                     setState(() {
                       _showValues = value;
-                    });
-                  },
-                ),
-                ToggleItem(
-                  value: _colorfulBars,
-                  title: 'Rainbow bar items',
-                  onChanged: (value) {
-                    setState(() {
-                      _colorfulBars = value;
                     });
                   },
                 ),

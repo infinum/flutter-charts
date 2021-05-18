@@ -2,9 +2,7 @@ part of charts_painter;
 
 /// Custom painter for charts
 class _ChartPainter extends CustomPainter {
-  _ChartPainter(this.state)
-      : assert(state.itemOptions?.geometryPainter != null,
-            'You need to provide item painter!');
+  const _ChartPainter(this.state);
 
   final ChartState state;
 
@@ -26,8 +24,8 @@ class _ChartPainter extends CustomPainter {
           Paint()..color = Colors.red.withOpacity(0.1));
     }
 
-    final _scrollableItemWidth = max(state?.itemOptions?.minBarWidth ?? 0.0,
-        state?.itemOptions?.maxBarWidth ?? 0.0);
+    final _scrollableItemWidth = max(state.itemOptions.minBarWidth ?? 0.0,
+        state.itemOptions.maxBarWidth ?? 0.0);
 
     final _listSize = state.data.listSize;
 
@@ -44,8 +42,7 @@ class _ChartPainter extends CustomPainter {
     final _paddingSize = state.defaultMargin.deflateSize(size);
 
     /// Final usable size for chart
-    final _size =
-        state?.defaultPadding?.deflateSize(_paddingSize) ?? _paddingSize;
+    final _size = state.defaultPadding.deflateSize(_paddingSize);
 
     /// Final usable space for one item in the chart
     final _itemWidth = _size.width / _listSize;
@@ -60,16 +57,14 @@ class _ChartPainter extends CustomPainter {
     final _width = _itemWidth / max(1, state.data.stackSize * _stack);
 
     final _stackWidth = _width -
-        ((state?.itemOptions?.multiValuePadding?.horizontal ?? 0.0) /
+        (state.itemOptions.multiValuePadding.horizontal /
                 max(1, state.data.stackSize * _stack)) *
             _stack;
 
     // Save, and translate the canvas so [0,0] is top left of the first item
     canvas.save();
     canvas.translate(
-      (state?.defaultPadding?.left ?? 0.0) +
-          state.defaultMargin.left -
-          _stackWidth,
+      state.defaultPadding.left + state.defaultMargin.left - _stackWidth,
       size.height - (state.defaultMargin.bottom + state.defaultPadding.bottom),
     );
 
@@ -88,8 +83,7 @@ class _ChartPainter extends CustomPainter {
         final _shouldStack = (key == 0) ? _stack : 0.0;
         // Go to next value only if we are not in the stack, or if this is the first item in the stack
         canvas.translate(
-            ((state?.itemOptions?.multiValuePadding?.left ?? 0.0) *
-                    _shouldStack) +
+            (state.itemOptions.multiValuePadding.left * _shouldStack) +
                 _stackWidth * (key != 0 ? _stack : 1),
             0.0);
 
@@ -104,9 +98,7 @@ class _ChartPainter extends CustomPainter {
         final _shouldStackLast =
             (key == state.data.stackSize - 1) ? _stack : 0.0;
         canvas.translate(
-            (state?.itemOptions?.multiValuePadding?.right ?? 0.0) *
-                _shouldStackLast,
-            0.0);
+            state.itemOptions.multiValuePadding.right * _shouldStackLast, 0.0);
       });
     });
 

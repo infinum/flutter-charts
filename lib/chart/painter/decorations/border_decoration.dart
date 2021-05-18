@@ -4,8 +4,8 @@ part of charts_painter;
 class BorderDecoration extends DecorationPainter {
   /// Makes border decoration around the chart
   BorderDecoration({
-    double borderWidth,
-    Border sidesWidth,
+    double? borderWidth,
+    Border? sidesWidth,
     this.borderPadding = EdgeInsets.zero,
     this.color = Colors.black,
     bool endWithChart = false,
@@ -16,11 +16,11 @@ class BorderDecoration extends DecorationPainter {
         _borderWidth = sidesWidth ?? Border.all(width: borderWidth ?? 2.0);
 
   BorderDecoration._lerp({
-    Border borderWidth,
+    required Border borderWidth,
     this.borderPadding = EdgeInsets.zero,
     this.color = Colors.black,
-    double endWithChart,
-  })  : _endWithChart = endWithChart,
+    required double endWithChart,
+  })   : _endWithChart = endWithChart,
         _borderWidth = borderWidth;
 
   /// Set additional padding to border
@@ -54,7 +54,7 @@ class BorderDecoration extends DecorationPainter {
         _borderWidth.dimensions.horizontal;
 
     _paint.strokeWidth = _borderWidth.top.width;
-    _paint.color = _borderWidth.top.color ?? color;
+    _paint.color = _borderWidth.top.color;
     _drawLine(
         canvas,
         Offset(-borderPadding.left,
@@ -67,7 +67,7 @@ class BorderDecoration extends DecorationPainter {
         _paint);
 
     _paint.strokeWidth = _borderWidth.right.width;
-    _paint.color = _borderWidth.right.color ?? color;
+    _paint.color = _borderWidth.right.color;
     _drawLine(
         canvas,
         Offset(
@@ -85,7 +85,7 @@ class BorderDecoration extends DecorationPainter {
         _paint);
 
     _paint.strokeWidth = _borderWidth.bottom.width;
-    _paint.color = _borderWidth.bottom.color ?? color;
+    _paint.color = _borderWidth.bottom.color;
 
     _drawLine(
         canvas,
@@ -95,7 +95,7 @@ class BorderDecoration extends DecorationPainter {
         _paint);
 
     _paint.strokeWidth = _borderWidth.left.width;
-    _paint.color = _borderWidth.left.color ?? color;
+    _paint.color = _borderWidth.left.color;
     _drawLine(
         canvas,
         Offset(-_borderWidth.left.width / 2 - borderPadding.left, _height),
@@ -128,11 +128,14 @@ class BorderDecoration extends DecorationPainter {
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
     if (endValue is BorderDecoration) {
       return BorderDecoration._lerp(
-        borderWidth: Border.lerp(_borderWidth, endValue._borderWidth, t),
-        color: Color.lerp(color, endValue.color, t),
+        borderWidth: Border.lerp(_borderWidth, endValue._borderWidth, t) ??
+            endValue._borderWidth,
+        color: Color.lerp(color, endValue.color, t) ?? endValue.color,
         borderPadding:
-            EdgeInsets.lerp(borderPadding, endValue.borderPadding, t),
-        endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t),
+            EdgeInsets.lerp(borderPadding, endValue.borderPadding, t) ??
+                endValue.borderPadding,
+        endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t) ??
+            endValue._endWithChart,
       );
     }
 

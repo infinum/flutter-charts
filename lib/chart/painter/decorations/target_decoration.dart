@@ -1,16 +1,19 @@
 part of charts_painter;
 
 /// Check iv item is inside the target
-bool _isInTarget(double max,
-    {double min, double targetMin, double targetMax, bool inclusive = true}) {
+bool _isInTarget(double? max,
+    {double? min,
+    double? targetMin,
+    double? targetMax,
+    bool inclusive = true}) {
   if (targetMin == null && targetMax == null) {
     return true;
   }
 
   final _min = min ?? max;
 
-  if ((targetMin != null && _min <= targetMin) ||
-      (targetMax != null && max >= targetMax)) {
+  if ((targetMin != null && _min! <= targetMin) ||
+      (targetMax != null && max! >= targetMax)) {
     // Check if target is inclusive, don't show error color in that case
     if (inclusive && (_min == targetMin || max == targetMax)) {
       return true;
@@ -22,9 +25,9 @@ bool _isInTarget(double max,
   return true;
 }
 
-Color _getColorForTarget(Color color, Color colorOverTarget,
-    bool isTargetInclusive, double targetMin, double targetMax, double max,
-    [double min]) {
+Color _getColorForTarget(Color color, Color? colorOverTarget,
+    bool isTargetInclusive, double? targetMin, double? targetMax, double? max,
+    [double? min]) {
   return _isInTarget(max,
           min: min,
           targetMax: targetMax,
@@ -46,7 +49,7 @@ class TargetLineDecoration extends DecorationPainter {
   ///
   /// [target] is required
   TargetLineDecoration({
-    @required this.target,
+    required this.target,
     this.dashArray,
     this.colorOverTarget = Colors.red,
     this.targetLineColor = Colors.red,
@@ -55,13 +58,13 @@ class TargetLineDecoration extends DecorationPainter {
   });
 
   /// Dash pattern for the line, if left empty line will be solid
-  final List<double> dashArray;
+  final List<double>? dashArray;
 
   /// Width of the target line
-  final double lineWidth;
+  final double? lineWidth;
 
   /// Target value for the line
-  final double target;
+  final double? target;
 
   /// In case you want to change how value acts when it's exactly on the target value.
   ///
@@ -69,17 +72,17 @@ class TargetLineDecoration extends DecorationPainter {
   final bool isTargetInclusive;
 
   /// Color for target line, this will modify [TargetLineDecoration] and [TargetAreaDecoration]
-  final Color targetLineColor;
+  final Color? targetLineColor;
 
   /// Color item should take once target is missed
-  final Color colorOverTarget;
+  final Color? colorOverTarget;
 
   /// Return [ColorForValue] set up to pair with this decoration
   ///
   /// Pass this to [ItemOptions.colorForValue] and chart will update item colors
   /// based on target line
   ColorForValue getTargetItemColor() =>
-      (Color defaultColor, double max, [double min]) => _getColorForTarget(
+      (Color defaultColor, double? max, [double? min]) => _getColorForTarget(
           defaultColor,
           colorOverTarget,
           isTargetInclusive,
@@ -95,22 +98,21 @@ class TargetLineDecoration extends DecorationPainter {
     final _minValue = state.data.minValue * scale;
 
     final _linePaint = Paint()
-      ..color = targetLineColor
+      ..color = targetLineColor!
       ..style = PaintingStyle.stroke
-      ..strokeWidth = lineWidth;
+      ..strokeWidth = lineWidth!;
 
     canvas.save();
-    canvas.translate(
-        (state?.defaultPadding?.left ?? 0.0) + state.defaultMargin.left,
+    canvas.translate(state.defaultPadding.left + state.defaultMargin.left,
         size.height + state.defaultMargin.top);
 
     final _path = Path()
-      ..moveTo(0.0, -scale * target + _minValue)
-      ..lineTo(size.width, -scale * target + _minValue);
+      ..moveTo(0.0, -scale * target! + _minValue)
+      ..lineTo(size.width, -scale * target! + _minValue);
 
     if (dashArray != null) {
       canvas.drawPath(
-        dashPath(_path, dashArray: CircularIntervalList(dashArray)),
+        dashPath(_path, dashArray: CircularIntervalList(dashArray!)),
         _linePaint,
       );
     } else {
@@ -150,8 +152,8 @@ class TargetAreaDecoration extends DecorationPainter {
   ///
   /// [targetMin] and [targetMax] are required
   TargetAreaDecoration({
-    @required this.targetMin,
-    @required this.targetMax,
+    required this.targetMin,
+    required this.targetMax,
     this.isTargetInclusive = true,
     this.dashArray,
     this.lineWidth = 2.0,
@@ -164,7 +166,7 @@ class TargetAreaDecoration extends DecorationPainter {
             'Vertical padding cannot be applied here!');
 
   /// Dash pattern for the line, if left empty line will be solid
-  final List<double> dashArray;
+  final List<double>? dashArray;
 
   /// Width of the target area border
   final double lineWidth;
@@ -190,17 +192,17 @@ class TargetAreaDecoration extends DecorationPainter {
   final EdgeInsets areaPadding;
 
   /// Border radius for [TargetAreaDecoration]
-  final BorderRadius targetAreaRadius;
+  final BorderRadius? targetAreaRadius;
 
   /// Fill color for [TargetAreaDecoration]
-  final Color targetAreaFillColor;
+  final Color? targetAreaFillColor;
 
   /// Return [ColorForValue] set up to pair with this decoration
   ///
   /// Pass this to [ItemOptions.colorForValue] and chart will update item colors
   /// based on target area
   ColorForValue getTargetItemColor() =>
-      (Color defaultColor, double max, [double min]) => _getColorForTarget(
+      (Color defaultColor, double? max, [double? min]) => _getColorForTarget(
           defaultColor,
           colorOverTarget,
           isTargetInclusive,
@@ -211,7 +213,7 @@ class TargetAreaDecoration extends DecorationPainter {
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
-    final _size = state?.defaultPadding?.deflateSize(size) ?? size;
+    final _size = state.defaultPadding.deflateSize(size);
     final _maxValue = state.data.maxValue - state.data.minValue;
     final scale = _size.height / _maxValue;
     final _minValue = state.data.minValue * scale;
@@ -219,7 +221,7 @@ class TargetAreaDecoration extends DecorationPainter {
     canvas.save();
     canvas.translate(
         areaPadding.left +
-            (state?.defaultPadding?.left ?? 0.0) +
+            (state.defaultPadding.left) +
             state.defaultMargin.left,
         _size.height + state.defaultMargin.top);
 
@@ -237,7 +239,7 @@ class TargetAreaDecoration extends DecorationPainter {
           topRight: targetAreaRadius?.topRight ?? Radius.zero,
         ),
         Paint()
-          ..color = targetAreaFillColor
+          ..color = targetAreaFillColor!
           ..strokeWidth = 3.0,
       );
     }
@@ -256,7 +258,7 @@ class TargetAreaDecoration extends DecorationPainter {
 
     if (dashArray != null) {
       canvas.drawPath(
-        dashPath(_rectPath, dashArray: CircularIntervalList(dashArray)),
+        dashPath(_rectPath, dashArray: CircularIntervalList(dashArray!)),
         Paint()
           ..color = targetLineColor
           ..strokeWidth = lineWidth
@@ -280,18 +282,23 @@ class TargetAreaDecoration extends DecorationPainter {
     if (endValue is TargetAreaDecoration) {
       return TargetAreaDecoration(
         targetLineColor:
-            Color.lerp(targetLineColor, endValue.targetLineColor, t),
-        lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t),
+            Color.lerp(targetLineColor, endValue.targetLineColor, t) ??
+                endValue.targetLineColor,
+        lineWidth:
+            lerpDouble(lineWidth, endValue.lineWidth, t) ?? endValue.lineWidth,
         dashArray: t < 0.5 ? dashArray : endValue.dashArray,
         targetAreaFillColor:
             Color.lerp(targetAreaFillColor, endValue.targetAreaFillColor, t),
         targetAreaRadius:
             BorderRadius.lerp(targetAreaRadius, endValue.targetAreaRadius, t),
-        areaPadding: EdgeInsets.lerp(areaPadding, endValue.areaPadding, t),
-        targetMin: lerpDouble(targetMin, endValue.targetMin, t),
-        targetMax: lerpDouble(targetMax, endValue.targetMax, t),
+        areaPadding: EdgeInsets.lerp(areaPadding, endValue.areaPadding, t)!,
+        targetMin:
+            lerpDouble(targetMin, endValue.targetMin, t) ?? endValue.targetMin,
+        targetMax:
+            lerpDouble(targetMax, endValue.targetMax, t) ?? endValue.targetMax,
         colorOverTarget:
-            Color.lerp(colorOverTarget, endValue.colorOverTarget, t),
+            Color.lerp(colorOverTarget, endValue.colorOverTarget, t) ??
+                endValue.colorOverTarget,
       );
     }
 

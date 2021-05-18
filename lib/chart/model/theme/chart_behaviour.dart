@@ -17,7 +17,7 @@ class ChartBehaviour {
   })  : _isScrollable = isScrollable ? 1.0 : 0.0,
         _multiValueStacked = multiItemStack ? 1.0 : 0.0;
 
-  const ChartBehaviour._lerp(
+  ChartBehaviour._lerp(
       this._isScrollable, this.onItemClicked, this._multiValueStacked);
 
   final double _isScrollable;
@@ -25,7 +25,7 @@ class ChartBehaviour {
 
   /// Return index of item clicked. Since graph can be multi value, user
   /// will have to handle clicked index to show data they want to show
-  final ValueChanged<int> onItemClicked;
+  final ValueChanged<int>? onItemClicked;
 
   /// Return true if chart is currently scrollable
   bool get isScrollable => _isScrollable > 0.5;
@@ -39,10 +39,17 @@ class ChartBehaviour {
 
   /// Animate Behaviour from one state to other
   static ChartBehaviour lerp(ChartBehaviour a, ChartBehaviour b, double t) {
+    // This values should never return null, this is for null-safety
+    // But if it somehow does occur, then revert to default values
+    final _scrollableLerp =
+        lerpDouble(a._isScrollable, b._isScrollable, t) ?? 0.0;
+    final _multiStackLerp =
+        lerpDouble(a._multiValueStacked, b._multiValueStacked, t) ?? 1.0;
+
     return ChartBehaviour._lerp(
-      lerpDouble(a._isScrollable, b._isScrollable, t),
+      _scrollableLerp,
       t > 0.5 ? b.onItemClicked : a.onItemClicked,
-      lerpDouble(a._multiValueStacked, b._multiValueStacked, t),
+      _multiStackLerp,
     );
   }
 }
