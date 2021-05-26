@@ -89,7 +89,13 @@ We use Decorations to enhance our charts. Chart decorations can be painted in th
 [All decorations](./test/golden/GOLDENS.md)
 
 Here are decorations we have included, bar items with opacity have been added for better visibility.
-![decoration_golden_file]
+
+|   |   |   |
+:------: | :------: | :------: 
+![horizontal_decoration] Horizontal decoration | ![vertical_decoration] Vertical decoration | ![grid_decoration] Grid decoration 
+![target_line_decoration] Target line decoration | ![target_line_legend_decoration] Target line text decoration | ![target_area_decoration] Target area decoration
+![target_values_decoration] Value decoration | ![selected_item_decoration] Selected item decoration | ![sparkline_decoration] Sparkline decoration
+![border_decoration] Border decoration  |   
 
 ##### Legend decorations
  - GridDecoration - _Decoration is just merging of HorizontalAxisDecoration and VerticalAxisDecoration_
@@ -118,26 +124,25 @@ This is how you can start, this is simple bar chart with grid decoration:
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Chart(
-        state: ChartState.fromList(
-          [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
-          itemOptions: BarItemOptions(
-            padding: const EdgeInsets.symmetric(horizontal: 2.0),
-            radius: BorderRadius.vertical(top: Radius.circular(12.0)),
+      child: Chart<void>(
+        height: 600.0,
+        state: ChartState(
+          ChartData.fromList(
+            [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
+            axisMax: 8.0,
           ),
-          options: BarChartOptions(valueAxisMax: 8),
+          itemOptions: BarItemOptions(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            radius: BorderRadius.vertical(top: Radius.circular(42.0)),
+          ),
           backgroundDecorations: [
             GridDecoration(
               verticalAxisStep: 1,
               horizontalAxisStep: 1,
-              gridColor: Theme.of(context).dividerColor,
             ),
           ],
           foregroundDecorations: [
-            BorderDecoration(
-              color: Theme.of(context).colorScheme.secondary,
-              width: 2.0,
-            ),
+            BorderDecoration(borderWidth: 5.0),
           ],
         ),
       ),
@@ -156,32 +161,31 @@ By replacing the `BarValue` to `BubbleValue` and changing `geometryPainter` to `
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Chart(
-        state: ChartState.fromList(
-          /// CHANGE: Change [BarValue<void>] to [BubbleValue<void>]
-          [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+      child: Chart<void>(
+        height: 600.0,
+        state: ChartState(
+          ChartData.fromList(
+            /// CHANGE: Change [BarValue<void>] to [BubbleValue<void>]
+            [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+            axisMax: 8.0,
+          ),
           /// CHANGE: From [BarItemOptions] to [BubbleItemOptions]
           itemOptions: BubbleItemOptions(
-            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             /// REMOVED: Radius doesn't exist in [BubbleItemOptions]
             // radius: BorderRadius.vertical(top: Radius.circular(12.0)),
 
             /// ADDED: Make [BubbleValue] items smaller
             maxBarWidth: 4.0,
           ),
-          options: ChartOptions(valueAxisMax: 8),
           backgroundDecorations: [
             GridDecoration(
               verticalAxisStep: 1,
               horizontalAxisStep: 1,
-              gridColor: Theme.of(context).dividerColor,
             ),
           ],
           foregroundDecorations: [
-            BorderDecoration(
-              color: Theme.of(context).colorScheme.secondary,
-              width: 2.0,
-            ),
+            BorderDecoration(borderWidth: 5.0),
 
             /// ADDED: Add spark line decoration ([SparkLineDecoration]) on foreground
             SparkLineDecoration(),
@@ -202,47 +206,46 @@ To turn any chart to multi value we need to use `ChartState` instead of `ChartSt
   Widget build(BuildContext context) {
     Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Chart(
-        /// CHANGE: From [ChartState.fromList] to [ChartState]
+      child: Chart<void>(
+        height: 600.0,
         state: ChartState(
-          /// CHANGE: Add list we had into bigger List
-          [
-            [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+          /// CHANGE: From [ChartData.fromList] to [ChartData]
+          ChartData(
+            /// CHANGE: Add list we had into bigger List
+            [
+              [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
 
-            /// ADD: Another list
-            [4, 6, 3, 3, 2, 1, 4, 7, 5].map((e) => BubbleValue<void>(e.toDouble())).toList(),
-          ],
+              /// ADD: Another list
+              [4, 6, 3, 3, 2, 1, 4, 7, 5].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+            ],
+            axisMax: 8.0,
+          ),
           itemOptions: BubbleItemOptions(
-            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             maxBarWidth: 4.0,
 
             /// ADDED: Color bubbles differently depending on List they came from. [ColorForIndex]
             colorForKey: (item, index) {
-              return [Theme.of(context).colorScheme.primary, Theme.of(context).colorScheme.primaryVariant][index];
+              return [Colors.red, Colors.blue][index];
             },
           ),
-          options: ChartOptions(valueAxisMax: 8),
           backgroundDecorations: [
             GridDecoration(
               verticalAxisStep: 1,
               horizontalAxisStep: 1,
-              gridColor: Theme.of(context).dividerColor,
             ),
           ],
           foregroundDecorations: [
-            SparkLineDecoration(),
+            BorderDecoration(borderWidth: 5.0),
 
             /// ADDED: Add another [SparkLineDecoration] for the second list
             SparkLineDecoration(
-              // Specify key that this [SparkLineDecoration] will follow 
-              // Throws if `lineKey` does not exist in chart data 
-              lineKey: 1,
-              lineColor: Theme.of(context).colorScheme.primaryVariant,
+              // Specify key that this [SparkLineDecoration] will follow
+              // Throws if `lineKey` does not exist in chart data
+              lineArrayIndex: 1,
+              lineColor: Colors.blue,
             ),
-            BorderDecoration(
-              color: Theme.of(context).colorScheme.secondary,
-              width: 2.0,
-            ),
+            SparkLineDecoration(),
           ],
         ),
       ),
@@ -280,7 +283,16 @@ Scrollable bar chart [example code](./example/lib/charts/scrollable_chart_screen
 [simple_line_chart]: ./test/golden/examples/goldens/line_chart.png
 [simple_multi_line_chart]: ./test/golden/examples/goldens/multi_line_chart.png
 
-[decoration_golden_file]: ./test/golden/decoration/goldens/general_decorations_golden.png
+[horizontal_decoration]: ./test/golden/decoration/goldens/general/horizontal_decoration_golden.png
+[vertical_decoration]: ./test/golden/decoration/goldens/general/vertical_decoration_golden.png
+[grid_decoration]: ./test/golden/decoration/goldens/general/grid_decoration_golden.png
+[border_decoration]: ./test/golden/decoration/goldens/general/border_decoration_golden.png
+[sparkline_decoration]: ./test/golden/decoration/goldens/general/sparkline_text_decoration_golden.png
+[target_line_decoration]: ./test/golden/decoration/goldens/general/target_line_decoration_golden.png
+[target_area_decoration]: ./test/golden/decoration/goldens/general/target_area_decoration_golden.png
+[target_line_legend_decoration]: ./test/golden/decoration/goldens/general/target_line_decoration_golden.png
+[selected_item_decoration]: ./test/golden/decoration/goldens/general/selected_item_decoration_golden.png
+[target_values_decoration]: ./test/golden/decoration/goldens/general/value_decoration_golden.png
 
 [bar_painter]: ./test/golden/geometry/goldens/bar_geometry_golden.png
 [candle_painter]: ./test/golden/geometry/goldens/candle_geometry_golden.png

@@ -10,43 +10,79 @@ void main() {
     await loadAppFonts();
   });
 
-  testGoldens('General decorations test', (tester) async {
-    final builder = GoldenBuilder.grid(columns: 3, widthToHeightRatio: 1.4)
-      ..addScenario(
-        'Horizontal decoration',
-        getDefaultChart(backgroundDecorations: [
+  testWidgets('Horizontal decoration', (tester) async {
+    await tester.pumpWidget(
+      Container(
+        height: 500,
+        width: 800,
+        child: getDefaultChart(backgroundDecorations: [
           HorizontalAxisDecoration(),
         ]),
-      )
-      ..addScenario(
-        'Vertical decoration',
-        getDefaultChart(backgroundDecorations: [
+      ),
+    );
+    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/general/horizontal_decoration_golden.png'));
+  });
+
+  testWidgets('Vertical decoration', (tester) async {
+    await tester.pumpWidget(
+      Container(
+        height: 500,
+        width: 800,
+        child: getDefaultChart(backgroundDecorations: [
           VerticalAxisDecoration(),
         ]),
-      )
-      ..addScenario(
-        'Grid decoration',
-        getDefaultChart(backgroundDecorations: [
+      ),
+    );
+    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/general/vertical_decoration_golden.png'));
+  });
+
+  testWidgets('Grid decoration', (tester) async {
+    await tester.pumpWidget(
+      Container(
+        height: 500,
+        width: 800,
+        child: getDefaultChart(backgroundDecorations: [
           GridDecoration(),
         ]),
-      )
-      ..addScenario(
-        'Border decoration',
-        getDefaultChart(backgroundDecorations: [
+      ),
+    );
+    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/general/grid_decoration_golden.png'));
+  });
+
+  testWidgets('Border decoration', (tester) async {
+    await tester.pumpWidget(
+      Container(
+        height: 500,
+        width: 800,
+        child: getDefaultChart(backgroundDecorations: [
           BorderDecoration(),
         ]),
-      )
-      ..addScenario(
-        'Value decoration',
-        getDefaultChart(backgroundDecorations: [
+      ),
+    );
+    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/general/border_decoration_golden.png'));
+  });
+
+  testWidgets('Value decoration', (tester) async {
+    await tester.pumpWidget(
+      Container(
+        height: 500,
+        width: 800,
+        child: getDefaultChart(backgroundDecorations: [
           ValueDecoration(textStyle: defaultTextStyle.copyWith(fontSize: 16.0)),
         ]),
-      )
-      ..addScenario(
-        'Selected item decoration',
-        getDefaultChart(backgroundDecorations: [
+      ),
+    );
+    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/general/value_decoration_golden.png'));
+  });
+
+  testWidgets('Selected item decoration', (tester) async {
+    await tester.pumpWidget(
+      Container(
+        height: 500,
+        width: 800,
+        child: getDefaultChart(backgroundDecorations: [
           SelectedItemDecoration(2,
-              backgroundColor: Colors.black,
+              backgroundColor: Colors.black87,
               selectedStyle: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w900,
@@ -54,42 +90,66 @@ void main() {
                 fontSize: 26.0,
               )),
         ]),
-      )
-      ..addScenario(
-        'Target line decoration',
-        getDefaultChart(foregroundDecorations: [
+      ),
+    );
+    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/general/selected_item_decoration_golden.png'));
+  });
+
+  testWidgets('Target line decoration', (tester) async {
+    await tester.pumpWidget(
+      Container(
+        height: 500,
+        width: 800,
+        child: getDefaultChart(foregroundDecorations: [
           TargetLineDecoration(target: 4),
         ]),
-      )
-      ..addScenario(
-        'Target line text decoration',
-        getDefaultChart(backgroundDecorations: [
+      ),
+    );
+    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/general/target_line_decoration_golden.png'));
+  });
+
+  testWidgets('Target line text decoration', (tester) async {
+    await tester.pumpWidget(
+      Container(
+        height: 500,
+        width: 800,
+        child: getDefaultChart(backgroundDecorations: [
           TargetLineDecoration(target: 4, targetLineColor: Colors.red.withOpacity(0.1)),
           TargetLineLegendDecoration(
             legendTarget: 4,
             legendDescription: 'This is target |',
-            legendStyle: defaultTextStyle.copyWith(fontSize: 18.0),
+            legendStyle: defaultTextStyle.copyWith(fontSize: 18.0, color: Colors.black87),
           ),
         ]),
-      )
-      ..addScenario(
-        'Target area decoration',
-        getDefaultChart(foregroundDecorations: [
+      ),
+    );
+    await expectLater(
+        find.byType(Padding), matchesGoldenFile('goldens/general/target_line_text_decoration_golden.png'));
+  });
+
+  testWidgets('Target area decoration', (tester) async {
+    await tester.pumpWidget(
+      Container(
+        height: 500,
+        width: 800,
+        child: getDefaultChart(foregroundDecorations: [
           TargetAreaDecoration(targetMin: 3, targetMax: 5),
         ]),
-      )
-      ..addScenario(
-        'Sparkline text decoration',
-        getDefaultChart(backgroundDecorations: [
+      ),
+    );
+    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/general/target_area_decoration_golden.png'));
+  });
+
+  testWidgets('Sparkline text decoration', (tester) async {
+    await tester.pumpWidget(
+      Container(
+        height: 500,
+        width: 800,
+        child: getDefaultChart(backgroundDecorations: [
           SparkLineDecoration(),
         ]),
-      );
-
-    await tester.pumpWidgetBuilder(
-      builder.build(),
-      surfaceSize: const Size(1400, 1300),
-      textScaleSize: 1.4,
+      ),
     );
-    await screenMatchesGolden(tester, 'general_decorations_golden');
+    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/general/sparkline_decoration_golden.png'));
   });
 }
