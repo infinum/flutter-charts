@@ -5,6 +5,14 @@ Customizable charts library for flutter.
 
 Idea behind this lib is to allow highly customizable charts. By having decorations painters (foreground and background) and item painters that can be easily changed. Customizing and adding new decorations will require some CustomPainter knowledge.
 
+## Table of Contents
+* [Showcase](#showcase)
+* [Usage](#usage)
+    * [Basic](#basic-charts)
+    * [Decorations](#decoration)
+* [Make your own](#make-your-chart)
+* [More examples](#more-examples)
+
 ## Showcase
 ![showcase]
 
@@ -12,7 +20,7 @@ Idea behind this lib is to allow highly customizable charts. By having decoratio
 Add it to your package's pubspec.yaml file
 ```yaml
 dependencies:
-  charts_painter: ^1.0.0
+  charts_painter: ^1.1.0
 ```
 
 Install packages from the command line
@@ -78,14 +86,10 @@ Included in the lib are  2 `ItemPainter`'s.
 
 ## Decoration
 We use Decorations to enhance our charts. Chart decorations can be painted in the background or in a foreground of the items. Everything that is not chart item is a decoration.
+[All decorations](./test/golden/GOLDENS.md)
 
 Here are decorations we have included, bar items with opacity have been added for better visibility.
-
-|   |   |   |
-:------: | :------: | :------: 
-![horizontal_decoration] Horizontal decoration | ![vertical_decoration] Vertical decoration | ![grid_decoration] Grid decoration 
-![target_values_decoration] Value decoration | ![target_line_decoration] Target line decoration | ![target_line_legend_decoration] Target line text decoration
-![target_area_decoration] Target area decoration  | ![selected_item_decoration] Selected item decoration | ![sparkline_decoration] Sparkline decoration
+![decoration_golden_file]
 
 ##### Legend decorations
  - GridDecoration - _Decoration is just merging of HorizontalAxisDecoration and VerticalAxisDecoration_
@@ -267,27 +271,21 @@ Scrollable bar chart [example code](./example/lib/charts/scrollable_chart_screen
 ![scrollable_chart]
 
 [chart_image]: ./assets/chart_image.png
-[simple_chart]: ./assets/simple_chart.png
-[simple_line_chart]: ./assets/simple_line_chart.png
-[simple_multi_line_chart]: ./assets/simple_multi_line_chart.png
+
 [bar_chart_animating]: ./assets/bar_chart_animating.gif
 [scrollable_chart]: ./assets/scrollable_chart.gif
 [line_chart_animating]: ./assets/line_chart_animating.gif
 
-[horizontal_decoration]: ./assets/decorations/horizontal.png
-[vertical_decoration]: ./assets/decorations/vertical.png
-[grid_decoration]: ./assets/decorations/grid.png
-[sparkline_decoration]: ./assets/decorations/line.png
-[target_line_decoration]: ./assets/decorations/line_target.png
-[target_area_decoration]: ./assets/decorations/target_area.png
-[target_line_legend_decoration]: ./assets/decorations/target_line_legend.png
-[selected_item_decoration]: ./assets/decorations/selected_item.png
-[target_values_decoration]: ./assets/decorations/target_values.png
+[simple_chart]: ./test/golden/examples/goldens/bar_chart.png
+[simple_line_chart]: ./test/golden/examples/goldens/line_chart.png
+[simple_multi_line_chart]: ./test/golden/examples/goldens/multi_line_chart.png
 
-[bar_painter]: ./assets/painters/bar_bar_painter.png
-[candle_painter]: ./assets/painters/bar_chart_painter.png
-[bubble_painter]: ./assets/painters/bubble_painter.png
+[decoration_golden_file]: ./test/golden/decoration/goldens/general_decorations_golden.png
 
-[basic_line]: ./assets/basic/basic_line.png
-[basic_bar]: ./assets/basic/basic_bar.png
+[bar_painter]: ./test/golden/geometry/goldens/bar_geometry_golden.png
+[candle_painter]: ./test/golden/geometry/goldens/candle_geometry_golden.png
+[bubble_painter]: ./test/golden/geometry/goldens/bubble_geometry_golden.png
+
+[basic_line]: ./test/golden/examples/goldens/simple_line_chart.png
+[basic_bar]: ./test/golden/examples/goldens/simple_bar_chart.png
 [showcase]: ./assets/showcase.gif

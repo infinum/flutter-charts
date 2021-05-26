@@ -7,8 +7,7 @@ class SelectedItemDecoration extends DecorationPainter {
     this.selectedItem, {
     this.selectedColor = Colors.red,
     this.backgroundColor = Colors.grey,
-    this.textColor = Colors.white,
-    this.textSize = 28.0,
+    this.selectedStyle = const TextStyle(fontSize: 13.0),
     this.animate = false,
     this.selectedArrayIndex = 0,
   });
@@ -26,10 +25,7 @@ class SelectedItemDecoration extends DecorationPainter {
   final bool animate;
 
   /// Color of selected item text
-  final Color textColor;
-
-  /// Size for selected item text
-  final double textSize;
+  final TextStyle selectedStyle;
 
   /// Index of list whose data to show
   /// By default it will use first list to this value will be `0`
@@ -42,8 +38,7 @@ class SelectedItemDecoration extends DecorationPainter {
         'Selected key is not in the list!\nCheck the `selectedKey` you are passing.');
   }
 
-  void _drawText(Canvas canvas, Size size, double width, double totalWidth,
-      ChartState state) {
+  void _drawText(Canvas canvas, Size size, double width, double totalWidth, ChartState state) {
     final _item = selectedItem;
     if (_item == null) {
       return;
@@ -54,11 +49,7 @@ class SelectedItemDecoration extends DecorationPainter {
     final _maxValuePainter = ValueDecoration.makeTextPainter(
       _selectedItem.max?.toStringAsFixed(2) ?? '',
       width,
-      TextStyle(
-        fontSize: textSize,
-        color: textColor,
-        fontWeight: FontWeight.w700,
-      ),
+      selectedStyle,
       hasMaxWidth: false,
     );
 
@@ -67,11 +58,11 @@ class SelectedItemDecoration extends DecorationPainter {
           Rect.fromPoints(
               Offset(
                 width / 2 - _maxValuePainter.width / 2,
-                size.height - textSize * 1.2,
+                size.height - (selectedStyle.fontSize ?? 0.0) * 1.2,
               ),
               Offset(
                 width / 2 + _maxValuePainter.width / 2,
-                size.height - textSize * 0.2,
+                size.height - (selectedStyle.fontSize ?? 0.0) * 0.2,
               )),
           const Radius.circular(8.0),
         ).inflate(4),
@@ -81,7 +72,7 @@ class SelectedItemDecoration extends DecorationPainter {
       canvas,
       Offset(
         width / 2 - _maxValuePainter.width / 2,
-        size.height - textSize * 1.3,
+        size.height - (selectedStyle.fontSize ?? 0.0) * 1.3,
       ),
     );
   }
@@ -101,25 +92,20 @@ class SelectedItemDecoration extends DecorationPainter {
     // Save, and translate the canvas so [0,0] is top left of item at [index] position
     canvas.save();
     canvas.translate(
-      state.defaultPadding.left +
-          (_itemWidth * _item) +
-          state.defaultMargin.left,
+      state.defaultPadding.left + (_itemWidth * _item) + state.defaultMargin.left,
       size.height + state.defaultMargin.top + state.defaultPadding.top,
     );
 
     _drawItem(canvas, Size(_itemWidth, -size.height), state);
-    _drawText(
-        canvas, Size(_itemWidth, -size.height), _itemWidth, size.width, state);
+    _drawText(canvas, Size(_itemWidth, -size.height), _itemWidth, size.width, state);
 
     // Restore canvas
     canvas.restore();
   }
 
   void _drawItem(Canvas canvas, Size size, ChartState state) {
-    final _itemWidth = max(
-        state.itemOptions.minBarWidth ?? 0.0,
-        min(state.itemOptions.maxBarWidth ?? double.infinity,
-            size.width - state.itemOptions.padding.horizontal));
+    final _itemWidth = max(state.itemOptions.minBarWidth ?? 0.0,
+        min(state.itemOptions.maxBarWidth ?? double.infinity, size.width - state.itemOptions.padding.horizontal));
 
     const _size = 2.0;
     final _maxValue = state.data.maxValue - state.data.minValue;
@@ -164,7 +150,7 @@ class SelectedItemDecoration extends DecorationPainter {
         ),
         Offset(
           state.itemOptions.padding.left + _itemWidth / 2 + _size / 2,
-          size.height - textSize * 0.2,
+          size.height - (selectedStyle.fontSize ?? 0) * 0.2,
         ),
       ),
       Paint()..color = selectedColor,
@@ -180,7 +166,7 @@ class SelectedItemDecoration extends DecorationPainter {
 
   @override
   EdgeInsets marginNeeded() {
-    return EdgeInsets.only(top: textSize * 1.3);
+    return EdgeInsets.only(top: (selectedStyle.fontSize ?? 0) * 1.3);
   }
 
   @override
@@ -188,20 +174,11 @@ class SelectedItemDecoration extends DecorationPainter {
     if (endValue is SelectedItemDecoration) {
       return SelectedItemDecoration(
         animate
-            ? (lerpDouble(selectedItem?.toDouble(),
-                        endValue.selectedItem?.toDouble(), t) ??
-                    0)
-                .round()
+            ? (lerpDouble(selectedItem?.toDouble(), endValue.selectedItem?.toDouble(), t) ?? 0).round()
             : endValue.selectedItem,
-        selectedColor: Color.lerp(selectedColor, endValue.selectedColor, t) ??
-            endValue.selectedColor,
-        backgroundColor:
-            Color.lerp(backgroundColor, endValue.backgroundColor, t) ??
-                endValue.backgroundColor,
-        textColor:
-            Color.lerp(textColor, endValue.textColor, t) ?? endValue.textColor,
-        textSize:
-            lerpDouble(textSize, endValue.textSize, t) ?? endValue.textSize,
+        selectedColor: Color.lerp(selectedColor, endValue.selectedColor, t) ?? endValue.selectedColor,
+        backgroundColor: Color.lerp(backgroundColor, endValue.backgroundColor, t) ?? endValue.backgroundColor,
+        selectedStyle: TextStyle.lerp(selectedStyle, endValue.selectedStyle, t) ?? endValue.selectedStyle,
         animate: endValue.animate,
         selectedArrayIndex: endValue.selectedArrayIndex,
       );
