@@ -8,6 +8,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:path_drawing/path_drawing.dart';
 
 /// State
@@ -45,6 +46,10 @@ part 'chart/painter/decorations/vertical_axis_decoration.dart';
 part 'chart/painter/geometry/bar_geometry_painter.dart';
 part 'chart/painter/geometry/bubble_geometry_painter.dart';
 part 'chart/painter/geometry/geometry_painter.dart';
+part 'chart/render/chart_item_renderer.dart';
+
+/// Render
+part 'chart/render/chart_renderer.dart';
 
 /// Widgets
 part 'chart/widgets/animated_chart.dart';

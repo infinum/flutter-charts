@@ -84,9 +84,7 @@ class ShowList extends StatelessWidget {
               child: Chart(
                 state: ChartState<void>(
                   ChartData.fromList(
-                    [2, 7, 2, 4, 7, 6, 2, 5, 4]
-                        .map((e) => BubbleValue<void>(e.toDouble()))
-                        .toList(),
+                    [2, 7, 2, 4, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
                     axisMax: 9,
                   ),
                   itemOptions: BubbleItemOptions(
@@ -110,8 +108,7 @@ class ShowList extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.of(context).push<void>(
-                MaterialPageRoute(builder: (_) => LineChartScreen()));
+            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => LineChartScreen()));
           },
         ),
         Divider(),
@@ -124,9 +121,7 @@ class ShowList extends StatelessWidget {
               child: Chart(
                 state: ChartState<void>(
                     ChartData.fromList(
-                      [1, 3, 4, 2, 7, 6, 2, 5, 4]
-                          .map((e) => BarValue<void>(e.toDouble()))
-                          .toList(),
+                      [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
                       axisMax: 8,
                     ),
                     itemOptions: BarItemOptions(
@@ -145,8 +140,7 @@ class ShowList extends StatelessWidget {
                       TargetLineDecoration(
                         target: 6,
                         colorOverTarget: Theme.of(context).colorScheme.error,
-                        targetLineColor:
-                            Theme.of(context).colorScheme.secondary,
+                        targetLineColor: Theme.of(context).colorScheme.secondary,
                       ),
                       BorderDecoration(
                         borderWidth: 1.5,
@@ -157,8 +151,7 @@ class ShowList extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.of(context).push<void>(
-                MaterialPageRoute(builder: (_) => BarTargetChartScreen()));
+            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => BarTargetChartScreen()));
           },
         ),
         Divider(),
@@ -182,9 +175,7 @@ class ShowList extends StatelessWidget {
               child: Chart(
                 state: ChartState<void>(
                   ChartData.fromList(
-                    [1, 3, 4, 2, 7, 6, 2, 5, 4]
-                        .map((e) => BarValue<void>(e.toDouble()))
-                        .toList(),
+                    [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
                     axisMax: 8,
                   ),
                   itemOptions: BarItemOptions(
@@ -207,8 +198,7 @@ class ShowList extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.of(context).push<void>(
-                MaterialPageRoute(builder: (_) => ScrollableChartScreen()));
+            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => ScrollableChartScreen()));
           },
         ),
         Divider(),
@@ -224,6 +214,30 @@ class ShowList extends StatelessWidget {
         ),
         Divider(),
         ComplexCharts(),
+        Container(
+          height: 400.0,
+          child: ChartRenderer(ChartState<void>(
+            ChartData.fromList(
+              [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
+              axisMax: 8,
+            ),
+            itemOptions: BarItemOptions(
+              padding: const EdgeInsets.symmetric(horizontal: 2.0),
+              radius: BorderRadius.vertical(top: Radius.circular(12.0)),
+              color: Theme.of(context).accentColor,
+            ),
+            backgroundDecorations: [
+              GridDecoration(
+                verticalAxisStep: 1,
+                horizontalAxisStep: 4,
+                gridColor: Theme.of(context).dividerColor,
+              ),
+              SparkLineDecoration(
+                lineColor: Theme.of(context).accentColor,
+              ),
+            ],
+          )),
+        )
       ],
     );
   }
