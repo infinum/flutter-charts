@@ -1,28 +1,31 @@
 part of charts_painter;
 
-class ChartRenderer<T> extends MultiChildRenderObjectWidget {
-  ChartRenderer(this.chartState, {Key? key})
+class ChartDataRenderer<T> extends MultiChildRenderObjectWidget {
+  ChartDataRenderer(this.chartState, {Key? key})
       : super(key: key, children: [
-          ...chartState.backgroundDecorations.map((e) => ChartDecorationRenderer(chartState, e)).toList(),
-          ChartDataRenderer(chartState),
-          ...chartState.foregroundDecorations.map((e) => ChartDecorationRenderer(chartState, e)).toList(),
+          ...chartState.data.items
+              .mapIndexed(
+                (key, items) => items.map((e) => ChartItemRenderer(e, chartState, arrayKey: key)).toList(),
+              )
+              .expand((element) => element)
+              .toList(),
         ]);
 
   final ChartState<T?> chartState;
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return _ChartRenderObject<T?>(chartState);
+    return _ChartItemRenderer<T?>(chartState);
   }
 }
 
-class BoxPaneParentData extends ContainerBoxParentData<RenderBox> {}
+class ChartItemData extends ContainerBoxParentData<RenderBox> {}
 
-class _ChartRenderObject<T> extends RenderBox
+class _ChartItemRenderer<T> extends RenderBox
     with
-        ContainerRenderObjectMixin<RenderBox, BoxPaneParentData>,
-        RenderBoxContainerDefaultsMixin<RenderBox, BoxPaneParentData> {
-  _ChartRenderObject(this._chartState);
+        ContainerRenderObjectMixin<RenderBox, ChartItemData>,
+        RenderBoxContainerDefaultsMixin<RenderBox, ChartItemData> {
+  _ChartItemRenderer(this._chartState);
 
   ChartState<T?> _chartState;
   ChartState<T?> get chartState => _chartState;
@@ -35,8 +38,8 @@ class _ChartRenderObject<T> extends RenderBox
 
   @override
   void setupParentData(RenderBox child) {
-    if (child.parentData is! BoxPaneParentData) {
-      child.parentData = BoxPaneParentData();
+    if (child.parentData is! ChartItemData) {
+      child.parentData = ChartItemData();
     }
   }
 
@@ -87,9 +90,16 @@ class _ChartRenderObject<T> extends RenderBox
     while (child != null) {
       childCount++;
 
-      final childParentData = child.parentData! as BoxPaneParentData;
+      final childParentData = child.parentData! as ChartItemData;
+      childParentData.offset =
+          Offset((constraints.maxWidth / _chartState.data.listSize) * (childCount - 1), childParentData.offset.dy);
+      final innerConstraints = BoxConstraints(
+        maxWidth: constraints.maxWidth,
+        minHeight: constraints.maxHeight,
+        maxHeight: constraints.maxHeight,
+      );
 
-      child.layout(constraints);
+      child.layout(innerConstraints);
       assert(child.parentData == childParentData);
       child = childParentData.nextSibling;
     }
@@ -101,7 +111,7 @@ class _ChartRenderObject<T> extends RenderBox
   void paint(PaintingContext context, Offset offset) {
     var child = firstChild;
     while (child != null) {
-      final childParentData = child.parentData! as BoxPaneParentData;
+      final childParentData = child.parentData! as ChartItemData;
       context.paintChild(child, childParentData.offset + offset);
       child = childParentData.nextSibling;
     }

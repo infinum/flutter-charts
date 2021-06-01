@@ -54,13 +54,6 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
       return;
     }
 
-    canvas.drawLine(
-        Offset(0.0, 0.0),
-        Offset(size.width, 0.0),
-        Paint()
-          ..color = Colors.black
-          ..strokeWidth = 2.0);
-
     canvas.drawRRect(
       RRect.fromRectAndCorners(
         Rect.fromPoints(

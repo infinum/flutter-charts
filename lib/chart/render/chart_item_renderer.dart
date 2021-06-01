@@ -84,12 +84,12 @@ class _RenderChartItem<T> extends RenderBox {
     /// Final usable space for one item in the chart
     final _itemWidth = _deflatedSize.width / _listSize;
 
-    var size = min(_itemWidth, constraints.maxHeight);
-    if (size.isInfinite) {
-      size = _defaultSize;
+    var width = min(_itemWidth, constraints.maxWidth);
+    if (width.isInfinite) {
+      width = _defaultSize;
     }
 
-    return constraints.constrain(Size(size, _deflatedSize.height));
+    return constraints.constrain(Size(width, _deflatedSize.height));
   }
 
   @override
@@ -100,7 +100,7 @@ class _RenderChartItem<T> extends RenderBox {
 
     final _stack = 1 - _state.behaviour._multiValueStacked;
 
-    final _stackWidth =
+    final _stackWidth = size.width -
         (_state.itemOptions.multiValuePadding.horizontal / max(1, _state.data.stackSize * _stack)) * _stack;
 
     // Use item painter from ItemOptions to draw the item on the chart
@@ -109,7 +109,7 @@ class _RenderChartItem<T> extends RenderBox {
     // Draw the item on selected position
     _item.draw(
       canvas,
-      Size(size.width, -size.height),
+      Size(_stackWidth, -size.height),
       _state.itemOptions.getPaintForItem(_item.item, Size(_stackWidth, size.height), key),
     );
 

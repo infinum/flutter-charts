@@ -229,7 +229,7 @@ class ShowList extends StatelessWidget {
             backgroundDecorations: [
               GridDecoration(
                 verticalAxisStep: 1,
-                horizontalAxisStep: 4,
+                horizontalAxisStep: 1,
                 gridColor: Theme.of(context).dividerColor,
               ),
               SparkLineDecoration(
