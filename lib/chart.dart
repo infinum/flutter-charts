@@ -28,30 +28,27 @@ part 'chart/model/theme/chart_behaviour.dart';
 part 'chart/model/theme/item_theme/bar_item_options.dart';
 part 'chart/model/theme/item_theme/item_options.dart';
 part 'chart/model/theme/item_theme/line_item_options.dart';
-
-/// Painters
-part 'chart/painter/chart_painter.dart';
-// Decorations painter
-part 'chart/painter/decorations/border_decoration.dart';
-part 'chart/painter/decorations/decoration_painter.dart';
-part 'chart/painter/decorations/grid_decoration.dart';
-part 'chart/painter/decorations/horizontal_axis_decoration.dart';
-part 'chart/painter/decorations/selected_item_decoration.dart';
-part 'chart/painter/decorations/spark_line_decoration.dart';
-part 'chart/painter/decorations/target_decoration.dart';
-part 'chart/painter/decorations/target_legends_decoration.dart';
-part 'chart/painter/decorations/value_decoration.dart';
-part 'chart/painter/decorations/vertical_axis_decoration.dart';
 // Geometry painters
-part 'chart/painter/geometry/bar_geometry_painter.dart';
-part 'chart/painter/geometry/bubble_geometry_painter.dart';
-part 'chart/painter/geometry/geometry_painter.dart';
 part 'chart/render/chart_data_renderer.dart';
+// Decorations painter
 part 'chart/render/chart_decoration_renderer.dart';
 part 'chart/render/chart_item_renderer.dart';
 
 /// Render
 part 'chart/render/chart_renderer.dart';
+part 'chart/render/decorations/border_decoration.dart';
+part 'chart/render/decorations/decoration_painter.dart';
+part 'chart/render/decorations/grid_decoration.dart';
+part 'chart/render/decorations/horizontal_axis_decoration.dart';
+part 'chart/render/decorations/selected_item_decoration.dart';
+part 'chart/render/decorations/spark_line_decoration.dart';
+part 'chart/render/decorations/target_decoration.dart';
+part 'chart/render/decorations/target_legends_decoration.dart';
+part 'chart/render/decorations/value_decoration.dart';
+part 'chart/render/decorations/vertical_axis_decoration.dart';
+part 'chart/render/geometry/bar_geometry_painter.dart';
+part 'chart/render/geometry/bubble_geometry_painter.dart';
+part 'chart/render/geometry/geometry_painter.dart';
 
 /// Widgets
 part 'chart/widgets/animated_chart.dart';
