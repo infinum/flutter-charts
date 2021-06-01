@@ -16,7 +16,9 @@ void main() {
         height: 500,
         width: 800,
         child: getDefaultChart(backgroundDecorations: [
-          HorizontalAxisDecoration(),
+          HorizontalAxisDecoration(
+            lineWidth: 2.0,
+          ),
         ]),
       ),
     );
@@ -29,7 +31,9 @@ void main() {
         height: 500,
         width: 800,
         child: getDefaultChart(backgroundDecorations: [
-          VerticalAxisDecoration(),
+          VerticalAxisDecoration(
+            lineWidth: 2.0,
+          ),
         ]),
       ),
     );
@@ -42,7 +46,9 @@ void main() {
         height: 500,
         width: 800,
         child: getDefaultChart(backgroundDecorations: [
-          GridDecoration(),
+          GridDecoration(
+            gridWidth: 2.0,
+          ),
         ]),
       ),
     );
@@ -55,7 +61,9 @@ void main() {
         height: 500,
         width: 800,
         child: getDefaultChart(backgroundDecorations: [
-          BorderDecoration(),
+          BorderDecoration(
+            borderWidth: 4.0,
+          ),
         ]),
       ),
     );
@@ -101,7 +109,7 @@ void main() {
         height: 500,
         width: 800,
         child: getDefaultChart(foregroundDecorations: [
-          TargetLineDecoration(target: 4),
+          TargetLineDecoration(lineWidth: 2.0, target: 4),
         ]),
       ),
     );
@@ -114,7 +122,7 @@ void main() {
         height: 500,
         width: 800,
         child: getDefaultChart(backgroundDecorations: [
-          TargetLineDecoration(target: 4, targetLineColor: Colors.red.withOpacity(0.1)),
+          TargetLineDecoration(lineWidth: 2.0, target: 4, targetLineColor: Colors.red.withOpacity(0.1)),
           TargetLineLegendDecoration(
             legendTarget: 4,
             legendDescription: 'This is target |',
@@ -145,8 +153,10 @@ void main() {
       Container(
         height: 500,
         width: 800,
-        child: getDefaultChart(backgroundDecorations: [
-          SparkLineDecoration(),
+        child: getDefaultChart(foregroundDecorations: [
+          SparkLineDecoration(
+            lineWidth: 3.0,
+          ),
         ]),
       ),
     );
