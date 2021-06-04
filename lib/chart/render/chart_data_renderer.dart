@@ -95,7 +95,6 @@ class _ChartItemRenderer<T> extends RenderBox
           Offset((constraints.maxWidth / _chartState.data.listSize) * (childCount - 1), childParentData.offset.dy);
       final innerConstraints = BoxConstraints(
         maxWidth: constraints.maxWidth,
-        minHeight: constraints.maxHeight,
         maxHeight: constraints.maxHeight,
       );
 

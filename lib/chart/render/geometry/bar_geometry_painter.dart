@@ -29,7 +29,6 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
   @override
   void draw(Canvas canvas, Size size, Paint paint) {
     canvas.save();
-    canvas.translate(0.0, -size.height);
     final options = state.itemOptions;
 
     final _maxValue = state.data.maxValue - state.data.minValue;
@@ -59,11 +58,13 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
         Rect.fromPoints(
           Offset(
             _padding.left,
-            max(state.data.minValue, item.min ?? 0.0) * _verticalMultiplier - _minValue,
+            _maxValue * _verticalMultiplier -
+                max(state.data.minValue, item.min ?? 0.0) * _verticalMultiplier -
+                _minValue,
           ),
           Offset(
             _itemWidth + _padding.left,
-            _itemMaxValue * _verticalMultiplier - _minValue,
+            _maxValue * _verticalMultiplier - _itemMaxValue * _verticalMultiplier - _minValue,
           ),
         ),
         bottomLeft: _itemMaxValue.isNegative ? _radius.topLeft : _radius.bottomLeft,

@@ -65,6 +65,12 @@ class SparkLineDecoration extends DecorationPainter {
   final int lineArrayIndex;
 
   @override
+  Size layoutSize(BoxConstraints constraints, ChartState state) {
+    final _size = state.defaultPadding.deflateSize(constraints.biggest);
+    return _size;
+  }
+
+  @override
   void draw(Canvas canvas, Size size, ChartState state) {
     final _paint = Paint()
       ..color = lineColor

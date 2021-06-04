@@ -26,6 +26,14 @@ abstract class DecorationPainter {
     return EdgeInsets.zero;
   }
 
+  Size layoutSize(BoxConstraints constraints, ChartState state) {
+    return constraints.biggest;
+  }
+
+  Offset applyPaintTransform(ChartState state, Size size) {
+    return Offset.zero;
+  }
+
   /// Init decoration is first thing called on decorations, it will pass current [ChartState]
   /// so decoration can easily calculate needed stuff for their layout.
   void initDecoration(ChartState state) {

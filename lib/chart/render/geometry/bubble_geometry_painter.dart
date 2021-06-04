@@ -13,8 +13,7 @@ part of charts_painter;
 ///
 class BubbleGeometryPainter<T> extends GeometryPainter<T> {
   /// Constructor for bubble painter
-  BubbleGeometryPainter(ChartItem<T> item, ChartState state)
-      : super(item, state);
+  BubbleGeometryPainter(ChartItem<T> item, ChartState state) : super(item, state);
 
   @override
   void draw(Canvas canvas, Size size, Paint paint) {
@@ -26,12 +25,8 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
 
     final _itemWidth = max(
         options.minBarWidth ?? 0.0,
-        min(
-            options.maxBarWidth ?? double.infinity,
-            size.width -
-                (options.padding.horizontal.isNegative
-                    ? 0.0
-                    : options.padding.horizontal)));
+        min(options.maxBarWidth ?? double.infinity,
+            size.width - (options.padding.horizontal.isNegative ? 0.0 : options.padding.horizontal)));
 
     final _itemMaxValue = item.max ?? 0.0;
     // If item is empty, or it's max value is below chart's minValue then don't draw it.
@@ -59,8 +54,7 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
       _borderPaint.strokeWidth = _border.width;
 
       canvas.drawCircle(
-        Offset(
-            size.width * 0.5, _itemMaxValue * _verticalMultiplier - _minValue),
+        Offset(size.width * 0.5, _itemMaxValue * _verticalMultiplier - _minValue),
         _circleSize,
         _borderPaint,
       );

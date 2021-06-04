@@ -16,9 +16,9 @@ class _RenderChartDecoration<T> extends RenderBox {
   _RenderChartDecoration(this._chartState, this._decoration);
 
   DecorationPainter _decoration;
-  set item(DecorationPainter item) {
-    if (item != _decoration) {
-      _decoration = item;
+  set item(DecorationPainter decoration) {
+    if (decoration != _decoration) {
+      _decoration = decoration;
       markNeedsPaint();
     }
   }
@@ -54,14 +54,20 @@ class _RenderChartDecoration<T> extends RenderBox {
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-    return constraints.constrain(Size(constraints.maxWidth, constraints.maxHeight));
+    final _size = constraints.biggest;
+    final childParentData = parentData! as BoxParentData;
+    final offset = _decoration.applyPaintTransform(_chartState, _size);
+    childParentData.offset = offset;
+
+    return _decoration.layoutSize(constraints, _chartState);
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
     final canvas = context.canvas;
     canvas.save();
-    canvas.translate(offset.dx, 0.0);
+    canvas.translate(offset.dx, offset.dy);
+
     _decoration.draw(canvas, size, _chartState);
 
     canvas.restore();

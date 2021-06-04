@@ -109,7 +109,7 @@ class _RenderChartItem<T> extends RenderBox {
     // Draw the item on selected position
     _item.draw(
       canvas,
-      Size(_stackWidth, -size.height),
+      Size(_stackWidth, size.height),
       _state.itemOptions.getPaintForItem(_item.item, Size(_stackWidth, size.height), key),
     );
 

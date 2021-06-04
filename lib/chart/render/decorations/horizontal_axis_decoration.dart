@@ -120,6 +120,17 @@ class HorizontalAxisDecoration extends DecorationPainter {
   }
 
   @override
+  Size layoutSize(BoxConstraints constraints, ChartState state) {
+    final _size = (state.defaultPadding * _endWithChart).deflateSize(constraints.biggest);
+    return _size;
+  }
+
+  @override
+  Offset applyPaintTransform(ChartState state, Size size) {
+    return Offset(0.0 + state.defaultMargin.left, state.defaultMargin.top);
+  }
+
+  @override
   void draw(Canvas canvas, Size size, ChartState state) {
     final _paint = Paint()
       ..color = lineColor
@@ -127,18 +138,17 @@ class HorizontalAxisDecoration extends DecorationPainter {
       ..strokeWidth = lineWidth;
 
     canvas.save();
-    canvas.translate(0.0 + state.defaultMargin.left, size.height + state.defaultMargin.top - state.defaultPadding.top);
-
     final _maxValue = state.data.maxValue - state.data.minValue;
-    final _size = (state.defaultPadding * _endWithChart).deflateSize(size);
-    final scale = _size.height / _maxValue;
+    final scale = size.height / _maxValue;
 
     final gridPath = Path();
 
-    for (var i = 0; i <= _maxValue / axisStep; i++) {
+    for (var i = 0; i * scale * axisStep <= scale * _maxValue; i++) {
       if (showLines) {
-        gridPath.moveTo(_endWithChart * state.defaultPadding.left, -axisStep * i * scale + lineWidth / 2);
-        gridPath.lineTo(_size.width, -axisStep * i * scale + lineWidth / 2);
+        gridPath.moveTo(_endWithChart * state.defaultPadding.left,
+            size.height - state.defaultPadding.top + -axisStep * i * scale + lineWidth / 2);
+        gridPath.lineTo(size.width - state.defaultPadding.horizontal * _endWithChart,
+            size.height - state.defaultPadding.top + -axisStep * i * scale + lineWidth / 2);
       }
 
       if (!showValues) {
@@ -180,7 +190,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
       _textPainter.paint(
           canvas,
           Offset(legendPosition == HorizontalLegendPosition.end ? _positionEnd : _positionStart,
-              -axisStep * i * scale - (_textPainter.height + (valuesPadding?.bottom ?? 0.0))));
+              size.height - axisStep * i * scale - (_textPainter.height + (valuesPadding?.bottom ?? 0.0))));
     }
 
     if (dashArray != null) {

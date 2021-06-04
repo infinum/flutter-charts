@@ -66,14 +66,15 @@ class _BarChartScreenState extends State<BarChartScreen> {
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: BarChart(
-              data: _values,
+              // data: _values,
+              data: [3, 4, 5, 6, 3, 2].map((e) => BarValue(e.toDouble())).toList(),
               height: MediaQuery.of(context).size.height * 0.4,
               dataToValue: (BarValue value) => value?.max ?? 0.0,
               itemOptions: BarItemOptions(
-                padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 minBarWidth: 4.0,
                 // isTargetInclusive: true,
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.4),
                 radius: const BorderRadius.vertical(
                   top: Radius.circular(24.0),
                 ),
@@ -85,6 +86,14 @@ class _BarChartScreenState extends State<BarChartScreen> {
                     : null,
               ),
               backgroundDecorations: [
+                // VerticalAxisDecoration(
+                //   showValues: true,
+                //   legendPosition: _legendOnEnd ? VerticalLegendPosition.bottom : VerticalLegendPosition.top,
+                //   axisStep: 1,
+                //   valuesPadding: EdgeInsets.symmetric(horizontal: _showValues ? 4.0 : 0.0),
+                //   legendFontStyle: Theme.of(context).textTheme.caption,
+                //   lineColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+                // ),
                 GridDecoration(
                   showHorizontalValues: _showValues,
                   showVerticalValues: _showValues,
@@ -99,26 +108,26 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   textStyle: Theme.of(context).textTheme.caption,
                   gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                 ),
-                TargetAreaDecoration(
-                  targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
-                  targetLineColor: Theme.of(context).colorScheme.error,
-                  targetAreaRadius: BorderRadius.circular(12.0),
-                  targetMax: targetMax,
-                  targetMin: targetMin,
-                  colorOverTarget: Theme.of(context).colorScheme.error,
-                ),
+                // TargetAreaDecoration(
+                //   targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
+                //   targetLineColor: Theme.of(context).colorScheme.error,
+                //   targetAreaRadius: BorderRadius.circular(12.0),
+                //   targetMax: 6, //targetMax,
+                //   targetMin: 4, //targetMin,
+                //   colorOverTarget: Theme.of(context).colorScheme.error,
+                // ),
               ],
               foregroundDecorations: [
-                SparkLineDecoration(
-                  lineWidth: 4.0,
-                  lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
-                  smoothPoints: _smoothPoints,
-                ),
-                ValueDecoration(
-                  alignment: Alignment.bottomCenter,
-                  textStyle:
-                      Theme.of(context).textTheme.button.copyWith(color: Theme.of(context).colorScheme.onPrimary),
-                ),
+                // SparkLineDecoration(
+                //   lineWidth: 4.0,
+                //   lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
+                //   smoothPoints: _smoothPoints,
+                // ),
+                // ValueDecoration(
+                //   alignment: Alignment.bottomCenter,
+                //   textStyle:
+                //       Theme.of(context).textTheme.button.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                // ),
               ],
             ),
           ),
