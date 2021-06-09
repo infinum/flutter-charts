@@ -99,7 +99,8 @@ class SparkLineDecoration extends DecorationPainter {
     }
 
     state.data.items[lineArrayIndex].asMap().forEach((key, value) {
-      final _position = _itemWidth * (linePosition == SparkLinePosition.fixed ? startPosition : (key / _listSize));
+      final _position =
+          _itemWidth * (linePosition == SparkLinePosition.fixed ? startPosition : (key / (_listSize - 1)));
 
       if (fill && key == 0) {
         _positions.add(Offset(_size.width * (key / _listSize) + _position, 0.0));
