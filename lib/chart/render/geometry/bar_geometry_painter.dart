@@ -28,7 +28,6 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
 
   @override
   void draw(Canvas canvas, Size size, Paint paint) {
-    canvas.save();
     final options = state.itemOptions;
 
     final _maxValue = state.data.maxValue - state.data.minValue;
@@ -52,6 +51,7 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
     if (item.isEmpty || _itemMaxValue < state.data.minValue) {
       return;
     }
+    canvas.save();
 
     canvas.drawRRect(
       RRect.fromRectAndCorners(

@@ -140,7 +140,7 @@ class _ChartItemRenderer<T> extends RenderBox
       child = childParentData.nextSibling;
     }
 
-    size = constraints.deflate(chartState.defaultPadding + chartState.defaultMargin).biggest;
+    size = constraints.biggest;
   }
 
   @override

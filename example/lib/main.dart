@@ -217,26 +217,29 @@ class ShowList extends StatelessWidget {
         Container(
           height: 400.0,
           child: ChartRenderer(ChartState<void>(
-            ChartData.fromList(
-              [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
-              axisMax: 8,
-            ),
-            itemOptions: BarItemOptions(
-              padding: const EdgeInsets.symmetric(horizontal: 2.0),
-              radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-              color: Theme.of(context).accentColor,
-            ),
-            backgroundDecorations: [
-              GridDecoration(
-                verticalAxisStep: 1,
-                horizontalAxisStep: 1,
-                gridColor: Theme.of(context).dividerColor,
+              ChartData.fromList(
+                [1, 3, 4, 2, 7, 0, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
+                axisMax: 8,
               ),
-              SparkLineDecoration(
-                lineColor: Theme.of(context).accentColor,
+              itemOptions: BarItemOptions(
+                padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                radius: BorderRadius.vertical(top: Radius.circular(12.0)),
+                color: Theme.of(context).accentColor.withOpacity(0.4),
               ),
-            ],
-          )),
+              backgroundDecorations: [
+                GridDecoration(
+                  verticalAxisStep: 1,
+                  horizontalAxisStep: 1,
+                  gridColor: Theme.of(context).dividerColor,
+                ),
+              ],
+              foregroundDecorations: [
+                SparkLineDecoration(
+                  lineWidth: 2.0,
+                  linePosition: SparkLinePosition.stretch,
+                  lineColor: Theme.of(context).accentColor,
+                ),
+              ])),
         )
       ],
     );
