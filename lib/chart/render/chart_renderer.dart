@@ -14,6 +14,11 @@ class ChartRenderer<T> extends MultiChildRenderObjectWidget {
   RenderObject createRenderObject(BuildContext context) {
     return _ChartRenderObject<T?>(chartState);
   }
+
+  @override
+  void updateRenderObject(BuildContext context, _ChartRenderObject<T?> renderObject) {
+    renderObject.chartState = chartState;
+  }
 }
 
 class BoxPaneParentData extends ContainerBoxParentData<RenderBox> {}

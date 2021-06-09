@@ -192,7 +192,7 @@ class TargetAreaDecoration extends DecorationPainter {
     final _minValue = state.data.minValue * scale;
 
     return Rect.fromPoints(Offset(0.0, -scale * targetMin + _minValue),
-            Offset(_size.width - areaPadding.horizontal, -scale * targetMax + _minValue))
+            Offset(constraints.maxWidth, -scale * targetMax + _minValue + areaPadding.vertical))
         .size;
   }
 
@@ -212,25 +212,23 @@ class TargetAreaDecoration extends DecorationPainter {
       canvas.drawRRect(
         RRect.fromRectAndCorners(
           Rect.fromPoints(
-            Offset(0.0, 0.0),
-            Offset(size.width, size.height),
+            Offset(lineWidth / 2, lineWidth / 2),
+            Offset(size.width - lineWidth / 2, size.height - lineWidth / 2),
           ),
           bottomLeft: targetAreaRadius?.bottomLeft ?? Radius.zero,
           bottomRight: targetAreaRadius?.bottomRight ?? Radius.zero,
           topLeft: targetAreaRadius?.topLeft ?? Radius.zero,
           topRight: targetAreaRadius?.topRight ?? Radius.zero,
         ),
-        Paint()
-          ..color = targetAreaFillColor!
-          ..strokeWidth = 3.0,
+        Paint()..color = targetAreaFillColor!,
       );
     }
 
     final _rectPath = Path()
       ..addRRect(RRect.fromRectAndCorners(
         Rect.fromPoints(
-          Offset(0.0, 0.0),
-          Offset(size.width, size.height),
+          Offset(lineWidth / 2, lineWidth / 2),
+          Offset(size.width - lineWidth / 2, size.height - lineWidth / 2),
         ),
         bottomLeft: targetAreaRadius?.bottomLeft ?? Radius.zero,
         bottomRight: targetAreaRadius?.bottomRight ?? Radius.zero,

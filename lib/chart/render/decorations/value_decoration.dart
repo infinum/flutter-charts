@@ -54,7 +54,8 @@ class ValueDecoration extends DecorationPainter {
       canvas,
       Offset(
         width * alignment.x,
-        -_itemMaxValue * verticalMultiplier -
+        size.height -
+            _itemMaxValue * verticalMultiplier -
             minValue -
             _maxValuePainter.height * 0.2 +
             (_maxValuePainter.height * alignment.y),
@@ -83,18 +84,15 @@ class ValueDecoration extends DecorationPainter {
     final _listSize = state.data.listSize;
     final _itemWidth = size.width / _listSize;
 
-    canvas.save();
-    canvas.translate(-_itemWidth, size.height + state.defaultMargin.top + state.defaultPadding.top);
-
     state.data.items[valueArrayIndex].asMap().forEach((index, value) {
+      canvas.save();
       canvas.translate(
-        _itemWidth,
+        index * _itemWidth,
         0.0,
       );
       _paintText(canvas, Size(index * _itemWidth, size.height), value, _itemWidth, _verticalMultiplier, _minValue);
+      canvas.restore();
     });
-
-    canvas.restore();
   }
 
   /// Get default text painter with set [value]

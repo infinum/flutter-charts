@@ -1,5 +1,7 @@
 part of charts_painter;
 
+enum SparkLinePosition { fixed, stretch }
+
 /// Sparkline (Line graph) is considered to be just a decoration.
 /// You need to use [BarGeometryPainter] or [BubbleGeometryPainter] in combination.
 /// They can be transparent or be used to show values of the graph
@@ -14,6 +16,7 @@ class SparkLineDecoration extends DecorationPainter {
     this.startPosition = 0.5,
     this.gradient,
     this.lineArrayIndex = 0,
+    this.linePosition = SparkLinePosition.fixed,
   }) : _smoothPoints = smoothPoints ? 1.0 : 0.0;
 
   SparkLineDecoration._lerp({
@@ -25,6 +28,7 @@ class SparkLineDecoration extends DecorationPainter {
     this.startPosition = 0.5,
     this.gradient,
     this.lineArrayIndex = 0,
+    this.linePosition = SparkLinePosition.fixed,
   }) : _smoothPoints = smoothPoints;
 
   /// Is line or fill, line will have [lineWidth], setting
@@ -44,6 +48,8 @@ class SparkLineDecoration extends DecorationPainter {
 
   /// Set sparkline color
   final Color lineColor;
+
+  final SparkLinePosition linePosition;
 
   /// Set sparkline start position.
   /// This value ranges from 0.0 - 1.0.
@@ -93,15 +99,17 @@ class SparkLineDecoration extends DecorationPainter {
     }
 
     state.data.items[lineArrayIndex].asMap().forEach((key, value) {
+      final _position = _itemWidth * (linePosition == SparkLinePosition.fixed ? startPosition : (key / _listSize));
+
       if (fill && key == 0) {
-        _positions.add(Offset(_size.width * (key / _listSize) + _itemWidth * startPosition, 0.0));
+        _positions.add(Offset(_size.width * (key / _listSize) + _position, 0.0));
       }
 
-      _positions.add(Offset(_size.width * (key / _listSize) + _itemWidth * startPosition,
-          -((value.max ?? 0.0) - state.data.minValue) * scale));
+      _positions.add(
+          Offset(_size.width * (key / _listSize) + _position, -((value.max ?? 0.0) - state.data.minValue) * scale));
 
       if (fill && state.data.items[lineArrayIndex].length - 1 == key) {
-        _positions.add(Offset(_size.width * (key / _listSize) + _itemWidth * startPosition, 0.0));
+        _positions.add(Offset(_size.width * (key / _listSize) + _position, 0.0));
       }
     });
 
@@ -163,6 +171,7 @@ class SparkLineDecoration extends DecorationPainter {
         lineColor: Color.lerp(lineColor, endValue.lineColor, t)!,
         gradient: Gradient.lerp(gradient, endValue.gradient, t),
         lineArrayIndex: endValue.lineArrayIndex,
+        linePosition: endValue.linePosition,
       );
     }
 

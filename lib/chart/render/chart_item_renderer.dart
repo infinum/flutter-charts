@@ -3,13 +3,21 @@ part of charts_painter;
 class ChartItemRenderer<T> extends LeafRenderObjectWidget {
   ChartItemRenderer(this.item, this.state, {this.arrayKey = 0});
 
-  final ChartItem<T> item;
-  final ChartState<T> state;
+  final ChartItem<T?> item;
+  final ChartState<T?> state;
   final int arrayKey;
 
   @override
   RenderObject createRenderObject(BuildContext context) {
     return _RenderChartItem(state, item, key: arrayKey);
+  }
+
+  @override
+  void updateRenderObject(BuildContext context, _RenderChartItem<T?> renderObject) {
+    renderObject
+      ..itemOptions = state
+      ..key = arrayKey
+      ..item = item;
   }
 }
 
@@ -75,21 +83,15 @@ class _RenderChartItem<T> extends RenderBox {
                 _state.behaviour._isScrollable,
         constraints.maxHeight);
 
-    /// Default chart padding (this is to make place for legend and any other decorations that are inserted)
-    final _paddingSize = _state.defaultMargin.deflateSize(_size);
-
-    /// Final usable size for chart
-    final _deflatedSize = _state.defaultPadding.deflateSize(_paddingSize);
-
     /// Final usable space for one item in the chart
-    final _itemWidth = _deflatedSize.width / _listSize;
+    final _itemWidth = _size.width / _listSize;
 
     var width = min(_itemWidth, constraints.maxWidth);
     if (width.isInfinite) {
       width = _defaultSize;
     }
 
-    return constraints.constrain(Size(width, _deflatedSize.height));
+    return constraints.constrain(Size(width, _size.height));
   }
 
   @override

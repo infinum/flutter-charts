@@ -10,6 +10,13 @@ class ChartDecorationRenderer<T> extends LeafRenderObjectWidget {
   RenderObject createRenderObject(BuildContext context) {
     return _RenderChartDecoration<T>(chartState, decorationPainter);
   }
+
+  @override
+  void updateRenderObject(BuildContext context, _RenderChartDecoration renderObject) {
+    renderObject
+      ..chartState = chartState
+      ..item = decorationPainter;
+  }
 }
 
 class _RenderChartDecoration<T> extends RenderBox {
@@ -54,7 +61,7 @@ class _RenderChartDecoration<T> extends RenderBox {
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-    final _size = constraints.biggest;
+    final _size = constraints.deflate(chartState.defaultPadding + chartState.defaultMargin).biggest;
     final childParentData = parentData! as BoxParentData;
     final offset = _decoration.applyPaintTransform(_chartState, _size);
     childParentData.offset = offset;

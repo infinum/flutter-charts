@@ -43,19 +43,15 @@ class BarChart<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _foregroundDecorations =
-        foregroundDecorations ?? <DecorationPainter>[];
-    final _backgroundDecorations =
-        backgroundDecorations ?? <DecorationPainter>[];
+    final _foregroundDecorations = foregroundDecorations ?? <DecorationPainter>[];
+    final _backgroundDecorations = backgroundDecorations ?? <DecorationPainter>[];
 
     return AnimatedChart<T>(
       height: height,
       width: MediaQuery.of(context).size.width - 24.0,
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
-        ChartData(_mappedValues,
-            valueAxisMaxOver: 1.5,
-            strategy: stack ? DataStrategy.stack : DataStrategy.none),
+        ChartData(_mappedValues, valueAxisMaxOver: 1, strategy: stack ? DataStrategy.stack : DataStrategy.none),
         itemOptions: itemOptions,
         behaviour: chartBehaviour,
         foregroundDecorations: _foregroundDecorations,

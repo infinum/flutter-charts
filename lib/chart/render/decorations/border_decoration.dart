@@ -27,6 +27,18 @@ class BorderDecoration extends DecorationPainter {
   final double _endWithChart;
 
   @override
+  Offset applyPaintTransform(ChartState state, Size size) {
+    return Offset(_borderWidth.left.width - state.defaultMargin.left + (state.defaultPadding.left) * _endWithChart,
+        _borderWidth.bottom.width - state.defaultMargin.top + (state.defaultPadding.top) * _endWithChart);
+  }
+
+  @override
+  Size layoutSize(BoxConstraints constraints, ChartState state) {
+    final _size = constraints.deflate(state.defaultPadding * _endWithChart).biggest;
+    return _size;
+  }
+
+  @override
   void draw(Canvas canvas, Size size, ChartState state) {
     final _paint = Paint()
       ..style = PaintingStyle.stroke
@@ -34,29 +46,27 @@ class BorderDecoration extends DecorationPainter {
 
     canvas.save();
 
-    canvas.translate((state.defaultPadding.left + state.defaultMargin.left) * _endWithChart,
-        (state.defaultPadding.top + state.defaultMargin.top) * _endWithChart);
+    canvas.translate((state.defaultPadding.left) * _endWithChart, (state.defaultPadding.top) * _endWithChart);
     size = (state.defaultPadding * _endWithChart).deflateSize(size);
 
-    final _height =
-        size.height + (state.defaultMargin.vertical * (1 - _endWithChart)) + _borderWidth.dimensions.vertical;
+    final _height = size.height + _borderWidth.dimensions.vertical;
     final _width =
-        size.width + (state.defaultMargin.horizontal * (1 - _endWithChart)) - _borderWidth.dimensions.horizontal;
+        size.width - ((1 - _endWithChart) * state.defaultPadding.horizontal) - _borderWidth.dimensions.horizontal;
 
     _paint.strokeWidth = _borderWidth.top.width;
     _paint.color = _borderWidth.top.color;
     _drawLine(
-        canvas,
-        Offset(0.0, -_borderWidth.top.width + (_borderWidth.dimensions.vertical - _borderWidth.top.width / 2)),
-        Offset(_width + _borderWidth.dimensions.horizontal,
-            -_borderWidth.top.width + (_borderWidth.dimensions.vertical - _borderWidth.top.width / 2)),
-        _paint);
+      canvas,
+      Offset(0.0, _borderWidth.top.width / 2),
+      Offset(_width + _borderWidth.dimensions.horizontal, _borderWidth.top.width / 2),
+      _paint,
+    );
 
     _paint.strokeWidth = _borderWidth.right.width;
     _paint.color = _borderWidth.right.color;
     _drawLine(
         canvas,
-        Offset(_width + _borderWidth.left.width + _borderWidth.right.width / 2, _borderWidth.bottom.width),
+        Offset(_width + _borderWidth.left.width + _borderWidth.right.width / 2, _borderWidth.top.width),
         Offset(_width + _borderWidth.left.width + _borderWidth.right.width / 2,
             _height - _borderWidth.dimensions.vertical - _borderWidth.bottom.width),
         _paint);
@@ -77,7 +87,7 @@ class BorderDecoration extends DecorationPainter {
         Offset(-_borderWidth.left.width + _borderWidth.dimensions.horizontal - (_borderWidth.left.width / 2),
             _height - _borderWidth.dimensions.vertical - _borderWidth.bottom.width),
         Offset(-_borderWidth.left.width + _borderWidth.dimensions.horizontal - (_borderWidth.left.width / 2),
-            _borderWidth.bottom.width),
+            _borderWidth.top.width),
         _paint);
 
     canvas.restore();

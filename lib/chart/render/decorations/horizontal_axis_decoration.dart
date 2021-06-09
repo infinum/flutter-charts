@@ -120,14 +120,14 @@ class HorizontalAxisDecoration extends DecorationPainter {
   }
 
   @override
-  Size layoutSize(BoxConstraints constraints, ChartState state) {
-    final _size = (state.defaultPadding * _endWithChart).deflateSize(constraints.biggest);
-    return _size;
+  Offset applyPaintTransform(ChartState state, Size size) {
+    return Offset(state.defaultMargin.left, state.defaultMargin.top);
   }
 
   @override
-  Offset applyPaintTransform(ChartState state, Size size) {
-    return Offset(0.0 + state.defaultMargin.left, state.defaultMargin.top);
+  Size layoutSize(BoxConstraints constraints, ChartState state) {
+    final _size = constraints.deflate(state.defaultMargin).biggest;
+    return _size;
   }
 
   @override
@@ -145,10 +145,9 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
     for (var i = 0; i * scale * axisStep <= scale * _maxValue; i++) {
       if (showLines) {
-        gridPath.moveTo(_endWithChart * state.defaultPadding.left,
-            size.height - state.defaultPadding.top + -axisStep * i * scale + lineWidth / 2);
-        gridPath.lineTo(size.width - state.defaultPadding.horizontal * _endWithChart,
-            size.height - state.defaultPadding.top + -axisStep * i * scale + lineWidth / 2);
+        gridPath.moveTo(_endWithChart * state.defaultPadding.left, size.height + -axisStep * i * scale);
+        gridPath.lineTo(
+            size.width - state.defaultPadding.horizontal * _endWithChart, size.height + -axisStep * i * scale);
       }
 
       if (!showValues) {
@@ -218,8 +217,8 @@ class HorizontalAxisDecoration extends DecorationPainter {
       maxLines: 1,
       textDirection: TextDirection.ltr,
     )..layout(
-        maxWidth: state.defaultPadding.right,
-        minWidth: state.defaultPadding.right,
+        maxWidth: state.defaultPadding.horizontal,
+        minWidth: state.defaultPadding.horizontal,
       );
 
     _textPainter.paint(canvas, Offset(size.width - (state.defaultPadding.right), _textPainter.height));
@@ -236,7 +235,6 @@ class HorizontalAxisDecoration extends DecorationPainter {
   EdgeInsets marginNeeded() {
     return EdgeInsets.only(
       top: showValues && showTopValue ? legendFontStyle?.fontSize ?? 13.0 : 0.0,
-      bottom: lineWidth,
     );
   }
 

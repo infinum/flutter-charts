@@ -86,14 +86,6 @@ class _BarChartScreenState extends State<BarChartScreen> {
                     : null,
               ),
               backgroundDecorations: [
-                // VerticalAxisDecoration(
-                //   showValues: true,
-                //   legendPosition: _legendOnEnd ? VerticalLegendPosition.bottom : VerticalLegendPosition.top,
-                //   axisStep: 1,
-                //   valuesPadding: EdgeInsets.symmetric(horizontal: _showValues ? 4.0 : 0.0),
-                //   legendFontStyle: Theme.of(context).textTheme.caption,
-                //   lineColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
-                // ),
                 GridDecoration(
                   showHorizontalValues: _showValues,
                   showVerticalValues: _showValues,
@@ -108,14 +100,14 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   textStyle: Theme.of(context).textTheme.caption,
                   gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                 ),
-                // TargetAreaDecoration(
-                //   targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
-                //   targetLineColor: Theme.of(context).colorScheme.error,
-                //   targetAreaRadius: BorderRadius.circular(12.0),
-                //   targetMax: 6, //targetMax,
-                //   targetMin: 4, //targetMin,
-                //   colorOverTarget: Theme.of(context).colorScheme.error,
-                // ),
+                TargetAreaDecoration(
+                  targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
+                  targetLineColor: Theme.of(context).colorScheme.error,
+                  targetAreaRadius: BorderRadius.circular(12.0),
+                  targetMax: 6, //targetMax,
+                  targetMin: 4, //targetMin,
+                  colorOverTarget: Theme.of(context).colorScheme.error,
+                ),
               ],
               foregroundDecorations: [
                 // SparkLineDecoration(
@@ -123,11 +115,11 @@ class _BarChartScreenState extends State<BarChartScreen> {
                 //   lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
                 //   smoothPoints: _smoothPoints,
                 // ),
-                // ValueDecoration(
-                //   alignment: Alignment.bottomCenter,
-                //   textStyle:
-                //       Theme.of(context).textTheme.button.copyWith(color: Theme.of(context).colorScheme.onPrimary),
-                // ),
+                ValueDecoration(
+                  alignment: Alignment.bottomCenter,
+                  textStyle:
+                      Theme.of(context).textTheme.button.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                ),
               ],
             ),
           ),
