@@ -88,7 +88,7 @@ class TargetLineDecoration extends DecorationPainter {
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
     _maxChartHeight = constraints.maxHeight;
-    return Size(constraints.maxWidth, lineWidth);
+    return Size((constraints.maxWidth - state.defaultMargin.horizontal - state.defaultPadding.horizontal), lineWidth);
   }
 
   double? _maxChartHeight;

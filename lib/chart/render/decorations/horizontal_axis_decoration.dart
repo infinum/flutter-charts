@@ -139,7 +139,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
     canvas.save();
     final _maxValue = state.data.maxValue - state.data.minValue;
-    final _height = (size.height - state.defaultPadding.vertical - state.defaultMargin.vertical);
+    final _height = (size.height - state.defaultPadding.vertical);
     final scale = _height / _maxValue;
     final gridPath = Path();
 

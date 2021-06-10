@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:charts_painter/chart.dart';
 import 'package:example/chart_types.dart';
 import 'package:example/charts/bar_target_chart_screen.dart';
@@ -216,54 +214,29 @@ class ShowList extends StatelessWidget {
         ),
         Divider(),
         ComplexCharts(),
-        Container(
-          height: 400.0,
-          child: ChartRenderer(
-            ChartState<void>(
-                ChartData.fromList(
-                  List.generate(10, (i) => i).map((e) => BubbleValue<void>(Random(e).nextDouble() * 15)).toList(),
-                  axisMax: 15,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Chart<void>(
+            height: 200.0,
+            state: ChartState(
+              ChartData.fromList([1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
+                  axisMax: 8.0),
+              itemOptions: BarItemOptions(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                radius: BorderRadius.vertical(top: Radius.circular(42.0)),
+              ),
+              backgroundDecorations: [
+                GridDecoration(
+                  verticalAxisStep: 1,
+                  horizontalAxisStep: 1,
                 ),
-                itemOptions: BubbleItemOptions(
-                  maxBarWidth: 10.0,
-                  color: Colors.transparent,
-                ),
-                backgroundDecorations: [
-                  GridDecoration(
-                    showHorizontalGrid: true,
-                    showVerticalGrid: false,
-                    showHorizontalValues: true,
-                    horizontalLegendPosition: HorizontalLegendPosition.start,
-                    verticalLegendPosition: VerticalLegendPosition.bottom,
-                    showVerticalValues: true,
-                    endWithChart: true,
-                    horizontalValuesPadding: const EdgeInsets.only(right: 12.0, bottom: -8.0),
-                    verticalValuesPadding: const EdgeInsets.only(top: 12.0),
-                    textStyle: Theme.of(context).textTheme.button,
-                  ),
-                  TargetLineDecoration(
-                    target: 10,
-                    dashArray: [10, 10],
-                    targetLineColor: Colors.grey,
-                  ),
-                  TargetLineDecoration(
-                    target: 5,
-                    targetLineColor: Colors.blue,
-                  ),
-                ],
-                foregroundDecorations: [
-                  SparkLineDecoration(
-                    linePosition: SparkLinePosition.stretch,
-                    lineColor: Theme.of(context).accentColor,
-                  ),
-                  SparkLineDecoration(
-                    linePosition: SparkLinePosition.stretch,
-                    fill: true,
-                    lineColor: Theme.of(context).accentColor.withOpacity(0.1),
-                  ),
-                ]),
+              ],
+              foregroundDecorations: [
+                BorderDecoration(borderWidth: 5.0),
+              ],
+            ),
           ),
-        )
+        ),
       ],
     );
   }

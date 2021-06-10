@@ -211,7 +211,7 @@ class GridDecoration extends DecorationPainter {
 
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
-    final _size = (state.defaultPadding * _endWithChart).deflateSize(constraints.biggest);
+    final _size = (state.defaultPadding * _endWithChart + state.defaultMargin).deflateSize(constraints.biggest);
     return _size;
   }
 

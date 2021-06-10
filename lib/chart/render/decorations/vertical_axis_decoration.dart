@@ -92,7 +92,7 @@ class VerticalAxisDecoration extends DecorationPainter {
 
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
-    return constraints.biggest;
+    return constraints.deflate(state.defaultMargin).biggest;
   }
 
   @override
@@ -110,13 +110,11 @@ class VerticalAxisDecoration extends DecorationPainter {
 
     for (var i = 0; i <= _listSize / axisStep; i++) {
       if (showLines) {
-        final _showValuesTop = showValues ? (state.defaultMargin.top * _endWithChart) : 0.0;
-        final _showValuesBottom = size.height - state.defaultPadding.vertical;
+        final _showValuesTop = showValues ? (state.defaultPadding.top * _endWithChart) : 0.0;
+        final _showValuesBottom = size.height - (state.defaultPadding.vertical);
 
-        gridPath.moveTo(
-            state.defaultPadding.left + state.defaultMargin.left + _itemWidth * i * axisStep, _showValuesBottom);
-        gridPath.lineTo(
-            state.defaultPadding.left + state.defaultMargin.left + _itemWidth * i * axisStep, _showValuesTop);
+        gridPath.moveTo(state.defaultPadding.left + _itemWidth * i * axisStep, _showValuesBottom);
+        gridPath.lineTo(state.defaultPadding.left + _itemWidth * i * axisStep, _showValuesTop);
       }
 
       if (!showValues || i == _listSize / axisStep) {
