@@ -52,7 +52,7 @@ class TargetLineDecoration extends DecorationPainter {
   final List<double>? dashArray;
 
   /// Width of the target line
-  final double? lineWidth;
+  final double lineWidth;
 
   /// Target value for the line
   final double? target;
@@ -76,22 +76,33 @@ class TargetLineDecoration extends DecorationPainter {
       _getColorForTarget(defaultColor, colorOverTarget, isTargetInclusive, target, null, max, min);
 
   @override
-  void draw(Canvas canvas, Size size, ChartState state) {
+  Offset applyPaintTransform(ChartState state, Size size) {
     final _maxValue = state.data.maxValue - state.data.minValue;
     final scale = size.height / _maxValue;
     final _minValue = state.data.minValue * scale;
 
+    return Offset(state.defaultPadding.left + state.defaultMargin.left,
+        state.defaultPadding.top + state.defaultMargin.top + scale * (target ?? 0.0) + _minValue);
+  }
+
+  @override
+  Size layoutSize(BoxConstraints constraints, ChartState state) {
+    _maxChartHeight = constraints.maxHeight;
+    return Size(constraints.maxWidth, lineWidth);
+  }
+
+  double? _maxChartHeight;
+
+  @override
+  void draw(Canvas canvas, Size size, ChartState state) {
     final _linePaint = Paint()
       ..color = targetLineColor!
       ..style = PaintingStyle.stroke
-      ..strokeWidth = lineWidth!;
-
-    canvas.save();
-    canvas.translate(state.defaultPadding.left + state.defaultMargin.left, size.height + state.defaultMargin.top);
+      ..strokeWidth = lineWidth;
 
     final _path = Path()
-      ..moveTo(0.0, -scale * target! + _minValue)
-      ..lineTo(size.width, -scale * target! + _minValue);
+      ..moveTo(0.0, 0.0)
+      ..lineTo(size.width, 0.0);
 
     if (dashArray != null) {
       canvas.drawPath(
@@ -104,8 +115,6 @@ class TargetLineDecoration extends DecorationPainter {
         _linePaint,
       );
     }
-
-    canvas.restore();
   }
 
   @override
@@ -113,7 +122,7 @@ class TargetLineDecoration extends DecorationPainter {
     if (endValue is TargetLineDecoration) {
       return TargetLineDecoration(
         targetLineColor: Color.lerp(targetLineColor, endValue.targetLineColor, t),
-        lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t),
+        lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t) ?? 2.0,
         dashArray: t < 0.5 ? dashArray : endValue.dashArray,
         target: lerpDouble(target, endValue.target, t),
         colorOverTarget: Color.lerp(colorOverTarget, endValue.colorOverTarget, t),

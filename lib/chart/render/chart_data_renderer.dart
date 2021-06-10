@@ -1,7 +1,7 @@
 part of charts_painter;
 
-class ChartDataRenderer<T> extends MultiChildRenderObjectWidget {
-  ChartDataRenderer(this.chartState, {Key? key})
+class ChartLinearDataRenderer<T> extends MultiChildRenderObjectWidget {
+  ChartLinearDataRenderer(this.chartState, {Key? key})
       : super(key: key, children: [
           ...chartState.data.items
               .mapIndexed(
@@ -14,23 +14,23 @@ class ChartDataRenderer<T> extends MultiChildRenderObjectWidget {
   final ChartState<T?> chartState;
 
   @override
-  _ChartItemRenderer<T?> createRenderObject(BuildContext context) {
-    return _ChartItemRenderer<T?>(chartState);
+  _ChartLinearItemRenderer<T?> createRenderObject(BuildContext context) {
+    return _ChartLinearItemRenderer<T?>(chartState);
   }
 
   @override
-  void updateRenderObject(BuildContext context, _ChartItemRenderer<T?> renderObject) {
+  void updateRenderObject(BuildContext context, _ChartLinearItemRenderer<T?> renderObject) {
     renderObject.chartState = chartState;
   }
 }
 
 class ChartItemData extends ContainerBoxParentData<RenderBox> {}
 
-class _ChartItemRenderer<T> extends RenderBox
+class _ChartLinearItemRenderer<T> extends RenderBox
     with
         ContainerRenderObjectMixin<RenderBox, ChartItemData>,
         RenderBoxContainerDefaultsMixin<RenderBox, ChartItemData> {
-  _ChartItemRenderer(this._chartState);
+  _ChartLinearItemRenderer(this._chartState);
 
   ChartState<T?> _chartState;
   ChartState<T?> get chartState => _chartState;
@@ -91,45 +91,23 @@ class _ChartItemRenderer<T> extends RenderBox
     final _size = constraints.deflate(chartState.defaultPadding + chartState.defaultMargin).biggest;
     final childParentData = parentData! as BoxParentData;
     childParentData.offset = Offset(
-      chartState.defaultPadding.top + chartState.defaultMargin.top,
       chartState.defaultPadding.left + chartState.defaultMargin.left,
+      chartState.defaultPadding.top + chartState.defaultMargin.top,
     );
 
     return _size;
   }
 
   @override
-  void applyPaintTransform(RenderObject child, Matrix4 transform) {
-    transform.translate(
-      chartState.defaultPadding.top + chartState.defaultMargin.top,
-      chartState.defaultPadding.left + chartState.defaultMargin.left,
-    );
-
-    super.applyPaintTransform(child, transform);
-  }
-
-  @override
   void performLayout() {
     var childCount = 0;
     var child = firstChild;
-    final _size = constraints.deflate(chartState.defaultPadding + chartState.defaultMargin).biggest;
-
-    final childParentData = parentData! as BoxParentData;
-    childParentData.offset = Offset(
-      chartState.defaultPadding.top + chartState.defaultMargin.top,
-      chartState.defaultPadding.left + chartState.defaultMargin.left,
-    );
+    final _size = computeDryLayout(constraints);
 
     while (child != null) {
-      childCount++;
-
       final childParentData = child.parentData! as ChartItemData;
-      final _width = _size.width - chartState.defaultMargin.horizontal - chartState.defaultPadding.horizontal;
-      childParentData.offset = Offset(
-          chartState.defaultMargin.left +
-              chartState.defaultPadding.left +
-              (_width / _chartState.data.listSize) * (childCount - 1),
-          childParentData.offset.dy);
+      final _width = _size.width;
+      childParentData.offset = Offset((_width / _chartState.data.listSize) * childCount, childParentData.offset.dy);
       final innerConstraints = BoxConstraints(
         maxWidth: _width,
         maxHeight: _size.height,
@@ -138,9 +116,10 @@ class _ChartItemRenderer<T> extends RenderBox
       child.layout(innerConstraints);
       assert(child.parentData == childParentData);
       child = childParentData.nextSibling;
+      childCount++;
     }
 
-    size = constraints.biggest;
+    size = _size;
   }
 
   @override

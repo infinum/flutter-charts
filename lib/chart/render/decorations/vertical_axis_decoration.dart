@@ -92,21 +92,13 @@ class VerticalAxisDecoration extends DecorationPainter {
 
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
-    return state.defaultPadding.deflateSize(constraints.biggest);
-  }
-
-  @override
-  Offset applyPaintTransform(ChartState state, Size size) {
-    return Offset(
-      state.defaultMargin.left,
-      state.defaultMargin.top,
-    );
+    return constraints.biggest;
   }
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
     final _listSize = state.data.listSize;
-    final _itemWidth = (size.width - lineWidth) / _listSize;
+    final _itemWidth = size.width / _listSize;
 
     final _paint = Paint()
       ..color = lineColor
@@ -122,9 +114,9 @@ class VerticalAxisDecoration extends DecorationPainter {
         final _showValuesBottom = size.height - state.defaultPadding.vertical;
 
         gridPath.moveTo(
-            _endWithChart * state.defaultPadding.left + _itemWidth * i * axisStep + lineWidth / 2, _showValuesBottom);
+            state.defaultPadding.left + state.defaultMargin.left + _itemWidth * i * axisStep, _showValuesBottom);
         gridPath.lineTo(
-            _endWithChart * state.defaultPadding.left + _itemWidth * i * axisStep + lineWidth / 2, _showValuesTop);
+            state.defaultPadding.left + state.defaultMargin.left + _itemWidth * i * axisStep, _showValuesTop);
       }
 
       if (!showValues || i == _listSize / axisStep) {
@@ -159,10 +151,13 @@ class VerticalAxisDecoration extends DecorationPainter {
       _textPainter.paint(
         canvas,
         Offset(
-            _itemWidth * i * axisStep + (valuesPadding?.left ?? 0.0),
+            state.defaultPadding.left +
+                state.defaultMargin.left +
+                _itemWidth * i * axisStep +
+                (valuesPadding?.left ?? 0.0),
             legendPosition == VerticalLegendPosition.top
-                ? size.height - _textPainter.height - (valuesPadding?.bottom ?? 0.0)
-                : _textPainter.height - _textPainter.height + (valuesPadding?.top ?? 0.0)),
+                ? (valuesPadding?.top ?? 0.0)
+                : size.height - _textPainter.height),
       );
     }
 

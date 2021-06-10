@@ -3,9 +3,13 @@ part of charts_painter;
 class ChartRenderer<T> extends MultiChildRenderObjectWidget {
   ChartRenderer(this.chartState, {Key? key})
       : super(key: key, children: [
-          ...chartState.backgroundDecorations.map((e) => ChartDecorationRenderer(chartState, e)).toList(),
-          ChartDataRenderer(chartState),
-          ...chartState.foregroundDecorations.map((e) => ChartDecorationRenderer(chartState, e)).toList(),
+          ...chartState.backgroundDecorations
+              .map((e) => ChartDecorationRenderer(chartState, e, key: ValueKey(e.hashCode)))
+              .toList(),
+          ChartLinearDataRenderer(chartState),
+          ...chartState.foregroundDecorations
+              .map((e) => ChartDecorationRenderer(chartState, e, key: ValueKey(e.hashCode)))
+              .toList(),
         ]);
 
   final ChartState<T?> chartState;

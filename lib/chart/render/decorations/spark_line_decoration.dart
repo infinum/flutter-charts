@@ -72,8 +72,14 @@ class SparkLineDecoration extends DecorationPainter {
 
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
-    final _size = state.defaultPadding.deflateSize(constraints.biggest);
+    final _size = (state.defaultPadding + state.defaultMargin).deflateSize(constraints.biggest);
     return _size;
+  }
+
+  @override
+  Offset applyPaintTransform(ChartState state, Size size) {
+    return Offset(
+        state.defaultPadding.left + state.defaultMargin.left, state.defaultPadding.top + state.defaultMargin.top);
   }
 
   @override
@@ -83,19 +89,18 @@ class SparkLineDecoration extends DecorationPainter {
       ..style = fill ? PaintingStyle.fill : PaintingStyle.stroke
       ..strokeWidth = lineWidth;
 
-    final _size = state.defaultPadding.deflateSize(size);
     final _maxValue = state.data.maxValue - state.data.minValue;
-    final scale = _size.height / _maxValue;
+    final scale = size.height / _maxValue;
 
     final _positions = <Offset>[];
 
     final _listSize = state.data.listSize;
 
-    final _itemWidth = _size.width / _listSize;
+    final _itemWidth = size.width / _listSize;
 
     if (gradient != null) {
       // Compiler complains that gradient could be null. But unless if fails us that will never be null.
-      _paint.shader = gradient!.createShader(Rect.fromPoints(Offset.zero, Offset(_size.width, -_size.height)));
+      _paint.shader = gradient!.createShader(Rect.fromPoints(Offset.zero, Offset(size.width, -size.height)));
     }
 
     state.data.items[lineArrayIndex].asMap().forEach((key, value) {
@@ -103,21 +108,20 @@ class SparkLineDecoration extends DecorationPainter {
           _itemWidth * (linePosition == SparkLinePosition.fixed ? startPosition : (key / (_listSize - 1)));
 
       if (fill && key == 0) {
-        _positions.add(Offset(_size.width * (key / _listSize) + _position, 0.0));
+        _positions.add(Offset(_itemWidth * key + _position, 0.0));
       }
 
-      _positions.add(
-          Offset(_size.width * (key / _listSize) + _position, -((value.max ?? 0.0) - state.data.minValue) * scale));
+      _positions.add(Offset(_itemWidth * key + _position, -((value.max ?? 0.0) - state.data.minValue) * scale));
 
       if (fill && state.data.items[lineArrayIndex].length - 1 == key) {
-        _positions.add(Offset(_size.width * (key / _listSize) + _position, 0.0));
+        _positions.add(Offset(_itemWidth * key + _position, 0.0));
       }
     });
 
     final _path = _getPoints(_positions, fill);
 
     canvas.save();
-    canvas.translate(state.defaultPadding.left + state.defaultMargin.left, _size.height + state.defaultMargin.top);
+    canvas.translate(0.0, size.height);
 
     canvas.drawPath(_path, _paint);
 

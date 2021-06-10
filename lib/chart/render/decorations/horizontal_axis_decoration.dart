@@ -139,15 +139,14 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
     canvas.save();
     final _maxValue = state.data.maxValue - state.data.minValue;
-    final scale = size.height / _maxValue;
-
+    final _height = (size.height - state.defaultPadding.vertical - state.defaultMargin.vertical);
+    final scale = _height / _maxValue;
     final gridPath = Path();
 
     for (var i = 0; i * scale * axisStep <= scale * _maxValue; i++) {
       if (showLines) {
-        gridPath.moveTo(_endWithChart * state.defaultPadding.left, size.height + -axisStep * i * scale);
-        gridPath.lineTo(
-            size.width - state.defaultPadding.horizontal * _endWithChart, size.height + -axisStep * i * scale);
+        gridPath.moveTo(_endWithChart * state.defaultPadding.left, _height + -axisStep * i * scale);
+        gridPath.lineTo(_endWithChart * state.defaultPadding.left + size.width, _height + -axisStep * i * scale);
       }
 
       if (!showValues) {
@@ -189,7 +188,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
       _textPainter.paint(
           canvas,
           Offset(legendPosition == HorizontalLegendPosition.end ? _positionEnd : _positionStart,
-              size.height - axisStep * i * scale - (_textPainter.height + (valuesPadding?.bottom ?? 0.0))));
+              _height - axisStep * i * scale - (_textPainter.height + (valuesPadding?.bottom ?? 0.0))));
     }
 
     if (dashArray != null) {
@@ -240,6 +239,10 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
   @override
   EdgeInsets paddingNeeded() {
+    if (!showValues) {
+      return EdgeInsets.zero;
+    }
+
     final _maxTextWidth = _textWidth(_longestText, legendFontStyle) + (valuesPadding?.horizontal ?? 0.0);
     final _isEnd = legendPosition == HorizontalLegendPosition.end;
 

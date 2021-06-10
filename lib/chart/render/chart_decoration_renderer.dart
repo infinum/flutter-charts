@@ -1,7 +1,7 @@
 part of charts_painter;
 
 class ChartDecorationRenderer<T> extends LeafRenderObjectWidget {
-  ChartDecorationRenderer(this.chartState, this.decorationPainter);
+  ChartDecorationRenderer(this.chartState, this.decorationPainter, {Key? key}) : super(key: key);
 
   final ChartState<T?> chartState;
   final DecorationPainter decorationPainter;

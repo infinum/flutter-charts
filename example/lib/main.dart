@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:charts_painter/chart.dart';
 import 'package:example/chart_types.dart';
 import 'package:example/charts/bar_target_chart_screen.dart';
@@ -216,30 +218,51 @@ class ShowList extends StatelessWidget {
         ComplexCharts(),
         Container(
           height: 400.0,
-          child: ChartRenderer(ChartState<void>(
-              ChartData.fromList(
-                [1, 3, 4, 2, 7, 0, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
-                axisMax: 8,
-              ),
-              itemOptions: BarItemOptions(
-                padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-                color: Theme.of(context).accentColor.withOpacity(0.4),
-              ),
-              backgroundDecorations: [
-                GridDecoration(
-                  verticalAxisStep: 1,
-                  horizontalAxisStep: 1,
-                  gridColor: Theme.of(context).dividerColor,
+          child: ChartRenderer(
+            ChartState<void>(
+                ChartData.fromList(
+                  List.generate(10, (i) => i).map((e) => BubbleValue<void>(Random(e).nextDouble() * 15)).toList(),
+                  axisMax: 15,
                 ),
-              ],
-              foregroundDecorations: [
-                SparkLineDecoration(
-                  lineWidth: 2.0,
-                  linePosition: SparkLinePosition.stretch,
-                  lineColor: Theme.of(context).accentColor,
+                itemOptions: BubbleItemOptions(
+                  maxBarWidth: 10.0,
+                  color: Colors.transparent,
                 ),
-              ])),
+                backgroundDecorations: [
+                  GridDecoration(
+                    showHorizontalGrid: true,
+                    showVerticalGrid: false,
+                    showHorizontalValues: true,
+                    horizontalLegendPosition: HorizontalLegendPosition.start,
+                    verticalLegendPosition: VerticalLegendPosition.bottom,
+                    showVerticalValues: true,
+                    endWithChart: true,
+                    horizontalValuesPadding: const EdgeInsets.only(right: 12.0, bottom: -8.0),
+                    verticalValuesPadding: const EdgeInsets.only(top: 12.0),
+                    textStyle: Theme.of(context).textTheme.button,
+                  ),
+                  TargetLineDecoration(
+                    target: 10,
+                    dashArray: [10, 10],
+                    targetLineColor: Colors.grey,
+                  ),
+                  TargetLineDecoration(
+                    target: 5,
+                    targetLineColor: Colors.blue,
+                  ),
+                ],
+                foregroundDecorations: [
+                  SparkLineDecoration(
+                    linePosition: SparkLinePosition.stretch,
+                    lineColor: Theme.of(context).accentColor,
+                  ),
+                  SparkLineDecoration(
+                    linePosition: SparkLinePosition.stretch,
+                    fill: true,
+                    lineColor: Theme.of(context).accentColor.withOpacity(0.1),
+                  ),
+                ]),
+          ),
         )
       ],
     );
