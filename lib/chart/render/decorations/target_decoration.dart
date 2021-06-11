@@ -78,16 +78,19 @@ class TargetLineDecoration extends DecorationPainter {
   @override
   Offset applyPaintTransform(ChartState state, Size size) {
     final _maxValue = state.data.maxValue - state.data.minValue;
-    final scale = size.height / _maxValue;
+    final _height = size.height - lineWidth;
+    final scale = (_height - state.defaultMargin.vertical - state.defaultPadding.vertical) / _maxValue;
     final _minValue = state.data.minValue * scale;
 
-    return Offset(state.defaultPadding.left + state.defaultMargin.left,
-        (size.height + state.defaultMargin.top + state.defaultPadding.top) - (scale * (target ?? 0.0) + _minValue));
+    return Offset(
+      state.defaultPadding.left + state.defaultMargin.left,
+      _height - (state.defaultMargin.bottom + state.defaultPadding.bottom) - (scale * (target ?? 0.0) + _minValue),
+    );
   }
 
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
-    return Size((constraints.maxWidth - state.defaultPadding.horizontal), lineWidth);
+    return Size((constraints.maxWidth - (state.defaultPadding.horizontal + state.defaultMargin.horizontal)), lineWidth);
   }
 
   @override
@@ -98,8 +101,8 @@ class TargetLineDecoration extends DecorationPainter {
       ..strokeWidth = lineWidth;
 
     final _path = Path()
-      ..moveTo(0.0, 0.0)
-      ..lineTo(size.width, 0.0);
+      ..moveTo(0.0, lineWidth / 2)
+      ..lineTo(size.width, lineWidth / 2);
 
     if (dashArray != null) {
       canvas.drawPath(

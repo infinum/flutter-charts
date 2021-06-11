@@ -38,12 +38,35 @@ class SelectedItemDecoration extends DecorationPainter {
         'Selected key is not in the list!\nCheck the `selectedKey` you are passing.');
   }
 
-  void _drawText(Canvas canvas, Size size, double width, double totalWidth, ChartState state) {
+  @override
+  Size layoutSize(BoxConstraints constraints, ChartState state) {
+    final _listSize = state.data.listSize;
+    final _itemWidth = constraints.deflate(state.defaultMargin).maxWidth / _listSize;
+
+    return Size(
+      _itemWidth,
+      constraints.deflate(state.defaultMargin - marginNeeded()).maxHeight,
+    );
+  }
+
+  @override
+  Offset applyPaintTransform(ChartState state, Size size) {
+    final _width = (size.width - state.defaultMargin.horizontal) / state.data.listSize;
+
+    final selectedItem = this.selectedItem;
+    if (selectedItem != null) {
+      return Offset(state.defaultMargin.left + _width * selectedItem, (state.defaultMargin - marginNeeded()).top);
+    }
+
+    return Offset.zero;
+  }
+
+  void _drawText(Canvas canvas, Size size, double totalWidth, ChartState state) {
     final _item = selectedItem;
     if (_item == null) {
       return;
     }
-
+    final width = size.width;
     final _selectedItem = state.data.items[selectedArrayIndex][_item];
 
     final _maxValuePainter = ValueDecoration.makeTextPainter(
@@ -58,11 +81,11 @@ class SelectedItemDecoration extends DecorationPainter {
           Rect.fromPoints(
               Offset(
                 width / 2 - _maxValuePainter.width / 2,
-                size.height - (selectedStyle.fontSize ?? 0.0) * 1.2,
+                (selectedStyle.fontSize ?? 0.0) * 1.4,
               ),
               Offset(
                 width / 2 + _maxValuePainter.width / 2,
-                size.height - (selectedStyle.fontSize ?? 0.0) * 0.2,
+                (selectedStyle.fontSize ?? 0.0) * 0.4,
               )),
           const Radius.circular(8.0),
         ).inflate(4),
@@ -72,7 +95,7 @@ class SelectedItemDecoration extends DecorationPainter {
       canvas,
       Offset(
         width / 2 - _maxValuePainter.width / 2,
-        size.height - (selectedStyle.fontSize ?? 0.0) * 1.3,
+        (selectedStyle.fontSize ?? 0.0) * 0.4,
       ),
     );
   }
@@ -85,19 +108,8 @@ class SelectedItemDecoration extends DecorationPainter {
     if (_item == null || _listSize <= _item || _item.isNegative) {
       return;
     }
-
-    final _size = state.defaultPadding.deflateSize(size);
-    final _itemWidth = _size.width / _listSize;
-
-    // Save, and translate the canvas so [0,0] is top left of item at [index] position
-    canvas.save();
-    canvas.translate(
-      state.defaultPadding.left + (_itemWidth * _item) + state.defaultMargin.left,
-      size.height + state.defaultMargin.top + state.defaultPadding.top,
-    );
-
-    _drawItem(canvas, Size(_itemWidth, -size.height), state);
-    _drawText(canvas, Size(_itemWidth, -size.height), _itemWidth, size.width, state);
+    _drawItem(canvas, size, state);
+    _drawText(canvas, size, size.width, state);
 
     // Restore canvas
     canvas.restore();
@@ -109,7 +121,8 @@ class SelectedItemDecoration extends DecorationPainter {
 
     const _size = 2.0;
     final _maxValue = state.data.maxValue - state.data.minValue;
-    final scale = size.height / _maxValue;
+    final _height = size.height - marginNeeded().vertical;
+    final scale = _height / _maxValue;
 
     final _selectedItem = selectedItem;
     if (_selectedItem == null) {
@@ -135,7 +148,7 @@ class SelectedItemDecoration extends DecorationPainter {
           ),
           Offset(
             state.itemOptions.padding.left + _itemWidth / 2 + _size / 2,
-            size.height - (_itemMaxValue - _itemMinValue) * scale,
+            (_itemMaxValue - _itemMinValue) * scale,
           ),
         ),
         Paint()..color = selectedColor,
@@ -146,18 +159,18 @@ class SelectedItemDecoration extends DecorationPainter {
       Rect.fromPoints(
         Offset(
           state.itemOptions.padding.left + _itemWidth / 2 - _size / 2,
-          _itemMaxValue * scale,
+          (selectedStyle.fontSize ?? 0.0) * 1.4,
         ),
         Offset(
           state.itemOptions.padding.left + _itemWidth / 2 + _size / 2,
-          size.height - (selectedStyle.fontSize ?? 0) * 0.2,
+          size.height - (_itemMaxValue * scale),
         ),
       ),
       Paint()..color = selectedColor,
     );
 
     canvas.drawRect(
-      Rect.fromPoints(Offset.zero, Offset(size.width, size.height)),
+      Rect.fromPoints(Offset(0.0, marginNeeded().top), Offset(size.width, size.height)),
       Paint()
         ..color = backgroundColor
         ..blendMode = BlendMode.overlay,
@@ -166,7 +179,7 @@ class SelectedItemDecoration extends DecorationPainter {
 
   @override
   EdgeInsets marginNeeded() {
-    return EdgeInsets.only(top: (selectedStyle.fontSize ?? 0) * 1.3);
+    return EdgeInsets.only(top: (selectedStyle.fontSize ?? 0) * 1.8);
   }
 
   @override
