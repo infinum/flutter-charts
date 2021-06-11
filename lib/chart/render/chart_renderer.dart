@@ -91,14 +91,12 @@ class _ChartRenderObject<T> extends RenderBox
 
   @override
   void performLayout() {
-    var childCount = 0;
     var child = firstChild;
-    while (child != null) {
-      childCount++;
 
+    while (child != null) {
       final childParentData = child.parentData! as BoxPaneParentData;
 
-      child.layout(constraints);
+      child.layout(constraints.loosen());
       assert(child.parentData == childParentData);
       child = childParentData.nextSibling;
     }

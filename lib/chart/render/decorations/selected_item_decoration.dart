@@ -135,7 +135,7 @@ class SelectedItemDecoration extends DecorationPainter {
           ),
           Offset(
             state.itemOptions.padding.left + _itemWidth / 2 + _size / 2,
-            _itemMinValue * scale,
+            size.height - (_itemMaxValue - _itemMinValue) * scale,
           ),
         ),
         Paint()..color = selectedColor,

@@ -57,16 +57,21 @@ class _RenderChartDecoration<T> extends RenderBox {
   double computeMaxIntrinsicHeight(double width) => _defaultSize;
 
   @override
-  bool get sizedByParent => true;
+  bool get sizedByParent => false;
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-    final _size = constraints.deflate(chartState.defaultPadding + chartState.defaultMargin).biggest;
+    final _size = constraints.biggest;
     final childParentData = parentData! as BoxParentData;
     final offset = _decoration.applyPaintTransform(_chartState, _size);
     childParentData.offset = offset;
 
     return _decoration.layoutSize(constraints, _chartState);
+  }
+
+  @override
+  void performLayout() {
+    size = computeDryLayout(constraints);
   }
 
   @override

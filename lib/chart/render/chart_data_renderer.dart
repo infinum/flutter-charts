@@ -90,33 +90,46 @@ class _ChartLinearItemRenderer<T> extends RenderBox
   Size computeDryLayout(BoxConstraints constraints) {
     final _size = constraints.deflate(chartState.defaultPadding + chartState.defaultMargin).biggest;
     final childParentData = parentData! as BoxParentData;
-    childParentData.offset = Offset(
-      chartState.defaultPadding.left + chartState.defaultMargin.left,
-      chartState.defaultPadding.top + chartState.defaultMargin.top,
-    );
+    childParentData.offset = Offset(chartState.defaultPadding.left + chartState.defaultMargin.left,
+        chartState.defaultPadding.top + chartState.defaultMargin.top);
 
     return _size;
   }
 
   @override
   void performLayout() {
-    var childCount = 0;
+    var childCount = <int, int>{};
     var child = firstChild;
     final _size = computeDryLayout(constraints);
 
-    while (child != null) {
+    final _scrollableItemWidth =
+        max(_chartState.itemOptions.minBarWidth ?? 0.0, _chartState.itemOptions.maxBarWidth ?? 0.0);
+
+    final _listSize = _chartState.data.listSize;
+
+    final _itemSize = Size(
+        _size.width +
+            (_size.width - ((_scrollableItemWidth + _chartState.itemOptions.padding.horizontal) * _listSize)) *
+                _chartState.behaviour._isScrollable,
+        _size.height);
+
+    /// Final usable space for one item in the chart
+    final _itemWidth = _itemSize.width / _listSize;
+
+    while (child != null && child is _RenderChartItem<T>) {
       final childParentData = child.parentData! as ChartItemData;
-      final _width = _size.width;
-      childParentData.offset = Offset((_width / _chartState.data.listSize) * childCount, childParentData.offset.dy);
+      childParentData.offset = Offset(_itemWidth * (childCount[child.key] ?? 0), childParentData.offset.dy);
       final innerConstraints = BoxConstraints(
-        maxWidth: _width,
+        maxWidth: _itemWidth,
         maxHeight: _size.height,
       );
 
-      child.layout(innerConstraints);
+      final key = child.key;
+
+      child.layout(innerConstraints, parentUsesSize: true);
       assert(child.parentData == childParentData);
       child = childParentData.nextSibling;
-      childCount++;
+      childCount[key] = (childCount[key] ?? 0).toInt() + 1;
     }
 
     size = _size;

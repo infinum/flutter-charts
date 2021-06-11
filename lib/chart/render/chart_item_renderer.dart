@@ -15,7 +15,7 @@ class ChartItemRenderer<T> extends LeafRenderObjectWidget {
   @override
   void updateRenderObject(BuildContext context, _RenderChartItem<T?> renderObject) {
     renderObject
-      ..itemOptions = state
+      ..state = state
       ..key = arrayKey
       ..item = item;
   }
@@ -45,14 +45,12 @@ class _RenderChartItem<T> extends RenderBox {
   ChartItem<T> get item => _item;
 
   ChartState _state;
-  set itemOptions(ChartState itemOptions) {
-    if (itemOptions != _state) {
-      _state = itemOptions;
+  set state(ChartState state) {
+    if (state != _state) {
+      _state = state;
       markNeedsPaint();
     }
   }
-
-  ChartState get itemOptions => _state;
 
   double get _defaultSize => _state.itemOptions.minBarWidth ?? 0;
 
@@ -69,29 +67,16 @@ class _RenderChartItem<T> extends RenderBox {
   double computeMaxIntrinsicHeight(double width) => _defaultSize;
 
   @override
-  bool get sizedByParent => true;
+  bool get sizedByParent => false;
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-    final _scrollableItemWidth = max(_state.itemOptions.minBarWidth ?? 0.0, _state.itemOptions.maxBarWidth ?? 0.0);
+    return constraints.biggest;
+  }
 
-    final _listSize = _state.data.listSize;
-
-    final _size = Size(
-        constraints.maxWidth +
-            (constraints.maxWidth - ((_scrollableItemWidth + _state.itemOptions.padding.horizontal) * _listSize)) *
-                _state.behaviour._isScrollable,
-        constraints.maxHeight);
-
-    /// Final usable space for one item in the chart
-    final _itemWidth = _size.width / _listSize;
-
-    var width = min(_itemWidth, constraints.maxWidth);
-    if (width.isInfinite) {
-      width = _defaultSize;
-    }
-
-    return constraints.constrain(Size(width, _size.height));
+  @override
+  void performLayout() {
+    size = computeDryLayout(constraints);
   }
 
   @override

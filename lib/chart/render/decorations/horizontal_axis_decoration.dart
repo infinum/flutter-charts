@@ -126,8 +126,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
-    final _size = constraints.deflate(state.defaultMargin).biggest;
-    return _size;
+    return constraints.deflate(state.defaultMargin).biggest;
   }
 
   @override
@@ -139,14 +138,15 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
     canvas.save();
     final _maxValue = state.data.maxValue - state.data.minValue;
-    final _height = (size.height - state.defaultPadding.vertical);
+    final _height = ((size.height) - lineWidth);
     final scale = _height / _maxValue;
     final gridPath = Path();
 
     for (var i = 0; i * scale * axisStep <= scale * _maxValue; i++) {
       if (showLines) {
-        gridPath.moveTo(_endWithChart * state.defaultPadding.left, _height + -axisStep * i * scale);
-        gridPath.lineTo(_endWithChart * state.defaultPadding.left + size.width, _height + -axisStep * i * scale);
+        gridPath.moveTo(_endWithChart * state.defaultPadding.left, lineWidth / 2 + axisStep * i * scale);
+        gridPath.lineTo(_endWithChart * state.defaultPadding.left + (size.width - state.defaultPadding.horizontal),
+            lineWidth / 2 + axisStep * i * scale);
       }
 
       if (!showValues) {

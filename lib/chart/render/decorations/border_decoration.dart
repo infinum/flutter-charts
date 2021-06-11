@@ -28,8 +28,7 @@ class BorderDecoration extends DecorationPainter {
 
   @override
   Offset applyPaintTransform(ChartState state, Size size) {
-    return Offset(_borderWidth.left.width - state.defaultMargin.left + (state.defaultPadding.left) * _endWithChart,
-        _borderWidth.bottom.width - state.defaultMargin.top + (state.defaultPadding.top) * _endWithChart);
+    return Offset((state.defaultPadding.left) * _endWithChart, (state.defaultPadding.top) * _endWithChart);
   }
 
   @override
@@ -47,11 +46,9 @@ class BorderDecoration extends DecorationPainter {
     canvas.save();
 
     canvas.translate((state.defaultPadding.left) * _endWithChart, (state.defaultPadding.top) * _endWithChart);
-    size = (state.defaultPadding * _endWithChart).deflateSize(size);
 
     final _height = size.height + _borderWidth.dimensions.vertical;
-    final _width =
-        size.width - ((1 - _endWithChart) * state.defaultPadding.horizontal) - _borderWidth.dimensions.horizontal;
+    final _width = size.width - _borderWidth.dimensions.horizontal;
 
     _paint.strokeWidth = _borderWidth.top.width;
     _paint.color = _borderWidth.top.color;

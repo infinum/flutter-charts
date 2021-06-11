@@ -82,16 +82,13 @@ class TargetLineDecoration extends DecorationPainter {
     final _minValue = state.data.minValue * scale;
 
     return Offset(state.defaultPadding.left + state.defaultMargin.left,
-        state.defaultPadding.top + state.defaultMargin.top + scale * (target ?? 0.0) + _minValue);
+        (size.height + state.defaultMargin.top + state.defaultPadding.top) - (scale * (target ?? 0.0) + _minValue));
   }
 
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
-    _maxChartHeight = constraints.maxHeight;
-    return Size((constraints.maxWidth - state.defaultMargin.horizontal - state.defaultPadding.horizontal), lineWidth);
+    return Size((constraints.maxWidth - state.defaultPadding.horizontal), lineWidth);
   }
-
-  double? _maxChartHeight;
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {

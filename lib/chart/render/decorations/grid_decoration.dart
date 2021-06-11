@@ -211,8 +211,12 @@ class GridDecoration extends DecorationPainter {
 
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
-    final _size = (state.defaultPadding * _endWithChart + state.defaultMargin).deflateSize(constraints.biggest);
-    return _size;
+    return constraints.deflate(state.defaultMargin).biggest;
+  }
+
+  @override
+  Offset applyPaintTransform(ChartState state, Size size) {
+    return Offset(state.defaultMargin.left, state.defaultMargin.top);
   }
 
   @override
@@ -223,11 +227,6 @@ class GridDecoration extends DecorationPainter {
   @override
   EdgeInsets paddingNeeded() {
     return _horizontalAxisDecoration.paddingNeeded() + _verticalAxisDecoration.paddingNeeded();
-  }
-
-  @override
-  Offset applyPaintTransform(ChartState state, Size size) {
-    return Offset(state.defaultMargin.left, state.defaultMargin.top);
   }
 
   @override
