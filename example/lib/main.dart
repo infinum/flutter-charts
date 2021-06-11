@@ -214,7 +214,7 @@ class ShowList extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Chart<void>(
-            height: 600.0,
+            height: 250.0,
             state: ChartState(
               ChartData.fromList([1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
                   axisMax: 8.0),
@@ -232,7 +232,36 @@ class ShowList extends StatelessWidget {
                   endWithChart: true,
                   horizontalValuesPadding: EdgeInsets.symmetric(horizontal: 12.0),
                   verticalValuesPadding: EdgeInsets.symmetric(vertical: 12.0),
-                  verticalLegendPosition: VerticalLegendPosition.bottom,
+                  verticalLegendPosition: VerticalLegendPosition.top,
+                  horizontalLegendPosition: HorizontalLegendPosition.start,
+                  textStyle: Theme.of(context).textTheme.button,
+                ),
+              ],
+              foregroundDecorations: [],
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Chart<void>(
+            height: 250.0,
+            state: ChartState(
+              ChartData.fromList([1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
+                  axisMax: 8.0),
+              itemOptions: BarItemOptions(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                radius: BorderRadius.vertical(top: Radius.circular(42.0)),
+              ),
+              backgroundDecorations: [
+                BorderDecoration(borderWidth: 5.0),
+                GridDecoration(
+                  verticalAxisStep: 1,
+                  horizontalAxisStep: 1,
+                  showHorizontalValues: true,
+                  showVerticalValues: true,
+                  horizontalValuesPadding: EdgeInsets.symmetric(horizontal: 12.0),
+                  verticalValuesPadding: EdgeInsets.symmetric(vertical: 12.0),
+                  verticalLegendPosition: VerticalLegendPosition.top,
                   horizontalLegendPosition: HorizontalLegendPosition.start,
                   textStyle: Theme.of(context).textTheme.button,
                 ),

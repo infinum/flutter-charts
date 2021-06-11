@@ -96,27 +96,31 @@ class VerticalAxisDecoration extends DecorationPainter {
   }
 
   @override
+  Offset applyPaintTransform(ChartState state, Size size) {
+    return Offset(state.defaultMargin.left, state.defaultMargin.top);
+  }
+
+  @override
   void draw(Canvas canvas, Size size, ChartState state) {
     final _listSize = state.data.listSize;
-    final _itemWidth = ((size.width - state.defaultPadding.horizontal) - lineWidth) / _listSize;
+    final _itemWidth = (size.width - lineWidth) / _listSize;
 
     final _paint = Paint()
       ..color = lineColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = lineWidth;
 
-    canvas.save();
     final gridPath = Path();
 
     for (var i = 0; i <= _listSize / axisStep; i++) {
       if (showLines) {
-        final _showValuesTop = showValues ? -(marginNeeded().top * (1 - _endWithChart)) : 0.0;
-        final _showValuesBottom = size.height - (showValues ? (state.defaultPadding.top * _endWithChart) : 0.0);
+        final _showValuesTop =
+            legendPosition == VerticalLegendPosition.top ? -(marginNeeded().top * (1 - _endWithChart)) : 0.0;
+        final _showValuesBottom = size.height +
+            (legendPosition == VerticalLegendPosition.bottom ? (marginNeeded().vertical * (1 - _endWithChart)) : 0.0);
 
-        gridPath.moveTo(
-            (state.defaultPadding.left * _endWithChart) + lineWidth / 2 + _itemWidth * i * axisStep, _showValuesBottom);
-        gridPath.lineTo(
-            (state.defaultPadding.left * _endWithChart) + lineWidth / 2 + _itemWidth * i * axisStep, _showValuesTop);
+        gridPath.moveTo(-marginNeeded().left + lineWidth / 2 + _itemWidth * i * axisStep, _showValuesBottom);
+        gridPath.lineTo(-marginNeeded().left + lineWidth / 2 + _itemWidth * i * axisStep, _showValuesTop);
       }
 
       if (!showValues || i == _listSize / axisStep) {
@@ -162,7 +166,6 @@ class VerticalAxisDecoration extends DecorationPainter {
     } else {
       canvas.drawPath(gridPath, _paint);
     }
-    canvas.restore();
   }
 
   @override

@@ -144,8 +144,11 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
     for (var i = 0; i * scale * axisStep <= scale * _maxValue; i++) {
       if (showLines) {
-        gridPath.moveTo(_endWithChart * state.defaultPadding.left, lineWidth / 2 + axisStep * i * scale);
-        gridPath.lineTo(_endWithChart * state.defaultPadding.left + (size.width - state.defaultPadding.horizontal),
+        gridPath.moveTo((1 - _endWithChart) * -marginNeeded().left, lineWidth / 2 + axisStep * i * scale);
+        gridPath.lineTo(
+            _endWithChart * state.defaultMargin.horizontal -
+                _endWithChart * state.defaultPadding.left +
+                (size.width - (state.defaultMargin.horizontal * _endWithChart)),
             lineWidth / 2 + axisStep * i * scale);
       }
 
@@ -183,7 +186,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
       final _positionEnd =
           (size.width - state.defaultMargin.right) - _textPainter.width - (valuesPadding?.right ?? 0.0);
-      final _positionStart = state.defaultMargin.left + (valuesPadding?.left ?? 0.0);
+      final _positionStart = -marginNeeded().left + (valuesPadding?.left ?? 0.0);
 
       _textPainter.paint(
           canvas,
@@ -232,13 +235,6 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
   @override
   EdgeInsets marginNeeded() {
-    return EdgeInsets.only(
-      top: showValues && showTopValue ? legendFontStyle?.fontSize ?? 13.0 : 0.0,
-    );
-  }
-
-  @override
-  EdgeInsets paddingNeeded() {
     if (!showValues) {
       return EdgeInsets.zero;
     }
@@ -247,6 +243,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     final _isEnd = legendPosition == HorizontalLegendPosition.end;
 
     return EdgeInsets.only(
+      top: showValues && showTopValue ? legendFontStyle?.fontSize ?? 13.0 : 0.0,
       right: _isEnd ? _maxTextWidth : 0.0,
       left: _isEnd ? 0.0 : _maxTextWidth,
     );

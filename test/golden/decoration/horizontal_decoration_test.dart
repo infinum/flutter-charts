@@ -24,7 +24,7 @@ void main() {
           HorizontalAxisDecoration(
               showValues: true,
               legendFontStyle: defaultTextStyle,
-              valuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0)),
+              valuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0)),
         ]),
       )
       ..addScenario(
@@ -34,7 +34,7 @@ void main() {
               showValues: true,
               legendPosition: HorizontalLegendPosition.start,
               legendFontStyle: defaultTextStyle,
-              valuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0)),
+              valuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0)),
         ]),
       )
       ..addScenario(
@@ -44,7 +44,7 @@ void main() {
               showValues: true,
               axisStep: 2.0,
               legendFontStyle: defaultTextStyle,
-              valuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0)),
+              valuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0)),
         ]),
       )
       ..addScenario(
@@ -54,7 +54,7 @@ void main() {
             showValues: true,
             dashArray: [10, 10],
             legendFontStyle: defaultTextStyle,
-            valuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
+            valuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0),
           ),
         ]),
       )
@@ -65,7 +65,7 @@ void main() {
               showValues: true,
               endWithChart: true,
               legendFontStyle: defaultTextStyle,
-              valuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0)),
+              valuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0)),
         ]),
       );
     await tester.pumpWidgetBuilder(builder.build(), surfaceSize: const Size(1400, 660), textScaleSize: 1.4);

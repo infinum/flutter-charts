@@ -33,7 +33,8 @@ class BorderDecoration extends DecorationPainter {
 
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
-    final _size = constraints.deflate(state.defaultPadding * _endWithChart).biggest;
+    final _size =
+        constraints.deflate(((state.defaultMargin - marginNeeded()) + state.defaultPadding) * _endWithChart).biggest;
     return _size;
   }
 
@@ -42,10 +43,6 @@ class BorderDecoration extends DecorationPainter {
     final _paint = Paint()
       ..style = PaintingStyle.stroke
       ..color = color;
-
-    canvas.save();
-
-    canvas.translate((state.defaultPadding.left) * _endWithChart, (state.defaultPadding.top) * _endWithChart);
 
     final _height = size.height + _borderWidth.dimensions.vertical;
     final _width = size.width - _borderWidth.dimensions.horizontal;
@@ -86,8 +83,6 @@ class BorderDecoration extends DecorationPainter {
         Offset(-_borderWidth.left.width + _borderWidth.dimensions.horizontal - (_borderWidth.left.width / 2),
             _borderWidth.top.width),
         _paint);
-
-    canvas.restore();
   }
 
   void _drawLine(Canvas canvas, Offset p1, Offset p2, Paint p) {
