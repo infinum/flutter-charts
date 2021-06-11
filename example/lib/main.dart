@@ -270,6 +270,9 @@ class ShowList extends StatelessWidget {
               foregroundDecorations: [
                 SelectedItemDecoration(7, selectedColor: Colors.blue),
                 TargetLineDecoration(target: 4, lineWidth: 5.0),
+                SparkLineDecoration(
+                  fill: true,
+                ),
               ],
             ),
           ),

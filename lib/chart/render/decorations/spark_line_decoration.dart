@@ -16,6 +16,7 @@ class SparkLineDecoration extends DecorationPainter {
     this.startPosition = 0.5,
     this.gradient,
     this.lineArrayIndex = 0,
+    this.dashArray,
     this.linePosition = SparkLinePosition.fixed,
   }) : _smoothPoints = smoothPoints ? 1.0 : 0.0;
 
@@ -28,6 +29,7 @@ class SparkLineDecoration extends DecorationPainter {
     this.startPosition = 0.5,
     this.gradient,
     this.lineArrayIndex = 0,
+    this.dashArray,
     this.linePosition = SparkLinePosition.fixed,
   }) : _smoothPoints = smoothPoints;
 
@@ -42,6 +44,9 @@ class SparkLineDecoration extends DecorationPainter {
   /// on same data with different settings. (ex. One to fill and another for just line)
   final String? id;
   final double _smoothPoints;
+
+  /// Dashed array for showing lines, if this is not set the line is solid
+  final List<double>? dashArray;
 
   /// Set sparkline width
   final double lineWidth;
@@ -111,31 +116,31 @@ class SparkLineDecoration extends DecorationPainter {
         _positions.add(Offset(_itemWidth * key + _position, 0.0));
       }
 
-      _positions.add(Offset(_itemWidth * key + _position, -((value.max ?? 0.0) - state.data.minValue) * scale));
+      _positions
+          .add(Offset(_itemWidth * key + _position, size.height - ((value.max ?? 0.0) - state.data.minValue) * scale));
 
       if (fill && state.data.items[lineArrayIndex].length - 1 == key) {
         _positions.add(Offset(_itemWidth * key + _position, 0.0));
       }
     });
 
-    final _path = _getPoints(_positions, fill);
+    final _path = _getPoints(_positions, fill, size);
 
-    canvas.save();
-    canvas.translate(0.0, size.height);
-
-    canvas.drawPath(_path, _paint);
-
-    canvas.restore();
+    if (dashArray != null) {
+      canvas.drawPath(dashPath(_path, dashArray: CircularIntervalList(dashArray!)), _paint);
+    } else {
+      canvas.drawPath(_path, _paint);
+    }
   }
 
   /// Smooth out points and return path in turn
   /// Smoothing is done with quadratic bezier
-  Path _getPoints(List<Offset> points, bool fill) {
+  Path _getPoints(List<Offset> points, bool fill, Size size) {
     final _points = fill ? points.getRange(1, points.length - 1).toList() : points;
 
     final _path = Path();
     if (fill) {
-      _path.moveTo(_points[0].dx, 0.0);
+      _path.moveTo(_points[0].dx, size.height);
       _path.lineTo(_points[0].dx, _points[0].dy);
       _path.lineTo(_points.first.dx, _points.first.dy);
     } else {
@@ -148,15 +153,15 @@ class SparkLineDecoration extends DecorationPainter {
       final _p2 = _points[(i + 1) % _points.length];
       final controlPointX = _p1.dx + ((_p2.dx - _p1.dx) / 2) * _smoothPoints;
       final _mid = (_p1 + _p2) / 2;
-      final _firstLerpValue = lerpDouble(_mid.dx, controlPointX, _smoothPoints) ?? 0.0;
-      final _secondLerpValue = lerpDouble(_mid.dy, _p2.dy, _smoothPoints) ?? 0.0;
+      final _firstLerpValue = lerpDouble(_mid.dx, controlPointX, _smoothPoints) ?? size.height;
+      final _secondLerpValue = lerpDouble(_mid.dy, _p2.dy, _smoothPoints) ?? size.height;
 
       _path.cubicTo(controlPointX, _p1.dy, _firstLerpValue, _secondLerpValue, _p2.dx, _p2.dy);
 
       if (i == _points.length - 2) {
         _path.lineTo(_p2.dx, _p2.dy);
         if (fill) {
-          _path.lineTo(_p2.dx, 0.0);
+          _path.lineTo(_p2.dx, size.height);
         }
       }
     }
