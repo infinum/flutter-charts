@@ -283,16 +283,16 @@ Scrollable bar chart [example code](./example/lib/charts/scrollable_chart_screen
 [simple_line_chart]: ./test/golden/examples/goldens/line_chart.png
 [simple_multi_line_chart]: ./test/golden/examples/goldens/multi_line_chart.png
 
-[horizontal_decoration]: ./test/golden/decoration/goldens/general/horizontal_decoration_golden.png
-[vertical_decoration]: ./test/golden/decoration/goldens/general/vertical_decoration_golden.png
-[grid_decoration]: ./test/golden/decoration/goldens/general/grid_decoration_golden.png
-[border_decoration]: ./test/golden/decoration/goldens/general/border_decoration_golden.png
-[sparkline_decoration]: ./test/golden/decoration/goldens/general/sparkline_text_decoration_golden.png
-[target_line_decoration]: ./test/golden/decoration/goldens/general/target_line_decoration_golden.png
-[target_area_decoration]: ./test/golden/decoration/goldens/general/target_area_decoration_golden.png
-[target_line_legend_decoration]: ./test/golden/decoration/goldens/general/target_line_decoration_golden.png
-[selected_item_decoration]: ./test/golden/decoration/goldens/general/selected_item_decoration_golden.png
-[target_values_decoration]: ./test/golden/decoration/goldens/general/value_decoration_golden.png
+[horizontal_decoration]: ./test/golden/decoration/goldens/general/general_horizontal_decoration_golden.png
+[vertical_decoration]: ./test/golden/decoration/goldens/general/general_vertical_decoration_golden.png
+[grid_decoration]: ./test/golden/decoration/goldens/general/general_grid_decoration_golden.png
+[border_decoration]: ./test/golden/decoration/goldens/general/general_border_decoration_golden.png
+[sparkline_decoration]: ./test/golden/decoration/goldens/general/general_sparkline_text_decoration_golden.png
+[target_line_decoration]: ./test/golden/decoration/goldens/general/general_target_line_decoration_golden.png
+[target_area_decoration]: ./test/golden/decoration/goldens/general/general_target_area_decoration_golden.png
+[target_line_legend_decoration]: ./test/golden/decoration/goldens/general/general_target_line_decoration_golden.png
+[selected_item_decoration]: ./test/golden/decoration/goldens/general/general_selected_item_decoration_golden.png
+[target_values_decoration]: ./test/golden/decoration/goldens/general/general_value_decoration_golden.png
 
 [bar_painter]: ./test/golden/geometry/goldens/bar_geometry_golden.png
 [candle_painter]: ./test/golden/geometry/goldens/candle_geometry_golden.png
