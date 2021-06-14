@@ -102,7 +102,7 @@ class TargetLineDecoration extends DecorationPainter {
 
     final _path = Path()
       ..moveTo(0.0, lineWidth / 2)
-      ..lineTo(size.width, lineWidth / 2);
+      ..lineTo(size.width - (state.defaultMargin.horizontal + state.defaultPadding.horizontal), lineWidth / 2);
 
     if (dashArray != null) {
       canvas.drawPath(
