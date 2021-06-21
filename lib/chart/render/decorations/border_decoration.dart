@@ -16,7 +16,7 @@ class BorderDecoration extends DecorationPainter {
     required Border borderWidth,
     this.color = Colors.black,
     required double endWithChart,
-  })   : _endWithChart = endWithChart,
+  })  : _endWithChart = endWithChart,
         _borderWidth = borderWidth;
 
   /// Color for border, individual side colors can be set with [_borderWidth] otherwise this color
@@ -28,7 +28,8 @@ class BorderDecoration extends DecorationPainter {
 
   @override
   Offset applyPaintTransform(ChartState state, Size size) {
-    return Offset((state.defaultPadding.left) * _endWithChart, (state.defaultPadding.top) * _endWithChart);
+    return Offset(((state.defaultMargin.left - marginNeeded().left) + state.defaultPadding.left) * _endWithChart,
+        ((state.defaultMargin.top - marginNeeded().top) + state.defaultPadding.top) * _endWithChart);
   }
 
   @override
