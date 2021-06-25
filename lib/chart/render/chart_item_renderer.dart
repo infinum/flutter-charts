@@ -88,12 +88,16 @@ class _RenderChartItem<T> extends RenderBox {
     final _stack = 1 - _state.behaviour._multiValueStacked;
     final _stackSize = max(1, _state.data.stackSize * _stack);
 
-    final _stackWidth =
-        (size.width - (_state.itemOptions.multiValuePadding.horizontal * _stackSize * _stack)) / _stackSize;
+    final _multiPadding = _state.itemOptions.multiValuePadding.horizontal * _stackSize * _stack;
 
-//    final _stackWidth = (size.width - (_state.itemOptions.multiValuePadding.horizontal * _stackSize * _stack)) / _stackSize;
+    final _stackWidth = (size.width - _multiPadding - _state.itemOptions.padding.horizontal) / _stackSize;
 
-    canvas.translate(_stackWidth * key * _stack + ((_state.itemOptions.multiValuePadding.left * key * _stack)), 0.0);
+    canvas.translate(
+        _state.itemOptions.multiValuePadding.left * _stack +
+            _state.itemOptions.padding.left +
+            _stackWidth * key * _stack +
+            ((_state.itemOptions.multiValuePadding.horizontal * key * _stack)),
+        0.0);
 
     // Use item painter from ItemOptions to draw the item on the chart
     final _item = _state.itemOptions.geometryPainter(item, _state);

@@ -2,12 +2,10 @@ part of charts_painter;
 
 /// Item painter, use [barPainter] or [bubblePainter].
 /// Custom painter can also be added by extending [GeometryPainter]
-typedef ChartGeometryPainter<T> = GeometryPainter<T> Function(
-    ChartItem<T?> item, ChartState state);
+typedef ChartGeometryPainter<T> = GeometryPainter<T> Function(ChartItem<T?> item, ChartState state);
 
 /// Get color for current item value
-typedef ColorForValue = Color Function(Color defaultColor, double? value,
-    [double? min]);
+typedef ColorForValue = Color Function(Color defaultColor, double? value, [double? min]);
 
 /// Get color gor current item key (multiple lists)
 typedef ColorForKey = Color Function(ChartItem item, int index);
@@ -61,11 +59,8 @@ class ItemOptions {
   /// with all available options, otherwise changes in options won't be animated
   ItemOptions animateTo(ItemOptions endValue, double t) {
     final _itemColor = Color.lerp(color, endValue.color, t) ?? Colors.red;
-    final _itemPadding =
-        EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero;
-    final _itemMultiValuePadding =
-        EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ??
-            EdgeInsets.zero;
+    final _itemPadding = EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero;
+    final _itemMultiValuePadding = EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero;
 
     return ItemOptions(
       color: _itemColor,

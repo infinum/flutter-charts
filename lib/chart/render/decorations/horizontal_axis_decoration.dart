@@ -143,15 +143,14 @@ class HorizontalAxisDecoration extends DecorationPainter {
     final gridPath = Path();
 
     for (var i = 0; i * scale * axisStep <= scale * _maxValue; i++) {
-      final _startLine = legendPosition == HorizontalLegendPosition.start
-          ? -marginNeeded().horizontal
-          : _endWithChart * marginNeeded().left;
+      final _startLine =
+          legendPosition == HorizontalLegendPosition.start ? marginNeeded().right : _endWithChart * marginNeeded().left;
       final _endLine =
           legendPosition == HorizontalLegendPosition.start ? 0.0 : (marginNeeded().horizontal * (1 - _endWithChart));
 
       if (showLines) {
-        gridPath.moveTo(_startLine, lineWidth / 2 + axisStep * i * scale);
-        gridPath.lineTo((size.width + _endLine), lineWidth / 2 + axisStep * i * scale);
+        gridPath.moveTo(_startLine, size.height - (lineWidth / 2 + axisStep * i * scale));
+        gridPath.lineTo((size.width + _endLine), size.height - (lineWidth / 2 + axisStep * i * scale));
       }
 
       if (!showValues) {

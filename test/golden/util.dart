@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:charts_painter/chart.dart';
 import 'package:flutter/material.dart';
 
@@ -20,6 +22,33 @@ Widget getDefaultChart({
           padding: const EdgeInsets.symmetric(horizontal: 4.0),
           color: Colors.red.withOpacity(0.1),
         ),
+        backgroundDecorations: backgroundDecorations ?? [],
+        foregroundDecorations: foregroundDecorations ?? [],
+      ),
+    ),
+  );
+}
+
+Widget getMultiValueChart({
+  int size = 2,
+  List<DecorationPainter>? foregroundDecorations,
+  List<DecorationPainter>? backgroundDecorations,
+  ItemOptions? options,
+  ChartBehaviour? behaviour,
+  DataStrategy strategy = const DefaultDataStrategy(),
+}) {
+  return Padding(
+    padding: const EdgeInsets.only(top: 24.0),
+    child: Chart<void>(
+      state: ChartState(
+        ChartData(
+          List.generate(size,
+              (index) => List.generate(8, (i) => BarValue<void>((Random(((index + 1) * i)).nextDouble() * 15) + 5))),
+          valueAxisMaxOver: 2,
+          strategy: strategy,
+        ),
+        itemOptions: options ?? BarItemOptions(),
+        behaviour: behaviour ?? ChartBehaviour(),
         backgroundDecorations: backgroundDecorations ?? [],
         foregroundDecorations: foregroundDecorations ?? [],
       ),

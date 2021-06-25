@@ -32,17 +32,11 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
 
     final _maxValue = state.data.maxValue - state.data.minValue;
     final _verticalMultiplier = size.height / _maxValue;
-    final _minValue = state.data.minValue * _verticalMultiplier;
+    final _minValue = (state.data.minValue * _verticalMultiplier).abs();
 
     final _radius = options is BarItemOptions ? (options.radius ?? BorderRadius.zero) : BorderRadius.zero;
 
-    var _padding = state.itemOptions.padding;
-
     final _itemWidth = itemWidth(size);
-
-    if (size.width - _itemWidth - _padding.horizontal >= 0) {
-      _padding = EdgeInsets.symmetric(horizontal: (size.width - _itemWidth) / 2);
-    }
 
     final _itemMaxValue = item.max ?? 0.0;
 
@@ -56,13 +50,13 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
       RRect.fromRectAndCorners(
         Rect.fromPoints(
           Offset(
-            _padding.left,
+            0.0,
             _maxValue * _verticalMultiplier -
                 max(state.data.minValue, item.min ?? 0.0) * _verticalMultiplier -
                 _minValue,
           ),
           Offset(
-            _itemWidth + _padding.left,
+            _itemWidth,
             _maxValue * _verticalMultiplier - _itemMaxValue * _verticalMultiplier - _minValue,
           ),
         ),
@@ -86,11 +80,11 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
         RRect.fromRectAndCorners(
           Rect.fromPoints(
             Offset(
-              _padding.left,
+              0.0,
               max(state.data.minValue, item.min ?? 0.0) * _verticalMultiplier - _minValue,
             ),
             Offset(
-              _itemWidth + _padding.left,
+              _itemWidth,
               _itemMaxValue * _verticalMultiplier - _minValue,
             ),
           ),

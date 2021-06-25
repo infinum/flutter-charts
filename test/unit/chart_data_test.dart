@@ -30,7 +30,7 @@ void main() {
         [2, 4, 6].map((e) => BarValue<void>(e.toDouble())).toList(),
         [8, 10, 12].map((e) => BarValue<void>(e.toDouble())).toList()
       ],
-      strategy: DataStrategy.none,
+      strategy: DefaultDataStrategy(),
     );
 
     expect(_data.maxValue, 12);
@@ -42,7 +42,7 @@ void main() {
         [2, 4, 6].map((e) => BarValue<void>(e.toDouble())).toList(),
         [8, 10, 12].map((e) => BarValue<void>(e.toDouble())).toList()
       ],
-      strategy: DataStrategy.stack,
+      strategy: StackDataStrategy(),
     );
 
     expect(_data.maxValue, 18);

@@ -23,12 +23,6 @@ abstract class GeometryPainter<T> {
 
   /// Calculate item width based on current [Size] and [ChartState]
   double itemWidth(Size size) {
-    final _padding = state.itemOptions.padding.horizontal;
-
-    final _size =
-        (size.width - _padding).isNegative ? size.width : size.width - _padding;
-
-    return max(state.itemOptions.minBarWidth ?? 0.0,
-        min(state.itemOptions.maxBarWidth ?? double.infinity, _size));
+    return max(state.itemOptions.minBarWidth ?? 0.0, min(state.itemOptions.maxBarWidth ?? double.infinity, size.width));
   }
 }

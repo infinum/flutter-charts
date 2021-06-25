@@ -258,27 +258,77 @@ class ShowList extends StatelessWidget {
               ),
               backgroundDecorations: [
                 BorderDecoration(borderWidth: 5.0),
-                GridDecoration(
-                  verticalAxisStep: 1,
-                  horizontalAxisStep: 1,
-                  showHorizontalValues: true,
-                  showVerticalValues: true,
-                  horizontalValuesPadding: EdgeInsets.symmetric(horizontal: 12.0),
-                  verticalValuesPadding: EdgeInsets.symmetric(vertical: 12.0),
-                  verticalLegendPosition: VerticalLegendPosition.bottom,
-                  horizontalLegendPosition: HorizontalLegendPosition.end,
-                  textStyle: Theme.of(context).textTheme.button,
-                ),
               ],
               foregroundDecorations: [
-                SelectedItemDecoration(7, selectedColor: Colors.blue),
                 TargetLineDecoration(target: 4, lineWidth: 5.0),
-                SparkLineDecoration(
-                  fill: true,
-                ),
               ],
             ),
           ),
+        ),
+        Container(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 24.0),
+            child: Chart<void>(
+              state: ChartState(
+                ChartData(
+                  [
+                    [
+                      BarValue(6),
+                      BarValue(3),
+                      BarValue(5),
+                      BarValue(6),
+                      BarValue(5),
+                      BarValue(3),
+                      BarValue(2),
+                      BarValue(5),
+                      BarValue(9),
+                      BarValue(10),
+                      BarValue(5),
+                      BarValue(3),
+                    ],
+                    [
+                      BarValue(-6),
+                      BarValue(-9),
+                      BarValue(-3),
+                      BarValue(-4),
+                      BarValue(-3),
+                      BarValue(-2),
+                      BarValue(-3),
+                      BarValue(-4),
+                      BarValue(-2),
+                      BarValue(-8),
+                      BarValue(-7),
+                      BarValue(-3),
+                    ],
+                  ],
+                  axisMax: 14,
+                  axisMin: -14,
+                ),
+                itemOptions: BarItemOptions(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  radius: BorderRadius.vertical(top: Radius.circular(12.0)),
+                  colorForKey: (item, key) {
+                    return [Color(0xFF0139A4), Color(0xFF00B6E6)][key];
+                  },
+                ),
+                behaviour: ChartBehaviour(
+                  multiItemStack: true,
+                ),
+                backgroundDecorations: [
+                  GridDecoration(
+                    horizontalAxisStep: 7.0,
+                    showVerticalGrid: false,
+                    gridColor: Colors.grey.shade400,
+                    gridWidth: 1,
+                    dashArray: [2, 8],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 120.0,
         ),
       ],
     );

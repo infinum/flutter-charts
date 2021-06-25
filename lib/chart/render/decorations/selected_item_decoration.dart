@@ -9,6 +9,7 @@ class SelectedItemDecoration extends DecorationPainter {
     this.backgroundColor = Colors.grey,
     this.selectedStyle = const TextStyle(fontSize: 13.0),
     this.animate = false,
+    this.showText = true,
     this.selectedArrayIndex = 0,
   });
 
@@ -23,6 +24,8 @@ class SelectedItemDecoration extends DecorationPainter {
 
   /// Should [selectedItem] animate from one item to next
   final bool animate;
+
+  final bool showText;
 
   /// Color of selected item text
   final TextStyle selectedStyle;
@@ -75,6 +78,51 @@ class SelectedItemDecoration extends DecorationPainter {
       selectedStyle,
       hasMaxWidth: false,
     );
+    final _itemWidth = max(state.itemOptions.minBarWidth ?? 0.0,
+        min(state.itemOptions.maxBarWidth ?? double.infinity, size.width - state.itemOptions.padding.horizontal));
+
+    const _size = 2.0;
+    final _maxValue = state.data.maxValue - state.data.minValue;
+    final _height = size.height - marginNeeded().vertical;
+    final scale = _height / _maxValue;
+
+    final _itemMaxValue = _selectedItem.max ?? 0.0;
+    final _itemMinValue = _selectedItem.min ?? 0.0;
+    // If item is empty, or it's max value is below chart's minValue then don't draw it.
+    // minValue can be below 0, this will just ensure that animation is drawn correctly.
+    if (_selectedItem.isEmpty || _itemMaxValue < state.data.minValue) {
+      return;
+    }
+
+    if (_itemMinValue != 0.0) {
+      canvas.drawRect(
+        Rect.fromPoints(
+          Offset(
+            state.itemOptions.padding.left + _itemWidth / 2 - _size / 2,
+            0.0,
+          ),
+          Offset(
+            state.itemOptions.padding.left + _itemWidth / 2 + _size / 2,
+            (_itemMaxValue - _itemMinValue) * scale,
+          ),
+        ),
+        Paint()..color = selectedColor,
+      );
+    }
+
+    canvas.drawRect(
+      Rect.fromPoints(
+        Offset(
+          state.itemOptions.padding.left + _itemWidth / 2 - _size / 2,
+          (selectedStyle.fontSize ?? 0.0) * 1.4,
+        ),
+        Offset(
+          state.itemOptions.padding.left + _itemWidth / 2 + _size / 2,
+          size.height - (_itemMaxValue * scale),
+        ),
+      ),
+      Paint()..color = selectedColor,
+    );
 
     canvas.drawRRect(
         RRect.fromRectAndRadius(
@@ -109,66 +157,15 @@ class SelectedItemDecoration extends DecorationPainter {
       return;
     }
     _drawItem(canvas, size, state);
-    _drawText(canvas, size, size.width, state);
+    if (showText) {
+      _drawText(canvas, size, size.width, state);
+    }
 
     // Restore canvas
     canvas.restore();
   }
 
   void _drawItem(Canvas canvas, Size size, ChartState state) {
-    final _itemWidth = max(state.itemOptions.minBarWidth ?? 0.0,
-        min(state.itemOptions.maxBarWidth ?? double.infinity, size.width - state.itemOptions.padding.horizontal));
-
-    const _size = 2.0;
-    final _maxValue = state.data.maxValue - state.data.minValue;
-    final _height = size.height - marginNeeded().vertical;
-    final scale = _height / _maxValue;
-
-    final _selectedItem = selectedItem;
-    if (_selectedItem == null) {
-      return;
-    }
-
-    final _item = state.data.items[selectedArrayIndex][_selectedItem];
-
-    final _itemMaxValue = _item.max ?? 0.0;
-    final _itemMinValue = _item.min ?? 0.0;
-    // If item is empty, or it's max value is below chart's minValue then don't draw it.
-    // minValue can be below 0, this will just ensure that animation is drawn correctly.
-    if (_item.isEmpty || _itemMaxValue < state.data.minValue) {
-      return;
-    }
-
-    if (_itemMinValue != 0.0) {
-      canvas.drawRect(
-        Rect.fromPoints(
-          Offset(
-            state.itemOptions.padding.left + _itemWidth / 2 - _size / 2,
-            0.0,
-          ),
-          Offset(
-            state.itemOptions.padding.left + _itemWidth / 2 + _size / 2,
-            (_itemMaxValue - _itemMinValue) * scale,
-          ),
-        ),
-        Paint()..color = selectedColor,
-      );
-    }
-
-    canvas.drawRect(
-      Rect.fromPoints(
-        Offset(
-          state.itemOptions.padding.left + _itemWidth / 2 - _size / 2,
-          (selectedStyle.fontSize ?? 0.0) * 1.4,
-        ),
-        Offset(
-          state.itemOptions.padding.left + _itemWidth / 2 + _size / 2,
-          size.height - (_itemMaxValue * scale),
-        ),
-      ),
-      Paint()..color = selectedColor,
-    );
-
     canvas.drawRect(
       Rect.fromPoints(Offset(0.0, marginNeeded().top), Offset(size.width, size.height)),
       Paint()
@@ -179,7 +176,7 @@ class SelectedItemDecoration extends DecorationPainter {
 
   @override
   EdgeInsets marginNeeded() {
-    return EdgeInsets.only(top: (selectedStyle.fontSize ?? 0) * 1.8);
+    return EdgeInsets.only(top: showText ? (selectedStyle.fontSize ?? 0) * 1.8 : 0.0);
   }
 
   @override
