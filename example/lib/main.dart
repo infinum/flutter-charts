@@ -265,64 +265,46 @@ class ShowList extends StatelessWidget {
             ),
           ),
         ),
-        Container(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 24.0),
-            child: Chart<void>(
-              state: ChartState(
-                ChartData(
-                  [
+        Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Container(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 24.0),
+              child: Chart<void>(
+                state: ChartState(
+                  ChartData(
                     [
-                      BarValue(6),
-                      BarValue(3),
-                      BarValue(5),
-                      BarValue(6),
-                      BarValue(5),
-                      BarValue(3),
-                      BarValue(2),
-                      BarValue(5),
-                      BarValue(9),
-                      BarValue(10),
-                      BarValue(5),
-                      BarValue(3),
+                      [
+                        BarValue(6),
+                        BarValue(3),
+                        BarValue(5),
+                        BarValue(6),
+                        BarValue(5),
+                        BarValue(3),
+                        BarValue(2),
+                        BarValue(5),
+                        BarValue(9),
+                        BarValue(10),
+                        BarValue(5),
+                        BarValue(3),
+                      ],
                     ],
-                    [
-                      BarValue(-6),
-                      BarValue(-9),
-                      BarValue(-3),
-                      BarValue(-4),
-                      BarValue(-3),
-                      BarValue(-2),
-                      BarValue(-3),
-                      BarValue(-4),
-                      BarValue(-2),
-                      BarValue(-8),
-                      BarValue(-7),
-                      BarValue(-3),
-                    ],
-                  ],
-                  axisMax: 14,
-                  axisMin: -14,
-                ),
-                itemOptions: BarItemOptions(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-                  colorForKey: (item, key) {
-                    return [Color(0xFF0139A4), Color(0xFF00B6E6)][key];
-                  },
-                ),
-                behaviour: ChartBehaviour(
-                  multiItemStack: true,
-                ),
-                backgroundDecorations: [
-                  GridDecoration(
-                    horizontalAxisStep: 7.0,
-                    showVerticalGrid: false,
-                    gridColor: Colors.grey.shade400,
-                    gridWidth: 1,
-                    dashArray: [2, 8],
+                    valueAxisMaxOver: 3,
                   ),
-                ],
+                  itemOptions: BarItemOptions(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    radius: BorderRadius.vertical(top: Radius.circular(12.0)),
+                    color: Colors.red,
+                  ),
+                  backgroundDecorations: [
+                    HorizontalAxisDecoration(
+                      showValues: true,
+                      legendPosition: HorizontalLegendPosition.end,
+                      valuesPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      legendFontStyle: Theme.of(context).textTheme.caption,
+                    )
+                  ],
+                ),
               ),
             ),
           ),

@@ -100,7 +100,7 @@ void main() {
                 axisMax: 4,
               ),
               itemOptions: BarItemOptions(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 radius: BorderRadius.all(Radius.circular(12.0)),
                 colorForKey: (item, key) {
                   return [Color(0xFFE6E6FD), Color(0xFF4D4DA6)][key];
@@ -172,7 +172,7 @@ void main() {
                   showVerticalValues: true,
                   gridColor: Colors.grey.shade400,
                   gridWidth: 1,
-                  dashArray: [2, 8],
+                  dashArray: [4, 4],
                   verticalValuesPadding: const EdgeInsets.symmetric(vertical: 12.0),
                   verticalAxisValueFromIndex: (value) => '0${value}',
                   textStyle: defaultTextStyle.copyWith(fontSize: 14.0, color: Colors.black45),
@@ -326,7 +326,7 @@ void main() {
                   showVerticalValues: true,
                   gridColor: Colors.grey.shade400,
                   gridWidth: 1,
-                  dashArray: [2, 8],
+                  dashArray: [4, 4],
                   verticalValuesPadding: const EdgeInsets.symmetric(vertical: 12.0),
                   verticalAxisValueFromIndex: (value) => '0${value + 1}',
                   textStyle: defaultTextStyle.copyWith(fontSize: 14.0, color: Colors.black45),
@@ -412,7 +412,7 @@ void main() {
                   showVerticalGrid: false,
                   gridColor: Colors.grey.shade400,
                   gridWidth: 1,
-                  dashArray: [2, 8],
+                  dashArray: [4, 4],
                 ),
               ],
             ),

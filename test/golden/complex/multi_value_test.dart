@@ -139,7 +139,7 @@ void main() {
               lineColor: Colors.red,
               lineWidth: 4.0,
               smoothPoints: true,
-              dashArray: translateMorse('.. -. ..-. .. -. ..- --'),
+              dashArray: translateMorse('.. -. ..-. .. -. ..- --  '),
               linePosition: SparkLinePosition.stretch,
             ),
             SparkLineDecoration(
@@ -206,7 +206,7 @@ void main() {
               lineColor: Colors.red,
               lineWidth: 2.0,
               smoothPoints: true,
-              dashArray: translateMorse('.. -. ..-. .. -. ..- --'),
+              dashArray: translateMorse('.. -. ..-. .. -. ..- --  '),
               linePosition: SparkLinePosition.stretch,
             ),
             TargetLineDecoration(target: 10),
@@ -239,7 +239,7 @@ void main() {
 }
 
 List<double> translateMorse(String morse) {
-  final int _bigSpace = 8;
+  final int _bigSpace = 6;
 
   final int dot = 6;
   final int line = 24;

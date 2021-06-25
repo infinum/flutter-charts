@@ -12,6 +12,7 @@ Idea behind this lib is to allow highly customizable charts. By having decoratio
     * [Decorations](#decoration)
 * [Make your own](#make-your-chart)
 * [More examples](#more-examples)
+* [Golden files](./test/golden/GOLDENS.md)
 
 ## Showcase
 ![showcase]
@@ -86,7 +87,7 @@ Included in the lib are  2 `ItemPainter`'s.
 
 ## Decoration
 We use Decorations to enhance our charts. Chart decorations can be painted in the background or in a foreground of the items. Everything that is not chart item is a decoration.
-[All decorations](./test/golden/GOLDENS.md)
+[See all decorations](./test/golden/GOLDENS.md#decorations)
 
 Here are decorations we have included, bar items with opacity have been added for better visibility.
 

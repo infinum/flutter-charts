@@ -144,7 +144,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
     for (var i = 0; i * scale * axisStep <= scale * _maxValue; i++) {
       final _startLine =
-          legendPosition == HorizontalLegendPosition.start ? marginNeeded().right : _endWithChart * marginNeeded().left;
+          legendPosition == HorizontalLegendPosition.start ? -(marginNeeded().horizontal * (1 - _endWithChart)) : 0.0;
       final _endLine =
           legendPosition == HorizontalLegendPosition.start ? 0.0 : (marginNeeded().horizontal * (1 - _endWithChart));
 

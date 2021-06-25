@@ -51,7 +51,7 @@ class BarChart<T> extends StatelessWidget {
       width: MediaQuery.of(context).size.width - 24.0,
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
-        ChartData(_mappedValues, valueAxisMaxOver: 1, strategy: stack ? DataStrategy.stack : DataStrategy.none),
+        ChartData(_mappedValues, valueAxisMaxOver: 1, strategy: stack ? StackDataStrategy() : DefaultDataStrategy()),
         itemOptions: itemOptions,
         behaviour: chartBehaviour,
         foregroundDecorations: _foregroundDecorations,

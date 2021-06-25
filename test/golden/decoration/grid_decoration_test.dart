@@ -19,7 +19,7 @@ void main() {
         ]),
       )
       ..addScenario(
-        'Show vertical values',
+        'Show horizontal values',
         getDefaultChart(backgroundDecorations: [
           GridDecoration(
             showHorizontalValues: true,
@@ -30,7 +30,7 @@ void main() {
         ]),
       )
       ..addScenario(
-        'Show horizontal values',
+        'Show vertical values',
         getDefaultChart(backgroundDecorations: [
           GridDecoration(
             showHorizontalValues: false,
