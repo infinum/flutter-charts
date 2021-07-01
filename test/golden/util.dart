@@ -42,8 +42,10 @@ Widget getMultiValueChart({
     child: Chart<void>(
       state: ChartState(
         ChartData(
-          List.generate(size,
-              (index) => List.generate(8, (i) => BarValue<void>((Random(((index + 1) * i)).nextDouble() * 15) + 5))),
+          List.generate(
+              size,
+              (index) =>
+                  List.generate(8, (i) => BarValue<void>((Random(((index + 1) * (i + 1))).nextDouble() * 15) + 5))),
           valueAxisMaxOver: 2,
           strategy: strategy,
         ),

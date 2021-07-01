@@ -13,27 +13,24 @@ void main() {
   testGoldens('Complex - Multiple values', (tester) async {
     final builder = GoldenBuilder.grid(columns: 3, widthToHeightRatio: 1.4)
       ..addScenario(
-        'Stack',
+        'Multiple',
         getMultiValueChart(
+          size: 4,
           options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
             color: Colors.red.withOpacity(0.1),
-            colorForKey: (item, key) => [Colors.red, Colors.blue][key].withOpacity(0.4),
-          ),
-          strategy: StackDataStrategy(),
-          behaviour: ChartBehaviour(
-            multiItemStack: true,
+            colorForKey: (item, key) => [Colors.red, Colors.yellow, Colors.green, Colors.blue][key].withOpacity(0.4),
           ),
         ),
       )
       ..addScenario(
-        'Stack multiple',
+        'Stack',
         getMultiValueChart(
-          size: 6,
+          size: 4,
           options: BarItemOptions(
-            padding: const EdgeInsets.symmetric(horizontal: 1.0),
-            multiValuePadding: const EdgeInsets.symmetric(horizontal: 1.0),
-            colorForKey: (item, key) => Colors.accents[key].withOpacity(0.2),
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            color: Colors.red.withOpacity(0.1),
+            colorForKey: (item, key) => [Colors.red, Colors.yellow, Colors.green, Colors.blue][key].withOpacity(0.4),
           ),
           strategy: StackDataStrategy(),
           behaviour: ChartBehaviour(
@@ -44,11 +41,12 @@ void main() {
       ..addScenario(
         'Side by side',
         getMultiValueChart(
+          size: 4,
           options: ItemOptions(
             geometryPainter: barPainter,
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
             color: Colors.red.withOpacity(0.1),
-            colorForKey: (item, key) => [Colors.red, Colors.blue][key].withOpacity(0.2),
+            colorForKey: (item, key) => [Colors.red, Colors.yellow, Colors.green, Colors.blue][key].withOpacity(0.2),
           ),
           behaviour: ChartBehaviour(
             multiItemStack: false,
@@ -69,7 +67,7 @@ void main() {
                   )),
           options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            color: Colors.red.withOpacity(0.1),
+            color: Colors.red.withOpacity(0.025),
           ),
         ),
       )
@@ -88,7 +86,7 @@ void main() {
           strategy: StackDataStrategy(),
           options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            color: Colors.red.withOpacity(0.1),
+            color: Colors.red.withOpacity(0.025),
           ),
         ),
       )
@@ -104,7 +102,6 @@ void main() {
                     lineWidth: 3.0,
                     startPosition: index / 4,
                   )),
-          strategy: StackDataStrategy(),
           options: BarItemOptions(
             multiValuePadding: const EdgeInsets.symmetric(horizontal: 1.0),
             padding: const EdgeInsets.symmetric(horizontal: 1.0),
@@ -242,7 +239,7 @@ List<double> translateMorse(String morse) {
   final int _bigSpace = 6;
 
   final int dot = 6;
-  final int line = 24;
+  final int line = 22;
   final int _smallSpace = 3;
 
   final _s = morse

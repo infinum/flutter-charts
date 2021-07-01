@@ -91,14 +91,11 @@ void main() {
         height: 500,
         width: 800,
         child: getDefaultChart(backgroundDecorations: [
-          SelectedItemDecoration(2,
-              backgroundColor: Colors.black87,
-              selectedStyle: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w900,
-                fontFamily: 'Roboto',
-                fontSize: 26.0,
-              )),
+          SelectedItemDecoration(
+            2,
+            backgroundColor: Colors.black87,
+            showText: false,
+          ),
         ]),
       ),
     );
