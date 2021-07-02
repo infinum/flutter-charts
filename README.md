@@ -21,7 +21,7 @@ Idea behind this lib is to allow highly customizable charts. By having decoratio
 Add it to your package's pubspec.yaml file
 ```yaml
 dependencies:
-  charts_painter: ^1.1.0
+  charts_painter: ^2.0.0
 ```
 
 Install packages from the command line
@@ -68,7 +68,7 @@ By changing `axisMin` or `axisMax` scale of the chart is changed in order to sho
 
 Adding `valueAxisMaxOver` will add that value to currently the highest value.
 
-`strategy` will only have impact if chart has multiple lists, in that case it can stack those items with `DataStrategy.stack`. Strategy only affects how multiple lists are being processed, to change how the are drawn see `ChartBehaviour.multiItemStack` 
+`strategy` will can manipulate data before being drawn, in case you want to stack data you can pass `StackDataStrategy`. Strategy only affects how multiple lists are being processed, to change how multi list items can be drawn see `ChartBehaviour.multiItemStack` 
 
 ## Item options
 Options that set how it draws each item and how it looks.

@@ -47,8 +47,8 @@ Widget getMultiValueChart({
               (index) =>
                   List.generate(8, (i) => BarValue<void>((Random(((index + 1) * (i + 1))).nextDouble() * 15) + 5))),
           valueAxisMaxOver: 2,
-          strategy: strategy,
         ),
+        strategy: strategy,
         itemOptions: options ?? BarItemOptions(),
         behaviour: behaviour ?? ChartBehaviour(),
         backgroundDecorations: backgroundDecorations ?? [],

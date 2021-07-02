@@ -10,21 +10,10 @@ class ChartData<T> {
   /// [valueAxisMaxOver] - How much should chart draw above max value in the chart
   ChartData(
     this._items, {
-    this.strategy = const DefaultDataStrategy(),
     this.axisMax,
-    double? valueAxisMaxOver,
+    this.valueAxisMaxOver,
     this.axisMin,
-  })  : minValue = _getMinValue(
-            strategy
-                .formatDataStrategy(_items)
-                .fold(<ChartItem<T?>>[], (List<ChartItem<T?>> list, element) => list..addAll(element)).toList(),
-            axisMin),
-        maxValue = _getMaxValue(
-                strategy
-                    .formatDataStrategy(_items)
-                    .fold(<ChartItem<T?>>[], (List<ChartItem<T?>> list, element) => list..addAll(element)).toList(),
-                axisMax) +
-            (valueAxisMaxOver ?? 0.0);
+  });
 
   /// Make chart data from list of [ChartItem]'s
   factory ChartData.fromList(
@@ -35,7 +24,6 @@ class ChartData<T> {
   }) {
     return ChartData(
       [items],
-      strategy: DefaultDataStrategy(),
       axisMin: axisMin,
       axisMax: axisMax,
       valueAxisMaxOver: valueAxisMaxOver,
@@ -60,43 +48,26 @@ class ChartData<T> {
 
   ChartData._lerp(
     this._items, {
-    this.strategy = const DefaultDataStrategy(),
     this.axisMax,
     this.axisMin,
-    this.minValue = 0,
-    this.maxValue = 0,
+    this.valueAxisMaxOver,
   });
 
   /// Chart items, items in the list cannot be null, but ChartItem can be defined
   /// with null values to represent gaps in the data
   final List<List<ChartItem<T?>>> _items;
 
-  /// Data strategy to use on items
-  /// Defaults to [DataStrategy.none]
-  final DataStrategy strategy;
-
-  // Scale
-  /// Min value that chart should show.
-  /// In case chart shouldn't start from 0 use this to specify new min starting point
-  /// If data has value that goes below [minValue] then [minValue] is ignored
-  late final double minValue;
-
-  /// Max value to show on the chart, in case data has point higher then
-  /// specified [maxValue] then [maxValue] is ignored
-  late final double maxValue;
-
   /// Max value that chart should show, in case that [axisMax] is bellow
   /// the value of value passed with data in the chart this will be ignored.
   final double? axisMax;
 
+  /// Max value that chart should show, in case that [axisMax] is bellow
+  /// the value of value passed with data in the chart this will be ignored.
+  final double? valueAxisMaxOver;
+
   /// Min value of the chart, anything below that will not be shown and chart
   /// x axis will start from [axisMin] (default: 0)
   final double? axisMin;
-
-  /// Return list as formatted data defined by [DataStrategy]
-  List<List<ChartItem<T?>>> get items {
-    return strategy.formatDataStrategy(_items);
-  }
 
   /// Returns true if there is no items in the [ChartData]
   bool get isEmpty => _items.isEmpty;
@@ -110,25 +81,6 @@ class ChartData<T> {
   /// Get number of data lists in the chart
   int get stackSize => _items.length;
 
-  /// Get max value of the chart
-  /// Max value is max data item from [items] or [ChartOptions.axisMax]
-  static double _getMaxValue<T>(List<ChartItem<T>> items, double? valueAxisMax) {
-    return max(valueAxisMax ?? 0.0, items.map((e) => e.max ?? 0.0).reduce(max));
-  }
-
-  /// Get min value of the chart
-  /// Min value is min data item from [items] or [ChartOptions.axisMin]
-  static double _getMinValue<T>(List<ChartItem<T?>> items, double? valueAxisMin) {
-    final _minItems = items
-        .where((e) => (e.min != null && e.min != 0.0) || (e.min == null && e.max != 0.0))
-        .map((e) => e.min ?? e.max ?? double.infinity);
-    if (_minItems.isEmpty) {
-      return valueAxisMin ?? 0.0;
-    }
-
-    return min(valueAxisMin ?? 0.0, _minItems.reduce(min));
-  }
-
   /// Linearly interpolate between two [ChartData], `a` and `b`, by an extrapolation
   /// factor `t`.
   ///
@@ -136,13 +88,9 @@ class ChartData<T> {
   static ChartData<T?> lerp<T>(ChartData<T?> a, ChartData<T?> b, double t) {
     return ChartData._lerp(
       ChartItemsLerp.lerpValues(a._items, b._items, t),
-      strategy: t > 0.5 ? b.strategy : a.strategy,
       axisMax: lerpDouble(a.axisMax, b.axisMax, t),
       axisMin: lerpDouble(a.axisMin, b.axisMin, t),
-
-      /// Those are usually calculated, but we need to have a control over them in the animation
-      maxValue: lerpDouble(a.maxValue, b.maxValue, t) ?? b.maxValue,
-      minValue: lerpDouble(a.minValue, b.minValue, t) ?? b.minValue,
+      valueAxisMaxOver: lerpDouble(a.valueAxisMaxOver, b.valueAxisMaxOver, t),
     );
   }
 }

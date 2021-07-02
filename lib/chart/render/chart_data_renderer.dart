@@ -3,7 +3,7 @@ part of charts_painter;
 class ChartLinearDataRenderer<T> extends MultiChildRenderObjectWidget {
   ChartLinearDataRenderer(this.chartState, {Key? key})
       : super(key: key, children: [
-          ...chartState.data.items
+          ...chartState.items
               .mapIndexed(
                 (key, items) => items.map((e) => ChartItemRenderer(e, chartState, arrayKey: key)).toList(),
               )

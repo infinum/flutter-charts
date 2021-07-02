@@ -77,14 +77,14 @@ class ValueDecoration extends DecorationPainter {
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
-    final _maxValue = state.data.maxValue - state.data.minValue;
+    final _maxValue = state.maxValue - state.minValue;
     final _verticalMultiplier = size.height / _maxValue;
-    final _minValue = state.data.minValue * _verticalMultiplier;
+    final _minValue = state.minValue * _verticalMultiplier;
 
     final _listSize = state.data.listSize;
     final _itemWidth = size.width / _listSize;
 
-    state.data.items[valueArrayIndex].asMap().forEach((index, value) {
+    state.items[valueArrayIndex].asMap().forEach((index, value) {
       canvas.save();
       canvas.translate(
         index * _itemWidth,

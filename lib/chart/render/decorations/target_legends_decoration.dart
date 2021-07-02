@@ -29,9 +29,9 @@ class TargetLineLegendDecoration extends DecorationPainter {
 
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
-    final _maxValue = state.data.maxValue - state.data.minValue;
+    final _maxValue = state.maxValue - state.minValue;
     final scale = size.height / _maxValue;
-    final _minValue = state.data.minValue * scale;
+    final _minValue = state.minValue * scale;
 
     canvas.save();
     canvas.translate(state.defaultMargin.left, size.height + state.defaultMargin.top);

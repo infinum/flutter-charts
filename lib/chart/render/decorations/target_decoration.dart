@@ -77,10 +77,10 @@ class TargetLineDecoration extends DecorationPainter {
 
   @override
   Offset applyPaintTransform(ChartState state, Size size) {
-    final _maxValue = state.data.maxValue - state.data.minValue;
+    final _maxValue = state.maxValue - state.minValue;
     final _height = size.height - lineWidth;
     final scale = (_height - state.defaultMargin.vertical - state.defaultPadding.vertical) / _maxValue;
-    final _minValue = state.data.minValue * scale;
+    final _minValue = state.minValue * scale;
 
     return Offset(
       state.defaultPadding.left + state.defaultMargin.left,
@@ -196,9 +196,9 @@ class TargetAreaDecoration extends DecorationPainter {
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
     final _size = state.defaultPadding.deflateSize(constraints.biggest);
-    final _maxValue = state.data.maxValue - state.data.minValue;
+    final _maxValue = state.maxValue - state.minValue;
     final scale = _size.height / _maxValue;
-    final _minValue = state.data.minValue * scale;
+    final _minValue = state.minValue * scale;
 
     return Rect.fromPoints(Offset(0.0, -scale * targetMin + _minValue),
             Offset(constraints.maxWidth, -scale * targetMax + _minValue + areaPadding.vertical))
@@ -207,9 +207,9 @@ class TargetAreaDecoration extends DecorationPainter {
 
   @override
   Offset applyPaintTransform(ChartState state, Size size) {
-    final _maxValue = state.data.maxValue - state.data.minValue;
+    final _maxValue = state.maxValue - state.minValue;
     final scale = size.height / _maxValue;
-    final _minValue = state.data.minValue * scale;
+    final _minValue = state.minValue * scale;
 
     return Offset(state.defaultPadding.left - areaPadding.left, size.height - scale * targetMax + _minValue);
   }

@@ -18,9 +18,9 @@ void main() {
           size: 4,
           options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            color: Colors.red.withOpacity(0.1),
-            colorForKey: (item, key) => [Colors.red, Colors.yellow, Colors.green, Colors.blue][key].withOpacity(0.4),
+            colorForKey: (item, key) => [Colors.red, Colors.yellow, Colors.green, Colors.blue][key].withOpacity(0.5),
           ),
+          strategy: DefaultDataStrategy(),
         ),
       )
       ..addScenario(
@@ -29,8 +29,7 @@ void main() {
           size: 4,
           options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            color: Colors.red.withOpacity(0.1),
-            colorForKey: (item, key) => [Colors.red, Colors.yellow, Colors.green, Colors.blue][key].withOpacity(0.4),
+            colorForKey: (item, key) => [Colors.red, Colors.yellow, Colors.green, Colors.blue][key].withOpacity(0.5),
           ),
           strategy: StackDataStrategy(),
           behaviour: ChartBehaviour(
@@ -45,8 +44,7 @@ void main() {
           options: ItemOptions(
             geometryPainter: barPainter,
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            color: Colors.red.withOpacity(0.1),
-            colorForKey: (item, key) => [Colors.red, Colors.yellow, Colors.green, Colors.blue][key].withOpacity(0.2),
+            colorForKey: (item, key) => [Colors.red, Colors.yellow, Colors.green, Colors.blue][key].withOpacity(0.5),
           ),
           behaviour: ChartBehaviour(
             multiItemStack: false,
@@ -58,13 +56,14 @@ void main() {
         getMultiValueChart(
           size: 4,
           foregroundDecorations: List.generate(
-              4,
-              (index) => SparkLineDecoration(
-                    lineArrayIndex: index,
-                    lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
-                    lineWidth: 3.0,
-                    linePosition: SparkLinePosition.stretch,
-                  )),
+            4,
+            (index) => SparkLineDecoration(
+              lineArrayIndex: index,
+              lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
+              lineWidth: 3.0,
+              linePosition: SparkLinePosition.stretch,
+            ),
+          ),
           options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
             color: Colors.red.withOpacity(0.025),
@@ -76,13 +75,14 @@ void main() {
         getMultiValueChart(
           size: 4,
           foregroundDecorations: List.generate(
-              4,
-              (index) => SparkLineDecoration(
-                    lineArrayIndex: index,
-                    lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
-                    lineWidth: 3.0,
-                    linePosition: SparkLinePosition.stretch,
-                  )),
+            4,
+            (index) => SparkLineDecoration(
+              lineArrayIndex: index,
+              lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
+              lineWidth: 3.0,
+              linePosition: SparkLinePosition.stretch,
+            ),
+          ),
           strategy: StackDataStrategy(),
           options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -206,14 +206,20 @@ void main() {
               dashArray: translateMorse('.. -. ..-. .. -. ..- --  '),
               linePosition: SparkLinePosition.stretch,
             ),
-            TargetLineDecoration(target: 10),
             BorderDecoration(
               borderWidth: 4.0,
             ),
           ],
           backgroundDecorations: [
             GridDecoration(
-              horizontalAxisStep: 4,
+              horizontalAxisStep: 2,
+              gridColor: Colors.grey.shade400,
+            ),
+            TargetAreaDecoration(
+              targetMin: 8,
+              targetMax: 14,
+              targetLineColor: Colors.transparent,
+              targetAreaFillColor: Colors.blue.withOpacity(0.4),
             ),
           ],
           options: BarItemOptions(

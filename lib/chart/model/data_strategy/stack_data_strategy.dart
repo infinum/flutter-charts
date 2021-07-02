@@ -1,5 +1,19 @@
 part of charts_painter;
 
+/// Stacks multiple lists one on top of another.
+///
+/// ex.
+/// List with:
+/// [
+///   [1, 3, 2],
+///   [3, 2, 1]
+/// ]
+///
+/// will become:
+/// [
+///   [1, 3, 2],
+///   [4, 5, 3]
+/// ]
 class StackDataStrategy extends DataStrategy {
   @override
   List<List<ChartItem<T?>>> formatDataStrategy<T>(List<List<ChartItem<T?>>> items) {
