@@ -62,19 +62,20 @@ Widget build(BuildContext context) {
 ```
 ![basic_bar]
 
-#### ChartData
+## ChartData
 Chart data has some options that will change how the data is processed.
 By changing `axisMin` or `axisMax` scale of the chart is changed in order to show that value, in case data has higher/lower data then axisMax/axisMin then this option is ignored. 
 
 Adding `valueAxisMaxOver` will add that value to currently the highest value.
 
-`strategy` will can manipulate data before being drawn, in case you want to stack data you can pass `StackDataStrategy`. Strategy only affects how multiple lists are being processed, to change how multi list items can be drawn see `ChartBehaviour.multiItemStack` 
+## Data strategy
+Data strategy can manipulate data before being drawn, in case you want to stack data you can pass `StackDataStrategy`. Strategy only affects how multiple lists are being processed, to change how multi list items can be drawn see `ChartBehaviour.multiItemStack` 
 
 ## Item options
 Options that set how it draws each item and how it looks.
 When using `BarItemOptions` or `BubbleItemOptions` geometry painters have been preset, and they include some extra options for their painters. 
 
-## Geometry painter
+#### Geometry painter
 What are geometry painters?
 
 Geometry painters are responsible for drawing each item on the canvas.

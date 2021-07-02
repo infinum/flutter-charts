@@ -161,9 +161,12 @@ class ChartState<T> {
   /// Get total margin needed by all decorations
   void _getDecorationsPadding() => _allDecorations.forEach((element) => defaultPadding += element.paddingNeeded());
 
+  List<List<ChartItem<T?>>>? _cachedItems;
+
   /// Return list as formatted data defined by [DataStrategy]
   List<List<ChartItem<T?>>> get items {
-    return strategy.formatDataStrategy(data._items);
+    _cachedItems ??= strategy.formatDataStrategy(data._items);
+    return _cachedItems ?? strategy.formatDataStrategy(data._items);
   }
 
   /// For later in case charts will have to animate between states.
