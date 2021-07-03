@@ -292,7 +292,7 @@ Scrollable bar chart [example code](./example/lib/charts/scrollable_chart_screen
 [sparkline_decoration]: ./test/golden/decoration/goldens/general/general_sparkline_text_decoration_golden.png
 [target_line_decoration]: ./test/golden/decoration/goldens/general/general_target_line_decoration_golden.png
 [target_area_decoration]: ./test/golden/decoration/goldens/general/general_target_area_decoration_golden.png
-[target_line_legend_decoration]: ./test/golden/decoration/goldens/general/general_target_line_decoration_golden.png
+[target_line_legend_decoration]: ./test/golden/decoration/goldens/general/general_target_line_text_decoration_golden.png
 [selected_item_decoration]: ./test/golden/decoration/goldens/general/general_selected_item_decoration_golden.png
 [target_values_decoration]: ./test/golden/decoration/goldens/general/general_value_decoration_golden.png
 

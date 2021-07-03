@@ -64,7 +64,8 @@ void main() {
         width: 800,
         child: getDefaultChart(backgroundDecorations: [
           BorderDecoration(
-            borderWidth: 4.0,
+            borderWidth: 8.0,
+            color: Colors.red,
           ),
         ]),
       ),
@@ -116,7 +117,7 @@ void main() {
         height: 500,
         width: 800,
         child: getDefaultChart(foregroundDecorations: [
-          TargetLineDecoration(lineWidth: 4.0, target: 4),
+          TargetLineDecoration(lineWidth: 8.0, target: 4),
         ]),
       ),
     );
@@ -131,7 +132,7 @@ void main() {
         width: 800,
         child: getDefaultChart(
           foregroundDecorations: [
-            TargetLineDecoration(lineWidth: 4, target: 4, targetLineColor: Colors.red.withOpacity(0.2)),
+            TargetLineDecoration(lineWidth: 8, target: 4, targetLineColor: Colors.red.withOpacity(0.2)),
             TargetLineLegendDecoration(
               legendTarget: 4,
               legendDescription: 'This is target |',
@@ -153,9 +154,11 @@ void main() {
       Container(
         height: 500,
         width: 800,
-        child: getDefaultChart(foregroundDecorations: [
-          TargetAreaDecoration(targetMin: 3, targetMax: 5),
-        ]),
+        child: getDefaultChart(
+          foregroundDecorations: [
+            TargetAreaDecoration(targetMin: 3, targetMax: 5, lineWidth: 4),
+          ],
+        ),
       ),
     );
     await expectLater(
@@ -169,7 +172,7 @@ void main() {
         width: 800,
         child: getDefaultChart(foregroundDecorations: [
           SparkLineDecoration(
-            lineWidth: 5.0,
+            lineWidth: 8.0,
           ),
         ]),
       ),
