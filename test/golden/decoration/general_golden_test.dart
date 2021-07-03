@@ -137,7 +137,7 @@ void main() {
               legendTarget: 4,
               legendDescription: 'This is target |',
               legendStyle: defaultTextStyle.copyWith(
-                fontSize: 18.0,
+                fontSize: 32.0,
                 color: Colors.red,
               ),
             ),
