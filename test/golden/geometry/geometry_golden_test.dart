@@ -17,7 +17,7 @@ void main() {
         height: 500,
         width: 800,
         child: Padding(
-          padding: const EdgeInsets.only(top: 24.0),
+          padding: EdgeInsets.zero,
           child: Chart<void>(
             state: ChartState(
               ChartData.fromList(
@@ -43,7 +43,7 @@ void main() {
         height: 500,
         width: 800,
         child: Padding(
-          padding: const EdgeInsets.only(top: 24.0),
+          padding: EdgeInsets.zero,
           child: Chart<void>(
             state: ChartState(
               ChartData.fromList(
@@ -72,7 +72,7 @@ void main() {
         height: 500,
         width: 800,
         child: Padding(
-          padding: const EdgeInsets.only(top: 24.0),
+          padding: EdgeInsets.zero,
           child: Chart<void>(
             state: ChartState(
               ChartData.fromList(

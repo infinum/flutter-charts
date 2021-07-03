@@ -17,7 +17,7 @@ void main() {
         width: 800,
         child: getDefaultChart(backgroundDecorations: [
           HorizontalAxisDecoration(
-            lineWidth: 2.0,
+            lineWidth: 4.0,
           ),
         ]),
       ),
@@ -33,7 +33,7 @@ void main() {
         width: 800,
         child: getDefaultChart(backgroundDecorations: [
           VerticalAxisDecoration(
-            lineWidth: 2.0,
+            lineWidth: 4.0,
           ),
         ]),
       ),
@@ -49,7 +49,7 @@ void main() {
         width: 800,
         child: getDefaultChart(backgroundDecorations: [
           GridDecoration(
-            gridWidth: 2.0,
+            gridWidth: 4.0,
           ),
         ]),
       ),
@@ -78,7 +78,14 @@ void main() {
         height: 500,
         width: 800,
         child: getDefaultChart(backgroundDecorations: [
-          ValueDecoration(textStyle: defaultTextStyle.copyWith(fontSize: 16.0)),
+          ValueDecoration(
+            alignment: Alignment(0.0, 0.5),
+            textStyle: defaultTextStyle.copyWith(
+              fontSize: 32.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.white70,
+            ),
+          ),
         ]),
       ),
     );
@@ -93,7 +100,7 @@ void main() {
         child: getDefaultChart(backgroundDecorations: [
           SelectedItemDecoration(
             2,
-            backgroundColor: Colors.black87,
+            backgroundColor: Colors.grey.withOpacity(0.25),
             showText: false,
           ),
         ]),
@@ -109,7 +116,7 @@ void main() {
         height: 500,
         width: 800,
         child: getDefaultChart(foregroundDecorations: [
-          TargetLineDecoration(lineWidth: 2.0, target: 4),
+          TargetLineDecoration(lineWidth: 4.0, target: 4),
         ]),
       ),
     );
@@ -122,14 +129,19 @@ void main() {
       Container(
         height: 500,
         width: 800,
-        child: getDefaultChart(backgroundDecorations: [
-          TargetLineDecoration(lineWidth: 2.0, target: 4, targetLineColor: Colors.red.withOpacity(0.1)),
-          TargetLineLegendDecoration(
-            legendTarget: 4,
-            legendDescription: 'This is target |',
-            legendStyle: defaultTextStyle.copyWith(fontSize: 18.0, color: Colors.black87),
-          ),
-        ]),
+        child: getDefaultChart(
+          foregroundDecorations: [
+            TargetLineDecoration(lineWidth: 4, target: 4, targetLineColor: Colors.red.withOpacity(0.2)),
+            TargetLineLegendDecoration(
+              legendTarget: 4,
+              legendDescription: 'This is target |',
+              legendStyle: defaultTextStyle.copyWith(
+                fontSize: 18.0,
+                color: Colors.red,
+              ),
+            ),
+          ],
+        ),
       ),
     );
     await expectLater(
@@ -157,7 +169,7 @@ void main() {
         width: 800,
         child: getDefaultChart(foregroundDecorations: [
           SparkLineDecoration(
-            lineWidth: 3.0,
+            lineWidth: 5.0,
           ),
         ]),
       ),

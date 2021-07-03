@@ -10,7 +10,7 @@ Widget getDefaultChart({
   List<DecorationPainter>? backgroundDecorations,
 }) {
   return Padding(
-    padding: const EdgeInsets.only(top: 24.0),
+    padding: EdgeInsets.zero,
     child: Chart<void>(
       state: ChartState(
         ChartData.fromList(
@@ -38,7 +38,7 @@ Widget getMultiValueChart({
   DataStrategy strategy = const DefaultDataStrategy(),
 }) {
   return Padding(
-    padding: const EdgeInsets.only(top: 24.0),
+    padding: EdgeInsets.zero,
     child: Chart<void>(
       state: ChartState(
         ChartData(

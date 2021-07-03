@@ -134,37 +134,34 @@ void main() {
       )
       ..addScenario(
         'Multiline',
-        Padding(
-          padding: const EdgeInsets.only(top: 24.0),
-          child: Chart<void>(
-            state: ChartState(
-                ChartData(
-                  [
-                    [5, 6, 8, 4, 3, 5, 2, 6, 7].map((e) => BarValue<void>(e.toDouble())).toList(),
-                    [3, 5, 2, 6, 7, 5, 6, 8, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
-                  ],
-                  valueAxisMaxOver: 2,
+        Chart<void>(
+          state: ChartState(
+              ChartData(
+                [
+                  [5, 6, 8, 4, 3, 5, 2, 6, 7].map((e) => BarValue<void>(e.toDouble())).toList(),
+                  [3, 5, 2, 6, 7, 5, 6, 8, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
+                ],
+                valueAxisMaxOver: 2,
+              ),
+              itemOptions: ItemOptions(
+                geometryPainter: barPainter,
+                color: Colors.transparent,
+              ),
+              foregroundDecorations: [
+                SparkLineDecoration(
+                  linePosition: SparkLinePosition.stretch,
+                  smoothPoints: true,
+                  dashArray: [25, 15],
+                  lineWidth: 3.0,
                 ),
-                itemOptions: ItemOptions(
-                  geometryPainter: barPainter,
-                  color: Colors.transparent,
-                ),
-                foregroundDecorations: [
-                  SparkLineDecoration(
-                    linePosition: SparkLinePosition.stretch,
-                    smoothPoints: true,
-                    dashArray: [25, 15],
-                    lineWidth: 3.0,
-                  ),
-                  SparkLineDecoration(
-                    lineArrayIndex: 1,
-                    linePosition: SparkLinePosition.stretch,
-                    lineColor: Colors.red.withOpacity(0.2),
-                    smoothPoints: true,
-                    fill: true,
-                  )
-                ]),
-          ),
+                SparkLineDecoration(
+                  lineArrayIndex: 1,
+                  linePosition: SparkLinePosition.stretch,
+                  lineColor: Colors.red.withOpacity(0.2),
+                  smoothPoints: true,
+                  fill: true,
+                )
+              ]),
         ),
       );
     await tester.pumpWidgetBuilder(builder.build(), surfaceSize: const Size(1400, 1300), textScaleSize: 1.4);

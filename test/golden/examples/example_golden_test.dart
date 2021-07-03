@@ -6,7 +6,7 @@ void main() {
   testWidgets('Simple line chart', (tester) async {
     await tester.pumpWidget(
       Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.zero,
         child: Chart(
           height: 600.0,
           state: ChartState.line(
@@ -23,7 +23,7 @@ void main() {
   testWidgets('Simple bar chart', (tester) async {
     await tester.pumpWidget(
       Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.zero,
         child: Chart(
           height: 600.0,
           state: ChartState.bar(
@@ -40,7 +40,7 @@ void main() {
   testWidgets('Bar chart', (tester) async {
     await tester.pumpWidget(
       Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.zero,
         child: Chart<void>(
           height: 600.0,
           state: ChartState(
@@ -69,7 +69,7 @@ void main() {
   testWidgets('Line chart', (tester) async {
     await tester.pumpWidget(
       Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.zero,
         child: Chart<void>(
           height: 600.0,
           state: ChartState(
@@ -99,7 +99,7 @@ void main() {
   testWidgets('Multi line chart', (tester) async {
     await tester.pumpWidget(
       Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.zero,
         child: Chart<void>(
           height: 600.0,
           state: ChartState(

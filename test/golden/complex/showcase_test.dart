@@ -17,7 +17,7 @@ void main() {
         Container(
           color: Color(0xFF2D3357),
           child: Padding(
-            padding: const EdgeInsets.only(top: 24.0),
+            padding: EdgeInsets.zero,
             child: Chart<bool>(
               state: ChartState(
                 ChartData(
@@ -73,7 +73,7 @@ void main() {
       ..addScenario(
         'Bar chart with background',
         Padding(
-          padding: const EdgeInsets.only(top: 24.0),
+          padding: EdgeInsets.zero,
           child: Chart<void>(
             state: ChartState(
               ChartData(
@@ -131,7 +131,7 @@ void main() {
       ..addScenario(
         'Multiple items chart',
         Padding(
-          padding: const EdgeInsets.only(top: 24.0),
+          padding: EdgeInsets.zero,
           child: Chart<bool>(
             state: ChartState(
               ChartData(
@@ -204,7 +204,7 @@ void main() {
             Color(0xFFEDF2F7),
           ])),
           child: Padding(
-            padding: const EdgeInsets.only(top: 24.0),
+            padding: EdgeInsets.zero,
             child: Chart<bool>(
               state: ChartState(
                 ChartData(
@@ -286,7 +286,7 @@ void main() {
       ..addScenario(
         'Multiple line chart',
         Padding(
-          padding: const EdgeInsets.only(top: 24.0),
+          padding: EdgeInsets.zero,
           child: Chart<bool>(
             state: ChartState(
               ChartData(
@@ -359,7 +359,7 @@ void main() {
       ..addScenario(
         'Bar chart up/down',
         Padding(
-          padding: const EdgeInsets.only(top: 24.0),
+          padding: EdgeInsets.zero,
           child: Chart<bool>(
             state: ChartState(
               ChartData(
