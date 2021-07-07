@@ -2,10 +2,12 @@ part of charts_painter;
 
 /// Item painter, use [barPainter] or [bubblePainter].
 /// Custom painter can also be added by extending [GeometryPainter]
-typedef ChartGeometryPainter<T> = GeometryPainter<T> Function(ChartItem<T?> item, ChartState state);
+typedef ChartGeometryPainter<T> = GeometryPainter<T> Function(
+    ChartItem<T?> item, ChartState state);
 
 /// Get color for current item value
-typedef ColorForValue = Color Function(Color defaultColor, double? value, [double? min]);
+typedef ColorForValue = Color Function(Color defaultColor, double? value,
+    [double? min]);
 
 /// Get color gor current item key (multiple lists)
 typedef ColorForKey = Color Function(ChartItem item, int index);
@@ -26,7 +28,20 @@ class ItemOptions {
     this.color = Colors.red,
     this.colorForValue,
     this.colorForKey,
-  });
+    bool multiItemStack = true,
+  }) : _multiValueStacked = multiItemStack ? 1.0 : 0.0;
+
+  const ItemOptions._lerp({
+    required this.geometryPainter,
+    this.padding = EdgeInsets.zero,
+    this.multiValuePadding = EdgeInsets.zero,
+    this.maxBarWidth,
+    this.minBarWidth,
+    this.color = Colors.red,
+    this.colorForValue,
+    this.colorForKey,
+    double multiItemStack = 1.0,
+  }) : _multiValueStacked = multiItemStack;
 
   /// Item padding, if [minBarWidth] and [padding] are more then available space
   /// [padding] will get ignored
@@ -35,6 +50,7 @@ class ItemOptions {
   /// Multi value chart padding, this will `group` values with same index from different lists
   /// use to make space between index changes in multi value charts
   final EdgeInsets multiValuePadding;
+  final double _multiValueStacked;
 
   /// Define color for value, this allows different colors for different values
   final Color color;
@@ -54,15 +70,24 @@ class ItemOptions {
   /// Geometry
   final ChartGeometryPainter geometryPainter;
 
+  /// Return true if multi item drawing is set to stack
+  bool get multiValueStack => _multiValueStacked > 0.5;
+
   /// Animate to next [ItemOptions] state
   /// When making custom [ItemOptions] make sure to override this return custom painter
   /// with all available options, otherwise changes in options won't be animated
   ItemOptions animateTo(ItemOptions endValue, double t) {
     final _itemColor = Color.lerp(color, endValue.color, t) ?? Colors.red;
-    final _itemPadding = EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero;
-    final _itemMultiValuePadding = EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero;
+    final _itemPadding =
+        EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero;
+    final _itemMultiValuePadding =
+        EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ??
+            EdgeInsets.zero;
 
-    return ItemOptions(
+    final _multiStackLerp =
+        lerpDouble(_multiValueStacked, endValue._multiValueStacked, t) ?? 1.0;
+
+    return ItemOptions._lerp(
       color: _itemColor,
       colorForKey: ColorForKeyLerp.lerp(this, endValue, t),
       colorForValue: ColorForValueLerp.lerp(this, endValue, t),
@@ -71,6 +96,7 @@ class ItemOptions {
       maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
       minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
       geometryPainter: t > 0.5 ? endValue.geometryPainter : geometryPainter,
+      multiItemStack: _multiStackLerp,
     );
   }
 

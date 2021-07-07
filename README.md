@@ -1,16 +1,18 @@
 # Charts painter
 ![chart_image]
 
-Customizable charts library for flutter.
+Idea behind this lib is to allow highly customizable charts. By having decorations as Widgets (foreground and background) and item painters that can be easily changed. 
 
-Idea behind this lib is to allow highly customizable charts. By having decorations painters (foreground and background) and item painters that can be easily changed. Customizing and adding new decorations will require some CustomPainter knowledge.
+Customizing and adding new decorations will require some RenderObject knowledge.
 
 ## Table of Contents
 * [Showcase](#showcase)
 * [Usage](#usage)
+* [Drawing charts](#drawing-charts)
     * [Basic](#basic-charts)
-    * [Decorations](#decoration)
-* [Make your own](#make-your-chart)
+    * [Bar chart](#bar-chart)
+    * [Line chart](#line-chart)
+    * [Multi chart](#multi-chart)
 * [More examples](#more-examples)
 * [Golden files](./test/golden/GOLDENS.md)
 
@@ -29,7 +31,51 @@ Install packages from the command line
 flutter packages get
 ```
 
-### Basic charts
+## Chart data
+Chart data has some options that will change how the data is processed.
+By changing `axisMin` or `axisMax` scale of the chart is changed in order to show that value, in case data has higher/lower data then axisMax/axisMin then this option is ignored. 
+
+Adding `valueAxisMaxOver` will add that value to currently the highest value.
+
+## Data strategy
+Data strategy can manipulate data before being drawn, in case you want to stack data you can pass `StackDataStrategy`. Strategy only affects how multiple lists are being processed, to change how multi list items can be drawn see `ChartBehaviour.multiItemStack` 
+
+## Chart behaviour
+Sets chart behaviour and interaction like onClick and isScrollable can be set here
+
+## Item options
+Options that set how it draws each item and how it looks.
+When using `BarItemOptions` or `BubbleItemOptions` geometry painters have been preset, and they include some extra options for their painters. 
+
+#### Geometry items
+What are geometry items?
+
+Geometry items are RenderObjects that are responsible for drawing each item on the canvas.
+Included in the lib are  2 `GeometryPainters`'s. 
+
+| Bar painter (default) | Bubble painter |
+--- | ---
+![bar_painter] | ![bubble_painter]
+![candle_painter] | 
+
+## Decoration
+We use Decorations to enhance our charts. Chart decorations can be painted in the background or in a foreground of the items. Everything that is not chart item is a decoration.
+[See all decorations](./test/golden/GOLDENS.md#decorations)
+
+Here are decorations we have included, bar items with opacity have been added for better visibility.
+
+|   |   |   |
+:------: | :------: | :------: 
+[![horizontal_decoration] Horizontal decoration](./test/golden/GOLDENS.md#horizontal-decoration-golden) | [![vertical_decoration] Vertical decoration](./test/golden/GOLDENS.md#vertical-decoration-golden) | [![grid_decoration] Grid decoration](./test/golden/GOLDENS.md#grid-decoration-golden) 
+[![target_line_decoration] Target line decoration](./test/golden/GOLDENS.md#target-line-decoration-golden) | [![target_line_legend_decoration] Target line text decoration](./test/golden/GOLDENS.md#target-line-text-decoration-golden) | [![target_area_decoration] Target area decoration](./test/golden/GOLDENS.md#target-area-decoration-golden)
+[![target_values_decoration] Value decoration](./test/golden/GOLDENS.md#value-decoration-golden) | [![selected_item_decoration] Selected item decoration](./test/golden/GOLDENS.md#selected-item-decoration-golden) | [![sparkline_decoration] Sparkline decoration](./test/golden/GOLDENS.md#sparkline-decoration-golden)
+[![border_decoration] Border decoration](./test/golden/GOLDENS.md#border-decoration-golden)  |   
+
+## Drawing charts
+Now you are ready to use charts lib. If chart needs to animate the state changes then use `AnimatedChart<T>` widget instead of `Chart<T>` widget.
+`AnimatedChart<T>` needs to specify `Duration` and it can accept `Curve` for animation.
+
+#### Basic charts
 By passing `ChartState.line` or `ChartState.bar` to Chart widget we will add appropriate decorations for the selected chart.
 
 ```dart
@@ -62,64 +108,7 @@ Widget build(BuildContext context) {
 ```
 ![basic_bar]
 
-## ChartData
-Chart data has some options that will change how the data is processed.
-By changing `axisMin` or `axisMax` scale of the chart is changed in order to show that value, in case data has higher/lower data then axisMax/axisMin then this option is ignored. 
-
-Adding `valueAxisMaxOver` will add that value to currently the highest value.
-
-## Data strategy
-Data strategy can manipulate data before being drawn, in case you want to stack data you can pass `StackDataStrategy`. Strategy only affects how multiple lists are being processed, to change how multi list items can be drawn see `ChartBehaviour.multiItemStack` 
-
-## Item options
-Options that set how it draws each item and how it looks.
-When using `BarItemOptions` or `BubbleItemOptions` geometry painters have been preset, and they include some extra options for their painters. 
-
-#### Geometry painter
-What are geometry painters?
-
-Geometry painters are responsible for drawing each item on the canvas.
-Included in the lib are  2 `ItemPainter`'s. 
-
-| Bar painter (default) | Bubble painter |
---- | ---
-![bar_painter] | ![bubble_painter]
-![candle_painter] | 
-
-## Decoration
-We use Decorations to enhance our charts. Chart decorations can be painted in the background or in a foreground of the items. Everything that is not chart item is a decoration.
-[See all decorations](./test/golden/GOLDENS.md#decorations)
-
-Here are decorations we have included, bar items with opacity have been added for better visibility.
-
-|   |   |   |
-:------: | :------: | :------: 
-![horizontal_decoration] Horizontal decoration | ![vertical_decoration] Vertical decoration | ![grid_decoration] Grid decoration 
-![target_line_decoration] Target line decoration | ![target_line_legend_decoration] Target line text decoration | ![target_area_decoration] Target area decoration
-![target_values_decoration] Value decoration | ![selected_item_decoration] Selected item decoration | ![sparkline_decoration] Sparkline decoration
-![border_decoration] Border decoration  |   
-
-##### Legend decorations
- - GridDecoration - _Decoration is just merging of HorizontalAxisDecoration and VerticalAxisDecoration_
-    - HorizontalAxisDecoration - _Show horizontal lines on the chart, can show legend as well_ 
-    - VerticalAxisDecoration - _Show vertical lines on the chart, can show legend as well_
- - ValueDecoration - _Show value of each item_
-
-##### Target decorations
- - TargetLineDecoration - _Show target line on the chart, can pass `getTargetItemColor` to `colorForValue` to change item colors_
-    - TargetLineLegendDecoration - _Show text legend on left side of the chart_
- - TargetAreaDecoration
-
-##### Other decorations
- - BorderDecoration - _Add rectangular border around the chart_
- - SelectedItemDecoration - _When providing `ChartBehaviour.onItemClicked` then you can use `SelectedItemDecoration` for showing selected item on the chart_
- - SparkLineDecoration - _Show data with sparkline chart_
-
-## Drawing charts
-Now you are ready to use charts lib. If chart needs to animate the state changes then use `AnimatedChart<T>` widget instead of `Chart<T>` widget.
-`AnimatedChart<T>` needs to specify `Duration` and it can accept `Curve` for animation.
-
-#### Make your chart
+#### Bar chart
 This is how you can start, this is simple bar chart with grid decoration:
 ```dart
   @override
@@ -256,11 +245,6 @@ To turn any chart to multi value we need to use `ChartState` instead of `ChartSt
 ```
 Code above will make this multi line graph:
 ![simple_multi_line_chart]
-
-#### Chart behaviour
-- Setting `isScrollable` to `true` will make the chart ignore it's specified width and should be wrapped in some Scrollable widget in order to display properly.
-- Get selected item, `onItemClick` will return index of the clicked item.
-- Change how multiple values in the map get drawn, `multiItemStack` by default is set to `true`, and multiple items will just stack on same place, setting this to `false` will divide that place for each item, and they will be shown in `grouped` state.
 
 ## More examples
 ### Line charts

@@ -18,7 +18,13 @@ void main() {
           size: 4,
           options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            colorForKey: (item, key) => [Colors.red, Colors.yellow, Colors.green, Colors.blue][key].withOpacity(0.5),
+            colorForKey: (item, key) => [
+              Colors.red,
+              Colors.yellow,
+              Colors.green,
+              Colors.blue
+            ][key]
+                .withOpacity(0.5),
           ),
           strategy: DefaultDataStrategy(),
         ),
@@ -29,12 +35,16 @@ void main() {
           size: 4,
           options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            colorForKey: (item, key) => [Colors.red, Colors.yellow, Colors.green, Colors.blue][key].withOpacity(0.5),
-          ),
-          strategy: StackDataStrategy(),
-          behaviour: ChartBehaviour(
+            colorForKey: (item, key) => [
+              Colors.red,
+              Colors.yellow,
+              Colors.green,
+              Colors.blue
+            ][key]
+                .withOpacity(0.5),
             multiItemStack: true,
           ),
+          strategy: StackDataStrategy(),
         ),
       )
       ..addScenario(
@@ -44,9 +54,13 @@ void main() {
           options: ItemOptions(
             geometryPainter: barPainter,
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            colorForKey: (item, key) => [Colors.red, Colors.yellow, Colors.green, Colors.blue][key].withOpacity(0.5),
-          ),
-          behaviour: ChartBehaviour(
+            colorForKey: (item, key) => [
+              Colors.red,
+              Colors.yellow,
+              Colors.green,
+              Colors.blue
+            ][key]
+                .withOpacity(0.5),
             multiItemStack: false,
           ),
         ),
@@ -59,9 +73,14 @@ void main() {
             4,
             (index) => SparkLineDecoration(
               lineArrayIndex: index,
-              lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
+              lineColor: [
+                Colors.red,
+                Colors.yellow,
+                Colors.green,
+                Colors.blue
+              ][index],
               lineWidth: 3.0,
-              linePosition: SparkLinePosition.stretch,
+              stretchLine: true,
             ),
           ),
           options: BarItemOptions(
@@ -78,9 +97,14 @@ void main() {
             4,
             (index) => SparkLineDecoration(
               lineArrayIndex: index,
-              lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
+              lineColor: [
+                Colors.red,
+                Colors.yellow,
+                Colors.green,
+                Colors.blue
+              ][index],
               lineWidth: 3.0,
-              linePosition: SparkLinePosition.stretch,
+              stretchLine: true,
             ),
           ),
           strategy: StackDataStrategy(),
@@ -98,16 +122,25 @@ void main() {
               4,
               (index) => SparkLineDecoration(
                     lineArrayIndex: index,
-                    lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
+                    lineColor: [
+                      Colors.red,
+                      Colors.yellow,
+                      Colors.green,
+                      Colors.blue
+                    ][index],
                     lineWidth: 3.0,
                     startPosition: index / 4,
                   )),
           options: BarItemOptions(
             multiValuePadding: const EdgeInsets.symmetric(horizontal: 1.0),
             padding: const EdgeInsets.symmetric(horizontal: 1.0),
-            colorForKey: (item, key) => [Colors.red, Colors.yellow, Colors.green, Colors.blue][key].withOpacity(0.1),
-          ),
-          behaviour: ChartBehaviour(
+            colorForKey: (item, key) => [
+              Colors.red,
+              Colors.yellow,
+              Colors.green,
+              Colors.blue
+            ][key]
+                .withOpacity(0.1),
             multiItemStack: false,
           ),
         ),
@@ -122,14 +155,14 @@ void main() {
               fill: true,
               smoothPoints: true,
               lineColor: Colors.green.withOpacity(0.8),
-              linePosition: SparkLinePosition.stretch,
+              stretchLine: true,
             ),
             SparkLineDecoration(
               lineArrayIndex: 1,
               lineColor: Colors.blue,
               lineWidth: 2.0,
               dashArray: [10, 10],
-              linePosition: SparkLinePosition.stretch,
+              stretchLine: true,
             ),
             SparkLineDecoration(
               lineArrayIndex: 2,
@@ -137,18 +170,24 @@ void main() {
               lineWidth: 4.0,
               smoothPoints: true,
               dashArray: translateMorse('.. -. ..-. .. -. ..- --  '),
-              linePosition: SparkLinePosition.stretch,
+              stretchLine: true,
             ),
             SparkLineDecoration(
               lineArrayIndex: 3,
               lineColor: Colors.yellow,
               lineWidth: 2.0,
-              linePosition: SparkLinePosition.stretch,
+              stretchLine: true,
             ),
           ],
           options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 1.0),
-            colorForKey: (item, key) => [Colors.green, Colors.yellow, Colors.red, Colors.blue][key].withOpacity(0.1),
+            colorForKey: (item, key) => [
+              Colors.green,
+              Colors.yellow,
+              Colors.red,
+              Colors.blue
+            ][key]
+                .withOpacity(0.1),
           ),
         ),
       )
@@ -162,14 +201,14 @@ void main() {
               fill: true,
               smoothPoints: true,
               lineColor: Colors.red.withOpacity(0.6),
-              linePosition: SparkLinePosition.stretch,
+              stretchLine: true,
             ),
             SparkLineDecoration(
               lineArrayIndex: 1,
               lineColor: Colors.blue,
               lineWidth: 2.0,
               dashArray: [15, 5],
-              linePosition: SparkLinePosition.stretch,
+              stretchLine: true,
             ),
           ],
           options: BarItemOptions(
@@ -180,8 +219,6 @@ void main() {
               Colors.yellow.withOpacity(0.8),
               Colors.green.withOpacity(0.8),
             ][key],
-          ),
-          behaviour: ChartBehaviour(
             multiItemStack: false,
           ),
         ),
@@ -196,7 +233,7 @@ void main() {
               fill: true,
               smoothPoints: true,
               lineColor: Colors.redAccent.withOpacity(0.6),
-              linePosition: SparkLinePosition.stretch,
+              stretchLine: true,
             ),
             SparkLineDecoration(
               lineArrayIndex: 1,
@@ -204,7 +241,7 @@ void main() {
               lineWidth: 2.0,
               smoothPoints: true,
               dashArray: translateMorse('.. -. ..-. .. -. ..- --  '),
-              linePosition: SparkLinePosition.stretch,
+              stretchLine: true,
             ),
             BorderDecoration(
               borderWidth: 4.0,
@@ -230,23 +267,22 @@ void main() {
               Colors.yellow.withOpacity(0.8),
               Colors.green.withOpacity(0.8),
             ][key],
-          ),
-          behaviour: ChartBehaviour(
             multiItemStack: false,
           ),
+          behaviour: ChartBehaviour(),
         ),
       );
-    await tester.pumpWidgetBuilder(builder.build(), surfaceSize: const Size(1400, 1000), textScaleSize: 1.4);
+    await tester.pumpWidgetBuilder(builder.build(),
+        surfaceSize: const Size(1400, 1000), textScaleSize: 1.4);
     await screenMatchesGolden(tester, 'complex_multi_charts');
   });
 }
 
 List<double> translateMorse(String morse) {
-  final int _bigSpace = 6;
-
-  final int dot = 6;
-  final int line = 22;
-  final int _smallSpace = 3;
+  final _bigSpace = 6;
+  final dot = 6;
+  final line = 22;
+  final _smallSpace = 3;
 
   final _s = morse
       .replaceAll(' ', '0,$_bigSpace,0')

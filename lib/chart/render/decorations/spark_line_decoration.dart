@@ -1,7 +1,5 @@
 part of charts_painter;
 
-enum SparkLinePosition { fixed, stretch }
-
 /// Sparkline (Line graph) is considered to be just a decoration.
 /// You need to use [BarGeometryPainter] or [BubbleGeometryPainter] in combination.
 /// They can be transparent or be used to show values of the graph
@@ -17,8 +15,9 @@ class SparkLineDecoration extends DecorationPainter {
     this.gradient,
     this.lineArrayIndex = 0,
     this.dashArray,
-    this.linePosition = SparkLinePosition.fixed,
-  }) : _smoothPoints = smoothPoints ? 1.0 : 0.0;
+    bool stretchLine = false,
+  })  : _smoothPoints = smoothPoints ? 1.0 : 0.0,
+        _stretchLine = stretchLine ? 1.0 : 0.0;
 
   SparkLineDecoration._lerp({
     this.id,
@@ -30,8 +29,9 @@ class SparkLineDecoration extends DecorationPainter {
     this.gradient,
     this.lineArrayIndex = 0,
     this.dashArray,
-    this.linePosition = SparkLinePosition.fixed,
-  }) : _smoothPoints = smoothPoints;
+    double stretchLine = 0.0,
+  })  : _smoothPoints = smoothPoints,
+        _stretchLine = stretchLine;
 
   /// Is line or fill, line will have [lineWidth], setting
   /// [fill] to true will ignore [lineWidth]
@@ -54,7 +54,7 @@ class SparkLineDecoration extends DecorationPainter {
   /// Set sparkline color
   final Color lineColor;
 
-  final SparkLinePosition linePosition;
+  final double _stretchLine;
 
   /// Set sparkline start position.
   /// This value ranges from 0.0 - 1.0.
@@ -77,14 +77,15 @@ class SparkLineDecoration extends DecorationPainter {
 
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
-    final _size = (state.defaultPadding + state.defaultMargin).deflateSize(constraints.biggest);
+    final _size = (state.defaultPadding + state.defaultMargin)
+        .deflateSize(constraints.biggest);
     return _size;
   }
 
   @override
   Offset applyPaintTransform(ChartState state, Size size) {
-    return Offset(
-        state.defaultPadding.left + state.defaultMargin.left, state.defaultPadding.top + state.defaultMargin.top);
+    return Offset(state.defaultPadding.left + state.defaultMargin.left,
+        state.defaultPadding.top + state.defaultMargin.top);
   }
 
   @override
@@ -105,18 +106,22 @@ class SparkLineDecoration extends DecorationPainter {
 
     if (gradient != null) {
       // Compiler complains that gradient could be null. But unless if fails us that will never be null.
-      _paint.shader = gradient!.createShader(Rect.fromPoints(Offset.zero, Offset(size.width, -size.height)));
+      _paint.shader = gradient!.createShader(
+          Rect.fromPoints(Offset.zero, Offset(size.width, -size.height)));
     }
 
     state.items[lineArrayIndex].asMap().forEach((key, value) {
-      final _position =
-          _itemWidth * (linePosition == SparkLinePosition.fixed ? startPosition : (key / (_listSize - 1)));
+      final _stretchPosition = _stretchLine * (key / (_listSize - 1));
+      final _fixedPosition = (1 - _stretchLine) * startPosition;
+
+      final _position = _itemWidth * (_stretchPosition + _fixedPosition);
 
       if (fill && key == 0) {
         _positions.add(Offset(_itemWidth * key + _position, 0.0));
       }
 
-      _positions.add(Offset(_itemWidth * key + _position, size.height - ((value.max ?? 0.0) - state.minValue) * scale));
+      _positions.add(Offset(_itemWidth * key + _position,
+          size.height - ((value.max ?? 0.0) - state.minValue) * scale));
 
       if (fill && state.items[lineArrayIndex].length - 1 == key) {
         _positions.add(Offset(_itemWidth * key + _position, 0.0));
@@ -126,7 +131,8 @@ class SparkLineDecoration extends DecorationPainter {
     final _path = _getPoints(_positions, fill, size);
 
     if (dashArray != null) {
-      canvas.drawPath(dashPath(_path, dashArray: CircularIntervalList(dashArray!)), _paint);
+      canvas.drawPath(
+          dashPath(_path, dashArray: CircularIntervalList(dashArray!)), _paint);
     } else {
       canvas.drawPath(_path, _paint);
     }
@@ -135,7 +141,8 @@ class SparkLineDecoration extends DecorationPainter {
   /// Smooth out points and return path in turn
   /// Smoothing is done with quadratic bezier
   Path _getPoints(List<Offset> points, bool fill, Size size) {
-    final _points = fill ? points.getRange(1, points.length - 1).toList() : points;
+    final _points =
+        fill ? points.getRange(1, points.length - 1).toList() : points;
 
     final _path = Path();
     if (fill) {
@@ -152,10 +159,13 @@ class SparkLineDecoration extends DecorationPainter {
       final _p2 = _points[(i + 1) % _points.length];
       final controlPointX = _p1.dx + ((_p2.dx - _p1.dx) / 2) * _smoothPoints;
       final _mid = (_p1 + _p2) / 2;
-      final _firstLerpValue = lerpDouble(_mid.dx, controlPointX, _smoothPoints) ?? size.height;
-      final _secondLerpValue = lerpDouble(_mid.dy, _p2.dy, _smoothPoints) ?? size.height;
+      final _firstLerpValue =
+          lerpDouble(_mid.dx, controlPointX, _smoothPoints) ?? size.height;
+      final _secondLerpValue =
+          lerpDouble(_mid.dy, _p2.dy, _smoothPoints) ?? size.height;
 
-      _path.cubicTo(controlPointX, _p1.dy, _firstLerpValue, _secondLerpValue, _p2.dx, _p2.dy);
+      _path.cubicTo(controlPointX, _p1.dy, _firstLerpValue, _secondLerpValue,
+          _p2.dx, _p2.dy);
 
       if (i == _points.length - 2) {
         _path.lineTo(_p2.dx, _p2.dy);
@@ -171,17 +181,21 @@ class SparkLineDecoration extends DecorationPainter {
   @override
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
     if (endValue is SparkLineDecoration) {
+      final _smoothPointsLerp =
+          lerpDouble(_smoothPoints, endValue._smoothPoints, t) ?? 0.0;
+      final _lineWidthLerp =
+          lerpDouble(lineWidth, endValue.lineWidth, t) ?? 0.0;
+
       return SparkLineDecoration._lerp(
-        fill: t > 0.5 ? endValue.fill : fill,
-        id: endValue.id,
-        smoothPoints: lerpDouble(_smoothPoints, endValue._smoothPoints, t)!,
-        lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t)!,
-        startPosition: lerpDouble(startPosition, endValue.startPosition, t)!,
-        lineColor: Color.lerp(lineColor, endValue.lineColor, t)!,
-        gradient: Gradient.lerp(gradient, endValue.gradient, t),
-        lineArrayIndex: endValue.lineArrayIndex,
-        linePosition: endValue.linePosition,
-      );
+          fill: t > 0.5 ? endValue.fill : fill,
+          id: endValue.id,
+          smoothPoints: _smoothPointsLerp,
+          lineWidth: _lineWidthLerp,
+          startPosition: lerpDouble(startPosition, endValue.startPosition, t)!,
+          lineColor: Color.lerp(lineColor, endValue.lineColor, t)!,
+          gradient: Gradient.lerp(gradient, endValue.gradient, t),
+          lineArrayIndex: endValue.lineArrayIndex,
+          stretchLine: lerpDouble(_stretchLine, endValue._stretchLine, t)!);
     }
 
     return this;

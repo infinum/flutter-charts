@@ -38,4 +38,4 @@ analyzer:
   exclude:
     - "bin/cache/**"
     - "lib/assets.dart"
-    - "example/**"
+#    - "example/**"

@@ -20,7 +20,9 @@ class LineChart<T> extends StatelessWidget {
     this.gradient,
     this.stack = false,
     Key key,
-  })  : _mappedValues = [data.map((e) => BubbleValue<T>(dataToValue(e))).toList()],
+  })  : _mappedValues = [
+          data.map((e) => BubbleValue<T>(dataToValue(e))).toList()
+        ],
         super(key: key);
 
   LineChart.multiple(
@@ -60,14 +62,17 @@ class LineChart<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _foregroundDecorations = foregroundDecorations ?? <DecorationPainter>[];
-    final _backgroundDecorations = backgroundDecorations ?? <DecorationPainter>[];
+    final _foregroundDecorations =
+        foregroundDecorations ?? <DecorationPainter>[];
+    final _backgroundDecorations =
+        backgroundDecorations ?? <DecorationPainter>[];
 
     return AnimatedChart<T>(
       height: height,
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
-        ChartData(_mappedValues, strategy: stack ? StackDataStrategy() : DefaultDataStrategy()),
+        ChartData(_mappedValues),
+        strategy: stack ? StackDataStrategy() : DefaultDataStrategy(),
         itemOptions: chartItemOptions,
         foregroundDecorations: [
           SparkLineDecoration(

@@ -13,6 +13,7 @@ Any changes will be visible here as well.
     * [Target line text decoration golden](#target-line-text-decoration-golden)
     * [Target area decoration golden](#target-area-decoration-golden)
     * [Sparkline decoration golden](#sparkline-decoration-golden)
+    * [Selected decoration golden](#selected-item-decoration-golden)
 * [Complex](#complex)
     * [Multi value charts](#multi-value-charts)
     * [Showcase charts](#showcase-charts)
