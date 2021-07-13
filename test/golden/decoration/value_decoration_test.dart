@@ -23,7 +23,8 @@ void main() {
       ..addScenario(
         'Align at bottom',
         getDefaultChart(backgroundDecorations: [
-          ValueDecoration(textStyle: defaultTextStyle, alignment: Alignment.bottomCenter),
+          ValueDecoration(
+              textStyle: defaultTextStyle, alignment: Alignment.bottomCenter),
         ]),
       )
       ..addScenario(
@@ -35,7 +36,8 @@ void main() {
           ),
         ]),
       );
-    await tester.pumpWidgetBuilder(builder.build(), surfaceSize: const Size(1400, 330), textScaleSize: 1.4);
+    await tester.pumpWidgetBuilder(builder.build(),
+        surfaceSize: const Size(1400, 330), textScaleSize: 1.4);
     await screenMatchesGolden(tester, 'value_decoration_golden');
   });
 }

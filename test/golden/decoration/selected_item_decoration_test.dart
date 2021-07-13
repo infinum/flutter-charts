@@ -17,7 +17,10 @@ void main() {
         getDefaultChart(backgroundDecorations: [
           SelectedItemDecoration(
             2,
-            selectedStyle: defaultTextStyle.copyWith(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.w800),
+            selectedStyle: defaultTextStyle.copyWith(
+                color: Colors.white,
+                fontSize: 28.0,
+                fontWeight: FontWeight.w800),
           ),
         ]),
       )
@@ -25,8 +28,10 @@ void main() {
         'Can be null',
         getDefaultChart(backgroundDecorations: [
           SelectedItemDecoration(null,
-              selectedStyle:
-                  defaultTextStyle.copyWith(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.w800)),
+              selectedStyle: defaultTextStyle.copyWith(
+                  color: Colors.white,
+                  fontSize: 28.0,
+                  fontWeight: FontWeight.w800)),
         ]),
       )
       ..addScenario(
@@ -34,12 +39,16 @@ void main() {
         getDefaultChart(backgroundDecorations: [
           SelectedItemDecoration(
             2,
-            selectedStyle: defaultTextStyle.copyWith(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.w800),
+            selectedStyle: defaultTextStyle.copyWith(
+                color: Colors.white,
+                fontSize: 28.0,
+                fontWeight: FontWeight.w800),
             backgroundColor: Colors.black,
           ),
         ]),
       );
-    await tester.pumpWidgetBuilder(builder.build(), surfaceSize: const Size(1400, 330), textScaleSize: 1.4);
+    await tester.pumpWidgetBuilder(builder.build(),
+        surfaceSize: const Size(1400, 330), textScaleSize: 1.4);
     await screenMatchesGolden(tester, 'selected_item_decoration_golden');
   });
 }

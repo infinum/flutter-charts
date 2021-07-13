@@ -23,7 +23,9 @@ void main() {
       ),
     );
     await expectLater(
-        find.byType(Padding), matchesGoldenFile('goldens/general/general_horizontal_decoration_golden.png'));
+        find.byType(Padding),
+        matchesGoldenFile(
+            'goldens/general/general_horizontal_decoration_golden.png'));
   });
 
   testWidgets('Vertical decoration', (tester) async {
@@ -39,7 +41,9 @@ void main() {
       ),
     );
     await expectLater(
-        find.byType(Padding), matchesGoldenFile('goldens/general/general_vertical_decoration_golden.png'));
+        find.byType(Padding),
+        matchesGoldenFile(
+            'goldens/general/general_vertical_decoration_golden.png'));
   });
 
   testWidgets('Grid decoration', (tester) async {
@@ -54,7 +58,10 @@ void main() {
         ]),
       ),
     );
-    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/general/general_grid_decoration_golden.png'));
+    await expectLater(
+        find.byType(Padding),
+        matchesGoldenFile(
+            'goldens/general/general_grid_decoration_golden.png'));
   });
 
   testWidgets('Border decoration', (tester) async {
@@ -70,7 +77,10 @@ void main() {
         ]),
       ),
     );
-    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/general/general_border_decoration_golden.png'));
+    await expectLater(
+        find.byType(Padding),
+        matchesGoldenFile(
+            'goldens/general/general_border_decoration_golden.png'));
   });
 
   testWidgets('Value decoration', (tester) async {
@@ -90,7 +100,10 @@ void main() {
         ]),
       ),
     );
-    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/general/general_value_decoration_golden.png'));
+    await expectLater(
+        find.byType(Padding),
+        matchesGoldenFile(
+            'goldens/general/general_value_decoration_golden.png'));
   });
 
   testWidgets('Selected item decoration', (tester) async {
@@ -108,7 +121,9 @@ void main() {
       ),
     );
     await expectLater(
-        find.byType(Padding), matchesGoldenFile('goldens/general/general_selected_item_decoration_golden.png'));
+        find.byType(Padding),
+        matchesGoldenFile(
+            'goldens/general/general_selected_item_decoration_golden.png'));
   });
 
   testWidgets('Target line decoration', (tester) async {
@@ -122,7 +137,9 @@ void main() {
       ),
     );
     await expectLater(
-        find.byType(Padding), matchesGoldenFile('goldens/general/general_target_line_decoration_golden.png'));
+        find.byType(Padding),
+        matchesGoldenFile(
+            'goldens/general/general_target_line_decoration_golden.png'));
   });
 
   testWidgets('Target line text decoration', (tester) async {
@@ -132,7 +149,10 @@ void main() {
         width: 800,
         child: getDefaultChart(
           foregroundDecorations: [
-            TargetLineDecoration(lineWidth: 8, target: 4, targetLineColor: Colors.red.withOpacity(0.2)),
+            TargetLineDecoration(
+                lineWidth: 8,
+                target: 4,
+                targetLineColor: Colors.red.withOpacity(0.2)),
             TargetLineLegendDecoration(
               legendTarget: 4,
               legendDescription: 'This is target |',
@@ -146,7 +166,9 @@ void main() {
       ),
     );
     await expectLater(
-        find.byType(Padding), matchesGoldenFile('goldens/general/general_target_line_text_decoration_golden.png'));
+        find.byType(Padding),
+        matchesGoldenFile(
+            'goldens/general/general_target_line_text_decoration_golden.png'));
   });
 
   testWidgets('Target area decoration', (tester) async {
@@ -162,7 +184,9 @@ void main() {
       ),
     );
     await expectLater(
-        find.byType(Padding), matchesGoldenFile('goldens/general/general_target_area_decoration_golden.png'));
+        find.byType(Padding),
+        matchesGoldenFile(
+            'goldens/general/general_target_area_decoration_golden.png'));
   });
 
   testWidgets('Sparkline text decoration', (tester) async {
@@ -178,6 +202,8 @@ void main() {
       ),
     );
     await expectLater(
-        find.byType(Padding), matchesGoldenFile('goldens/general/general_sparkline_decoration_golden.png'));
+        find.byType(Padding),
+        matchesGoldenFile(
+            'goldens/general/general_sparkline_decoration_golden.png'));
   });
 }

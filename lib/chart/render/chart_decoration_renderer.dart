@@ -1,7 +1,8 @@
 part of charts_painter;
 
 class ChartDecorationRenderer<T> extends LeafRenderObjectWidget {
-  ChartDecorationRenderer(this.chartState, this.decorationPainter, {Key? key}) : super(key: key);
+  ChartDecorationRenderer(this.chartState, this.decorationPainter, {Key? key})
+      : super(key: key);
 
   final ChartState<T?> chartState;
   final DecorationPainter decorationPainter;
@@ -12,10 +13,13 @@ class ChartDecorationRenderer<T> extends LeafRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(BuildContext context, _RenderChartDecoration renderObject) {
+  void updateRenderObject(
+      BuildContext context, _RenderChartDecoration renderObject) {
     renderObject
       ..chartState = chartState
       ..item = decorationPainter;
+
+    renderObject.markNeedsLayout();
   }
 }
 

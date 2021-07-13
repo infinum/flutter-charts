@@ -34,7 +34,9 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
     final _verticalMultiplier = size.height / _maxValue;
     final _minValue = (state.minValue * _verticalMultiplier).abs();
 
-    final _radius = options is BarItemOptions ? (options.radius ?? BorderRadius.zero) : BorderRadius.zero;
+    final _radius = options is BarItemOptions
+        ? (options.radius ?? BorderRadius.zero)
+        : BorderRadius.zero;
 
     final _itemWidth = itemWidth(size);
 
@@ -51,17 +53,25 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
         Rect.fromPoints(
           Offset(
             0.0,
-            _maxValue * _verticalMultiplier - max(state.minValue, item.min ?? 0.0) * _verticalMultiplier - _minValue,
+            _maxValue * _verticalMultiplier -
+                max(state.minValue, item.min ?? 0.0) * _verticalMultiplier -
+                _minValue,
           ),
           Offset(
             _itemWidth,
-            _maxValue * _verticalMultiplier - _itemMaxValue * _verticalMultiplier - _minValue,
+            _maxValue * _verticalMultiplier -
+                _itemMaxValue * _verticalMultiplier -
+                _minValue,
           ),
         ),
-        bottomLeft: _itemMaxValue.isNegative ? _radius.topLeft : _radius.bottomLeft,
-        bottomRight: _itemMaxValue.isNegative ? _radius.topRight : _radius.bottomRight,
-        topLeft: _itemMaxValue.isNegative ? _radius.bottomLeft : _radius.topLeft,
-        topRight: _itemMaxValue.isNegative ? _radius.bottomRight : _radius.topRight,
+        bottomLeft:
+            _itemMaxValue.isNegative ? _radius.topLeft : _radius.bottomLeft,
+        bottomRight:
+            _itemMaxValue.isNegative ? _radius.topRight : _radius.bottomRight,
+        topLeft:
+            _itemMaxValue.isNegative ? _radius.bottomLeft : _radius.topLeft,
+        topRight:
+            _itemMaxValue.isNegative ? _radius.bottomRight : _radius.topRight,
       ),
       paint,
     );
@@ -79,17 +89,22 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
           Rect.fromPoints(
             Offset(
               0.0,
-              max(state.minValue, item.min ?? 0.0) * _verticalMultiplier - _minValue,
+              max(state.minValue, item.min ?? 0.0) * _verticalMultiplier -
+                  _minValue,
             ),
             Offset(
               _itemWidth,
               _itemMaxValue * _verticalMultiplier - _minValue,
             ),
           ),
-          bottomLeft: _itemMaxValue.isNegative ? _radius.topLeft : _radius.bottomLeft,
-          bottomRight: _itemMaxValue.isNegative ? _radius.topRight : _radius.bottomRight,
-          topLeft: _itemMaxValue.isNegative ? _radius.bottomLeft : _radius.topLeft,
-          topRight: _itemMaxValue.isNegative ? _radius.bottomRight : _radius.topRight,
+          bottomLeft:
+              _itemMaxValue.isNegative ? _radius.topLeft : _radius.bottomLeft,
+          bottomRight:
+              _itemMaxValue.isNegative ? _radius.topRight : _radius.bottomRight,
+          topLeft:
+              _itemMaxValue.isNegative ? _radius.bottomLeft : _radius.topLeft,
+          topRight:
+              _itemMaxValue.isNegative ? _radius.bottomRight : _radius.topRight,
         ),
         _borderPaint,
       );

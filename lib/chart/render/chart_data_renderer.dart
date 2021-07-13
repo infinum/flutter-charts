@@ -5,7 +5,9 @@ class ChartLinearDataRenderer<T> extends MultiChildRenderObjectWidget {
       : super(key: key, children: [
           ...chartState.items
               .mapIndexed(
-                (key, items) => items.map((e) => ChartItemRenderer(e, chartState, arrayKey: key)).toList(),
+                (key, items) => items
+                    .map((e) => ChartItemRenderer(e, chartState, arrayKey: key))
+                    .toList(),
               )
               .expand((element) => element)
               .toList(),
@@ -19,8 +21,10 @@ class ChartLinearDataRenderer<T> extends MultiChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(BuildContext context, _ChartLinearItemRenderer<T?> renderObject) {
+  void updateRenderObject(
+      BuildContext context, _ChartLinearItemRenderer<T?> renderObject) {
     renderObject.chartState = chartState;
+    renderObject.markNeedsLayout();
   }
 }
 
@@ -88,9 +92,12 @@ class _ChartLinearItemRenderer<T> extends RenderBox
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-    final _size = constraints.deflate(chartState.defaultPadding + chartState.defaultMargin).biggest;
+    final _size = constraints
+        .deflate(chartState.defaultPadding + chartState.defaultMargin)
+        .biggest;
     final childParentData = parentData! as BoxParentData;
-    childParentData.offset = Offset(chartState.defaultPadding.left + chartState.defaultMargin.left,
+    childParentData.offset = Offset(
+        chartState.defaultPadding.left + chartState.defaultMargin.left,
         chartState.defaultPadding.top + chartState.defaultMargin.top);
 
     return _size;
@@ -102,14 +109,17 @@ class _ChartLinearItemRenderer<T> extends RenderBox
     var child = firstChild;
     final _size = computeDryLayout(constraints);
 
-    final _scrollableItemWidth =
-        max(_chartState.itemOptions.minBarWidth ?? 0.0, _chartState.itemOptions.maxBarWidth ?? 0.0);
+    final _scrollableItemWidth = max(_chartState.itemOptions.minBarWidth ?? 0.0,
+        _chartState.itemOptions.maxBarWidth ?? 0.0);
 
     final _listSize = _chartState.data.listSize;
 
     final _itemSize = Size(
         _size.width +
-            (_size.width - ((_scrollableItemWidth + _chartState.itemOptions.padding.horizontal) * _listSize)) *
+            (_size.width -
+                    ((_scrollableItemWidth +
+                            _chartState.itemOptions.padding.horizontal) *
+                        _listSize)) *
                 _chartState.behaviour._isScrollable,
         _size.height);
 
@@ -118,7 +128,8 @@ class _ChartLinearItemRenderer<T> extends RenderBox
 
     while (child != null && child is _RenderChartItem<T>) {
       final childParentData = child.parentData! as ChartItemData;
-      childParentData.offset = Offset(_itemWidth * (childCount[child.key] ?? 0), childParentData.offset.dy);
+      childParentData.offset = Offset(
+          _itemWidth * (childCount[child.key] ?? 0), childParentData.offset.dy);
       final innerConstraints = BoxConstraints(
         maxWidth: _itemWidth,
         maxHeight: _size.height,

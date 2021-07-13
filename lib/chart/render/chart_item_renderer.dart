@@ -19,6 +19,8 @@ class ChartItemRenderer<T> extends LeafRenderObjectWidget {
       ..state = state
       ..key = arrayKey
       ..item = item;
+
+    renderObject.markNeedsLayout();
   }
 }
 

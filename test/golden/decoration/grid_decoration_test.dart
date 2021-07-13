@@ -25,7 +25,8 @@ void main() {
             showHorizontalValues: true,
             showVerticalValues: false,
             textStyle: defaultTextStyle,
-            horizontalValuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0),
+            horizontalValuesPadding:
+                const EdgeInsets.only(right: 8.0, left: 4.0),
           ),
         ]),
       )
@@ -47,7 +48,8 @@ void main() {
             showHorizontalValues: true,
             showVerticalValues: true,
             textStyle: defaultTextStyle,
-            horizontalValuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0),
+            horizontalValuesPadding:
+                const EdgeInsets.only(right: 8.0, left: 4.0),
             verticalValuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
           ),
         ]),
@@ -61,7 +63,8 @@ void main() {
             horizontalLegendPosition: HorizontalLegendPosition.start,
             verticalLegendPosition: VerticalLegendPosition.top,
             textStyle: defaultTextStyle,
-            horizontalValuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0),
+            horizontalValuesPadding:
+                const EdgeInsets.only(right: 8.0, left: 4.0),
             verticalValuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
           ),
         ]),
@@ -74,7 +77,8 @@ void main() {
             showVerticalValues: true,
             dashArray: [10, 10],
             textStyle: defaultTextStyle,
-            horizontalValuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0),
+            horizontalValuesPadding:
+                const EdgeInsets.only(right: 8.0, left: 4.0),
             verticalValuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
           ),
         ]),
@@ -87,7 +91,8 @@ void main() {
             showVerticalValues: true,
             verticalAxisStep: 4,
             textStyle: defaultTextStyle,
-            horizontalValuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0),
+            horizontalValuesPadding:
+                const EdgeInsets.only(right: 8.0, left: 4.0),
             verticalValuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
           ),
         ]),
@@ -108,12 +113,14 @@ void main() {
             showVerticalValues: true,
             endWithChart: true,
             textStyle: defaultTextStyle,
-            horizontalValuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0),
+            horizontalValuesPadding:
+                const EdgeInsets.only(right: 8.0, left: 4.0),
             verticalValuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
           ),
         ]),
       );
-    await tester.pumpWidgetBuilder(builder.build(), surfaceSize: const Size(1400, 1000), textScaleSize: 1.4);
+    await tester.pumpWidgetBuilder(builder.build(),
+        surfaceSize: const Size(1400, 1000), textScaleSize: 1.4);
     await screenMatchesGolden(tester, 'grid_decoration_golden');
   });
 }

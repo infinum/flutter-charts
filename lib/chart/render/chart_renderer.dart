@@ -4,11 +4,13 @@ class ChartRenderer<T> extends MultiChildRenderObjectWidget {
   ChartRenderer(this.chartState, {Key? key})
       : super(key: key, children: [
           ...chartState.backgroundDecorations
-              .map((e) => ChartDecorationRenderer(chartState, e, key: ValueKey(e.hashCode)))
+              .map((e) => ChartDecorationRenderer(chartState, e,
+                  key: ValueKey(e.hashCode)))
               .toList(),
           ChartLinearDataRenderer(chartState),
           ...chartState.foregroundDecorations
-              .map((e) => ChartDecorationRenderer(chartState, e, key: ValueKey(e.hashCode)))
+              .map((e) => ChartDecorationRenderer(chartState, e,
+                  key: ValueKey(e.hashCode)))
               .toList(),
         ]);
 
@@ -20,8 +22,10 @@ class ChartRenderer<T> extends MultiChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(BuildContext context, _ChartRenderObject<T?> renderObject) {
+  void updateRenderObject(
+      BuildContext context, _ChartRenderObject<T?> renderObject) {
     renderObject.chartState = chartState;
+    renderObject.markNeedsLayout();
   }
 }
 

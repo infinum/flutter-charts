@@ -37,7 +37,9 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
     final Random _rand = Random();
     final double _difference = _rand.nextDouble() * 15;
 
-    targetMax = 3 + ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25)).roundToDouble();
+    targetMax = 3 +
+        ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25))
+            .roundToDouble();
     _values.addAll(List.generate(minItems, (index) {
       return 2 + _rand.nextDouble() * _difference;
     }));
@@ -58,7 +60,10 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
     final targetArea = TargetAreaDecoration(
       targetMax: targetMax + 2,
       targetMin: targetMax,
-      colorOverTarget: Theme.of(context).colorScheme.error.withOpacity(_showBars ? 1.0 : 0.0),
+      colorOverTarget: Theme.of(context)
+          .colorScheme
+          .error
+          .withOpacity(_showBars ? 1.0 : 0.0),
       targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
       targetLineColor: Theme.of(context).colorScheme.error,
       targetAreaRadius: BorderRadius.circular(12.0),
@@ -73,7 +78,9 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
       body: Column(
         children: [
           SingleChildScrollView(
-            physics: _isScrollable ? ScrollPhysics() : NeverScrollableScrollPhysics(),
+            physics: _isScrollable
+                ? ScrollPhysics()
+                : NeverScrollableScrollPhysics(),
             controller: _controller,
             scrollDirection: Axis.horizontal,
             child: Padding(
@@ -83,10 +90,14 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                 height: MediaQuery.of(context).size.height * 0.4,
                 dataToValue: (double value) => value,
                 itemOptions: BarItemOptions(
-                  padding: EdgeInsets.symmetric(horizontal: _isScrollable ? 12.0 : 2.0),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: _isScrollable ? 12.0 : 2.0),
                   minBarWidth: _isScrollable ? 36.0 : 4.0,
                   // isTargetInclusive: true,
-                  color: Theme.of(context).colorScheme.primary.withOpacity(_showBars ? 1.0 : 0.0),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withOpacity(_showBars ? 1.0 : 0.0),
                   radius: const BorderRadius.vertical(
                     top: Radius.circular(24.0),
                   ),
@@ -105,13 +116,19 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                     endWithChart: false,
                     lineWidth: 2.0,
                     axisStep: 2,
-                    lineColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+                    lineColor: Theme.of(context)
+                        .colorScheme
+                        .primaryVariant
+                        .withOpacity(0.2),
                   ),
                   VerticalAxisDecoration(
                     endWithChart: false,
                     lineWidth: 2.0,
                     axisStep: 7,
-                    lineColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.8),
+                    lineColor: Theme.of(context)
+                        .colorScheme
+                        .primaryVariant
+                        .withOpacity(0.8),
                   ),
                   GridDecoration(
                     endWithChart: false,
@@ -121,18 +138,25 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                     verticalAxisStep: 1,
                     horizontalAxisStep: 1,
                     textStyle: Theme.of(context).textTheme.caption,
-                    gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+                    gridColor: Theme.of(context)
+                        .colorScheme
+                        .primaryVariant
+                        .withOpacity(0.2),
                   ),
                   targetArea,
                   SparkLineDecoration(
                     fill: true,
-                    lineColor: Theme.of(context).primaryColor.withOpacity(!_showBars ? 0.2 : 0.0),
+                    lineColor: Theme.of(context)
+                        .primaryColor
+                        .withOpacity(!_showBars ? 0.2 : 0.0),
                     smoothPoints: _smoothPoints,
                   ),
                 ],
                 foregroundDecorations: [
                   ValueDecoration(
-                    alignment: _showBars ? Alignment.bottomCenter : Alignment(0.0, -1.0),
+                    alignment: _showBars
+                        ? Alignment.bottomCenter
+                        : Alignment(0.0, -1.0),
                     textStyle: Theme.of(context).textTheme.button.copyWith(
                         color: (_showBars
                                 ? Theme.of(context).colorScheme.onPrimary
@@ -141,14 +165,18 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                   ),
                   SparkLineDecoration(
                     lineWidth: 2.0,
-                    lineColor: Theme.of(context).primaryColor.withOpacity(!_showBars ? 1.0 : 0.0),
+                    lineColor: Theme.of(context)
+                        .primaryColor
+                        .withOpacity(!_showBars ? 1.0 : 0.0),
                     smoothPoints: _smoothPoints,
                   ),
                   SelectedItemDecoration(
                     _selected,
                     animate: true,
                     selectedColor: Theme.of(context).colorScheme.secondary,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(_isScrollable ? 0.5 : 0.8),
+                    backgroundColor: Theme.of(context)
+                        .scaffoldBackgroundColor
+                        .withOpacity(_isScrollable ? 0.5 : 0.8),
                   ),
                   BorderDecoration(
                     endWithChart: true,

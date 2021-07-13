@@ -46,7 +46,8 @@ void main() {
           )
         ]),
       );
-    await tester.pumpWidgetBuilder(builder.build(), surfaceSize: const Size(1400, 330), textScaleSize: 1.4);
+    await tester.pumpWidgetBuilder(builder.build(),
+        surfaceSize: const Size(1400, 330), textScaleSize: 1.4);
     await screenMatchesGolden(tester, 'target_line_text_decoration_golden');
   });
 }

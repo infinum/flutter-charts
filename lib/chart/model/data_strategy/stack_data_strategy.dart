@@ -16,7 +16,8 @@ part of charts_painter;
 /// ]
 class StackDataStrategy extends DataStrategy {
   @override
-  List<List<ChartItem<T?>>> formatDataStrategy<T>(List<List<ChartItem<T?>>> items) {
+  List<List<ChartItem<T?>>> formatDataStrategy<T>(
+      List<List<ChartItem<T?>>> items) {
     final _incrementList = <ChartItem<T?>>[];
     return items.reversed
         .map((entry) {

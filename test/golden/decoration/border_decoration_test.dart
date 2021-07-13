@@ -37,13 +37,17 @@ void main() {
       ..addScenario(
         'Just vertical',
         getDefaultChart(backgroundDecorations: [
-          BorderDecoration(sidesWidth: Border.symmetric(vertical: BorderSide(width: 1.0, color: Colors.black))),
+          BorderDecoration(
+              sidesWidth: Border.symmetric(
+                  vertical: BorderSide(width: 1.0, color: Colors.black))),
         ]),
       )
       ..addScenario(
         'Just horizontal',
         getDefaultChart(backgroundDecorations: [
-          BorderDecoration(sidesWidth: Border.symmetric(horizontal: BorderSide(width: 1.0, color: Colors.black))),
+          BorderDecoration(
+              sidesWidth: Border.symmetric(
+                  horizontal: BorderSide(width: 1.0, color: Colors.black))),
         ]),
       )
       ..addScenario(
@@ -58,7 +62,8 @@ void main() {
           )),
         ]),
       );
-    await tester.pumpWidgetBuilder(builder.build(), surfaceSize: const Size(1400, 660), textScaleSize: 1.4);
+    await tester.pumpWidgetBuilder(builder.build(),
+        surfaceSize: const Size(1400, 660), textScaleSize: 1.4);
     await screenMatchesGolden(tester, 'border_decoration_golden');
   });
 }
