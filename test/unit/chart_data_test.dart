@@ -3,16 +3,14 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('Max is extracted from data', () {
-    final _data = ChartState(ChartData.fromList(
-        [2, 4, 6].map((e) => BarValue<void>(e.toDouble())).toList()));
+    final _data = ChartState(ChartData.fromList([2, 4, 6].map((e) => BarValue<void>(e.toDouble())).toList()));
     expect(_data.maxValue, 6);
     // Min should be 0
     expect(_data.minValue, 0);
   });
 
   test('Negative data is new min', () {
-    final _data = ChartState(ChartData.fromList(
-        [-2, 4, 6].map((e) => BarValue<void>(e.toDouble())).toList()));
+    final _data = ChartState(ChartData.fromList([-2, 4, 6].map((e) => BarValue<void>(e.toDouble())).toList()));
 
     expect(_data.minValue, -2);
   });
@@ -51,6 +49,7 @@ void main() {
       strategy: StackDataStrategy(),
     );
 
+    // 6 + 12, last column should have height of 18
     expect(_data.maxValue, 18);
   });
 }

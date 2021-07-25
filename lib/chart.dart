@@ -31,15 +31,15 @@ part 'chart/model/theme/chart_behaviour.dart';
 part 'chart/model/theme/item_theme/bar_item_options.dart';
 part 'chart/model/theme/item_theme/item_options.dart';
 part 'chart/model/theme/item_theme/line_item_options.dart';
-// Geometry painters
-part 'chart/render/chart_data_renderer.dart';
-// Decorations painter
-part 'chart/render/chart_decoration_renderer.dart';
-part 'chart/render/chart_item_renderer.dart';
 
 /// Render
 part 'chart/render/chart_renderer.dart';
+// Geometry painters
+part 'chart/render/data_renderer/chart_data_renderer.dart';
+part 'chart/render/data_renderer/chart_linear_data_renderer.dart';
 part 'chart/render/decorations/border_decoration.dart';
+// Decorations painter
+part 'chart/render/decorations/chart_decoration_renderer.dart';
 part 'chart/render/decorations/decoration_painter.dart';
 part 'chart/render/decorations/grid_decoration.dart';
 part 'chart/render/decorations/horizontal_axis_decoration.dart';
@@ -49,9 +49,10 @@ part 'chart/render/decorations/target_decoration.dart';
 part 'chart/render/decorations/target_legends_decoration.dart';
 part 'chart/render/decorations/value_decoration.dart';
 part 'chart/render/decorations/vertical_axis_decoration.dart';
-part 'chart/render/geometry/bar_geometry_painter.dart';
-part 'chart/render/geometry/bubble_geometry_painter.dart';
-part 'chart/render/geometry/geometry_painter.dart';
+part 'chart/render/geometry/leaf_item_renderer.dart';
+part 'chart/render/geometry/painters/bar_geometry_painter.dart';
+part 'chart/render/geometry/painters/bubble_geometry_painter.dart';
+part 'chart/render/geometry/painters/geometry_painter.dart';
 
 /// Widgets
 part 'chart/widgets/animated_chart.dart';

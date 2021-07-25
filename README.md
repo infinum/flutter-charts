@@ -37,8 +37,8 @@ flutter packages get
 ```
 
 ## Chart data
-Chart data has some options that will change how the data is processed.
-By changing `axisMin` or `axisMax` scale of the chart is changed in order to show that value, in case data has higher/lower data then axisMax/axisMin then this option is ignored. 
+Chart data has some options that will change how the data will be processed.
+By changing `axisMin` or `axisMax` scale of the chart will change in order to show that value, in case data has higher/lower data then axisMax/axisMin then this option is ignored. 
 
 Adding `valueAxisMaxOver` will add that value to currently the highest value.
 

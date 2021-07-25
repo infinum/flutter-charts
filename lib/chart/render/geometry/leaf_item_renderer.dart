@@ -1,7 +1,7 @@
 part of charts_painter;
 
-class ChartItemRenderer<T> extends LeafRenderObjectWidget {
-  ChartItemRenderer(this.item, this.state, {this.arrayKey = 0});
+class LeafChartItemRenderer<T> extends LeafRenderObjectWidget {
+  LeafChartItemRenderer(this.item, this.state, {this.arrayKey = 0});
 
   final ChartItem<T?> item;
   final ChartState<T?> state;
@@ -9,12 +9,11 @@ class ChartItemRenderer<T> extends LeafRenderObjectWidget {
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return _RenderChartItem(state, item, key: arrayKey);
+    return _RenderLeafChartItem(state, item, key: arrayKey);
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, _RenderChartItem<T?> renderObject) {
+  void updateRenderObject(BuildContext context, _RenderLeafChartItem<T?> renderObject) {
     renderObject
       ..state = state
       ..key = arrayKey
@@ -24,8 +23,8 @@ class ChartItemRenderer<T> extends LeafRenderObjectWidget {
   }
 }
 
-class _RenderChartItem<T> extends RenderBox {
-  _RenderChartItem(this._state, this._item, {int? key}) : _key = key ?? 0;
+class _RenderLeafChartItem<T> extends RenderBox {
+  _RenderLeafChartItem(this._state, this._item, {int? key}) : _key = key ?? 0;
 
   int _key;
 
@@ -91,12 +90,9 @@ class _RenderChartItem<T> extends RenderBox {
     final _stack = 1 - _state.itemOptions._multiValueStacked;
     final _stackSize = max(1, _state.data.stackSize * _stack);
 
-    final _multiPadding =
-        _state.itemOptions.multiValuePadding.horizontal * _stackSize * _stack;
+    final _multiPadding = _state.itemOptions.multiValuePadding.horizontal * _stackSize * _stack;
 
-    final _stackWidth =
-        (size.width - _multiPadding - _state.itemOptions.padding.horizontal) /
-            _stackSize;
+    final _stackWidth = (size.width - _multiPadding - _state.itemOptions.padding.horizontal) / _stackSize;
 
     canvas.translate(
         _state.itemOptions.multiValuePadding.left * _stack +
@@ -112,8 +108,7 @@ class _RenderChartItem<T> extends RenderBox {
     _item.draw(
       canvas,
       Size(_stackWidth, size.height),
-      _state.itemOptions
-          .getPaintForItem(_item.item, Size(_stackWidth, size.height), key),
+      _state.itemOptions.getPaintForItem(_item.item, Size(_stackWidth, size.height), key),
     );
 
     canvas.restore();
