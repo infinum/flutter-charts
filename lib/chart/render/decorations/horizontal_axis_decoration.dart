@@ -244,6 +244,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     final textPainter = TextPainter(
         text: TextSpan(text: text, style: style),
         maxLines: 1,
+        textScaleFactor: 1.5,
         textDirection: TextDirection.ltr)
       ..layout();
     return textPainter.size.width;
