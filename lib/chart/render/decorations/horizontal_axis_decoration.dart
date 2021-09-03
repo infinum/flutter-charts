@@ -33,6 +33,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.dashArray,
     this.axisValue = defaultAxisValue,
     this.axisStep = 1.0,
+    this.textScale = 1.5,
     this.legendPosition = HorizontalLegendPosition.end,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
   }) : _endWithChart = endWithChart ? 1.0 : 0.0;
@@ -49,6 +50,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.horizontalAxisUnit,
     this.axisStep = 1.0,
     this.dashArray,
+    this.textScale = 1.5,
     this.axisValue = defaultAxisValue,
     this.legendPosition = HorizontalLegendPosition.end,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
@@ -104,6 +106,8 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
   /// Text style for axis legend
   final TextStyle? legendFontStyle;
+
+  final double textScale;
 
   String? _longestText;
 
@@ -244,7 +248,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     final textPainter = TextPainter(
         text: TextSpan(text: text, style: style),
         maxLines: 1,
-        textScaleFactor: 1.5,
+        textScaleFactor: textScale,
         textDirection: TextDirection.ltr)
       ..layout();
     return textPainter.size.width;
@@ -285,6 +289,8 @@ class HorizontalAxisDecoration extends DecorationPainter {
         dashArray: t < 0.5 ? dashArray : endValue.dashArray,
         axisStep:
             lerpDouble(axisStep, endValue.axisStep, t) ?? endValue.axisStep,
+        textScale:
+            lerpDouble(textScale, endValue.textScale, t) ?? endValue.textScale,
         legendFontStyle:
             TextStyle.lerp(legendFontStyle, endValue.legendFontStyle, t),
         horizontalAxisUnit:

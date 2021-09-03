@@ -26,6 +26,7 @@ class GridDecoration extends DecorationPainter {
     this.dashArray,
     this.verticalAxisStep = 1,
     this.horizontalAxisStep = 1,
+    this.textScale = 1.5,
     this.horizontalLegendPosition = HorizontalLegendPosition.end,
     this.verticalLegendPosition = VerticalLegendPosition.bottom,
     this.textStyle,
@@ -47,6 +48,7 @@ class GridDecoration extends DecorationPainter {
       lineColor: gridColor,
       dashArray: dashArray,
       lineWidth: gridWidth,
+      textScale: textScale,
       axisStep: horizontalAxisStep,
       axisValue: horizontalAxisValueFromValue,
       legendFontStyle: textStyle,
@@ -86,6 +88,7 @@ class GridDecoration extends DecorationPainter {
     this.gridWidth = 1.0,
     this.verticalAxisStep = 1,
     this.horizontalAxisStep = 1,
+    this.textScale = 1.5,
     this.dashArray,
     this.horizontalLegendPosition = HorizontalLegendPosition.end,
     this.verticalLegendPosition = VerticalLegendPosition.bottom,
@@ -107,6 +110,7 @@ class GridDecoration extends DecorationPainter {
       valuesPadding: horizontalValuesPadding,
       lineColor: gridColor,
       dashArray: dashArray,
+      textScale: textScale,
       axisValue: horizontalAxisValueFromValue,
       lineWidth: gridWidth,
       axisStep: horizontalAxisStep,
@@ -205,6 +209,8 @@ class GridDecoration extends DecorationPainter {
   /// Change grid line width
   final double gridWidth;
 
+  final double textScale;
+
   /// Change step for y axis (1 by default) used in [GridDecoration], [VerticalAxisDecoration] and [HorizontalAxisDecoration]
   final double verticalAxisStep;
 
@@ -286,6 +292,8 @@ class GridDecoration extends DecorationPainter {
         verticalAxisStep:
             lerpDouble(verticalAxisStep, endValue.verticalAxisStep, t) ??
                 endValue.verticalAxisStep,
+        textScale:
+            lerpDouble(textScale, endValue.textScale, t) ?? endValue.textScale,
         horizontalAxisStep:
             lerpDouble(horizontalAxisStep, endValue.horizontalAxisStep, t) ??
                 endValue.horizontalAxisStep,
