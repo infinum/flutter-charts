@@ -102,17 +102,8 @@ class _ChartLinearItemRenderer<T> extends RenderBox
     var childCount = <int, int>{};
     var child = firstChild;
     final _size = computeDryLayout(constraints);
-
-    final _scrollableItemWidth =
-        max(_chartState.itemOptions.minBarWidth ?? 0.0, _chartState.itemOptions.maxBarWidth ?? 0.0);
-
     final _listSize = _chartState.data.listSize;
-
-    final _itemSize = Size(
-        _size.width +
-            (_size.width - ((_scrollableItemWidth + _chartState.itemOptions.padding.horizontal) * _listSize)) *
-                _chartState.behaviour._isScrollable,
-        _size.height);
+    final _itemSize = Size(_size.width, _size.height);
 
     /// Final usable space for one item in the chart
     final _itemWidth = _itemSize.width / _listSize;

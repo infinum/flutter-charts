@@ -3,15 +3,9 @@ part of charts_painter;
 class ChartRenderer<T> extends MultiChildRenderObjectWidget {
   ChartRenderer(this.chartState, {Key? key})
       : super(key: key, children: [
-          ...chartState.backgroundDecorations
-              .map((e) => ChartDecorationRenderer(chartState, e,
-                  key: ValueKey(e.hashCode)))
-              .toList(),
+          ...chartState.backgroundDecorations.map((e) => e.getRenderer(chartState)).toList(),
           ChartLinearDataRenderer(chartState),
-          ...chartState.foregroundDecorations
-              .map((e) => ChartDecorationRenderer(chartState, e,
-                  key: ValueKey(e.hashCode)))
-              .toList(),
+          ...chartState.foregroundDecorations.map((e) => e.getRenderer(chartState)).toList(),
         ]);
 
   final ChartState<T?> chartState;
@@ -22,8 +16,7 @@ class ChartRenderer<T> extends MultiChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, _ChartRenderObject<T?> renderObject) {
+  void updateRenderObject(BuildContext context, _ChartRenderObject<T?> renderObject) {
     renderObject.chartState = chartState;
     renderObject.markNeedsLayout();
   }

@@ -40,6 +40,10 @@ abstract class DecorationPainter {
     return;
   }
 
+  Widget getRenderer(ChartState state) {
+    return ChartDecorationRenderer(state, this, key: ValueKey(hashCode));
+  }
+
   /// Animate to next decoration state, each decoration should implement this.
   /// This is just regular lerp function, but instead of static function where you pass start and
   /// end state, here we start with current state and animate to [endValue].

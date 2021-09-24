@@ -39,10 +39,7 @@ class ChartData<T> {
   }) {
     return ChartData<T?>(
       [
-        List.generate(
-                items,
-                (index) => BarValue<T>(
-                    (Random().nextDouble() * (maxValue - minValue)) + minValue))
+        List.generate(items, (index) => BarValue<T>((Random().nextDouble() * (maxValue - minValue)) + minValue))
             .toList()
       ],
       valueAxisMaxOver: valueAxisMaxOver,
@@ -79,8 +76,7 @@ class ChartData<T> {
   bool get isNotEmpty => !isEmpty;
 
   /// Get max list size
-  int get listSize => _items.fold(
-      0, (previousValue, element) => max(previousValue, element.length));
+  int get listSize => _items.fold(0, (previousValue, element) => max(previousValue, element.length));
 
   /// Get number of data lists in the chart
   int get stackSize => _items.length;
@@ -102,8 +98,7 @@ class ChartData<T> {
 /// Lerp items in the charts
 class ChartItemsLerp {
   /// Lerp chart items
-  static List<List<ChartItem<T?>>> lerpValues<T>(
-      List<List<ChartItem<T?>>> a, List<List<ChartItem<T?>>> b, double t) {
+  static List<List<ChartItem<T?>>> lerpValues<T>(List<List<ChartItem<T?>>> a, List<List<ChartItem<T?>>> b, double t) {
     /// Get list length in animation, we will add the items in steps.
     final _listLength = lerpDouble(a.length, b.length, t) ?? b.length;
 
@@ -112,13 +107,11 @@ class ChartItemsLerp {
 
     /// Generate new list fot animation step, add items depending on current [_listLength]
     return List<List<ChartItem<T?>>>.generate(_listLength.ceil(), (int index) {
-      return _lerpItemList<T>(a.length > index ? a[index] : _emptyList,
-          b.length > index ? b[index] : _emptyList, t);
+      return _lerpItemList<T>(a.length > index ? a[index] : _emptyList, b.length > index ? b[index] : _emptyList, t);
     });
   }
 
-  static List<ChartItem<T?>> _lerpItemList<T>(
-      List<ChartItem<T?>?> a, List<ChartItem<T?>?> b, double t) {
+  static List<ChartItem<T?>> _lerpItemList<T>(List<ChartItem<T?>?> a, List<ChartItem<T?>?> b, double t) {
     final _listLength = lerpDouble(a.length, b.length, t) ?? b.length;
 
     /// Empty value for generated list.
@@ -151,9 +144,7 @@ class ChartItemsLerp {
 
         // If item is appearing then it's time to animate is
         // from time it first showed to end of the animation.
-        final _value = _listLength.floor() == index
-            ? ((_listLength - _listLength.floor()) * t)
-            : t;
+        final _value = _listLength.floor() == index ? ((_listLength - _listLength.floor()) * t) : t;
         return _secondItem.animateFrom(_emptyValue, _value);
       }
 

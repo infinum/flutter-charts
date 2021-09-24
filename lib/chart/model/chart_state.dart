@@ -114,7 +114,6 @@ class ChartState<T> {
   /// Default: [DefaultDataStrategy]
   final DataStrategy strategy;
 
-  /// TODO: Move to aesthetics
   // Scale
   /// Min value that chart should show.
   /// In case chart shouldn't start from 0 use this to specify new min starting point

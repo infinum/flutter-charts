@@ -39,7 +39,8 @@ part 'chart/render/data_renderer/chart_data_renderer.dart';
 part 'chart/render/data_renderer/chart_linear_data_renderer.dart';
 part 'chart/render/decorations/border_decoration.dart';
 // Decorations painter
-part 'chart/render/decorations/chart_decoration_renderer.dart';
+part 'chart/render/decorations/renderer/chart_decoration_renderer.dart';
+part 'chart/render/decorations/renderer/chart_decoration_child_renderer.dart';
 part 'chart/render/decorations/decoration_painter.dart';
 part 'chart/render/decorations/grid_decoration.dart';
 part 'chart/render/decorations/horizontal_axis_decoration.dart';
