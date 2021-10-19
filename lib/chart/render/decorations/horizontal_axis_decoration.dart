@@ -36,7 +36,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.textScale = 1.5,
     this.legendPosition = HorizontalLegendPosition.end,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
-  }) : assert(axisStep != 0, 'axisStep cant be zero!'), _endWithChart = endWithChart ? 1.0 : 0.0;
+  }) : assert(axisStep > 0, 'axisStep must be greater than zero!'), _endWithChart = endWithChart ? 1.0 : 0.0;
 
   HorizontalAxisDecoration._lerp({
     this.showValues = false,
