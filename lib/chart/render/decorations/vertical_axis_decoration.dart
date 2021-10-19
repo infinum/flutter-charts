@@ -30,7 +30,7 @@ class VerticalAxisDecoration extends DecorationPainter {
     this.axisStep = 1,
     this.legendPosition = VerticalLegendPosition.bottom,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
-  }) : _endWithChart = endWithChart ? 1.0 : 0.0;
+  }) : assert(axisStep != 0, 'axisStep cant be zero!'), _endWithChart = endWithChart ? 1.0 : 0.0;
 
   VerticalAxisDecoration._lerp({
     this.showLines = true,
