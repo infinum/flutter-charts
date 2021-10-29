@@ -43,6 +43,15 @@ class ValueDecoration extends DecorationPainter {
   }
 
   @override
+  bool isSameType(DecorationPainter other) {
+    if (other is ValueDecoration) {
+      return other.valueGenerator == valueGenerator;
+    }
+
+    return false;
+  }
+
+  @override
   void initDecoration(ChartState state) {
     super.initDecoration(state);
     assert(
@@ -63,8 +72,8 @@ class ValueDecoration extends DecorationPainter {
       Offset(
         width * alignment.x,
         size.height -
-            _itemMaxValue * verticalMultiplier -
-            minValue -
+            _itemMaxValue * verticalMultiplier +
+            minValue * verticalMultiplier -
             _maxValuePainter.height * 0.5 +
             (_maxValuePainter.height * alignment.y),
       ),
@@ -87,7 +96,6 @@ class ValueDecoration extends DecorationPainter {
   void draw(Canvas canvas, Size size, ChartState state) {
     final _maxValue = state.maxValue - state.minValue;
     final _verticalMultiplier = size.height / _maxValue;
-    final _minValue = state.minValue * _verticalMultiplier;
 
     final _listSize = state.data.listSize;
     final _itemWidth = size.width / _listSize;
@@ -98,7 +106,7 @@ class ValueDecoration extends DecorationPainter {
         index * _itemWidth,
         0.0,
       );
-      _paintText(canvas, Size(index * _itemWidth, size.height), value, _itemWidth, _verticalMultiplier, _minValue);
+      _paintText(canvas, Size(index * _itemWidth, size.height), value, _itemWidth, _verticalMultiplier, state.minValue);
       canvas.restore();
     });
   }
