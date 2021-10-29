@@ -79,11 +79,11 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
           Rect.fromPoints(
             Offset(
               0.0,
-              max(state.minValue, item.min ?? 0.0) * _verticalMultiplier - _minValue,
+              max(state.minValue, item.min ?? 0.0) * _verticalMultiplier + _minValue,
             ),
             Offset(
               _itemWidth,
-              _itemMaxValue * _verticalMultiplier - _minValue,
+              _itemMaxValue * _verticalMultiplier + _minValue,
             ),
           ),
           bottomLeft: _itemMaxValue.isNegative ? _radius.topLeft : _radius.bottomLeft,
