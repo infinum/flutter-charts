@@ -254,9 +254,14 @@ Code above will make this multi line graph:
 
 #### Scrollable chart
 Charts can also be scrollable, to use scroll first you have to wrap chart your chart in `SingleChildScrollView` widget. Then in `ChartBehaviuor` make sure you set `isScrollable` to true.
+
 ![scrollable_chart]
 
 To make sure you can make any chart you want, we have included `DecorationsRenderer` as widget that you can use outside of the chart bounds. That is useful for fixed legends:
+
+![fixed_axis_scroll_chart]
+
+To make fixed decorations you will have to make these changes to your chart:
 ```dart
 final _chartState = ChartState(
   ChartData.fromList([1, 2, 3, 4, 5,3, 2, 2].map((e) => BarValue<void>(e.toDouble())).toList()),
@@ -274,6 +279,7 @@ final _chartState = ChartState(
   ],
 );
 
+/// .....Somewhere in build method.....
 // 2) Wrap Chart in Row widget
 Row(
   children: [
@@ -283,6 +289,7 @@ Row(
         scrollDirection: Axis.horizontal,
         child: Chart(
           width: MediaQuery.of(context).size.width,
+          // Make sure height for the chart and fixed decoration are the same
           height: MediaQuery.of(context).size.height * 0.4,
           state: _chartState,
         ),
@@ -292,6 +299,7 @@ Row(
     Container(
       color: Colors.white,
       width: 14.0,
+      // Make sure height for the fixed decoration and chart are the same
       height: MediaQuery.of(context).size.height * 0.4,
       // 5) Use `DecorationsRenderer` to render fixed decoration
       child: DecorationsRenderer(
@@ -312,9 +320,6 @@ Row(
   ],
 );
 ```
-
-This will result in the scrollable chart with fixed `HorizontailAxisDecoration`:
-![fixed_axis_scroll_chart]
 
 
 ## More examples
