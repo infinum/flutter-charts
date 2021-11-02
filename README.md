@@ -251,6 +251,72 @@ To turn any chart to multi value we need to use `ChartState` instead of `ChartSt
 Code above will make this multi line graph:
 ![simple_multi_line_chart]
 
+
+#### Scrollable chart
+Charts can also be scrollable, to use scroll first you have to wrap chart your chart in `SingleChildScrollView` widget. Then in `ChartBehaviuor` make sure you set `isScrollable` to true.
+![scrollable_chart]
+
+To make sure you can make any chart you want, we have included `DecorationsRenderer` as widget that you can use outside of the chart bounds. That is useful for fixed legends:
+```dart
+final _chartState = ChartState(
+  ChartData.fromList([1, 2, 3, 4, 5,3, 2, 2].map((e) => BarValue<void>(e.toDouble())).toList()),
+  behaviour: ChartBehaviour(
+    // 1) Make sure the chart can scroll
+    isScrollable: true,
+  ),
+  backgroundDecorations: [
+    HorizontalAxisDecoration(
+      endWithChart: false,
+      lineWidth: 1.0,
+      axisStep: 1,
+      lineColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+    ),
+  ],
+);
+
+// 2) Wrap Chart in Row widget
+Row(
+  children: [
+    Expanded(
+      // 3) Wrap chart in `SingleChildScrollView`
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Chart(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.4,
+          state: _chartState,
+        ),
+      ),
+    ),
+    // 4) Add fixed decoration at the end of scroll view
+    Container(
+      color: Colors.white,
+      width: 14.0,
+      height: MediaQuery.of(context).size.height * 0.4,
+      // 5) Use `DecorationsRenderer` to render fixed decoration
+      child: DecorationsRenderer(
+        [
+          HorizontalAxisDecoration(
+            lineWidth: 1.0,
+            axisStep: 1,
+            showValues: true,
+            legendFontStyle: Theme.of(context).textTheme.caption,
+            valuesAlign: TextAlign.center,
+            lineColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+          )
+        ],
+        // Must pass same state, this is used to calculate spacings and padding of decoration, to make sure it matches the chart.
+        _chartState,
+      ),
+    )
+  ],
+);
+```
+
+This will result in the scrollable chart with fixed `HorizontailAxisDecoration`:
+![fixed_axis_scroll_chart]
+
+
 ## More examples
 ### Line charts
 Line chart with multiple values [example code](https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/example/lib/charts/line_chart_screen.dart)
@@ -269,6 +335,7 @@ Scrollable bar chart [example code](https://raw.githubusercontent.com/infinum/fl
 [bar_chart_animating]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/assets/bar_chart_animating.gif
 [scrollable_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/assets/scrollable_chart.gif
 [line_chart_animating]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/assets/line_chart_animating.gif
+[fixed_axis_scroll_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/assets/fixed_axis_scroll_chart.gif
 
 [simple_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/examples/goldens/bar_chart.png
 [simple_line_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/examples/goldens/line_chart.png

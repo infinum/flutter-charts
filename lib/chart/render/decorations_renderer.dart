@@ -1,34 +1,28 @@
 part of charts_painter;
 
-class ChartRenderer<T> extends MultiChildRenderObjectWidget {
-  ChartRenderer(this.chartState, {Key? key})
-      : super(key: key, children: [
-          DecorationsRenderer(chartState.backgroundDecorations, chartState),
-          ChartLinearDataRenderer(chartState),
-          DecorationsRenderer(chartState.foregroundDecorations, chartState),
-        ]);
+class DecorationsRenderer<T> extends MultiChildRenderObjectWidget {
+  DecorationsRenderer(List<DecorationPainter> fixedDecoration, this.chartState, {Key? key})
+      : super(key: key, children: fixedDecoration.map((e) => e.getRenderer(chartState)).toList());
 
   final ChartState<T?> chartState;
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return _ChartRenderObject<T?>(chartState);
+    return _FixedDecorationRenderObject<T?>(chartState);
   }
 
   @override
-  void updateRenderObject(BuildContext context, _ChartRenderObject<T?> renderObject) {
+  void updateRenderObject(BuildContext context, _FixedDecorationRenderObject<T?> renderObject) {
     renderObject.chartState = chartState;
     renderObject.markNeedsLayout();
   }
 }
 
-class BoxPaneParentData extends ContainerBoxParentData<RenderBox> {}
-
-class _ChartRenderObject<T> extends RenderBox
+class _FixedDecorationRenderObject<T> extends RenderBox
     with
         ContainerRenderObjectMixin<RenderBox, BoxPaneParentData>,
         RenderBoxContainerDefaultsMixin<RenderBox, BoxPaneParentData> {
-  _ChartRenderObject(this._chartState);
+  _FixedDecorationRenderObject(this._chartState);
 
   ChartState<T?> _chartState;
   set chartState(ChartState<T?> state) {

@@ -38,18 +38,19 @@ part 'chart/render/chart_renderer.dart';
 part 'chart/render/data_renderer/chart_data_renderer.dart';
 part 'chart/render/data_renderer/chart_linear_data_renderer.dart';
 part 'chart/render/decorations/border_decoration.dart';
-// Decorations painter
-part 'chart/render/decorations/renderer/chart_decoration_renderer.dart';
-part 'chart/render/decorations/renderer/chart_decoration_child_renderer.dart';
 part 'chart/render/decorations/decoration_painter.dart';
 part 'chart/render/decorations/grid_decoration.dart';
 part 'chart/render/decorations/horizontal_axis_decoration.dart';
+part 'chart/render/decorations/renderer/chart_decoration_child_renderer.dart';
+// Decorations painter
+part 'chart/render/decorations/renderer/chart_decoration_renderer.dart';
 part 'chart/render/decorations/selected_item_decoration.dart';
 part 'chart/render/decorations/spark_line_decoration.dart';
 part 'chart/render/decorations/target_decoration.dart';
 part 'chart/render/decorations/target_legends_decoration.dart';
 part 'chart/render/decorations/value_decoration.dart';
 part 'chart/render/decorations/vertical_axis_decoration.dart';
+part 'chart/render/decorations_renderer.dart';
 part 'chart/render/geometry/leaf_item_renderer.dart';
 part 'chart/render/geometry/painters/bar_geometry_painter.dart';
 part 'chart/render/geometry/painters/bubble_geometry_painter.dart';
