@@ -1,7 +1,9 @@
 part of charts_painter;
 
 class ChartDecorationChildRenderer<T> extends SingleChildRenderObjectWidget {
-  ChartDecorationChildRenderer(this.chartState, this.decorationPainter, Widget child, {Key? key})
+  ChartDecorationChildRenderer(
+      this.chartState, this.decorationPainter, Widget child,
+      {Key? key})
       : super(key: key, child: child);
 
   final ChartState<T?> chartState;
@@ -13,7 +15,8 @@ class ChartDecorationChildRenderer<T> extends SingleChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(BuildContext context, _RenderChartDecorationChildren renderObject) {
+  void updateRenderObject(
+      BuildContext context, _RenderChartDecorationChildren renderObject) {
     renderObject
       ..chartState = chartState
       ..item = decorationPainter;
@@ -23,7 +26,8 @@ class ChartDecorationChildRenderer<T> extends SingleChildRenderObjectWidget {
 }
 
 class _RenderChartDecorationChildren<T> extends RenderShiftedBox {
-  _RenderChartDecorationChildren(this._chartState, this._decoration) : super(null);
+  _RenderChartDecorationChildren(this._chartState, this._decoration)
+      : super(null);
 
   DecorationPainter _decoration;
   set item(DecorationPainter decoration) {

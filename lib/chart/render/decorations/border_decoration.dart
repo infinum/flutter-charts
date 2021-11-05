@@ -18,7 +18,7 @@ class BorderDecoration extends DecorationPainter {
     required Border borderWidth,
     this.color = Colors.black,
     required double endWithChart,
-  })   : _endWithChart = endWithChart,
+  })  : _endWithChart = endWithChart,
         _borderWidth = borderWidth;
 
   /// Color for border, individual side colors can be set with [_borderWidth] otherwise this color

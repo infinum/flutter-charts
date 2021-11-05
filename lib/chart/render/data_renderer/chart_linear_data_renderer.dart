@@ -5,7 +5,10 @@ class ChartLinearDataRenderer<T> extends ChartDataRenderer<T> {
       : super(key: key, children: [
           ...chartState.items
               .mapIndexed(
-                (key, items) => items.map((e) => LeafChartItemRenderer(e, chartState, arrayKey: key)).toList(),
+                (key, items) => items
+                    .map((e) =>
+                        LeafChartItemRenderer(e, chartState, arrayKey: key))
+                    .toList(),
               )
               .expand((element) => element)
               .toList(),
@@ -19,7 +22,8 @@ class ChartLinearDataRenderer<T> extends ChartDataRenderer<T> {
   }
 
   @override
-  void updateRenderObject(BuildContext context, _ChartLinearItemRenderer<T?> renderObject) {
+  void updateRenderObject(
+      BuildContext context, _ChartLinearItemRenderer<T?> renderObject) {
     renderObject.chartState = chartState;
     renderObject.markNeedsLayout();
   }
@@ -89,9 +93,12 @@ class _ChartLinearItemRenderer<T> extends RenderBox
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-    final _size = constraints.deflate(chartState.defaultPadding + chartState.defaultMargin).biggest;
+    final _size = constraints
+        .deflate(chartState.defaultPadding + chartState.defaultMargin)
+        .biggest;
     final childParentData = parentData! as BoxParentData;
-    childParentData.offset = Offset(chartState.defaultPadding.left + chartState.defaultMargin.left,
+    childParentData.offset = Offset(
+        chartState.defaultPadding.left + chartState.defaultMargin.left,
         chartState.defaultPadding.top + chartState.defaultMargin.top);
 
     return _size;
@@ -110,7 +117,8 @@ class _ChartLinearItemRenderer<T> extends RenderBox
 
     while (child != null && child is _RenderLeafChartItem<T>) {
       final childParentData = child.parentData! as ChartItemData;
-      childParentData.offset = Offset(_itemWidth * (childCount[child.key] ?? 0), childParentData.offset.dy);
+      childParentData.offset = Offset(
+          _itemWidth * (childCount[child.key] ?? 0), childParentData.offset.dy);
       final innerConstraints = BoxConstraints(
         maxWidth: _itemWidth,
         maxHeight: _size.height,

@@ -16,7 +16,8 @@ class ChartRenderer<T> extends MultiChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(BuildContext context, _ChartRenderObject<T?> renderObject) {
+  void updateRenderObject(
+      BuildContext context, _ChartRenderObject<T?> renderObject) {
     renderObject.chartState = chartState;
     renderObject.markNeedsLayout();
   }
