@@ -156,19 +156,24 @@ By replacing the `BarValue` to `BubbleValue` and changing `geometryPainter` to `
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Chart(
-        state: ChartState.fromList(
-          /// CHANGE: Change [BarValue<void>] to [BubbleValue<void>]
-          [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+        state: ChartState.line(
+          ChartData.fromList(
+            /// CHANGE: Change [BarValue<void>] to [BubbleValue<void>]
+            [1, 3, 4, 2, 7, 6, 2, 5, 4]
+                .map((e) => BubbleValue<void>(e.toDouble()))
+                .toList(),
+          ),
+
           /// CHANGE: From [BarItemOptions] to [BubbleItemOptions]
-          itemOptions: BubbleItemOptions(
-            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+          itemOptions: const BubbleItemOptions(
+            padding: EdgeInsets.symmetric(horizontal: 2.0),
+
             /// REMOVED: Radius doesn't exist in [BubbleItemOptions]
             // radius: BorderRadius.vertical(top: Radius.circular(12.0)),
 
             /// ADDED: Make [BubbleValue] items smaller
             maxBarWidth: 4.0,
           ),
-          options: ChartOptions(valueAxisMax: 8),
           backgroundDecorations: [
             GridDecoration(
               verticalAxisStep: 1,
@@ -179,7 +184,7 @@ By replacing the `BarValue` to `BubbleValue` and changing `geometryPainter` to `
           foregroundDecorations: [
             BorderDecoration(
               color: Theme.of(context).colorScheme.secondary,
-              width: 2.0,
+              borderWidth: 2.0,
             ),
 
             /// ADDED: Add spark line decoration ([SparkLineDecoration]) on foreground
