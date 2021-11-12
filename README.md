@@ -115,13 +115,16 @@ This is how you can start, this is simple bar chart with grid decoration:
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Chart(
-        state: ChartState.fromList(
-          [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
-          itemOptions: BarItemOptions(
-            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+        state: ChartState.bar(
+          ChartData.fromList(
+            [1, 3, 4, 2, 7, 6, 2, 5, 4]
+                .map((e) => BarValue<void>(e.toDouble()))
+                .toList(),
+          ),
+          itemOptions: const BarItemOptions(
+            padding: EdgeInsets.symmetric(horizontal: 2.0),
             radius: BorderRadius.vertical(top: Radius.circular(12.0)),
           ),
-          options: BarChartOptions(valueAxisMax: 8),
           backgroundDecorations: [
             GridDecoration(
               verticalAxisStep: 1,
@@ -132,7 +135,7 @@ This is how you can start, this is simple bar chart with grid decoration:
           foregroundDecorations: [
             BorderDecoration(
               color: Theme.of(context).colorScheme.secondary,
-              width: 2.0,
+              borderWidth: 2.0,
             ),
           ],
         ),
@@ -153,19 +156,24 @@ By replacing the `BarValue` to `BubbleValue` and changing `geometryPainter` to `
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Chart(
-        state: ChartState.fromList(
-          /// CHANGE: Change [BarValue<void>] to [BubbleValue<void>]
-          [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+        state: ChartState.line(
+          ChartData.fromList(
+            /// CHANGE: Change [BarValue<void>] to [BubbleValue<void>]
+            [1, 3, 4, 2, 7, 6, 2, 5, 4]
+                .map((e) => BubbleValue<void>(e.toDouble()))
+                .toList(),
+          ),
+
           /// CHANGE: From [BarItemOptions] to [BubbleItemOptions]
-          itemOptions: BubbleItemOptions(
-            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+          itemOptions: const BubbleItemOptions(
+            padding: EdgeInsets.symmetric(horizontal: 2.0),
+
             /// REMOVED: Radius doesn't exist in [BubbleItemOptions]
             // radius: BorderRadius.vertical(top: Radius.circular(12.0)),
 
             /// ADDED: Make [BubbleValue] items smaller
             maxBarWidth: 4.0,
           ),
-          options: ChartOptions(valueAxisMax: 8),
           backgroundDecorations: [
             GridDecoration(
               verticalAxisStep: 1,
@@ -176,7 +184,7 @@ By replacing the `BarValue` to `BubbleValue` and changing `geometryPainter` to `
           foregroundDecorations: [
             BorderDecoration(
               color: Theme.of(context).colorScheme.secondary,
-              width: 2.0,
+              borderWidth: 2.0,
             ),
 
             /// ADDED: Add spark line decoration ([SparkLineDecoration]) on foreground
@@ -196,28 +204,36 @@ To turn any chart to multi value we need to use `ChartState` instead of `ChartSt
 ```dart
   @override
   Widget build(BuildContext context) {
-    Padding(
+    return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Chart(
         /// CHANGE: From [ChartState.fromList] to [ChartState]
         state: ChartState(
           /// CHANGE: Add list we had into bigger List
-          [
-            [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+          ChartData(
+            [
+              [1, 3, 4, 2, 7, 6, 2, 5, 4]
+                  .map((e) => BubbleValue<void>(e.toDouble()))
+                  .toList(),
 
-            /// ADD: Another list
-            [4, 6, 3, 3, 2, 1, 4, 7, 5].map((e) => BubbleValue<void>(e.toDouble())).toList(),
-          ],
+              /// ADD: Another list
+              [4, 6, 3, 3, 2, 1, 4, 7, 5]
+                  .map((e) => BubbleValue<void>(e.toDouble()))
+                  .toList(),
+            ],
+          ),
           itemOptions: BubbleItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 2.0),
             maxBarWidth: 4.0,
 
             /// ADDED: Color bubbles differently depending on List they came from. [ColorForIndex]
             colorForKey: (item, index) {
-              return [Theme.of(context).colorScheme.primary, Theme.of(context).colorScheme.primaryVariant][index];
+              return [
+                Theme.of(context).colorScheme.primary,
+                Theme.of(context).colorScheme.primaryVariant
+              ][index];
             },
           ),
-          options: ChartOptions(valueAxisMax: 8),
           backgroundDecorations: [
             GridDecoration(
               verticalAxisStep: 1,
@@ -230,14 +246,15 @@ To turn any chart to multi value we need to use `ChartState` instead of `ChartSt
 
             /// ADDED: Add another [SparkLineDecoration] for the second list
             SparkLineDecoration(
-              // Specify key that this [SparkLineDecoration] will follow 
-              // Throws if `lineKey` does not exist in chart data 
-              lineKey: 1,
+              // Specify key that this [SparkLineDecoration] will follow
+              // Throws if `lineArrayIndex` does not exist in chart data
+
+              lineArrayIndex: 1,
               lineColor: Theme.of(context).colorScheme.primaryVariant,
             ),
             BorderDecoration(
               color: Theme.of(context).colorScheme.secondary,
-              width: 2.0,
+              borderWidth: 2.0,
             ),
           ],
         ),
