@@ -115,13 +115,16 @@ This is how you can start, this is simple bar chart with grid decoration:
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Chart(
-        state: ChartState.fromList(
-          [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
-          itemOptions: BarItemOptions(
-            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+        state: ChartState.bar(
+          ChartData.fromList(
+            [1, 3, 4, 2, 7, 6, 2, 5, 4]
+                .map((e) => BarValue<void>(e.toDouble()))
+                .toList(),
+          ),
+          itemOptions: const BarItemOptions(
+            padding: EdgeInsets.symmetric(horizontal: 2.0),
             radius: BorderRadius.vertical(top: Radius.circular(12.0)),
           ),
-          options: BarChartOptions(valueAxisMax: 8),
           backgroundDecorations: [
             GridDecoration(
               verticalAxisStep: 1,
@@ -132,7 +135,7 @@ This is how you can start, this is simple bar chart with grid decoration:
           foregroundDecorations: [
             BorderDecoration(
               color: Theme.of(context).colorScheme.secondary,
-              width: 2.0,
+              borderWidth: 2.0,
             ),
           ],
         ),
