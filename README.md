@@ -204,28 +204,36 @@ To turn any chart to multi value we need to use `ChartState` instead of `ChartSt
 ```dart
   @override
   Widget build(BuildContext context) {
-    Padding(
+    return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Chart(
         /// CHANGE: From [ChartState.fromList] to [ChartState]
         state: ChartState(
           /// CHANGE: Add list we had into bigger List
-          [
-            [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+          ChartData(
+            [
+              [1, 3, 4, 2, 7, 6, 2, 5, 4]
+                  .map((e) => BubbleValue<void>(e.toDouble()))
+                  .toList(),
 
-            /// ADD: Another list
-            [4, 6, 3, 3, 2, 1, 4, 7, 5].map((e) => BubbleValue<void>(e.toDouble())).toList(),
-          ],
+              /// ADD: Another list
+              [4, 6, 3, 3, 2, 1, 4, 7, 5]
+                  .map((e) => BubbleValue<void>(e.toDouble()))
+                  .toList(),
+            ],
+          ),
           itemOptions: BubbleItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 2.0),
             maxBarWidth: 4.0,
 
             /// ADDED: Color bubbles differently depending on List they came from. [ColorForIndex]
             colorForKey: (item, index) {
-              return [Theme.of(context).colorScheme.primary, Theme.of(context).colorScheme.primaryVariant][index];
+              return [
+                Theme.of(context).colorScheme.primary,
+                Theme.of(context).colorScheme.primaryVariant
+              ][index];
             },
           ),
-          options: ChartOptions(valueAxisMax: 8),
           backgroundDecorations: [
             GridDecoration(
               verticalAxisStep: 1,
@@ -238,14 +246,15 @@ To turn any chart to multi value we need to use `ChartState` instead of `ChartSt
 
             /// ADDED: Add another [SparkLineDecoration] for the second list
             SparkLineDecoration(
-              // Specify key that this [SparkLineDecoration] will follow 
-              // Throws if `lineKey` does not exist in chart data 
-              lineKey: 1,
+              // Specify key that this [SparkLineDecoration] will follow
+              // Throws if `lineArrayIndex` does not exist in chart data
+
+              lineArrayIndex: 1,
               lineColor: Theme.of(context).colorScheme.primaryVariant,
             ),
             BorderDecoration(
               color: Theme.of(context).colorScheme.secondary,
-              width: 2.0,
+              borderWidth: 2.0,
             ),
           ],
         ),
