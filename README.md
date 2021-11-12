@@ -55,7 +55,7 @@ Widget build(BuildContext context) {
 
 #### ChartData
 Chart data has some options that will change how the data is processed.
-By changing `axisMin` or `axisMax` scale of the chart is changed in order to show that value, in case data has higher/lower data then axisMax/axisMin then this option is ignored. 
+By changing `axisMin` or `axisMax` scale of the chart is changed in order to show that value, in case data has higher/lower data than axisMax/axisMin, then this option is ignored. 
 
 Adding `valueAxisMaxOver` will add that value to currently the highest value.
 
