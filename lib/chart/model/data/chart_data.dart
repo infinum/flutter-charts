@@ -1,14 +1,5 @@
 part of charts_painter;
 
-/// Data strategy to use for [ChartData]
-enum DataStrategy {
-  /// Data will be the same as it was passed
-  none,
-
-  /// Data will be 'stacked' one on top of the other
-  stack,
-}
-
 /// [axisMin] - Min value that has to be displayed on the chart, if data contains value that is
 /// lower than [axisMin] in that case [axisMin] is ignored and actual min value is shown.
 ///
@@ -19,19 +10,18 @@ class ChartData<T> {
   /// [valueAxisMaxOver] - How much should chart draw above max value in the chart
   ChartData(
     this._items, {
-    this.strategy = DataStrategy.none,
+    this.dataStrategy = const DefaultDataStrategy(),
     this.axisMax,
-    double? valueAxisMaxOver,
+    this.valueAxisMaxOver,
     this.axisMin,
-  })  : _strategyChange = strategy != DataStrategy.none ? 1.0 : 0.0,
-        minValue = _getMinValue(
-            _formatDataStrategy(_items, strategy).fold(
+  })  : minValue = _getMinValue<T>(
+            dataStrategy.formatDataStrategy(_items).fold(
                 <ChartItem<T?>>[],
                 (List<ChartItem<T?>> list, element) =>
                     list..addAll(element)).toList(),
             axisMin),
         maxValue = _getMaxValue(
-                _formatDataStrategy(_items, strategy).fold(
+                dataStrategy.formatDataStrategy(_items).fold(
                     <ChartItem<T?>>[],
                     (List<ChartItem<T?>> list, element) =>
                         list..addAll(element)).toList(),
@@ -47,7 +37,6 @@ class ChartData<T> {
   }) {
     return ChartData(
       [items],
-      strategy: DataStrategy.none,
       axisMin: axisMin,
       axisMax: axisMax,
       valueAxisMaxOver: valueAxisMaxOver,
@@ -74,23 +63,23 @@ class ChartData<T> {
   }
 
   ChartData._lerp(
-    this._items,
-    this._strategyChange, {
-    this.strategy = DataStrategy.none,
+    this._items, {
+    this.dataStrategy = const DefaultDataStrategy(),
     this.axisMax,
     this.axisMin,
-    this.minValue = 0,
-    this.maxValue = 0,
+    this.valueAxisMaxOver,
+    required this.minValue,
+    required this.maxValue,
   });
 
   /// Chart items, items in the list cannot be null, but ChartItem can be defined
   /// with null values to represent gaps in the data
   final List<List<ChartItem<T?>>> _items;
-  final double? _strategyChange;
 
+  // Statistics layer
   /// Data strategy to use on items
-  /// Defaults to [DataStrategy.none]
-  final DataStrategy strategy;
+  /// Default: [DefaultDataStrategy]
+  final DataStrategy dataStrategy;
 
   // Scale
   /// Min value that chart should show.
@@ -106,51 +95,13 @@ class ChartData<T> {
   /// the value of value passed with data in the chart this will be ignored.
   final double? axisMax;
 
+  /// Max value that chart should show, in case that [axisMax] is bellow
+  /// the value of value passed with data in the chart this will be ignored.
+  final double? valueAxisMaxOver;
+
   /// Min value of the chart, anything below that will not be shown and chart
   /// x axis will start from [axisMin] (default: 0)
   final double? axisMin;
-
-  /// Return list as formatted data defined by [DataStrategy]
-  List<List<ChartItem<T?>>> get items {
-    return _formatDataStrategy(_items, strategy, _strategyChange);
-  }
-
-  /// Format items according to currently selected [DataStrategy]
-  static List<List<ChartItem<T?>>> _formatDataStrategy<T>(
-    List<List<ChartItem<T?>>> items,
-    DataStrategy strategy, [
-    double? _stackValue,
-  ]) {
-    switch (strategy) {
-      case DataStrategy.none:
-      case DataStrategy.stack:
-        _stackValue ??= strategy != DataStrategy.none ? 1.0 : 0.0;
-
-        final _incrementList = <ChartItem<T?>>[];
-        return items.reversed
-            .map((entry) {
-              return entry.asMap().entries.map((e) {
-                if (_incrementList.length > e.key) {
-                  final _newValue = e.value + _incrementList[e.key];
-                  _incrementList[e.key] =
-                      (_incrementList[e.key] + e.value) * _stackValue;
-                  return _newValue;
-                } else {
-                  _incrementList.add(e.value * _stackValue);
-                }
-
-                return e.value;
-              }).toList();
-            })
-            .toList()
-            .reversed
-            .toList();
-
-      // Strategy not handled, return items
-      default:
-        return items;
-    }
-  }
 
   /// Returns true if there is no items in the [ChartData]
   bool get isEmpty => _items.isEmpty;
@@ -164,6 +115,14 @@ class ChartData<T> {
 
   /// Get number of data lists in the chart
   int get stackSize => _items.length;
+
+  List<List<ChartItem<T?>>>? _cachedItems;
+
+  /// Return list as formatted data defined by [DataStrategy]
+  List<List<ChartItem<T?>>> get items {
+    _cachedItems ??= dataStrategy.formatDataStrategy(_items);
+    return _cachedItems ?? dataStrategy.formatDataStrategy(_items);
+  }
 
   /// Get max value of the chart
   /// Max value is max data item from [items] or [ChartOptions.axisMax]
@@ -194,10 +153,10 @@ class ChartData<T> {
   static ChartData<T?> lerp<T>(ChartData<T?> a, ChartData<T?> b, double t) {
     return ChartData._lerp(
       ChartItemsLerp.lerpValues(a._items, b._items, t),
-      lerpDouble(a._strategyChange, b._strategyChange, t),
-      strategy: t > 0.5 ? b.strategy : a.strategy,
       axisMax: lerpDouble(a.axisMax, b.axisMax, t),
       axisMin: lerpDouble(a.axisMin, b.axisMin, t),
+      dataStrategy: t > 0.5 ? b.dataStrategy : a.dataStrategy,
+      valueAxisMaxOver: lerpDouble(a.valueAxisMaxOver, b.valueAxisMaxOver, t),
 
       /// Those are usually calculated, but we need to have a control over them in the animation
       maxValue: lerpDouble(a.maxValue, b.maxValue, t) ?? b.maxValue,

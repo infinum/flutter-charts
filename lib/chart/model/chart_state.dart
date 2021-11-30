@@ -1,27 +1,29 @@
 part of charts_painter;
 
-/// Main state of the charts. Painter will use this as state and it will format chart depending
-/// on options.
+/// Main state of the charts. Painter will use this as state and it will format
+/// chart depending on options.
 ///
 /// [itemOptions] Contains all modifiers for separate bar item
 ///
 /// [behaviour] How chart reacts and sizes itself
 ///
-/// [foregroundDecorations] and [backgroundDecorations] decorations that aren't connected directly to the
-/// chart but can show important info (Axis, target line...)
+/// [foregroundDecorations] and [backgroundDecorations] decorations that aren't
+/// connected directly to the chart but can show important info (Axis, target line...)
 ///
 /// More different decorations can be added by extending [DecorationPainter]
 class ChartState<T> {
   /// Chart state constructor
   ChartState(
     this.data, {
-    this.itemOptions = const ItemOptions(geometryPainter: barPainter),
+    this.itemOptions = const BarItemOptions(),
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const <DecorationPainter>[],
     this.foregroundDecorations = const <DecorationPainter>[],
+    ChartDataRendererFactory<T?>? dataRenderer,
   })  : assert(data.isNotEmpty, 'No items!'),
         defaultPadding = EdgeInsets.zero,
-        defaultMargin = EdgeInsets.zero {
+        defaultMargin = EdgeInsets.zero,
+        dataRenderer = dataRenderer ?? defaultItemRenderer<T>(itemOptions) {
     /// Set default padding and margin, decorations padding and margins will be added to this value
     _setUpDecorations();
   }
@@ -29,8 +31,7 @@ class ChartState<T> {
   /// Create line chart with foreground sparkline decoration and background grid decoration
   factory ChartState.line(
     ChartData<T> data, {
-    ItemOptions itemOptions =
-        const ItemOptions(geometryPainter: bubblePainter, maxBarWidth: 2.0),
+    ItemOptions itemOptions = const BubbleItemOptions(maxBarWidth: 2.0),
     ChartBehaviour behaviour = const ChartBehaviour(),
     List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
     List<DecorationPainter> foregroundDecorations = const <DecorationPainter>[],
@@ -51,9 +52,8 @@ class ChartState<T> {
   /// Create bar chart with background grid decoration
   factory ChartState.bar(
     ChartData<T> data, {
-    ItemOptions itemOptions = const ItemOptions(
-        geometryPainter: barPainter,
-        padding: EdgeInsets.symmetric(horizontal: 4.0)),
+    ItemOptions itemOptions =
+        const BarItemOptions(padding: EdgeInsets.symmetric(horizontal: 4.0)),
     ChartBehaviour behaviour = const ChartBehaviour(),
     List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
     List<DecorationPainter> foregroundDecorations = const <DecorationPainter>[],
@@ -71,10 +71,11 @@ class ChartState<T> {
 
   ChartState._lerp(
     this.data, {
-    this.itemOptions = const ItemOptions(geometryPainter: barPainter),
+    this.itemOptions = const BarItemOptions(),
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const [],
     this.foregroundDecorations = const [],
+    required this.dataRenderer,
     required this.defaultMargin,
     required this.defaultPadding,
   }) {
@@ -85,14 +86,18 @@ class ChartState<T> {
   /// [ChartData] data that chart will show
   final ChartData<T> data;
 
-  // Theme layer
+  final ChartDataRendererFactory<T?> dataRenderer;
+
+  // Geometry layer
   /// [ItemOptions] define how each item is painted
   final ItemOptions itemOptions;
 
   /// [ChartBehaviour] define how chart behaves and how it should react
   final ChartBehaviour behaviour;
 
-  // Theme Decorations
+  /// ------
+
+  // Theme layer
   /// Decorations for chart background, the go below the items
   final List<DecorationPainter> backgroundDecorations;
 
@@ -114,7 +119,8 @@ class ChartState<T> {
   /// Set up decorations and calculate chart's [defaultPadding] and [defaultMargin]
   /// Decorations are a bit special, calling init on them with current state
   /// this is required because some decorations need to know some stuff about chart
-  /// before being able to tell how much padding or/and margin do they need in order to lay them out properly
+  /// before being able to tell how much padding or/and margin do they need in
+  /// order to lay them out properly
   ///
   /// First init decoration, this will make sure that all decorations are able to calculate their
   /// margin and padding needed
@@ -172,6 +178,22 @@ class ChartState<T> {
           EdgeInsets.zero,
       defaultPadding: EdgeInsets.lerp(a.defaultPadding, b.defaultPadding, t) ??
           EdgeInsets.zero,
+      dataRenderer: t > 0.5 ? b.dataRenderer : a.dataRenderer,
     );
+  }
+
+  static ChartDataRendererFactory<T?> defaultItemRenderer<T>(
+      ItemOptions itemOptions) {
+    return (data) => ChartLinearDataRenderer<T?>(
+        data,
+        data.items
+            .mapIndexed(
+              (key, items) => items
+                  .map((e) => LeafChartItemRenderer(e, data, itemOptions,
+                      arrayKey: key))
+                  .toList(),
+            )
+            .expand((element) => element)
+            .toList());
   }
 }

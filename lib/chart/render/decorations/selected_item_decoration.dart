@@ -1,0 +1,227 @@
+part of charts_painter;
+
+/// Show selected item in Cupertino style (Health app)
+class SelectedItemDecoration extends DecorationPainter {
+  /// Constructor for selected item decoration
+  SelectedItemDecoration(
+    this.selectedItem, {
+    this.selectedColor = Colors.red,
+    this.backgroundColor = Colors.grey,
+    this.selectedStyle = const TextStyle(fontSize: 13.0),
+    this.animate = false,
+    this.showText = true,
+    this.selectedArrayIndex = 0,
+  });
+
+  /// Index of selected item
+  final int? selectedItem;
+
+  /// Color of selected indicator and text background
+  final Color selectedColor;
+
+  /// Color for selected item, this color is shown as overlay, use with alpha!
+  final Color backgroundColor;
+
+  /// Should [selectedItem] animate from one item to next
+  final bool animate;
+
+  final bool showText;
+
+  /// Color of selected item text
+  final TextStyle selectedStyle;
+
+  /// Index of list whose data to show
+  /// By default it will use first list to this value will be `0`
+  final int selectedArrayIndex;
+
+  // @override
+  // Widget getRenderer(ChartState state) {
+  //   return ChartDecorationChildRenderer(
+  //       state,
+  //       this,
+  //       Container(
+  //         width: 100.0,
+  //         height: 100.0,
+  //         color: Colors.red,
+  //       ));
+  // }
+
+  @override
+  void initDecoration(ChartState state) {
+    super.initDecoration(state);
+    assert(state.data.stackSize > selectedArrayIndex,
+        'Selected key is not in the list!\nCheck the `selectedKey` you are passing.');
+  }
+
+  @override
+  Size layoutSize(BoxConstraints constraints, ChartState state) {
+    final _listSize = state.data.listSize;
+    final _itemWidth =
+        constraints.deflate(state.defaultMargin).maxWidth / _listSize;
+
+    return Size(
+      _itemWidth,
+      constraints.deflate(state.defaultMargin - marginNeeded()).maxHeight,
+    );
+  }
+
+  @override
+  Offset applyPaintTransform(ChartState state, Size size) {
+    final _width =
+        (size.width - state.defaultMargin.horizontal) / state.data.listSize;
+
+    final selectedItem = this.selectedItem;
+    if (selectedItem != null) {
+      return Offset(state.defaultMargin.left + _width * selectedItem,
+          (state.defaultMargin - marginNeeded()).top);
+    }
+
+    return Offset.zero;
+  }
+
+  void _drawText(
+      Canvas canvas, Size size, double totalWidth, ChartState state) {
+    final _item = selectedItem;
+    if (_item == null) {
+      return;
+    }
+    final width = size.width;
+    final _selectedItem = state.data.items[selectedArrayIndex][_item];
+
+    final _maxValuePainter = ValueDecoration.makeTextPainter(
+      _selectedItem.max?.toStringAsFixed(2) ?? '',
+      width,
+      selectedStyle,
+      hasMaxWidth: false,
+    );
+    final _itemWidth = max(
+        state.itemOptions.minBarWidth ?? 0.0,
+        min(state.itemOptions.maxBarWidth ?? double.infinity,
+            size.width - state.itemOptions.padding.horizontal));
+
+    const _size = 2.0;
+    final _maxValue = state.data.maxValue - state.data.minValue;
+    final _height = size.height - marginNeeded().vertical;
+    final scale = _height / _maxValue;
+
+    final _itemMaxValue = _selectedItem.max ?? 0.0;
+    final _itemMinValue = _selectedItem.min ?? 0.0;
+    // If item is empty, or it's max value is below chart's minValue then don't draw it.
+    // minValue can be below 0, this will just ensure that animation is drawn correctly.
+    if (_selectedItem.isEmpty || _itemMaxValue < state.data.minValue) {
+      return;
+    }
+
+    if (_itemMinValue != 0.0) {
+      canvas.drawRect(
+        Rect.fromPoints(
+          Offset(
+            state.itemOptions.padding.left + _itemWidth / 2 - _size / 2,
+            0.0,
+          ),
+          Offset(
+            state.itemOptions.padding.left + _itemWidth / 2 + _size / 2,
+            (_itemMaxValue - _itemMinValue) * scale,
+          ),
+        ),
+        Paint()..color = selectedColor,
+      );
+    }
+
+    canvas.drawRect(
+      Rect.fromPoints(
+        Offset(
+          state.itemOptions.padding.left + _itemWidth / 2 - _size / 2,
+          (selectedStyle.fontSize ?? 0.0) * 1.4,
+        ),
+        Offset(
+          state.itemOptions.padding.left + _itemWidth / 2 + _size / 2,
+          size.height - (_itemMaxValue * scale),
+        ),
+      ),
+      Paint()..color = selectedColor,
+    );
+
+    canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromPoints(
+              Offset(
+                width / 2 - _maxValuePainter.width / 2,
+                (selectedStyle.fontSize ?? 0.0) * 1.4,
+              ),
+              Offset(
+                width / 2 + _maxValuePainter.width / 2,
+                (selectedStyle.fontSize ?? 0.0) * 0.4,
+              )),
+          const Radius.circular(8.0),
+        ).inflate(4),
+        Paint()..color = selectedColor);
+
+    _maxValuePainter.paint(
+      canvas,
+      Offset(
+        width / 2 - _maxValuePainter.width / 2,
+        (selectedStyle.fontSize ?? 0.0) * 0.4,
+      ),
+    );
+  }
+
+  @override
+  void draw(Canvas canvas, Size size, ChartState state) {
+    final _listSize = state.data.listSize;
+    final _item = selectedItem;
+
+    if (_item == null || _listSize <= _item || _item.isNegative) {
+      return;
+    }
+    _drawItem(canvas, size, state);
+    if (showText) {
+      _drawText(canvas, size, size.width, state);
+    }
+
+    // Restore canvas
+    canvas.restore();
+  }
+
+  void _drawItem(Canvas canvas, Size size, ChartState state) {
+    canvas.drawRect(
+      Rect.fromPoints(
+          Offset(0.0, marginNeeded().top), Offset(size.width, size.height)),
+      Paint()
+        ..color = backgroundColor
+        ..blendMode = BlendMode.overlay,
+    );
+  }
+
+  @override
+  EdgeInsets marginNeeded() {
+    return EdgeInsets.only(
+        top: showText ? (selectedStyle.fontSize ?? 0) * 1.8 : 0.0);
+  }
+
+  @override
+  DecorationPainter animateTo(DecorationPainter endValue, double t) {
+    if (endValue is SelectedItemDecoration) {
+      return SelectedItemDecoration(
+        animate
+            ? (lerpDouble(selectedItem?.toDouble(),
+                        endValue.selectedItem?.toDouble(), t) ??
+                    0)
+                .round()
+            : endValue.selectedItem,
+        selectedColor: Color.lerp(selectedColor, endValue.selectedColor, t) ??
+            endValue.selectedColor,
+        backgroundColor:
+            Color.lerp(backgroundColor, endValue.backgroundColor, t) ??
+                endValue.backgroundColor,
+        selectedStyle:
+            TextStyle.lerp(selectedStyle, endValue.selectedStyle, t) ??
+                endValue.selectedStyle,
+        animate: endValue.animate,
+        selectedArrayIndex: endValue.selectedArrayIndex,
+      );
+    }
+
+    return this;
+  }
+}

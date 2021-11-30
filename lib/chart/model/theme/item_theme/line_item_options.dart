@@ -1,8 +1,9 @@
 part of charts_painter;
 
 /// Bubble painter
-GeometryPainter<T> bubblePainter<T>(ChartItem<T> item, ChartState<T> state) =>
-    BubbleGeometryPainter<T>(item, state);
+GeometryPainter<T> bubblePainter<T>(
+        ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions) =>
+    BubbleGeometryPainter<T>(item, data, itemOptions);
 
 /// Extension options for bar items
 /// [geometryPainter] is set to [BubbleGeometryPainter]
@@ -20,6 +21,7 @@ class BubbleItemOptions extends ItemOptions {
     Color color = Colors.red,
     ColorForValue? colorForValue,
     ColorForKey? colorForKey,
+    bool multiItemStack = true,
     this.gradient,
     this.border,
   }) : super(
@@ -31,6 +33,30 @@ class BubbleItemOptions extends ItemOptions {
           minBarWidth: minBarWidth,
           maxBarWidth: maxBarWidth,
           geometryPainter: bubblePainter,
+          multiItemStack: multiItemStack,
+        );
+
+  const BubbleItemOptions._lerp({
+    EdgeInsets padding = EdgeInsets.zero,
+    EdgeInsets multiValuePadding = EdgeInsets.zero,
+    double? maxBarWidth,
+    double? minBarWidth,
+    Color color = Colors.red,
+    ColorForValue? colorForValue,
+    ColorForKey? colorForKey,
+    double multiItemStack = 1.0,
+    this.gradient,
+    this.border,
+  }) : super._lerp(
+          color: color,
+          colorForValue: colorForValue,
+          colorForKey: colorForKey,
+          padding: padding,
+          multiValuePadding: multiValuePadding,
+          minBarWidth: minBarWidth,
+          maxBarWidth: maxBarWidth,
+          geometryPainter: bubblePainter,
+          multiItemStack: multiItemStack,
         );
 
   /// Set gradient for each bubble item
@@ -41,7 +67,7 @@ class BubbleItemOptions extends ItemOptions {
 
   @override
   ItemOptions animateTo(ItemOptions endValue, double t) {
-    return BubbleItemOptions(
+    return BubbleItemOptions._lerp(
       gradient: Gradient.lerp(gradient,
           endValue is BubbleItemOptions ? endValue.gradient : null, t),
       color: Color.lerp(color, endValue.color, t) ?? endValue.color,
@@ -59,6 +85,8 @@ class BubbleItemOptions extends ItemOptions {
               ? (endValue.border ?? BorderSide.none)
               : BorderSide.none,
           t),
+      multiItemStack:
+          lerpDouble(_multiValueStacked, endValue._multiValueStacked, t) ?? 1.0,
     );
   }
 

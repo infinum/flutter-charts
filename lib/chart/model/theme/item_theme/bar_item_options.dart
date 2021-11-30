@@ -1,8 +1,9 @@
 part of charts_painter;
 
 /// Bar painter
-GeometryPainter<T> barPainter<T>(ChartItem<T> item, ChartState<T> state) =>
-    BarGeometryPainter<T>(item, state);
+GeometryPainter<T> barPainter<T>(
+        ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions) =>
+    BarGeometryPainter<T>(item, data, itemOptions);
 
 /// Extension options for bar items
 /// [geometryPainter] is set to [BarGeometryPainter]
@@ -21,6 +22,7 @@ class BarItemOptions extends ItemOptions {
     Color color = Colors.red,
     ColorForValue? colorForValue,
     ColorForKey? colorForKey,
+    bool multiItemStack = true,
     this.gradient,
     this.border,
     this.radius = BorderRadius.zero,
@@ -33,6 +35,31 @@ class BarItemOptions extends ItemOptions {
           maxBarWidth: maxBarWidth,
           minBarWidth: minBarWidth,
           geometryPainter: barPainter,
+          multiItemStack: multiItemStack,
+        );
+
+  const BarItemOptions._lerp({
+    EdgeInsets padding = EdgeInsets.zero,
+    EdgeInsets multiValuePadding = EdgeInsets.zero,
+    double? maxBarWidth,
+    double? minBarWidth,
+    Color color = Colors.red,
+    ColorForValue? colorForValue,
+    ColorForKey? colorForKey,
+    double multiItemStack = 1.0,
+    this.gradient,
+    this.border,
+    this.radius = BorderRadius.zero,
+  }) : super._lerp(
+          color: color,
+          colorForValue: colorForValue,
+          colorForKey: colorForKey,
+          padding: padding,
+          multiValuePadding: multiValuePadding,
+          maxBarWidth: maxBarWidth,
+          minBarWidth: minBarWidth,
+          geometryPainter: barPainter,
+          multiItemStack: multiItemStack,
         );
 
   /// Set border radius for each item
@@ -49,7 +76,7 @@ class BarItemOptions extends ItemOptions {
   ItemOptions animateTo(ItemOptions endValue, double t) {
     final _itemColor = Color.lerp(color, endValue.color, t) ?? Colors.red;
 
-    return BarItemOptions(
+    return BarItemOptions._lerp(
       gradient: Gradient.lerp(
           gradient, endValue is BarItemOptions ? endValue.gradient : null, t),
       color: _itemColor,
@@ -69,6 +96,8 @@ class BarItemOptions extends ItemOptions {
               ? (endValue.border ?? BorderSide.none)
               : BorderSide.none,
           t),
+      multiItemStack:
+          lerpDouble(_multiValueStacked, endValue._multiValueStacked, t) ?? 1.0,
     );
   }
 

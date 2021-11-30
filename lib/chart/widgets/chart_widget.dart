@@ -38,10 +38,10 @@ class _ChartWidget<T> extends StatelessWidget {
                         _width) *
                     state.behaviour._isScrollable,
             _height);
-        final _chart = CustomPaint(
-          size: _size,
-          isComplex: true,
-          painter: _ChartPainter(state),
+
+        final _chart = Container(
+          constraints: BoxConstraints.tight(_size),
+          child: ChartRenderer(state),
         );
 
         // If chart is clickable, then wrap it with [GestureDetector]
@@ -56,6 +56,7 @@ class _ChartWidget<T> extends StatelessWidget {
                   _listSize;
 
           return GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTapDown: (tapDetails) => state.behaviour._onChartItemClicked(
                 _getClickLocation(_itemWidth, tapDetails.localPosition)),
             onPanUpdate: (panUpdate) => state.behaviour._onChartItemClicked(

@@ -107,30 +107,23 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                         .caption
                         .copyWith(fontSize: 13.0),
                   ),
-                  TargetAreaDecoration(
-                    targetMax: targetMax,
-                    targetMin: targetMin,
-                    colorOverTarget:
-                        Theme.of(context).colorScheme.error.withOpacity(1.0),
-                    targetLineColor: Theme.of(context).colorScheme.secondary,
-                    targetAreaFillColor: Theme.of(context)
-                        .colorScheme
-                        .secondary
-                        .withOpacity(0.3),
-                    lineWidth: 2.0,
-                    targetAreaRadius: BorderRadius.circular(12.0),
-                  ),
                 ],
                 foregroundDecorations: [
+                  ValueDecoration(
+                    textStyle: TextStyle(color: Colors.red),
+                    alignment: Alignment.topCenter,
+                  ),
+                  ValueDecoration(
+                    textStyle: TextStyle(color: Colors.red),
+                    alignment: Alignment.bottomCenter,
+                    valueGenerator: (item) => item.min ?? 0,
+                  ),
                   SelectedItemDecoration(
                     _selected,
                     backgroundColor: Theme.of(context)
                         .scaffoldBackgroundColor
                         .withOpacity(0.5),
                   ),
-                  BorderDecoration(
-                      borderWidth: 1,
-                      color: Theme.of(context).colorScheme.secondaryVariant),
                 ],
               ),
             ),
