@@ -200,7 +200,7 @@ To turn any chart to multi value we need to use `ChartState` instead of `ChartSt
 ```dart
   @override
   Widget build(BuildContext context) {
-    Padding(
+    return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Chart<void>(
         height: 600.0,
