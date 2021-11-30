@@ -1,8 +1,9 @@
 part of charts_painter;
 
 /// Bubble painter
-GeometryPainter<T> bubblePainter<T>(ChartItem<T> item, ChartState<T> state) =>
-    BubbleGeometryPainter<T>(item, state);
+GeometryPainter<T> bubblePainter<T>(
+        ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions) =>
+    BubbleGeometryPainter<T>(item, data, itemOptions);
 
 /// Extension options for bar items
 /// [geometryPainter] is set to [BubbleGeometryPainter]

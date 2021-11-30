@@ -13,30 +13,29 @@ part of charts_painter;
 ///
 class BubbleGeometryPainter<T> extends GeometryPainter<T> {
   /// Constructor for bubble painter
-  BubbleGeometryPainter(ChartItem<T> item, ChartState state)
-      : super(item, state);
+  BubbleGeometryPainter(
+      ChartItem<T> item, ChartData<T?> data, ItemOptions itemOptions)
+      : super(item, data, itemOptions);
 
   @override
   void draw(Canvas canvas, Size size, Paint paint) {
-    final options = state.itemOptions;
-
-    final _maxValue = state.maxValue - state.minValue;
+    final _maxValue = data.maxValue - data.minValue;
     final _verticalMultiplier = size.height / _maxValue;
-    final _minValue = state.minValue * _verticalMultiplier;
+    final _minValue = data.minValue * _verticalMultiplier;
 
     final _itemWidth = max(
-        options.minBarWidth ?? 0.0,
+        itemOptions.minBarWidth ?? 0.0,
         min(
-            options.maxBarWidth ?? double.infinity,
+            itemOptions.maxBarWidth ?? double.infinity,
             size.width -
-                (options.padding.horizontal.isNegative
+                (itemOptions.padding.horizontal.isNegative
                     ? 0.0
-                    : options.padding.horizontal)));
+                    : itemOptions.padding.horizontal)));
 
     final _itemMaxValue = item.max ?? 0.0;
     // If item is empty, or it's max value is below chart's minValue then don't draw it.
     // minValue can be below 0, this will just ensure that animation is drawn correctly.
-    if (item.isEmpty || _itemMaxValue < state.minValue) {
+    if (item.isEmpty || _itemMaxValue < data.minValue) {
       return;
     }
 
@@ -50,21 +49,23 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
       paint,
     );
 
-    final _border = options is BubbleItemOptions ? options.border : null;
+    if (itemOptions is BubbleItemOptions) {
+      final _border = (itemOptions as BubbleItemOptions).border;
 
-    if (_border != null && _border.style == BorderStyle.solid) {
-      final _borderPaint = Paint();
-      _borderPaint.style = PaintingStyle.stroke;
+      if (_border != null && _border.style == BorderStyle.solid) {
+        final _borderPaint = Paint();
+        _borderPaint.style = PaintingStyle.stroke;
 
-      _borderPaint.color = _border.color;
-      _borderPaint.strokeWidth = _border.width;
+        _borderPaint.color = _border.color;
+        _borderPaint.strokeWidth = _border.width;
 
-      canvas.drawCircle(
-        Offset(
-            size.width * 0.5, _itemMaxValue * _verticalMultiplier - _minValue),
-        _circleSize,
-        _borderPaint,
-      );
+        canvas.drawCircle(
+          Offset(size.width * 0.5,
+              _itemMaxValue * _verticalMultiplier - _minValue),
+          _circleSize,
+          _borderPaint,
+        );
+      }
     }
   }
 }

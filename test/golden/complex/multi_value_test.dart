@@ -51,8 +51,7 @@ void main() {
         'Side by side',
         getMultiValueChart(
           size: 4,
-          options: ItemOptions(
-            geometryPainter: barPainter,
+          options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
             colorForKey: (item, key) => [
               Colors.red,

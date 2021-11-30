@@ -1,8 +1,9 @@
 part of charts_painter;
 
 /// Bar painter
-GeometryPainter<T> barPainter<T>(ChartItem<T> item, ChartState<T> state) =>
-    BarGeometryPainter<T>(item, state);
+GeometryPainter<T> barPainter<T>(
+        ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions) =>
+    BarGeometryPainter<T>(item, data, itemOptions);
 
 /// Extension options for bar items
 /// [geometryPainter] is set to [BarGeometryPainter]

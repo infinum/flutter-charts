@@ -86,7 +86,7 @@ class SelectedItemDecoration extends DecorationPainter {
       return;
     }
     final width = size.width;
-    final _selectedItem = state.items[selectedArrayIndex][_item];
+    final _selectedItem = state.data.items[selectedArrayIndex][_item];
 
     final _maxValuePainter = ValueDecoration.makeTextPainter(
       _selectedItem.max?.toStringAsFixed(2) ?? '',
@@ -100,7 +100,7 @@ class SelectedItemDecoration extends DecorationPainter {
             size.width - state.itemOptions.padding.horizontal));
 
     const _size = 2.0;
-    final _maxValue = state.maxValue - state.minValue;
+    final _maxValue = state.data.maxValue - state.data.minValue;
     final _height = size.height - marginNeeded().vertical;
     final scale = _height / _maxValue;
 
@@ -108,7 +108,7 @@ class SelectedItemDecoration extends DecorationPainter {
     final _itemMinValue = _selectedItem.min ?? 0.0;
     // If item is empty, or it's max value is below chart's minValue then don't draw it.
     // minValue can be below 0, this will just ensure that animation is drawn correctly.
-    if (_selectedItem.isEmpty || _itemMaxValue < state.minValue) {
+    if (_selectedItem.isEmpty || _itemMaxValue < state.data.minValue) {
       return;
     }
 

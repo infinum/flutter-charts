@@ -95,7 +95,7 @@ class SparkLineDecoration extends DecorationPainter {
       ..style = fill ? PaintingStyle.fill : PaintingStyle.stroke
       ..strokeWidth = lineWidth;
 
-    final _maxValue = state.maxValue - state.minValue;
+    final _maxValue = state.data.maxValue - state.data.minValue;
     final scale = size.height / _maxValue;
 
     final _positions = <Offset>[];
@@ -110,7 +110,7 @@ class SparkLineDecoration extends DecorationPainter {
           Rect.fromPoints(Offset.zero, Offset(size.width, -size.height)));
     }
 
-    state.items[lineArrayIndex].asMap().forEach((key, value) {
+    state.data.items[lineArrayIndex].asMap().forEach((key, value) {
       final _stretchPosition = _stretchLine * (key / (_listSize - 1));
       final _fixedPosition = (1 - _stretchLine) * startPosition;
 
@@ -121,9 +121,9 @@ class SparkLineDecoration extends DecorationPainter {
       }
 
       _positions.add(Offset(_itemWidth * key + _position,
-          size.height - ((value.max ?? 0.0) - state.minValue) * scale));
+          size.height - ((value.max ?? 0.0) - state.data.minValue) * scale));
 
-      if (fill && state.items[lineArrayIndex].length - 1 == key) {
+      if (fill && state.data.items[lineArrayIndex].length - 1 == key) {
         _positions.add(Offset(_itemWidth * key + _position, 0.0));
       }
     });

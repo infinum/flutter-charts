@@ -147,8 +147,7 @@ void main() {
                 ],
                 valueAxisMaxOver: 2,
               ),
-              itemOptions: ItemOptions(
-                geometryPainter: barPainter,
+              itemOptions: BarItemOptions(
                 color: Colors.transparent,
               ),
               foregroundDecorations: [

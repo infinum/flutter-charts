@@ -3,7 +3,7 @@ part of charts_painter;
 /// Item painter, use [barPainter] or [bubblePainter].
 /// Custom painter can also be added by extending [GeometryPainter]
 typedef ChartGeometryPainter<T> = GeometryPainter<T> Function(
-    ChartItem<T?> item, ChartState state);
+    ChartItem<T?> item, ChartData data, ItemOptions itemOptions);
 
 /// Get color for current item value
 typedef ColorForValue = Color Function(Color defaultColor, double? value,
@@ -16,7 +16,7 @@ typedef ColorForKey = Color Function(ChartItem item, int index);
 /// Need to provide [ChartGeometryPainter]
 ///
 /// Extend this to make your custom options if needed. For example see [BarItemOptions] or [BubbleItemOptions]
-class ItemOptions {
+abstract class ItemOptions {
   /// Default constructor for ItemOptions
   /// It's recommended to make/use custom item options for custom painters.
   const ItemOptions({
@@ -76,29 +76,7 @@ class ItemOptions {
   /// Animate to next [ItemOptions] state
   /// When making custom [ItemOptions] make sure to override this return custom painter
   /// with all available options, otherwise changes in options won't be animated
-  ItemOptions animateTo(ItemOptions endValue, double t) {
-    final _itemColor = Color.lerp(color, endValue.color, t) ?? Colors.red;
-    final _itemPadding =
-        EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero;
-    final _itemMultiValuePadding =
-        EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ??
-            EdgeInsets.zero;
-
-    final _multiStackLerp =
-        lerpDouble(_multiValueStacked, endValue._multiValueStacked, t) ?? 1.0;
-
-    return ItemOptions._lerp(
-      color: _itemColor,
-      colorForKey: ColorForKeyLerp.lerp(this, endValue, t),
-      colorForValue: ColorForValueLerp.lerp(this, endValue, t),
-      padding: _itemPadding,
-      multiValuePadding: _itemMultiValuePadding,
-      maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
-      minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
-      geometryPainter: t > 0.5 ? endValue.geometryPainter : geometryPainter,
-      multiItemStack: _multiStackLerp,
-    );
-  }
+  ItemOptions animateTo(ItemOptions endValue, double t);
 
   /// Get current item color
   ///

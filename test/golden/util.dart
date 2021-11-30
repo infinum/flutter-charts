@@ -20,8 +20,7 @@ Widget getDefaultChart({
               .toList(),
           valueAxisMaxOver: 2,
         ),
-        itemOptions: ItemOptions(
-          geometryPainter: barPainter,
+        itemOptions: BarItemOptions(
           padding: const EdgeInsets.symmetric(horizontal: 4.0),
           color: Colors.red.withOpacity(0.1),
         ),
@@ -53,8 +52,8 @@ Widget getMultiValueChart({
                       (Random(((index + 1) * (i + 1))).nextDouble() * 15) +
                           5))),
           valueAxisMaxOver: 2,
+          dataStrategy: strategy,
         ),
-        strategy: strategy,
         itemOptions: options ?? BarItemOptions(),
         behaviour: behaviour ?? ChartBehaviour(),
         backgroundDecorations: backgroundDecorations ?? [],

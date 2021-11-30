@@ -10,10 +10,23 @@ class ChartData<T> {
   /// [valueAxisMaxOver] - How much should chart draw above max value in the chart
   ChartData(
     this._items, {
+    this.dataStrategy = const DefaultDataStrategy(),
     this.axisMax,
     this.valueAxisMaxOver,
     this.axisMin,
-  });
+  })  : minValue = _getMinValue<T>(
+            dataStrategy.formatDataStrategy(_items).fold(
+                <ChartItem<T?>>[],
+                (List<ChartItem<T?>> list, element) =>
+                    list..addAll(element)).toList(),
+            axisMin),
+        maxValue = _getMaxValue(
+                dataStrategy.formatDataStrategy(_items).fold(
+                    <ChartItem<T?>>[],
+                    (List<ChartItem<T?>> list, element) =>
+                        list..addAll(element)).toList(),
+                axisMax) +
+            (valueAxisMaxOver ?? 0.0);
 
   /// Make chart data from list of [ChartItem]'s
   factory ChartData.fromList(
@@ -51,14 +64,32 @@ class ChartData<T> {
 
   ChartData._lerp(
     this._items, {
+    this.dataStrategy = const DefaultDataStrategy(),
     this.axisMax,
     this.axisMin,
     this.valueAxisMaxOver,
+    required this.minValue,
+    required this.maxValue,
   });
 
   /// Chart items, items in the list cannot be null, but ChartItem can be defined
   /// with null values to represent gaps in the data
   final List<List<ChartItem<T?>>> _items;
+
+  // Statistics layer
+  /// Data strategy to use on items
+  /// Default: [DefaultDataStrategy]
+  final DataStrategy dataStrategy;
+
+  // Scale
+  /// Min value that chart should show.
+  /// In case chart shouldn't start from 0 use this to specify new min starting point
+  /// If data has value that goes below [minValue] then [minValue] is ignored
+  late final double minValue;
+
+  /// Max value to show on the chart, in case data has point higher then
+  /// specified [maxValue] then [maxValue] is ignored
+  late final double maxValue;
 
   /// Max value that chart should show, in case that [axisMax] is bellow
   /// the value of value passed with data in the chart this will be ignored.
@@ -85,6 +116,36 @@ class ChartData<T> {
   /// Get number of data lists in the chart
   int get stackSize => _items.length;
 
+  List<List<ChartItem<T?>>>? _cachedItems;
+
+  /// Return list as formatted data defined by [DataStrategy]
+  List<List<ChartItem<T?>>> get items {
+    _cachedItems ??= dataStrategy.formatDataStrategy(_items);
+    return _cachedItems ?? dataStrategy.formatDataStrategy(_items);
+  }
+
+  /// Get max value of the chart
+  /// Max value is max data item from [items] or [ChartOptions.axisMax]
+  static double _getMaxValue<T>(
+      List<ChartItem<T>> items, double? valueAxisMax) {
+    return max(valueAxisMax ?? 0.0, items.map((e) => e.max ?? 0.0).reduce(max));
+  }
+
+  /// Get min value of the chart
+  /// Min value is min data item from [items] or [ChartOptions.axisMin]
+  static double _getMinValue<T>(
+      List<ChartItem<T?>> items, double? valueAxisMin) {
+    final _minItems = items
+        .where((e) =>
+            (e.min != null && e.min != 0.0) || (e.min == null && e.max != 0.0))
+        .map((e) => e.min ?? e.max ?? double.infinity);
+    if (_minItems.isEmpty) {
+      return valueAxisMin ?? 0.0;
+    }
+
+    return min(valueAxisMin ?? 0.0, _minItems.reduce(min));
+  }
+
   /// Linearly interpolate between two [ChartData], `a` and `b`, by an extrapolation
   /// factor `t`.
   ///
@@ -94,7 +155,12 @@ class ChartData<T> {
       ChartItemsLerp.lerpValues(a._items, b._items, t),
       axisMax: lerpDouble(a.axisMax, b.axisMax, t),
       axisMin: lerpDouble(a.axisMin, b.axisMin, t),
+      dataStrategy: t > 0.5 ? b.dataStrategy : a.dataStrategy,
       valueAxisMaxOver: lerpDouble(a.valueAxisMaxOver, b.valueAxisMaxOver, t),
+
+      /// Those are usually calculated, but we need to have a control over them in the animation
+      maxValue: lerpDouble(a.maxValue, b.maxValue, t) ?? b.maxValue,
+      minValue: lerpDouble(a.minValue, b.minValue, t) ?? b.minValue,
     );
   }
 }

@@ -5,10 +5,11 @@ part of charts_painter;
 abstract class GeometryPainter<T> {
   /// Default constructor for [GeometryPainter]
   @mustCallSuper
-  GeometryPainter(this.item, this.state);
+  GeometryPainter(this.item, this.data, this.itemOptions);
 
-  /// Current state of the chart
-  final ChartState state;
+  /// Current data of the chart
+  final ChartData<T?> data;
+  final ItemOptions itemOptions;
 
   /// Current item being painted
   final ChartItem<T?> item;
@@ -23,7 +24,7 @@ abstract class GeometryPainter<T> {
 
   /// Calculate item width based on current [Size] and [ChartState]
   double itemWidth(Size size) {
-    return max(state.itemOptions.minBarWidth ?? 0.0,
-        min(state.itemOptions.maxBarWidth ?? double.infinity, size.width));
+    return max(itemOptions.minBarWidth ?? 0.0,
+        min(itemOptions.maxBarWidth ?? double.infinity, size.width));
   }
 }

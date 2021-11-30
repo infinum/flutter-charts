@@ -15,27 +15,15 @@ class ChartState<T> {
   /// Chart state constructor
   ChartState(
     this.data, {
-    this.itemOptions = const ItemOptions(geometryPainter: barPainter),
+    this.itemOptions = const BarItemOptions(),
     this.behaviour = const ChartBehaviour(),
-    this.strategy = const DefaultDataStrategy(),
     this.backgroundDecorations = const <DecorationPainter>[],
     this.foregroundDecorations = const <DecorationPainter>[],
+    ChartDataRendererFactory<T?>? dataRenderer,
   })  : assert(data.isNotEmpty, 'No items!'),
         defaultPadding = EdgeInsets.zero,
         defaultMargin = EdgeInsets.zero,
-        minValue = _getMinValue<T>(
-            strategy.formatDataStrategy(data._items).fold(
-                <ChartItem<T?>>[],
-                (List<ChartItem<T?>> list, element) =>
-                    list..addAll(element)).toList(),
-            data.axisMin),
-        maxValue = _getMaxValue(
-                strategy.formatDataStrategy(data._items).fold(
-                    <ChartItem<T?>>[],
-                    (List<ChartItem<T?>> list, element) =>
-                        list..addAll(element)).toList(),
-                data.axisMax) +
-            (data.valueAxisMaxOver ?? 0.0) {
+        dataRenderer = dataRenderer ?? defaultItemRenderer<T>(itemOptions) {
     /// Set default padding and margin, decorations padding and margins will be added to this value
     _setUpDecorations();
   }
@@ -43,8 +31,7 @@ class ChartState<T> {
   /// Create line chart with foreground sparkline decoration and background grid decoration
   factory ChartState.line(
     ChartData<T> data, {
-    ItemOptions itemOptions =
-        const ItemOptions(geometryPainter: bubblePainter, maxBarWidth: 2.0),
+    ItemOptions itemOptions = const BubbleItemOptions(maxBarWidth: 2.0),
     ChartBehaviour behaviour = const ChartBehaviour(),
     List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
     List<DecorationPainter> foregroundDecorations = const <DecorationPainter>[],
@@ -65,9 +52,8 @@ class ChartState<T> {
   /// Create bar chart with background grid decoration
   factory ChartState.bar(
     ChartData<T> data, {
-    ItemOptions itemOptions = const ItemOptions(
-        geometryPainter: barPainter,
-        padding: EdgeInsets.symmetric(horizontal: 4.0)),
+    ItemOptions itemOptions =
+        const BarItemOptions(padding: EdgeInsets.symmetric(horizontal: 4.0)),
     ChartBehaviour behaviour = const ChartBehaviour(),
     List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
     List<DecorationPainter> foregroundDecorations = const <DecorationPainter>[],
@@ -85,15 +71,13 @@ class ChartState<T> {
 
   ChartState._lerp(
     this.data, {
-    this.itemOptions = const ItemOptions(geometryPainter: barPainter),
+    this.itemOptions = const BarItemOptions(),
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const [],
     this.foregroundDecorations = const [],
-    this.strategy = const DefaultDataStrategy(),
+    required this.dataRenderer,
     required this.defaultMargin,
     required this.defaultPadding,
-    required this.maxValue,
-    required this.minValue,
   }) {
     _initDecorations();
   }
@@ -102,27 +86,14 @@ class ChartState<T> {
   /// [ChartData] data that chart will show
   final ChartData<T> data;
 
+  final ChartDataRendererFactory<T?> dataRenderer;
+
   // Geometry layer
   /// [ItemOptions] define how each item is painted
   final ItemOptions itemOptions;
 
   /// [ChartBehaviour] define how chart behaves and how it should react
   final ChartBehaviour behaviour;
-
-  // Statistics layer
-  /// Data strategy to use on items
-  /// Default: [DefaultDataStrategy]
-  final DataStrategy strategy;
-
-  // Scale
-  /// Min value that chart should show.
-  /// In case chart shouldn't start from 0 use this to specify new min starting point
-  /// If data has value that goes below [minValue] then [minValue] is ignored
-  late final double minValue;
-
-  /// Max value to show on the chart, in case data has point higher then
-  /// specified [maxValue] then [maxValue] is ignored
-  late final double maxValue;
 
   /// ------
 
@@ -175,14 +146,6 @@ class ChartState<T> {
   void _getDecorationsPadding() => _allDecorations
       .forEach((element) => defaultPadding += element.paddingNeeded());
 
-  List<List<ChartItem<T?>>>? _cachedItems;
-
-  /// Return list as formatted data defined by [DataStrategy]
-  List<List<ChartItem<T?>>> get items {
-    _cachedItems ??= strategy.formatDataStrategy(data._items);
-    return _cachedItems ?? strategy.formatDataStrategy(data._items);
-  }
-
   /// For later in case charts will have to animate between states.
   static ChartState<T?> lerp<T>(ChartState<T?> a, ChartState<T?> b, double t) {
     return ChartState<T?>._lerp(
@@ -211,37 +174,26 @@ class ChartState<T> {
         return e;
       }).toList(),
 
-      strategy: t > 0.5 ? b.strategy : a.strategy,
       defaultMargin: EdgeInsets.lerp(a.defaultMargin, b.defaultMargin, t) ??
           EdgeInsets.zero,
       defaultPadding: EdgeInsets.lerp(a.defaultPadding, b.defaultPadding, t) ??
           EdgeInsets.zero,
-
-      /// Those are usually calculated, but we need to have a control over them in the animation
-      maxValue: lerpDouble(a.maxValue, b.maxValue, t) ?? b.maxValue,
-      minValue: lerpDouble(a.minValue, b.minValue, t) ?? b.minValue,
+      dataRenderer: t > 0.5 ? b.dataRenderer : a.dataRenderer,
     );
   }
 
-  /// Get max value of the chart
-  /// Max value is max data item from [items] or [ChartOptions.axisMax]
-  static double _getMaxValue<T>(
-      List<ChartItem<T>> items, double? valueAxisMax) {
-    return max(valueAxisMax ?? 0.0, items.map((e) => e.max ?? 0.0).reduce(max));
-  }
-
-  /// Get min value of the chart
-  /// Min value is min data item from [items] or [ChartOptions.axisMin]
-  static double _getMinValue<T>(
-      List<ChartItem<T?>> items, double? valueAxisMin) {
-    final _minItems = items
-        .where((e) =>
-            (e.min != null && e.min != 0.0) || (e.min == null && e.max != 0.0))
-        .map((e) => e.min ?? e.max ?? double.infinity);
-    if (_minItems.isEmpty) {
-      return valueAxisMin ?? 0.0;
-    }
-
-    return min(valueAxisMin ?? 0.0, _minItems.reduce(min));
+  static ChartDataRendererFactory<T?> defaultItemRenderer<T>(
+      ItemOptions itemOptions) {
+    return (data) => ChartLinearDataRenderer<T?>(
+        data,
+        data.items
+            .mapIndexed(
+              (key, items) => items
+                  .map((e) => LeafChartItemRenderer(e, data, itemOptions,
+                      arrayKey: key))
+                  .toList(),
+            )
+            .expand((element) => element)
+            .toList());
   }
 }

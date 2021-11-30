@@ -26,8 +26,7 @@ void main() {
                     .toList(),
                 valueAxisMaxOver: 2,
               ),
-              itemOptions: ItemOptions(
-                geometryPainter: barPainter,
+              itemOptions: BarItemOptions(
                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
                 color: Colors.red,
               ),
@@ -56,8 +55,7 @@ void main() {
                     .toList(),
                 valueAxisMaxOver: 2,
               ),
-              itemOptions: ItemOptions(
-                geometryPainter: barPainter,
+              itemOptions: BarItemOptions(
                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
                 color: Colors.red,
               ),
@@ -85,8 +83,7 @@ void main() {
                     .toList(),
                 valueAxisMaxOver: 2,
               ),
-              itemOptions: ItemOptions(
-                geometryPainter: bubblePainter,
+              itemOptions: BubbleItemOptions(
                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
                 color: Colors.red,
               ),

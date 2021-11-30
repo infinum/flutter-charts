@@ -1,51 +1,31 @@
 part of charts_painter;
 
 class ChartLinearDataRenderer<T> extends ChartDataRenderer<T> {
-  ChartLinearDataRenderer(this.chartState, {Key? key})
-      : super(key: key, children: [
-          ...chartState.items
-              .mapIndexed(
-                (key, items) => items
-                    .map((e) =>
-                        LeafChartItemRenderer(e, chartState, arrayKey: key))
-                    .toList(),
-              )
-              .expand((element) => element)
-              .toList(),
-        ]);
+  ChartLinearDataRenderer(this.chartData, List<Widget> children, {Key? key})
+      : super(key: key, children: children);
 
-  final ChartState<T?> chartState;
+  final ChartData<T?> chartData;
 
   @override
   _ChartLinearItemRenderer<T?> createRenderObject(BuildContext context) {
-    return _ChartLinearItemRenderer<T?>(chartState);
+    return _ChartLinearItemRenderer<T?>(chartData);
   }
 
   @override
   void updateRenderObject(
       BuildContext context, _ChartLinearItemRenderer<T?> renderObject) {
-    renderObject.chartState = chartState;
+    renderObject.chartData = chartData;
     renderObject.markNeedsLayout();
   }
 }
 
 class ChartItemData extends ContainerBoxParentData<RenderBox> {}
 
-class _ChartLinearItemRenderer<T> extends RenderBox
+class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     with
         ContainerRenderObjectMixin<RenderBox, ChartItemData>,
         RenderBoxContainerDefaultsMixin<RenderBox, ChartItemData> {
-  _ChartLinearItemRenderer(this._chartState);
-
-  ChartState<T?> _chartState;
-  ChartState<T?> get chartState => _chartState;
-  set chartState(ChartState<T?> state) {
-    if (_chartState != state) {
-      _chartState = state;
-      markNeedsPaint();
-      markNeedsSemanticsUpdate();
-    }
-  }
+  _ChartLinearItemRenderer(ChartData<T?> chartData) : super(chartData);
 
   @override
   void setupParentData(RenderBox child) {
@@ -55,53 +35,11 @@ class _ChartLinearItemRenderer<T> extends RenderBox
   }
 
   @override
-  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
-    return defaultHitTestChildren(result, position: position);
-  }
-
-  @override
-  double? computeDistanceToActualBaseline(TextBaseline baseline) {
-    return defaultComputeDistanceToFirstActualBaseline(baseline);
-  }
-
-  @override
-  double computeMinIntrinsicWidth(double height) {
-    // TODO: implement computeMinIntrinsicWidth
-    return super.computeMinIntrinsicWidth(height);
-  }
-
-  @override
-  double computeMaxIntrinsicWidth(double height) {
-    // TODO: implement computeMaxIntrinsicWidth
-    return super.computeMaxIntrinsicWidth(height);
-  }
-
-  @override
-  double computeMinIntrinsicHeight(double width) {
-    // TODO: implement computeMinIntrinsicHeight
-    return super.computeMinIntrinsicHeight(width);
-  }
-
-  @override
-  double computeMaxIntrinsicHeight(double width) {
-    // TODO: implement computeMaxIntrinsicHeight
-    return super.computeMaxIntrinsicHeight(width);
-  }
-
-  @override
   bool get sizedByParent => false;
 
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-    final _size = constraints
-        .deflate(chartState.defaultPadding + chartState.defaultMargin)
-        .biggest;
-    final childParentData = parentData! as BoxParentData;
-    childParentData.offset = Offset(
-        chartState.defaultPadding.left + chartState.defaultMargin.left,
-        chartState.defaultPadding.top + chartState.defaultMargin.top);
-
-    return _size;
+    return constraints.biggest;
   }
 
   @override
@@ -109,16 +47,17 @@ class _ChartLinearItemRenderer<T> extends RenderBox
     var childCount = <int, int>{};
     var child = firstChild;
     final _size = computeDryLayout(constraints);
-    final _listSize = _chartState.data.listSize;
+    final _listSize = _chartData.listSize;
     final _itemSize = Size(_size.width, _size.height);
 
     /// Final usable space for one item in the chart
     final _itemWidth = _itemSize.width / _listSize;
+    final _offset = (parentData as BoxPaneParentData).offset;
 
     while (child != null && child is _RenderLeafChartItem<T>) {
       final childParentData = child.parentData! as ChartItemData;
-      childParentData.offset = Offset(
-          _itemWidth * (childCount[child.key] ?? 0), childParentData.offset.dy);
+      childParentData.offset =
+          _offset + Offset(_itemWidth * (childCount[child.key] ?? 0), 0.0);
       final innerConstraints = BoxConstraints(
         maxWidth: _itemWidth,
         maxHeight: _size.height,

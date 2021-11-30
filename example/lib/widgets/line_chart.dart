@@ -71,8 +71,10 @@ class LineChart<T> extends StatelessWidget {
       height: height,
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
-        ChartData(_mappedValues),
-        strategy: stack ? StackDataStrategy() : DefaultDataStrategy(),
+        ChartData(
+          _mappedValues,
+          dataStrategy: stack ? StackDataStrategy() : DefaultDataStrategy(),
+        ),
         itemOptions: chartItemOptions,
         foregroundDecorations: [
           SparkLineDecoration(
