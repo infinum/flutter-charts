@@ -198,7 +198,7 @@ class SelectedItemDecoration extends DecorationPainter {
 
   @override
   EdgeInsets marginNeeded() {
-    return EdgeInsets.only(top: showText ? (selectedStyle.fontSize ?? 0) * 1.8 : 0.0);
+    return EdgeInsets.only(top: showText && showOnTop ? (selectedStyle.fontSize ?? 0) * 1.8 : 0.0);
   }
 
   @override
