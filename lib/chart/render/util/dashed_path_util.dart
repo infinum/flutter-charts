@@ -13,18 +13,28 @@ Path dashPath(
   required List<double> dashArray,
 }) {
   final dest = Path();
-  for (final metric in source.computeMetrics()) {
+
+  // Get dashed path for this [PathMetric]
+  Path _pathFromMetrics(PathMetric metric) {
+    final _path = Path();
     var distance = 0.0;
     var _index = 0;
+
     while (distance < metric.length) {
       final len = dashArray[_index % dashArray.length];
       if (_index % 2 == 0) {
-        dest.addPath(metric.extractPath(distance, distance + len), Offset.zero);
+        _path.addPath(metric.extractPath(distance, distance + len), Offset.zero);
       }
       distance += len;
       _index++;
     }
+
+    return _path;
   }
+
+  source.computeMetrics().forEach((metric) {
+    dest.addPath(_pathFromMetrics(metric), Offset.zero);
+  });
 
   return dest;
 }
