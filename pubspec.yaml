@@ -12,7 +12,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  path_drawing: ^0.5.1
   collection: ^1.15.0
   golden_toolkit: ^0.9.0
 
