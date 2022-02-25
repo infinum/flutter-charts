@@ -23,7 +23,8 @@ Path dashPath(
     while (distance < metric.length) {
       final len = dashArray[_index % dashArray.length];
       if (_index % 2 == 0) {
-        _path.addPath(metric.extractPath(distance, distance + len), Offset.zero);
+        _path.addPath(
+            metric.extractPath(distance, distance + len), Offset.zero);
       }
       distance += len;
       _index++;
