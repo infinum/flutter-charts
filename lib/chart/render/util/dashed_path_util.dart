@@ -1,12 +1,6 @@
 part of charts_painter;
 
 /// Creates a new path that is drawn from the segments of `source`.
-///
-/// Dash intervals are controled by the `dashArray` - see [RepeatingIntervalList]
-/// for examples.
-///
-/// `dashOffset` specifies an initial starting point for the dashing.
-///
 /// Passing a `source` that is an empty path will return an empty path.
 Path dashPath(
   Path source, {
