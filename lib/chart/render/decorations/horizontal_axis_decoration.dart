@@ -211,9 +211,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     }
 
     if (dashArray != null) {
-      canvas.drawPath(
-          dashPath(gridPath, dashArray: CircularIntervalList(dashArray!)),
-          _paint);
+      canvas.drawPath(dashPath(gridPath, dashArray: dashArray!), _paint);
     } else {
       canvas.drawPath(gridPath, _paint);
     }
@@ -250,6 +248,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     final textPainter = TextPainter(
         text: TextSpan(text: text, style: style),
         maxLines: 1,
+        textWidthBasis: TextWidthBasis.longestLine,
         textScaleFactor: textScale,
         textDirection: TextDirection.ltr)
       ..layout();

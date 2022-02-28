@@ -131,8 +131,7 @@ class SparkLineDecoration extends DecorationPainter {
     final _path = _getPoints(_positions, fill, size);
 
     if (dashArray != null) {
-      canvas.drawPath(
-          dashPath(_path, dashArray: CircularIntervalList(dashArray!)), _paint);
+      canvas.drawPath(dashPath(_path, dashArray: dashArray!), _paint);
     } else {
       canvas.drawPath(_path, _paint);
     }

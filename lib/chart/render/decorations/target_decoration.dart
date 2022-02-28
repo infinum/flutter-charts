@@ -132,7 +132,7 @@ class TargetLineDecoration extends DecorationPainter {
 
     if (dashArray != null) {
       canvas.drawPath(
-        dashPath(_path, dashArray: CircularIntervalList(dashArray!)),
+        dashPath(_path, dashArray: dashArray!),
         _linePaint,
       );
     } else {
@@ -287,7 +287,7 @@ class TargetAreaDecoration extends DecorationPainter {
 
     if (dashArray != null) {
       canvas.drawPath(
-        dashPath(_rectPath, dashArray: CircularIntervalList(dashArray!)),
+        dashPath(_rectPath, dashArray: dashArray!),
         Paint()
           ..color = targetLineColor
           ..strokeWidth = lineWidth
