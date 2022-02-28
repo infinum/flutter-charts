@@ -9,11 +9,12 @@ class SelectedItemDecoration extends DecorationPainter {
     this.backgroundColor = Colors.grey,
     this.selectedStyle = const TextStyle(fontSize: 13.0),
     this.animate = false,
-    this.showText = true,
+    bool showText = true,
     this.showOnTop = true,
     this.selectedArrayIndex = 0,
     this.child,
-  });
+    this.childHeight = 0.0,
+  }) : showText = showText && (child == null);
 
   /// Index of selected item
   final int? selectedItem;
@@ -35,6 +36,7 @@ class SelectedItemDecoration extends DecorationPainter {
   final TextStyle selectedStyle;
 
   final Widget? child;
+  final double childHeight;
 
   /// Index of list whose data to show
   /// By default it will use first list to this value will be `0`
@@ -245,7 +247,14 @@ class SelectedItemDecoration extends DecorationPainter {
 
   @override
   EdgeInsets marginNeeded() {
-    return EdgeInsets.only(top: showText && showOnTop ? (selectedStyle.fontSize ?? 0) * 1.8 : 0.0);
+    return EdgeInsets.only(
+        top: showOnTop
+            ? (showText
+                ? (selectedStyle.fontSize ?? 0) * 1.8
+                : child != null
+                    ? childHeight
+                    : 0.0)
+            : 0.0);
   }
 
   @override
@@ -263,6 +272,7 @@ class SelectedItemDecoration extends DecorationPainter {
         showOnTop: t < 0.5 ? showOnTop : endValue.showOnTop,
         showText: t < 0.5 ? showText : endValue.showText,
         child: t < 0.5 ? child : endValue.child,
+        childHeight: lerpDouble(childHeight, endValue.childHeight, t) ?? 0.0,
       );
     }
 
