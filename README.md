@@ -38,7 +38,7 @@ flutter packages get
 
 ## Chart data
 Chart data has some options that will change how the data will be processed.
-By changing `axisMin` or `axisMax` scale of the chart will change in order to show that value, in case data has higher/lower data then axisMax/axisMin then this option is ignored. 
+By changing `axisMin` or `axisMax` scale of the chart will change in order to show that value, in case data has higher/lower data than axisMax/axisMin, then this option is ignored.
 
 Adding `valueAxisMaxOver` will add that value to currently the highest value.
 
@@ -264,7 +264,7 @@ To make sure you can make any chart you want, we have included `DecorationsRende
 To make fixed decorations you will have to make these changes to your chart:
 ```dart
 final _chartState = ChartState(
-  ChartData.fromList([1, 2, 3, 4, 5,3, 2, 2].map((e) => BarValue<void>(e.toDouble())).toList()),
+  ChartData.fromList([1, 2, 3, 4, 5, 3, 2, 2].map((e) => BarValue<void>(e.toDouble())).toList()),
   behaviour: ChartBehaviour(
     // 1) Make sure the chart can scroll
     isScrollable: true,

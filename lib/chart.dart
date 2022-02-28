@@ -9,7 +9,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:path_drawing/path_drawing.dart';
 
 /// State
 part 'chart/model/chart_state.dart';
@@ -34,15 +33,15 @@ part 'chart/model/theme/item_theme/line_item_options.dart';
 
 /// Render
 part 'chart/render/chart_renderer.dart';
-// Geometry painters
+// Data renderers
 part 'chart/render/data_renderer/chart_data_renderer.dart';
 part 'chart/render/data_renderer/chart_linear_data_renderer.dart';
+// Decoration painters
 part 'chart/render/decorations/border_decoration.dart';
 part 'chart/render/decorations/decoration_painter.dart';
 part 'chart/render/decorations/grid_decoration.dart';
 part 'chart/render/decorations/horizontal_axis_decoration.dart';
 part 'chart/render/decorations/renderer/chart_decoration_child_renderer.dart';
-// Decorations painter
 part 'chart/render/decorations/renderer/chart_decoration_renderer.dart';
 part 'chart/render/decorations/selected_item_decoration.dart';
 part 'chart/render/decorations/spark_line_decoration.dart';
@@ -51,10 +50,13 @@ part 'chart/render/decorations/target_legends_decoration.dart';
 part 'chart/render/decorations/value_decoration.dart';
 part 'chart/render/decorations/vertical_axis_decoration.dart';
 part 'chart/render/decorations_renderer.dart';
+// Geometry painters
 part 'chart/render/geometry/leaf_item_renderer.dart';
 part 'chart/render/geometry/painters/bar_geometry_painter.dart';
 part 'chart/render/geometry/painters/bubble_geometry_painter.dart';
 part 'chart/render/geometry/painters/geometry_painter.dart';
+// Utils
+part 'chart/render/util/dashed_path_util.dart';
 
 /// Widgets
 part 'chart/widgets/animated_chart.dart';

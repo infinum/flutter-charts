@@ -176,9 +176,7 @@ class VerticalAxisDecoration extends DecorationPainter {
     }
 
     if (dashArray != null) {
-      canvas.drawPath(
-          dashPath(gridPath, dashArray: CircularIntervalList(dashArray!)),
-          _paint);
+      canvas.drawPath(dashPath(gridPath, dashArray: dashArray!), _paint);
     } else {
       canvas.drawPath(gridPath, _paint);
     }
