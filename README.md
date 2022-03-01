@@ -28,7 +28,7 @@ Example charts that can easily be built.
 Add it to your package's pubspec.yaml file
 ```yaml
 dependencies:
-  charts_painter: ^2.0.0
+  charts_painter: ^2.0.0+1
 ```
 
 Install packages from the command line

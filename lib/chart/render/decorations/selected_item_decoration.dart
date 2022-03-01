@@ -10,7 +10,7 @@ class SelectedItemDecoration extends DecorationPainter {
     this.selectedStyle = const TextStyle(fontSize: 13.0),
     this.animate = false,
     this.showText = true,
-    this.showOnTop = false,
+    this.showOnTop = true,
     this.selectedArrayIndex = 0,
   });
 
@@ -146,15 +146,19 @@ class SelectedItemDecoration extends DecorationPainter {
           Rect.fromPoints(
               Offset(
                 width / 2 - _maxValuePainter.width / 2,
-                ((size.height - ((_itemMaxValue - (min(_itemMinValue, state.data.minValue))) * scale)) *
-                        (showOnTop ? 0 : 1)) -
-                    (selectedStyle.fontSize ?? 0.0) * 1.4,
+                ((size.height -
+                            ((_itemMaxValue - (min(_itemMinValue, state.data.minValue))) * scale) -
+                            (selectedStyle.fontSize ?? 0.0) * 1.4) *
+                        (showOnTop ? 0 : 1)) +
+                    ((showOnTop ? 1 : 0) * (selectedStyle.fontSize ?? 0.0) * 1.4),
               ),
               Offset(
                 width / 2 + _maxValuePainter.width / 2,
-                ((size.height - ((_itemMaxValue - (min(_itemMinValue, state.data.minValue))) * scale)) *
-                        (showOnTop ? 0 : 1)) -
-                    (selectedStyle.fontSize ?? 0.0) * 0.4,
+                ((size.height -
+                            ((_itemMaxValue - (min(_itemMinValue, state.data.minValue))) * scale) -
+                            (selectedStyle.fontSize ?? 0.0) * 0.4) *
+                        (showOnTop ? 0 : 1)) +
+                    ((showOnTop ? 1 : 0) * (selectedStyle.fontSize ?? 0.0) * 0.4),
               )),
           const Radius.circular(8.0),
         ).inflate(4),
@@ -164,8 +168,11 @@ class SelectedItemDecoration extends DecorationPainter {
       canvas,
       Offset(
         width / 2 - _maxValuePainter.width / 2,
-        ((size.height - ((_itemMaxValue - (min(_itemMinValue, state.data.minValue))) * scale)) * (showOnTop ? 0 : 1)) -
-            (selectedStyle.fontSize ?? 0.0) * 1.4,
+        ((size.height -
+                    ((_itemMaxValue - (min(_itemMinValue, state.data.minValue))) * scale) -
+                    (selectedStyle.fontSize ?? 0.0) * 1.4) *
+                (showOnTop ? 0 : 1)) +
+            ((showOnTop ? 1 : 0) * (selectedStyle.fontSize ?? 0.0) * 0.4),
       ),
     );
   }
