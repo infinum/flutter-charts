@@ -14,6 +14,7 @@ class ValueDecoration extends DecorationPainter {
     this.alignment = Alignment.topCenter,
     this.valueArrayIndex = 0,
     this.valueGenerator = defaultValueForItem,
+    this.hideZeroValues = false,
   });
 
   /// Style for values to use
@@ -28,6 +29,7 @@ class ValueDecoration extends DecorationPainter {
   ///
   /// By default this will show first list and value will be 0
   final int valueArrayIndex;
+  final bool hideZeroValues;
 
   @override
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
@@ -98,12 +100,16 @@ class ValueDecoration extends DecorationPainter {
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
     final _maxValue = state.data.maxValue - state.data.minValue;
-    final _verticalMultiplier = size.height / _maxValue;
+    final _verticalMultiplier = size.height / max(1, _maxValue);
 
     final _listSize = state.data.listSize;
     final _itemWidth = size.width / _listSize;
 
     state.data.items[valueArrayIndex].asMap().forEach((index, value) {
+      if (hideZeroValues && (value.max ?? 0) == 0 && (value.min ?? 0) == 0) {
+        return;
+      }
+
       canvas.save();
       canvas.translate(
         index * _itemWidth,
