@@ -74,13 +74,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  golden_toolkit:
-    dependency: transitive
-    description:
-      name: golden_toolkit
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.13.0"
   matcher:
     dependency: transitive
     description:
@@ -171,5 +164,5 @@ packages:
     source: hosted
     version: "2.1.1"
 sdks:
-  dart: ">=2.15.0 <3.0.0"
+  dart: ">=2.14.0 <3.0.0"
   flutter: ">=1.17.0"

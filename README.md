@@ -14,14 +14,14 @@ Customizing and adding new decorations and items will require some RenderObject 
     * [Line chart](#line-chart)
     * [Multi chart](#multi-chart)
 * [More examples](#more-examples)
-* [Golden files](https://github.com/infinum/flutter-charts/blob/feature/render-object/test/golden/GOLDENS.md)
+* [Golden files](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md)
 
 ## Showcase
 Example charts that can easily be built.
  
 ![showcase]
 
-[Showcase charts golden files](https://github.com/infinum/flutter-charts/blob/feature/render-object/test/golden/GOLDENS.md#showcase-charts)
+[Showcase charts golden files](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#showcase-charts)
 
 
 ## Usage
@@ -65,16 +65,16 @@ Included in the lib are  2 `GeometryPainters`'s.
 
 ## Decoration
 We use Decorations to enhance our charts. Chart decorations can be painted in the background or in a foreground of the items. Everything that is not chart item is a decoration.
-[See all decorations](https://github.com/infinum/flutter-charts/blob/feature/render-object/test/golden/GOLDENS.md#decorations)
+[See all decorations](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#decorations)
 
 Here are decorations we have included, bar items with opacity have been added for better visibility.
 
 |   |   |   |
 :------: | :------: | :------: 
-[![horizontal_decoration] Horizontal decoration](https://github.com/infinum/flutter-charts/blob/feature/render-object/test/golden/GOLDENS.md#horizontal-decoration-golden) | [![vertical_decoration] Vertical decoration](https://github.com/infinum/flutter-charts/blob/feature/render-object/test/golden/GOLDENS.md#vertical-decoration-golden) | [![grid_decoration] Grid decoration](https://github.com/infinum/flutter-charts/blob/feature/render-object/test/golden/GOLDENS.md#grid-decoration-golden) 
-[![target_line_decoration] Target line decoration](https://github.com/infinum/flutter-charts/blob/feature/render-object/test/golden/GOLDENS.md#target-line-decoration-golden) | [![target_line_legend_decoration] Target line text decoration](https://github.com/infinum/flutter-charts/blob/feature/render-object/test/golden/GOLDENS.md#target-line-text-decoration-golden) | [![target_area_decoration] Target area decoration](https://github.com/infinum/flutter-charts/blob/feature/render-object/test/golden/GOLDENS.md#target-area-decoration-golden)
-[![target_values_decoration] Value decoration](https://github.com/infinum/flutter-charts/blob/feature/render-object/test/golden/GOLDENS.md#value-decoration-golden) | [![selected_item_decoration] Selected item decoration](https://github.com/infinum/flutter-charts/blob/feature/render-object/test/golden/GOLDENS.md#selected-item-decoration-golden) | [![sparkline_decoration] Sparkline decoration](https://github.com/infinum/flutter-charts/blob/feature/render-object/test/golden/GOLDENS.md#sparkline-decoration-golden)
-[![border_decoration] Border decoration](https://github.com/infinum/flutter-charts/blob/feature/render-object/test/golden/GOLDENS.md#border-decoration-golden)  |   
+[![horizontal_decoration] Horizontal decoration](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#horizontal-decoration-golden) | [![vertical_decoration] Vertical decoration](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#vertical-decoration-golden) | [![grid_decoration] Grid decoration](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#grid-decoration-golden) 
+[![target_line_decoration] Target line decoration](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#target-line-decoration-golden) | [![target_line_legend_decoration] Target line text decoration](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#target-line-text-decoration-golden) | [![target_area_decoration] Target area decoration](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#target-area-decoration-golden)
+[![target_values_decoration] Value decoration](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#value-decoration-golden) | [![selected_item_decoration] Selected item decoration](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#selected-item-decoration-golden) | [![sparkline_decoration] Sparkline decoration](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#sparkline-decoration-golden)
+[![border_decoration] Border decoration](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#border-decoration-golden)  |   
 
 ## Drawing charts
 Now you are ready to use charts lib. If chart needs to animate the state changes then use `AnimatedChart<T>` widget instead of `Chart<T>` widget.
@@ -324,43 +324,43 @@ Row(
 
 ## More examples
 ### Line charts
-Line chart with multiple values [example code](https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/example/lib/charts/line_chart_screen.dart)
+Line chart with multiple values [example code](https://raw.githubusercontent.com/infinum/flutter-charts/master/example/lib/charts/line_chart_screen.dart)
 ![line_chart_animating]
 
 ### Bar charts
-Bar chart with area [example code](https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/example/lib/charts/bar_chart_screen.dart)
+Bar chart with area [example code](https://raw.githubusercontent.com/infinum/flutter-charts/master/example/lib/charts/bar_chart_screen.dart)
 ![bar_chart_animating]
 
 ### Scrollable chart
-Scrollable bar chart [example code](https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/example/lib/charts/scrollable_chart_screen.dart)
+Scrollable bar chart [example code](https://raw.githubusercontent.com/infinum/flutter-charts/master/example/lib/charts/scrollable_chart_screen.dart)
 ![scrollable_chart]
 
-[chart_image]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/gifs/chart_image.png
+[chart_image]: https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/chart_image.png
 
-[bar_chart_animating]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/gifs/bar_chart_animating.gif
-[scrollable_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/gifs/scrollable_chart.gif
-[line_chart_animating]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/gifs/line_chart_animating.gif
-[fixed_axis_scroll_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/gifs/fixed_axis_scroll_chart.gif
+[bar_chart_animating]: https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/bar_chart_animating.gif
+[scrollable_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/scrollable_chart.gif
+[line_chart_animating]: https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/line_chart_animating.gif
+[fixed_axis_scroll_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/fixed_axis_scroll_chart.gif
 
-[simple_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/examples/goldens/bar_chart.png
-[simple_line_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/examples/goldens/line_chart.png
-[simple_multi_line_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/examples/goldens/multi_line_chart.png
+[simple_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/examples/goldens/bar_chart.png
+[simple_line_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/examples/goldens/line_chart.png
+[simple_multi_line_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/examples/goldens/multi_line_chart.png
 
-[horizontal_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/decoration/goldens/general/general_horizontal_decoration_golden.png
-[vertical_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/decoration/goldens/general/general_vertical_decoration_golden.png
-[grid_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/decoration/goldens/general/general_grid_decoration_golden.png
-[border_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/decoration/goldens/general/general_border_decoration_golden.png
-[sparkline_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/decoration/goldens/general/general_sparkline_decoration_golden.png
-[target_line_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/decoration/goldens/general/general_target_line_decoration_golden.png
-[target_area_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/decoration/goldens/general/general_target_area_decoration_golden.png
-[target_line_legend_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/decoration/goldens/general/general_target_line_text_decoration_golden.png
-[selected_item_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/decoration/goldens/general/general_selected_item_decoration_golden.png
-[target_values_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/decoration/goldens/general/general_value_decoration_golden.png
+[horizontal_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_horizontal_decoration_golden.png
+[vertical_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_vertical_decoration_golden.png
+[grid_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_grid_decoration_golden.png
+[border_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_border_decoration_golden.png
+[sparkline_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_sparkline_decoration_golden.png
+[target_line_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_target_line_decoration_golden.png
+[target_area_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_target_area_decoration_golden.png
+[target_line_legend_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_target_line_text_decoration_golden.png
+[selected_item_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_selected_item_decoration_golden.png
+[target_values_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_value_decoration_golden.png
 
-[bar_painter]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/geometry/goldens/bar_geometry_golden.png
-[candle_painter]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/geometry/goldens/candle_geometry_golden.png
-[bubble_painter]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/geometry/goldens/bubble_geometry_golden.png
+[bar_painter]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/geometry/goldens/bar_geometry_golden.png
+[candle_painter]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/geometry/goldens/candle_geometry_golden.png
+[bubble_painter]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/geometry/goldens/bubble_geometry_golden.png
 
-[basic_line]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/examples/goldens/simple_line_chart.png
-[basic_bar]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/examples/goldens/simple_bar_chart.png
-[showcase]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/gifs/showcase.gif
+[basic_line]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/examples/goldens/simple_line_chart.png
+[basic_bar]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/examples/goldens/simple_bar_chart.png
+[showcase]: https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/showcase.gif
