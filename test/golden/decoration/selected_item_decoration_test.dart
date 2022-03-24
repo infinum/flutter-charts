@@ -17,10 +17,7 @@ void main() {
         getDefaultChart(backgroundDecorations: [
           SelectedItemDecoration(
             2,
-            selectedStyle: defaultTextStyle.copyWith(
-                color: Colors.white,
-                fontSize: 28.0,
-                fontWeight: FontWeight.w800),
+            selectedStyle: defaultTextStyle.copyWith(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.w800),
           ),
         ]),
       )
@@ -28,10 +25,8 @@ void main() {
         'Can be null',
         getDefaultChart(backgroundDecorations: [
           SelectedItemDecoration(null,
-              selectedStyle: defaultTextStyle.copyWith(
-                  color: Colors.white,
-                  fontSize: 28.0,
-                  fontWeight: FontWeight.w800)),
+              selectedStyle:
+                  defaultTextStyle.copyWith(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.w800)),
         ]),
       )
       ..addScenario(
@@ -39,10 +34,7 @@ void main() {
         getDefaultChart(backgroundDecorations: [
           SelectedItemDecoration(
             2,
-            selectedStyle: defaultTextStyle.copyWith(
-                color: Colors.white,
-                fontSize: 28.0,
-                fontWeight: FontWeight.w800),
+            selectedStyle: defaultTextStyle.copyWith(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.w800),
             backgroundColor: Colors.black,
           ),
         ]),
@@ -52,17 +44,14 @@ void main() {
         getDefaultChart(backgroundDecorations: [
           SelectedItemDecoration(2,
               showOnTop: false,
-              selectedStyle: defaultTextStyle.copyWith(
-                  color: Colors.white,
-                  fontSize: 28.0,
-                  fontWeight: FontWeight.w800)),
+              selectedStyle:
+                  defaultTextStyle.copyWith(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.w800)),
         ]),
       )
       ..addScenario(
         'Can be widget',
         getDefaultChart(backgroundDecorations: [
           SelectedItemDecoration(2,
-              childHeight: 40.0,
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 40.0),
                 child: Container(
@@ -75,10 +64,8 @@ void main() {
                   child: Text('8'),
                 ),
               ),
-              selectedStyle: defaultTextStyle.copyWith(
-                  color: Colors.white,
-                  fontSize: 28.0,
-                  fontWeight: FontWeight.w800)),
+              selectedStyle:
+                  defaultTextStyle.copyWith(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.w800)),
         ]),
       )
       ..addScenario(
@@ -87,15 +74,9 @@ void main() {
           state: ChartState(
               ChartData(
                 [
-                  [5, 6, 8, 4, 3, 5, 2, 6, 7]
-                      .map((e) => BarValue<void>(e.toDouble()))
-                      .toList(),
-                  [3, 5, 2, 6, 7, 5, 6, 8, 4]
-                      .map((e) => BarValue<void>(e.toDouble()))
-                      .toList(),
-                  [4, 2, 3, 8, 4, 5, 7, 5, 6]
-                      .map((e) => BarValue<void>(e.toDouble()))
-                      .toList(),
+                  [5, 6, 8, 4, 3, 5, 2, 6, 7].map((e) => BarValue<void>(e.toDouble())).toList(),
+                  [3, 5, 2, 6, 7, 5, 6, 8, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
+                  [4, 2, 3, 8, 4, 5, 7, 5, 6].map((e) => BarValue<void>(e.toDouble())).toList(),
                 ],
                 valueAxisMaxOver: 2,
               ),
@@ -126,7 +107,6 @@ void main() {
                   lineWidth: 3.0,
                 ),
                 SelectedItemDecoration(2,
-                    childHeight: 90.0,
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 40.0),
                       child: Container(
@@ -186,15 +166,12 @@ void main() {
                         ),
                       ),
                     ),
-                    selectedStyle: TextStyle().copyWith(
-                        color: Colors.white,
-                        fontSize: 28.0,
-                        fontWeight: FontWeight.w800)),
+                    selectedStyle:
+                        TextStyle().copyWith(color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.w800)),
               ]),
         ),
       );
-    await tester.pumpWidgetBuilder(builder.build(),
-        surfaceSize: const Size(1400, 660), textScaleSize: 1.4);
+    await tester.pumpWidgetBuilder(builder.build(), surfaceSize: const Size(1400, 660), textScaleSize: 1.4);
     await screenMatchesGolden(tester, 'selected_item_decoration_golden');
   });
 }
