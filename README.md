@@ -335,12 +335,12 @@ Bar chart with area [example code](https://raw.githubusercontent.com/infinum/flu
 Scrollable bar chart [example code](https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/example/lib/charts/scrollable_chart_screen.dart)
 ![scrollable_chart]
 
-[chart_image]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/assets/chart_image.png
+[chart_image]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/gifs/chart_image.png
 
-[bar_chart_animating]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/assets/bar_chart_animating.gif
-[scrollable_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/assets/scrollable_chart.gif
-[line_chart_animating]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/assets/line_chart_animating.gif
-[fixed_axis_scroll_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/assets/fixed_axis_scroll_chart.gif
+[bar_chart_animating]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/gifs/bar_chart_animating.gif
+[scrollable_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/gifs/scrollable_chart.gif
+[line_chart_animating]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/gifs/line_chart_animating.gif
+[fixed_axis_scroll_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/gifs/fixed_axis_scroll_chart.gif
 
 [simple_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/examples/goldens/bar_chart.png
 [simple_line_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/examples/goldens/line_chart.png
@@ -363,4 +363,4 @@ Scrollable bar chart [example code](https://raw.githubusercontent.com/infinum/fl
 
 [basic_line]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/examples/goldens/simple_line_chart.png
 [basic_bar]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/test/golden/examples/goldens/simple_bar_chart.png
-[showcase]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/assets/showcase.gif
+[showcase]: https://raw.githubusercontent.com/infinum/flutter-charts/feature/render-object/gifs/showcase.gif
