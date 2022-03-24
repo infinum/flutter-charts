@@ -4,6 +4,8 @@ typedef ValueFromItem = double Function(ChartItem item);
 
 double defaultValueForItem(ChartItem item) => item.max ?? 0.0;
 
+typedef LabelFromItem = String Function(ChartItem item);
+
 /// Draw value of the items on them.
 /// Use this only as [ChartState.foregroundDecorations] in order to be visible at all locations
 /// Exact alignment can be set with [alignment]
@@ -15,6 +17,7 @@ class ValueDecoration extends DecorationPainter {
     this.valueArrayIndex = 0,
     this.valueGenerator = defaultValueForItem,
     this.hideZeroValues = false,
+    this.labelGenerator,
   });
 
   /// Style for values to use
@@ -24,6 +27,11 @@ class ValueDecoration extends DecorationPainter {
   final Alignment alignment;
 
   final ValueFromItem valueGenerator;
+
+  /// Generate a custom label that is used.
+  ///
+  /// By default it will display the output from [valueGenerator] parsed to an int
+  final LabelFromItem? labelGenerator;
 
   /// Index of list in items, this is used if there are multiple lists in the chart
   ///
@@ -66,7 +74,7 @@ class ValueDecoration extends DecorationPainter {
     final _itemMaxValue = valueGenerator(item);
 
     final _maxValuePainter = ValueDecoration.makeTextPainter(
-      '${_itemMaxValue.toInt()}',
+      labelGenerator?.call(item) ?? '${_itemMaxValue.toInt()}',
       width,
       textStyle,
     );
