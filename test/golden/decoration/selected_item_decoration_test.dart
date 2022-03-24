@@ -69,7 +69,7 @@ void main() {
         ]),
       )
       ..addScenario(
-        'Can be complex widget',
+        'Can be complex widget with margin',
         Chart<void>(
           state: ChartState(
               ChartData(
@@ -107,6 +107,7 @@ void main() {
                   lineWidth: 3.0,
                 ),
                 SelectedItemDecoration(2,
+                    topMargin: 90.0,
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 40.0),
                       child: Container(
