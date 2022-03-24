@@ -26,7 +26,3 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
   uses-material-design: true
-  # currently needed even though this package doesn't have any images. Without assets,
-  # the FontManifest.json isn't created. this is likely a Flutter bug
-  assets:
-    - assets/
