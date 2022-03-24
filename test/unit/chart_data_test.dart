@@ -10,6 +10,15 @@ void main() {
     expect(_data.minValue, 0);
   });
 
+  test('Data can contain just 0', () {
+    final _data = ChartData.fromList(
+        [0, 0, 0, 0].map((e) => BarValue<void>(e.toDouble())).toList());
+
+    expect(_data.isEmpty, false);
+    expect(_data.maxValue, 0);
+    expect(_data.minValue, 0);
+  });
+
   test('Negative data is new min', () {
     final _data = ChartData.fromList(
         [-2, 4, 6].map((e) => BarValue<void>(e.toDouble())).toList());
