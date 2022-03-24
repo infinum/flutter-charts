@@ -158,10 +158,12 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
     for (var i = 0; i * scale * axisStep <= scale * _maxValue; i++) {
       final _defaultValue = (axisStep * i + state.data.minValue).toInt();
-      final _startLine = legendPosition == HorizontalLegendPosition.start
+
+      final _isPositionStart = legendPosition == HorizontalLegendPosition.start;
+      final _startLine = _isPositionStart
           ? -(marginNeeded().horizontal * (1 - _endWithChart))
           : 0.0;
-      final _endLine = legendPosition == HorizontalLegendPosition.start
+      final _endLine = _isPositionStart
           ? 0.0
           : (marginNeeded().horizontal * (1 - _endWithChart));
 

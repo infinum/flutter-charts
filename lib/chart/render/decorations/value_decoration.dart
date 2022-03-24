@@ -1,10 +1,9 @@
 part of charts_painter;
 
 typedef ValueFromItem = double Function(ChartItem item);
+typedef LabelFromItem = String Function(ChartItem item);
 
 double defaultValueForItem(ChartItem item) => item.max ?? 0.0;
-
-typedef LabelFromItem = String Function(ChartItem item);
 
 /// Draw value of the items on them.
 /// Use this only as [ChartState.foregroundDecorations] in order to be visible at all locations

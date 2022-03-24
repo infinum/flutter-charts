@@ -81,8 +81,10 @@ class SelectedItemDecoration extends DecorationPainter {
 
     final selectedItem = this.selectedItem;
     if (selectedItem != null) {
-      final _selectedItemMax = state.data.items[selectedArrayIndex][selectedItem].max ?? 0.0;
-      final _selectedItemMin = state.data.items[selectedArrayIndex][selectedItem].min ?? 0.0;
+      final _selectedItemMax =
+          state.data.items[selectedArrayIndex][selectedItem].max ?? 0.0;
+      final _selectedItemMin =
+          state.data.items[selectedArrayIndex][selectedItem].min ?? 0.0;
 
       final _maxValue = state.data.maxValue - state.data.minValue;
       final _height = size.height - marginNeeded().vertical;
@@ -92,7 +94,10 @@ class SelectedItemDecoration extends DecorationPainter {
           state.defaultMargin.left + _width * selectedItem,
           showOnTop
               ? (state.defaultMargin - marginNeeded()).top
-              : size.height - ((_selectedItemMax - (min(_selectedItemMin, state.data.minValue))) * scale));
+              : size.height -
+                  ((_selectedItemMax -
+                          (min(_selectedItemMin, state.data.minValue))) *
+                      scale));
     }
 
     return Offset.zero;
@@ -157,18 +162,26 @@ class SelectedItemDecoration extends DecorationPainter {
               Offset(
                 width / 2 - _maxValuePainter.width / 2,
                 ((size.height -
-                            ((_itemMaxValue - (min(_itemMinValue, state.data.minValue))) * scale) -
+                            ((_itemMaxValue -
+                                    (min(_itemMinValue, state.data.minValue))) *
+                                scale) -
                             (selectedStyle.fontSize ?? 0.0) * 1.4) *
                         (showOnTop ? 0 : 1)) +
-                    ((showOnTop ? 1 : 0) * (selectedStyle.fontSize ?? 0.0) * 1.4),
+                    ((showOnTop ? 1 : 0) *
+                        (selectedStyle.fontSize ?? 0.0) *
+                        1.4),
               ),
               Offset(
                 width / 2 + _maxValuePainter.width / 2,
                 ((size.height -
-                            ((_itemMaxValue - (min(_itemMinValue, state.data.minValue))) * scale) -
+                            ((_itemMaxValue -
+                                    (min(_itemMinValue, state.data.minValue))) *
+                                scale) -
                             (selectedStyle.fontSize ?? 0.0) * 0.4) *
                         (showOnTop ? 0 : 1)) +
-                    ((showOnTop ? 1 : 0) * (selectedStyle.fontSize ?? 0.0) * 0.4),
+                    ((showOnTop ? 1 : 0) *
+                        (selectedStyle.fontSize ?? 0.0) *
+                        0.4),
               )),
           const Radius.circular(8.0),
         ).inflate(4),
@@ -179,7 +192,9 @@ class SelectedItemDecoration extends DecorationPainter {
       Offset(
         width / 2 - _maxValuePainter.width / 2,
         ((size.height -
-                    ((_itemMaxValue - (min(_itemMinValue, state.data.minValue))) * scale) -
+                    ((_itemMaxValue -
+                            (min(_itemMinValue, state.data.minValue))) *
+                        scale) -
                     (selectedStyle.fontSize ?? 0.0) * 1.4) *
                 (showOnTop ? 0 : 1)) +
             ((showOnTop ? 1 : 0) * (selectedStyle.fontSize ?? 0.0) * 0.4),
@@ -194,8 +209,10 @@ class SelectedItemDecoration extends DecorationPainter {
     }
     final _selectedItem = state.data.items[selectedArrayIndex][_item];
 
-    final _itemWidth = max(state.itemOptions.minBarWidth ?? 0.0,
-        min(state.itemOptions.maxBarWidth ?? double.infinity, size.width - state.itemOptions.padding.horizontal));
+    final _itemWidth = max(
+        state.itemOptions.minBarWidth ?? 0.0,
+        min(state.itemOptions.maxBarWidth ?? double.infinity,
+            size.width - state.itemOptions.padding.horizontal));
 
     const _size = 2.0;
     final _maxValue = state.data.maxValue - state.data.minValue;
@@ -213,7 +230,9 @@ class SelectedItemDecoration extends DecorationPainter {
         ),
         Offset(
           state.itemOptions.padding.left + _itemWidth / 2 + _size / 2,
-          size.height - ((_itemMaxValue - (min(_itemMinValue, state.data.minValue))) * scale),
+          size.height -
+              ((_itemMaxValue - (min(_itemMinValue, state.data.minValue))) *
+                  scale),
         ),
       ),
       Paint()..color = selectedColor,
