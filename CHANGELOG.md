@@ -1,3 +1,12 @@
+## [2.0.0+2] - 
+* Add value label generator in ValueDecoration
+* Add show the line for value to Horizontal Decoration for more precise control of when to show horizontal line
+
+## [2.0.0+1] - 01.03.2022.
+* Updated packages
+* Removed flutter_path_drawing dependency
+* Selected item can be shown on value
+
 ## [2.0.0] - 30.11.2021.
 **This release has some breaking changes. You might have to update existing charts code!**
 
