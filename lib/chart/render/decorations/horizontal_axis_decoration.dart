@@ -14,6 +14,8 @@ typedef AxisValueFromValue = String Function(int value);
 /// Default axis generator, it will just take current index, convert it to string and return it.
 String defaultAxisValue(int index) => '$index';
 
+typedef ShowLineForValue = bool Function(int value);
+
 /// Decoration for drawing horizontal lines on the chart, decoration can add horizontal axis legend
 ///
 /// This can be used if you don't need anything from [VerticalAxisDecoration], otherwise you might
@@ -36,6 +38,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.textScale = 1.5,
     this.legendPosition = HorizontalLegendPosition.end,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
+    this.showLineForValue,
   })  : assert(axisStep > 0, 'axisStep must be greater than zero!'),
         _endWithChart = endWithChart ? 1.0 : 0.0;
 
@@ -55,6 +58,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.axisValue = defaultAxisValue,
     this.legendPosition = HorizontalLegendPosition.end,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
+    this.showLineForValue,
   }) : _endWithChart = endWithChart;
 
   /// This decoration can continue beyond padding set by [ChartState]
@@ -95,6 +99,10 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
   /// Show horizontal lines
   final bool showLines;
+
+  /// Function to have more fine grain control over when to show horizontal lines
+  /// If this is not null [showLines] will be ignored
+  final ShowLineForValue? showLineForValue;
 
   /// Set color to paint horizontal lines with
   final Color lineColor;
@@ -149,6 +157,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     final gridPath = Path();
 
     for (var i = 0; i * scale * axisStep <= scale * _maxValue; i++) {
+      final _defaultValue = (axisStep * i + state.data.minValue).toInt();
       final _startLine = legendPosition == HorizontalLegendPosition.start
           ? -(marginNeeded().horizontal * (1 - _endWithChart))
           : 0.0;
@@ -156,7 +165,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
           ? 0.0
           : (marginNeeded().horizontal * (1 - _endWithChart));
 
-      if (showLines) {
+      if (showLineForValue?.call(_defaultValue) ?? showLines) {
         gridPath.moveTo(
             _startLine, size.height - (lineWidth / 2 + axisStep * i * scale));
         gridPath.lineTo((size.width + _endLine),
@@ -172,7 +181,6 @@ class HorizontalAxisDecoration extends DecorationPainter {
       if (!showTopValue && i == _maxValue / axisStep) {
         _text = null;
       } else {
-        final _defaultValue = (axisStep * i + state.data.minValue).toInt();
         final _value = axisValue.call(_defaultValue);
         _text = _value.toString();
       }
