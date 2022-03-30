@@ -1,7 +1,7 @@
 part of charts_painter;
 
-class DecorationsRenderer<T> extends MultiChildRenderObjectWidget {
-  DecorationsRenderer(List<DecorationPainter> fixedDecoration, this.chartState,
+class FixedDecorationsRenderer<T> extends MultiChildRenderObjectWidget {
+  FixedDecorationsRenderer(List<DecorationPainter> fixedDecoration, this.chartState,
       {Key? key})
       : super(
             key: key,

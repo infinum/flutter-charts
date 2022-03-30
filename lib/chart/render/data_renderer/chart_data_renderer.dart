@@ -3,6 +3,9 @@ part of charts_painter;
 typedef ChartDataRendererFactory<T> = ChartDataRenderer<T> Function(
     ChartData<T?> data);
 
+/// Renderer for whole chart data
+///
+/// It should go through all data in chart state and assign [ChartItemRenderer] to each item in data.
 abstract class ChartDataRenderer<T> extends MultiChildRenderObjectWidget {
   ChartDataRenderer({Key? key, List<Widget> children = const []})
       : super(key: key, children: children);

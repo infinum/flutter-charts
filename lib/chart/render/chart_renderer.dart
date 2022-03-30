@@ -1,11 +1,17 @@
 part of charts_painter;
 
+/// Chart renderer will break up all chart data into it's own [ChartDataRenderer] that they use,
+/// Along with adding all [FixedDecorationsRenderer]ers with their renderers.
+///
+/// [DecorationPainter] can override their renderer by overriding [FixedDecorationsRenderer.createRenderObject]
+///
+/// Chart data can change their renderer by specifying new renderer in [ChartState.dataRenderer]
 class ChartRenderer<T> extends MultiChildRenderObjectWidget {
   ChartRenderer(this.chartState, {Key? key})
       : super(key: key, children: [
-          DecorationsRenderer(chartState.backgroundDecorations, chartState),
+          FixedDecorationsRenderer(chartState.backgroundDecorations, chartState),
           chartState.dataRenderer.call(chartState.data),
-          DecorationsRenderer(chartState.foregroundDecorations, chartState),
+          FixedDecorationsRenderer(chartState.foregroundDecorations, chartState),
         ]);
 
   final ChartState<T?> chartState;

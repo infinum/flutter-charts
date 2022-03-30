@@ -1,5 +1,7 @@
 part of charts_painter;
 
+/// Align chart data items in linear fashion. Meaning X axis cannot be changed. X axis becomes the index of current item
+/// height of the item is defined by item max or min value.
 class ChartLinearDataRenderer<T> extends ChartDataRenderer<T> {
   ChartLinearDataRenderer(this.chartData, List<Widget> children, {Key? key})
       : super(key: key, children: children);

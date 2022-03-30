@@ -1,5 +1,8 @@
 part of charts_painter;
 
+/// Default renderer for all chart items. Renderers use different painters to paint themselves.
+///
+/// This is a [LeafRenderObjectWidget] meaning it cannot have any children.
 class LeafChartItemRenderer<T> extends LeafRenderObjectWidget {
   LeafChartItemRenderer(this.item, this.state, this.itemOptions,
       {this.arrayKey = 0});

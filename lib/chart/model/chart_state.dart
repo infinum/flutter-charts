@@ -86,6 +86,7 @@ class ChartState<T> {
   /// [ChartData] data that chart will show
   final ChartData<T> data;
 
+  /// How is data rendered on the screen, by default it uses [ChartLinearDataRenderer]
   final ChartDataRendererFactory<T?> dataRenderer;
 
   // Geometry layer
