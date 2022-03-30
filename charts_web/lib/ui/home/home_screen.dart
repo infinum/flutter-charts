@@ -18,7 +18,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       body: Row(
         children: [
           Expanded(
-            child: Chart(
+            child: AnimatedChart<void>(
+              duration: Duration(milliseconds: 450),
               state: _provider.state,
             ),
           ),
