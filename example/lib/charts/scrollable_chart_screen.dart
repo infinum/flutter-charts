@@ -73,7 +73,6 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
       ChartData.fromList(
         _values.map((e) => BarValue<void>(e)).toList(),
         axisMax: 20,
-        axisMin: -10,
       ),
       itemOptions: BarItemOptions(
         padding: EdgeInsets.symmetric(horizontal: _isScrollable ? 12.0 : 2.0),
@@ -182,7 +181,8 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                         : NeverScrollableScrollPhysics(),
                     controller: _controller,
                     scrollDirection: Axis.horizontal,
-                    child: Chart(
+                    child: AnimatedChart(
+                      duration: Duration(milliseconds: 450),
                       width: MediaQuery.of(context).size.width - 24.0,
                       height: MediaQuery.of(context).size.height * 0.4,
                       state: _chartState,
@@ -213,13 +213,14 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                               lineWidth: 1.0,
                               axisStep: 1,
                               showValues: true,
+                              endWithChart: false,
                               legendFontStyle:
                                   Theme.of(context).textTheme.caption,
                               valuesAlign: TextAlign.center,
                               lineColor: Theme.of(context)
                                   .colorScheme
                                   .primaryVariant
-                                  .withOpacity(0.2),
+                                  .withOpacity(0.8),
                             )
                           ]
                         : [],

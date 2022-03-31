@@ -198,10 +198,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
         textAlign: valuesAlign,
         maxLines: 1,
         textDirection: TextDirection.ltr,
-      )..layout(
-          maxWidth: _width,
-          minWidth: _width,
-        );
+      )..layout();
 
       final _positionEnd = (size.width) + (valuesPadding?.left ?? 0.0);
       final _positionStart =
@@ -247,8 +244,8 @@ class HorizontalAxisDecoration extends DecorationPainter {
         minWidth: state.defaultPadding.horizontal,
       );
 
-    _textPainter.paint(canvas,
-        Offset(size.width - (state.defaultPadding.right), _textPainter.height));
+    _textPainter.paint(
+        canvas, Offset(size.width - (_textPainter.width), _textPainter.height));
   }
 
   /// Get width of longest text on axis
@@ -274,7 +271,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     final _isEnd = legendPosition == HorizontalLegendPosition.end;
 
     return EdgeInsets.only(
-      top: showValues && showTopValue ? legendFontStyle?.fontSize ?? 13.0 : 0.0,
+      top: showTopValue ? legendFontStyle?.fontSize ?? 13.0 : 0.0,
       right: _isEnd ? _maxTextWidth : 0.0,
       left: _isEnd ? 0.0 : _maxTextWidth,
     );
