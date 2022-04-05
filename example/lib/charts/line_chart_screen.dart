@@ -152,8 +152,8 @@ class _LineChartScreenState extends State<LineChartScreen> {
                         smoothPoints: _smoothPoints,
                         fill: true,
                         gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
                             colors: Colors.accents),
                         lineColor:
                             Theme.of(context).accentColor.withOpacity(_fillLine

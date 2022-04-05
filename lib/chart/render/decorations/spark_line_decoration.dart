@@ -104,10 +104,26 @@ class SparkLineDecoration extends DecorationPainter {
 
     final _itemWidth = size.width / _listSize;
 
+    final _maxValueForKey = state.data.items[lineArrayIndex].fold(0.0,
+        (double previousValue, element) {
+      if (previousValue < (element.max ?? element.min ?? 0)) {
+        return (element.max ?? element.min ?? 0);
+      }
+
+      return previousValue;
+    });
+
     if (gradient != null) {
       // Compiler complains that gradient could be null. But unless if fails us that will never be null.
       _paint.shader = gradient!.createShader(
-          Rect.fromPoints(Offset.zero, Offset(size.width, -size.height)));
+        Rect.fromLTWH(
+          0.0,
+          size.height - (_maxValueForKey * scale),
+          size.width,
+          _maxValueForKey * scale,
+        ),
+        textDirection: TextDirection.ltr,
+      );
     }
 
     state.data.items[lineArrayIndex].asMap().forEach((key, value) {
