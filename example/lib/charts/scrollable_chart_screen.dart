@@ -228,13 +228,14 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                               lineWidth: 1.0,
                               axisStep: 1,
                               showValues: true,
+                              endWithChart: false,
                               legendFontStyle:
                                   Theme.of(context).textTheme.caption,
                               valuesAlign: TextAlign.center,
                               lineColor: Theme.of(context)
                                   .colorScheme
                                   .primaryVariant
-                                  .withOpacity(0.2),
+                                  .withOpacity(0.8),
                             )
                           ]
                         : [],
