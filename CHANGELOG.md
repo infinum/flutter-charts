@@ -1,4 +1,5 @@
 ## [2.0.0+2] - 
+* Reduce final .apk app size when using this lib
 * Fixed `ValueDecoration` when all items were 0
 * Add value label generator in `ValueDecoration`
 * Add show the line for value to `HorizontalDecoration` for more precise control of when to show horizontal line

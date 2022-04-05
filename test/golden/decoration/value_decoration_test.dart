@@ -24,14 +24,17 @@ void main() {
         'Align at bottom',
         getDefaultChart(backgroundDecorations: [
           ValueDecoration(
-              textStyle: defaultTextStyle, alignment: Alignment.bottomCenter),
+            textStyle: defaultTextStyle,
+            alignment: Alignment.bottomCenter,
+          ),
         ]),
       )
       ..addScenario(
-        'Increase text size',
+        'Change label',
         getDefaultChart(backgroundDecorations: [
           ValueDecoration(
-            textStyle: defaultTextStyle.copyWith(fontSize: 16.0, height: 1.0),
+            labelGenerator: (item) => '<${item.max}>',
+            textStyle: defaultTextStyle,
             alignment: Alignment.bottomCenter,
           ),
         ]),
