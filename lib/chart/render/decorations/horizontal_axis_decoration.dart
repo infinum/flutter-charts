@@ -184,18 +184,10 @@ class HorizontalAxisDecoration extends DecorationPainter {
         continue;
       }
 
-      final _textPainter = TextPainter(
-        text: TextSpan(
-          text: _text,
-          style: legendFontStyle,
-        ),
-        textAlign: valuesAlign,
-        maxLines: 1,
-        textDirection: TextDirection.ltr,
-      )..layout();
+      final _textPainter = _getTextPainter(_text, legendFontStyle);
 
       final _positionEnd = size.width + (valuesPadding?.left ?? 0.0);
-      final _positionStart = (valuesPadding?.left ?? 0.0) - marginNeeded().left;
+      final _positionStart = -(valuesPadding?.right ?? 0.0) - _textPainter.width;
 
       _textPainter.paint(
           canvas,
@@ -219,25 +211,17 @@ class HorizontalAxisDecoration extends DecorationPainter {
       return;
     }
 
-    final _textPainter = TextPainter(
-      text: TextSpan(
-        text: horizontalAxisUnit,
-        style: legendFontStyle,
-      ),
-      textAlign: valuesAlign,
-      maxLines: 1,
-      textDirection: TextDirection.ltr,
-    )..layout();
+    final _textPainter = _getTextPainter(horizontalAxisUnit, legendFontStyle);
 
     _textPainter.paint(canvas, Offset(size.width - (_textPainter.width), _textPainter.height));
   }
 
   /// Get width of longest text on axis
-  TextPainter _textWidth(String? text, TextStyle? style) {
+  TextPainter _getTextPainter(String? text, TextStyle? style) {
     final textPainter = TextPainter(
         text: TextSpan(text: text, style: style),
         maxLines: 1,
-        textScaleFactor: textScale,
+        // textScaleFactor: textScale,
         textAlign: valuesAlign,
         textDirection: TextDirection.ltr)
       ..layout();
@@ -250,7 +234,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
       return EdgeInsets.zero;
     }
 
-    final _painter = _textWidth(_longestText, legendFontStyle);
+    final _painter = _getTextPainter(_longestText, legendFontStyle);
     final _isEnd = legendPosition == HorizontalLegendPosition.end;
 
     final _width = _painter.width + (valuesPadding?.horizontal ?? 0);
