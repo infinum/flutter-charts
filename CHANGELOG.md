@@ -4,6 +4,7 @@
 * Add value label generator in `ValueDecoration`
 * Add show the line for value to `HorizontalDecoration` for more precise control of when to show horizontal line
 * Fix gradient color on `SparkLineDecoration`
+* Fix fixed horizontal decoration values getting clipped
 
 ## [2.0.0+1] - 01.03.2022.
 * Updated packages
