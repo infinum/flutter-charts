@@ -41,7 +41,7 @@ void main() {
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   radius: BorderRadius.all(Radius.circular(12.0)),
                   colorForKey: (item, key) {
-                    final _value = item.value as bool;
+                    final dynamic _value = item.value;
                     if (_value is bool) {
                       return _value ? Color(0xFF567EF7) : Color(0xFF5ABEF9);
                     }

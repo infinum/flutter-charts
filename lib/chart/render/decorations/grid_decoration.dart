@@ -29,6 +29,7 @@ class GridDecoration extends DecorationPainter {
     this.textScale = 1.5,
     this.horizontalLegendPosition = HorizontalLegendPosition.end,
     this.verticalLegendPosition = VerticalLegendPosition.bottom,
+    this.showHorizontalLineForValue,
     this.textStyle,
   })  : _endWithChart = endWithChart ? 1.0 : 0.0,
         assert(
@@ -45,6 +46,7 @@ class GridDecoration extends DecorationPainter {
       valuesPadding: horizontalValuesPadding,
       showTopValue: showTopHorizontalValue,
       horizontalAxisUnit: horizontalAxisUnit,
+      showLineForValue: showHorizontalLineForValue,
       lineColor: gridColor,
       dashArray: dashArray,
       lineWidth: gridWidth,
@@ -90,6 +92,7 @@ class GridDecoration extends DecorationPainter {
     this.horizontalAxisStep = 1,
     this.textScale = 1.5,
     this.dashArray,
+    this.showHorizontalLineForValue,
     this.horizontalLegendPosition = HorizontalLegendPosition.end,
     this.verticalLegendPosition = VerticalLegendPosition.bottom,
     this.textStyle,
@@ -111,6 +114,7 @@ class GridDecoration extends DecorationPainter {
       lineColor: gridColor,
       dashArray: dashArray,
       textScale: textScale,
+      showLineForValue: showHorizontalLineForValue,
       axisValue: horizontalAxisValueFromValue,
       lineWidth: gridWidth,
       axisStep: horizontalAxisStep,
@@ -202,6 +206,9 @@ class GridDecoration extends DecorationPainter {
 
   /// Generate horizontal axis legend from value steps
   final AxisValueFromValue horizontalAxisValueFromValue;
+
+  /// Show horizontal line for current value. Return true if you want to show the line.
+  final ShowLineForValue? showHorizontalLineForValue;
 
   /// Change grid color
   final Color gridColor;

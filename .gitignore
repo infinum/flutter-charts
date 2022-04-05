@@ -38,6 +38,9 @@ lib/generated_plugin_registrant.dart
 # See https://dart.dev/guides/libraries/private-files#pubspeclock
 pubspec.lock
 
+# don't check in golden failure output
+**/failures/*.png
+
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle

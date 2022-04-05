@@ -147,17 +147,32 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
               .withOpacity(!_showBars ? 1.0 : 0.0),
           smoothPoints: _smoothPoints,
         ),
-        SelectedItemDecoration(
-          _selected,
-          animate: true,
-          selectedColor: Theme.of(context).colorScheme.secondary,
-          backgroundColor: Theme.of(context)
-              .scaffoldBackgroundColor
-              .withOpacity(_isScrollable ? 0.5 : 0.8),
-        ),
         BorderDecoration(
           endWithChart: true,
           color: Theme.of(context).colorScheme.primaryVariant,
+        ),
+        SelectedItemDecoration(
+          _selected,
+          animate: true,
+          // showOnTop: false,
+          selectedColor: Theme.of(context).colorScheme.secondary,
+          childHeight: 40.0,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 40.0),
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(),
+                shape: BoxShape.circle,
+              ),
+              child: Text(
+                  '${_selected != null ? _values[_selected].toStringAsPrecision(2) : '...'}'),
+            ),
+          ),
+          backgroundColor: Theme.of(context)
+              .scaffoldBackgroundColor
+              .withOpacity(_isScrollable ? 0.5 : 0.8),
         ),
       ],
     );

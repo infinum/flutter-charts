@@ -26,8 +26,9 @@ class ChartDecorationChildRenderer<T> extends SingleChildRenderObjectWidget {
 }
 
 class _RenderChartDecorationChildren<T> extends RenderShiftedBox {
-  _RenderChartDecorationChildren(this._chartState, this._decoration)
-      : super(null);
+  _RenderChartDecorationChildren(this._chartState, this._decoration,
+      [RenderBox? child])
+      : super(child);
 
   DecorationPainter _decoration;
   set item(DecorationPainter decoration) {
@@ -66,42 +67,67 @@ class _RenderChartDecorationChildren<T> extends RenderShiftedBox {
   @override
   bool get sizedByParent => false;
 
+  Size _computeSize(
+      {required BoxConstraints constraints,
+      required ChildLayouter layoutChild}) {
+    if (child != null) {
+      final childSize = layoutChild(child!, constraints);
+      final double width = max(childSize.width, _defaultSize);
+      final double height = max(childSize.height, _defaultSize);
+      return constraints.constrain(Size(width, height));
+    }
+    return Size.zero;
+  }
+
   @override
   Size computeDryLayout(BoxConstraints constraints) {
-    final _size = constraints.biggest;
-    final childParentData = child?.parentData as BoxParentData;
-    final offset = _decoration.applyPaintTransform(_chartState, _size);
-    childParentData.offset = offset;
+    if (child != null) {
+      return _computeSize(
+        constraints: constraints,
+        layoutChild: ChildLayoutHelper.dryLayoutChild,
+      );
+    }
 
     return _decoration.layoutSize(constraints, _chartState);
   }
 
   @override
   void performLayout() {
-    child?.layout(
-        BoxConstraints(
-          minHeight: 0.0,
-          maxHeight: constraints.minHeight,
-          minWidth: 0.0,
-          maxWidth: constraints.minWidth,
-        ),
-        parentUsesSize: true);
+    size = _computeSize(
+      constraints: constraints,
+      layoutChild: ChildLayoutHelper.layoutChild,
+    );
 
-    size = computeDryLayout(constraints);
+    if (child != null) {
+      final childParentData = child!.parentData! as BoxParentData;
+      final _difference = Offset(
+          ((constraints.biggest.width - _chartState.defaultMargin.horizontal) /
+                  _chartState.data.listSize) -
+              size.width,
+          0.0);
+
+      final offset =
+          _decoration.applyPaintTransform(_chartState, constraints.biggest) +
+              (_difference / 2);
+      childParentData.offset =
+          Alignment.center.alongOffset(size - child!.size as Offset) + offset;
+    }
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final canvas = context.canvas;
-    canvas.save();
-    canvas.translate(offset.dx, offset.dy);
+    if (child != null) {
+      final childParentData = child!.parentData! as BoxParentData;
+      context.paintChild(child!, childParentData.offset + offset);
+    }
 
-    _decoration.draw(canvas, size, _chartState);
+    final _canvas = context.canvas;
 
-    canvas.restore();
-
-    /// --------------------------------------------
-
-    child?.paint(context, offset);
+    final _position =
+        _decoration.applyPaintTransform(_chartState, constraints.biggest);
+    _canvas.save();
+    _canvas.translate(_position.dx, _position.dy);
+    _decoration.draw(context.canvas, size, _chartState);
+    _canvas.restore();
   }
 }

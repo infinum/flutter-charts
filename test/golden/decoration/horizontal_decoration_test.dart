@@ -96,10 +96,11 @@ void main() {
         ),
       )
       ..addScenario(
-        'Thick lines',
+        'Lines only on top 3 values',
         getDefaultChart(
           backgroundDecorations: [
             HorizontalAxisDecoration(
+              showLineForValue: (value) => [6, 8, 7].contains(value),
               lineWidth: 3.0,
             ),
           ],
