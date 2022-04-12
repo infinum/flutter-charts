@@ -154,9 +154,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
         SelectedItemDecoration(
           _selected,
           animate: true,
-          // showOnTop: false,
           selectedColor: Theme.of(context).colorScheme.secondary,
-          childHeight: 40.0,
           child: Padding(
             padding: const EdgeInsets.only(bottom: 40.0),
             child: Container(
