@@ -48,7 +48,7 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
       return;
     }
 
-    final xStart = _itemWidth >= size.width ? 0.0 : (size.width - _itemWidth) / 2 ;
+    final xStart = (size.width - _itemWidth) * itemOptions.startPosition;
     final xEnd = xStart + _itemWidth;
 
     canvas.drawRRect(
