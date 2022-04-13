@@ -197,9 +197,11 @@ class HorizontalAxisDecoration extends DecorationPainter {
       final _positionEnd = size.width + (valuesPadding?.left ?? 0.0);
       final _positionStart = (valuesPadding?.left ?? 0.0) - marginNeeded().left;
 
+      final _alignEndOffset = valuesAlign != TextAlign.end ? 0.0 : (_textWidth(_longestText, legendFontStyle).width - _textPainter.width);
+
       _textPainter.paint(
           canvas,
-          Offset(legendPosition == HorizontalLegendPosition.end ? _positionEnd : _positionStart,
+          Offset((legendPosition == HorizontalLegendPosition.end ? _positionEnd : _positionStart) + _alignEndOffset,
               _height - axisStep * i * scale - (_textPainter.height + (valuesPadding?.bottom ?? 0.0))));
     }
 
