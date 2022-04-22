@@ -19,6 +19,7 @@ class BarItemOptions extends ItemOptions {
     EdgeInsets multiValuePadding = EdgeInsets.zero,
     double? maxBarWidth,
     double? minBarWidth,
+    double startPosition = 0.5,
     Color color = Colors.red,
     ColorForValue? colorForValue,
     ColorForKey? colorForKey,
@@ -34,6 +35,7 @@ class BarItemOptions extends ItemOptions {
           multiValuePadding: multiValuePadding,
           maxBarWidth: maxBarWidth,
           minBarWidth: minBarWidth,
+          startPosition: startPosition,
           geometryPainter: barPainter,
           multiItemStack: multiItemStack,
         );
@@ -43,6 +45,7 @@ class BarItemOptions extends ItemOptions {
     EdgeInsets multiValuePadding = EdgeInsets.zero,
     double? maxBarWidth,
     double? minBarWidth,
+    double startPosition = 0.5,
     Color color = Colors.red,
     ColorForValue? colorForValue,
     ColorForKey? colorForKey,
@@ -58,6 +61,7 @@ class BarItemOptions extends ItemOptions {
           multiValuePadding: multiValuePadding,
           maxBarWidth: maxBarWidth,
           minBarWidth: minBarWidth,
+          startPosition: startPosition,
           geometryPainter: barPainter,
           multiItemStack: multiItemStack,
         );
@@ -90,6 +94,8 @@ class BarItemOptions extends ItemOptions {
           radius, endValue is BarItemOptions ? endValue.radius : null, t),
       maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
       minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
+      startPosition:
+          lerpDouble(startPosition, endValue.startPosition, t) ?? 0.5,
       border: BorderSide.lerp(
           border ?? BorderSide.none,
           endValue is BarItemOptions

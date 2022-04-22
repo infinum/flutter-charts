@@ -25,6 +25,7 @@ abstract class ItemOptions {
     this.multiValuePadding = EdgeInsets.zero,
     this.maxBarWidth,
     this.minBarWidth,
+    this.startPosition = 0.5,
     this.color = Colors.red,
     this.colorForValue,
     this.colorForKey,
@@ -37,6 +38,7 @@ abstract class ItemOptions {
     this.multiValuePadding = EdgeInsets.zero,
     this.maxBarWidth,
     this.minBarWidth,
+    this.startPosition = 0.5,
     this.color = Colors.red,
     this.colorForValue,
     this.colorForKey,
@@ -66,6 +68,15 @@ abstract class ItemOptions {
 
   /// Min width of item in the chart
   final double? minBarWidth;
+
+  /// Set start position.
+  /// This value ranges from 0.0 - 1.0.
+  ///
+  /// 0.0 means that start position is left most point of the item,
+  /// 1.0 means right most point.
+  ///
+  /// By default this is set to 0.5, so items are located in center
+  final double startPosition;
 
   /// Geometry
   final ChartGeometryPainter geometryPainter;
