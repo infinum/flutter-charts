@@ -162,8 +162,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
       final _startLine = _isPositionStart ? -(marginNeeded().horizontal * (1 - _endWithChart)) : 0.0;
       final _endLine = _isPositionStart
           ? 0.0
-          : (marginNeeded().horizontal * (1 - _endWithChart) -
-                  (_getTextPainter(_longestText, legendFontStyle).width) / 2) -
+          : (marginNeeded().horizontal * (1 - _endWithChart) - (_getTextPainter(_longestText).width) / 2) -
               (valuesPadding?.horizontal ?? 0);
 
       if (showLineForValue?.call(_defaultValue) ?? showLines) {
@@ -188,7 +187,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
         continue;
       }
 
-      final _textPainter = _getTextPainter(_text, legendFontStyle, size: asFixedDecoration ? size : null);
+      final _textPainter = _getTextPainter(_text, size: asFixedDecoration ? size : null);
 
       final _positionEnd = size.width - (valuesPadding?.left ?? 0.0) - (_textPainter.width / 2);
       final _positionStart = -(valuesPadding?.right ?? 0.0) - _textPainter.width;
@@ -215,17 +214,17 @@ class HorizontalAxisDecoration extends DecorationPainter {
       return;
     }
 
-    final _textPainter = _getTextPainter(horizontalAxisUnit, legendFontStyle, size: asFixedDecoration ? size : null);
+    final _textPainter = _getTextPainter(horizontalAxisUnit, size: asFixedDecoration ? size : null);
 
     _textPainter.paint(canvas, Offset.zero);
   }
 
   /// Get width of longest text on axis
-  TextPainter _getTextPainter(String? text, TextStyle? style, {Size? size}) {
+  TextPainter _getTextPainter(String? text, {Size? size}) {
     final textPainter = TextPainter(
-        text: TextSpan(text: text, style: style),
+        text: TextSpan(text: text, style: legendFontStyle),
         maxLines: 1,
-        // textScaleFactor: textScale,
+        textScaleFactor: textScale,
         textAlign: valuesAlign,
         textDirection: TextDirection.ltr)
       ..layout(
@@ -241,7 +240,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
       return EdgeInsets.zero;
     }
 
-    final _painter = _getTextPainter(_longestText, legendFontStyle);
+    final _painter = _getTextPainter(_longestText);
     final _isEnd = legendPosition == HorizontalLegendPosition.end;
 
     final _width = _painter.width + (valuesPadding?.horizontal ?? 0);
