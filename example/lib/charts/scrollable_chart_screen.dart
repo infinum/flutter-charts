@@ -191,19 +191,21 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                       1.0
                     ]),
                   ),
-                  width: _fixedAxis ? 14.0 : 0.0,
+                  width: _fixedAxis ? 34.0 : 0.0,
                   height: MediaQuery.of(context).size.height * 0.4,
                   child: DecorationsRenderer(
                     _fixedAxis
                         ? [
                             HorizontalAxisDecoration(
-                              axisValue: (value) => '$value E',
+                              asFixedDecoration: true,
                               lineWidth: 1.0,
                               axisStep: 1,
                               showValues: true,
                               endWithChart: false,
+                              axisValue: (value) => '$value E',
                               legendFontStyle: Theme.of(context).textTheme.caption,
                               valuesAlign: TextAlign.center,
+                              valuesPadding: const EdgeInsets.only(right: 8.0),
                               lineColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.8),
                             )
                           ]

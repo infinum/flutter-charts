@@ -1,3 +1,6 @@
+## [2.0.x] - 
+* Add alignment to chart items when max item size is set
+
 ## [2.0.0+2] - 05.04.2022.
 * Reduce final .apk app size when using this lib
 * Fixed `ValueDecoration` when all items were 0
