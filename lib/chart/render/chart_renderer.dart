@@ -9,9 +9,9 @@ part of charts_painter;
 class ChartRenderer<T> extends MultiChildRenderObjectWidget {
   ChartRenderer(this.chartState, {Key? key})
       : super(key: key, children: [
-          FixedDecorationsRenderer(chartState.backgroundDecorations, chartState),
+          DecorationsRenderer(chartState.backgroundDecorations, chartState),
           chartState.dataRenderer.call(chartState.data),
-          FixedDecorationsRenderer(chartState.foregroundDecorations, chartState),
+          DecorationsRenderer(chartState.foregroundDecorations, chartState),
         ]);
 
   final ChartState<T?> chartState;

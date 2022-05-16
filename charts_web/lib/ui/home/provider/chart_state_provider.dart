@@ -13,22 +13,18 @@ class ChartStateProvider extends ChangeNotifier {
 
   DataStrategy _strategy = DefaultDataStrategy();
 
+  EdgeInsets _chartItemPadding = EdgeInsets.symmetric(horizontal: 2.0);
+  bool bubbleItemPainter = false;
+  double? maxBarWidth;
+  double? minBarWidth;
+
   ChartData<void> get _defaultData => ChartData(
         _data,
         dataStrategy: _strategy,
         valueAxisMaxOver: 2.0,
       );
 
-  ItemOptions _itemOptions = BarItemOptions(
-      // color: Color(0xFFD8555F),
-      padding: EdgeInsets.symmetric(horizontal: 2.0),
-      colorForKey: (item, key) => [
-            Color(0xFFD8555F),
-            Color(0xFFD9A866),
-            Color(0xFF916794),
-            Color(0xFF6479C3),
-            Color(0xFF5A8772),
-          ][key % 5]);
+  List<List<ChartItem<void>>> get data => _data;
 
   ChartBehaviour _behaviour = const ChartBehaviour();
 
@@ -37,7 +33,7 @@ class ChartStateProvider extends ChangeNotifier {
 
   ChartState<void> get state => ChartState(
         _defaultData,
-        itemOptions: _itemOptions,
+        itemOptions: _getItemOptions,
         behaviour: _behaviour,
         foregroundDecorations: _foregroundDecorations,
         backgroundDecorations: _backgroundDecorations,
@@ -48,10 +44,13 @@ class ChartStateProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addList(List<ChartItem<void>> list) {
+    _data.add(list);
+    notifyListeners();
+  }
+
   void updateDataStrategy(DataStrategy dataStrategy) {
     _strategy = dataStrategy;
-
-    // print(_strategy.formatDataStrategy(_data).first);
     notifyListeners();
   }
 
@@ -70,8 +69,49 @@ class ChartStateProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateChartItemOptions(ItemOptions newItemOptions) {
-    _itemOptions = newItemOptions;
+  void updateGeometryRenderer(bool bubble) {
+    bubbleItemPainter = bubble;
     notifyListeners();
   }
+
+  void updateChartItemPadding(EdgeInsets chartItemPadding) {
+    _chartItemPadding = chartItemPadding;
+    notifyListeners();
+  }
+
+  void updateItemWidth({
+    double maxItemWidth = -1,
+    double minItemWidth = -1,
+  }) {
+    maxBarWidth = maxItemWidth == -1 ? maxBarWidth : maxItemWidth;
+    minBarWidth = minItemWidth == -1 ? minBarWidth : minItemWidth;
+  }
+
+  ItemOptions get _getItemOptions {
+    if (bubbleItemPainter) {
+      return BubbleItemOptions(
+        padding: _chartItemPadding,
+        colorForKey: _getColorForKey,
+        maxBarWidth: maxBarWidth,
+        minBarWidth: minBarWidth,
+      );
+    } else {
+      return BarItemOptions(
+        padding: _chartItemPadding,
+        colorForKey: _getColorForKey,
+        maxBarWidth: maxBarWidth,
+        minBarWidth: minBarWidth,
+      );
+    }
+  }
+}
+
+Color _getColorForKey(ChartItem item, int key) {
+  return [
+    Color(0xFFD8555F),
+    Color(0xFFD9A866),
+    Color(0xFF916794),
+    Color(0xFF6479C3),
+    Color(0xFF5A8772),
+  ][key % 5];
 }
