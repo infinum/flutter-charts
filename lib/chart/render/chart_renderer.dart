@@ -22,8 +22,7 @@ class ChartRenderer<T> extends MultiChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, _ChartRenderObject<T?> renderObject) {
+  void updateRenderObject(BuildContext context, _ChartRenderObject<T?> renderObject) {
     renderObject.chartState = chartState;
     renderObject.markNeedsLayout();
   }
@@ -59,11 +58,8 @@ class _ChartRenderObject<T> extends RenderBox
     while (child != null) {
       final childParentData = child.parentData! as BoxPaneParentData;
       if (child is ChartItemRenderer) {
-        final _size = constraints
-            .deflate(_chartState.defaultPadding + _chartState.defaultMargin)
-            .biggest;
-        childParentData.offset = Offset(
-            _chartState.defaultPadding.left + _chartState.defaultMargin.left,
+        final _size = constraints.deflate(_chartState.defaultPadding + _chartState.defaultMargin).biggest;
+        childParentData.offset = Offset(_chartState.defaultPadding.left + _chartState.defaultMargin.left,
             _chartState.defaultPadding.top + _chartState.defaultMargin.top);
 
         child.layout(BoxConstraints.tight(_size));

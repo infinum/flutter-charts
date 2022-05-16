@@ -48,17 +48,20 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
       return;
     }
 
+    final xStart = (size.width - _itemWidth) * itemOptions.startPosition;
+    final xEnd = xStart + _itemWidth;
+
     canvas.drawRRect(
       RRect.fromRectAndCorners(
         Rect.fromPoints(
           Offset(
-            0.0,
+            xStart,
             _maxValue * _verticalMultiplier -
                 max(data.minValue, item.min ?? 0.0) * _verticalMultiplier +
                 _minValue,
           ),
           Offset(
-            _itemWidth,
+            xEnd,
             _maxValue * _verticalMultiplier -
                 _itemMaxValue * _verticalMultiplier +
                 _minValue,

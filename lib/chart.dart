@@ -42,6 +42,7 @@ part 'chart/render/decorations/grid_decoration.dart';
 part 'chart/render/decorations/horizontal_axis_decoration.dart';
 part 'chart/render/decorations/renderer/chart_decoration_child_renderer.dart';
 part 'chart/render/decorations/renderer/chart_decoration_renderer.dart';
+part 'chart/render/decorations/renderer/decorations_renderer.dart';
 part 'chart/render/decorations/selected_item_decoration.dart';
 part 'chart/render/decorations/spark_line_decoration.dart';
 part 'chart/render/decorations/target_decoration.dart';

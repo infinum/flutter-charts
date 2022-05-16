@@ -39,6 +39,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.legendPosition = HorizontalLegendPosition.end,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
     this.showLineForValue,
+    this.asFixedDecoration = false,
   })  : assert(axisStep > 0, 'axisStep must be greater than zero!'),
         _endWithChart = endWithChart ? 1.0 : 0.0;
 
@@ -59,7 +60,10 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.legendPosition = HorizontalLegendPosition.end,
     this.legendFontStyle = const TextStyle(fontSize: 13.0),
     this.showLineForValue,
+    this.asFixedDecoration = false,
   }) : _endWithChart = endWithChart;
+
+  final bool asFixedDecoration;
 
   /// This decoration can continue beyond padding set by [ChartState]
   /// setting this to true will stop drawing on padding, and will end
@@ -121,18 +125,6 @@ class HorizontalAxisDecoration extends DecorationPainter {
   String? _longestText;
 
   @override
-  void initDecoration(ChartState state) {
-    super.initDecoration(state);
-    if (showValues) {
-      _longestText = axisValue.call(state.data.maxValue.toInt()).toString();
-
-      if ((_longestText?.length ?? 0) < (horizontalAxisUnit?.length ?? 0.0)) {
-        _longestText = '0' * (horizontalAxisUnit?.length ?? 0);
-      }
-    }
-  }
-
-  @override
   Offset applyPaintTransform(ChartState state, Size size) {
     return Offset(state.defaultMargin.left, state.defaultMargin.top);
   }
@@ -155,12 +147,23 @@ class HorizontalAxisDecoration extends DecorationPainter {
     final scale = _height / _maxValue;
     final gridPath = Path();
 
+    for (var i = 0; i * axisStep <= _maxValue; i++) {
+      final _defaultValue = (axisStep * i + state.data.minValue).toInt();
+      final _value = axisValue.call(_defaultValue);
+      if ((_longestText?.length ?? 0) < _value.length) {
+        _longestText = _value;
+      }
+    }
+
     for (var i = 0; i * scale * axisStep <= scale * _maxValue; i++) {
       final _defaultValue = (axisStep * i + state.data.minValue).toInt();
 
       final _isPositionStart = legendPosition == HorizontalLegendPosition.start;
       final _startLine = _isPositionStart ? -(marginNeeded().horizontal * (1 - _endWithChart)) : 0.0;
-      final _endLine = _isPositionStart ? 0.0 : (marginNeeded().horizontal * (1 - _endWithChart));
+      final _endLine = _isPositionStart
+          ? 0.0
+          : (marginNeeded().horizontal * (1 - _endWithChart) - (_getTextPainter(_longestText).width) / 2) -
+              (valuesPadding?.horizontal ?? 0);
 
       if (showLineForValue?.call(_defaultValue) ?? showLines) {
         gridPath.moveTo(_startLine, size.height - (lineWidth / 2 + axisStep * i * scale));
@@ -184,9 +187,9 @@ class HorizontalAxisDecoration extends DecorationPainter {
         continue;
       }
 
-      final _textPainter = _getTextPainter(_text, legendFontStyle);
+      final _textPainter = _getTextPainter(_text, size: asFixedDecoration ? size : null);
 
-      final _positionEnd = size.width + (valuesPadding?.left ?? 0.0);
+      final _positionEnd = size.width - (valuesPadding?.left ?? 0.0) - (_textPainter.width / 2);
       final _positionStart = -(valuesPadding?.right ?? 0.0) - _textPainter.width;
 
       _textPainter.paint(
@@ -211,30 +214,33 @@ class HorizontalAxisDecoration extends DecorationPainter {
       return;
     }
 
-    final _textPainter = _getTextPainter(horizontalAxisUnit, legendFontStyle);
+    final _textPainter = _getTextPainter(horizontalAxisUnit, size: asFixedDecoration ? size : null);
 
-    _textPainter.paint(canvas, Offset(size.width - (_textPainter.width), _textPainter.height));
+    _textPainter.paint(canvas, Offset.zero);
   }
 
   /// Get width of longest text on axis
-  TextPainter _getTextPainter(String? text, TextStyle? style) {
+  TextPainter _getTextPainter(String? text, {Size? size}) {
     final textPainter = TextPainter(
-        text: TextSpan(text: text, style: style),
+        text: TextSpan(text: text, style: legendFontStyle),
         maxLines: 1,
-        // textScaleFactor: textScale,
+        textScaleFactor: textScale,
         textAlign: valuesAlign,
         textDirection: TextDirection.ltr)
-      ..layout();
+      ..layout(
+        minWidth: size?.width ?? 0.0,
+        maxWidth: size?.width ?? double.infinity,
+      );
     return textPainter;
   }
 
   @override
   EdgeInsets marginNeeded() {
-    if (!showValues) {
+    if (asFixedDecoration || !showValues) {
       return EdgeInsets.zero;
     }
 
-    final _painter = _getTextPainter(_longestText, legendFontStyle);
+    final _painter = _getTextPainter(_longestText);
     final _isEnd = legendPosition == HorizontalLegendPosition.end;
 
     final _width = _painter.width + (valuesPadding?.horizontal ?? 0);
