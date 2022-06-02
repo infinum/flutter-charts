@@ -364,3 +364,13 @@ Scrollable bar chart [example code](https://raw.githubusercontent.com/infinum/fl
 [basic_line]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/examples/goldens/simple_line_chart.png
 [basic_bar]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/examples/goldens/simple_bar_chart.png
 [showcase]: https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/showcase.gif
+
+
+<p align="center">
+  <a href='https://infinum.com'>
+    <picture>
+        <source srcset="https://assets.infinum.com/brand/logo/static/white.svg" media="(prefers-color-scheme: dark)">
+        <img src="https://assets.infinum.com/brand/logo/static/default.svg">
+    </picture>
+  </a>
+</p>
