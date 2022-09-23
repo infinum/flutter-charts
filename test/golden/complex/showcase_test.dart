@@ -58,8 +58,8 @@ void main() {
                     lineColor: Colors.white12,
                     dashArray: [8, 8],
                     lineWidth: 1.5,
-                    valuesPadding:
-                        const EdgeInsets.only(bottom: 6.0, right: 16.0),
+                    valuesPadding: const EdgeInsets.only(
+                        bottom: 6.0, right: 12.0, left: 12.0),
                     axisValue: (value) => '${value}k',
                     legendFontStyle: defaultTextStyle.copyWith(
                         fontSize: 14.0,
@@ -119,8 +119,8 @@ void main() {
                   horizontalLegendPosition: HorizontalLegendPosition.start,
                   gridColor: Colors.grey.shade200,
                   gridWidth: 1,
-                  horizontalValuesPadding:
-                      const EdgeInsets.only(bottom: -8.0, right: 8.0),
+                  horizontalValuesPadding: const EdgeInsets.only(
+                      bottom: -8.0, right: 8.0, left: 8.0),
                   verticalValuesPadding: const EdgeInsets.only(top: 24.0),
                   horizontalAxisValueFromValue: (value) => '${value + 1}h',
                   verticalAxisValueFromIndex: (value) =>

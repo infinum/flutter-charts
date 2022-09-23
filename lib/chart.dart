@@ -35,6 +35,7 @@ part 'chart/render/chart_renderer.dart';
 // Data renderers
 part 'chart/render/data_renderer/chart_data_renderer.dart';
 part 'chart/render/data_renderer/chart_linear_data_renderer.dart';
+part 'chart/render/data_renderer/chart_variable_data_renderer.dart';
 // Decoration painters
 part 'chart/render/decorations/border_decoration.dart';
 part 'chart/render/decorations/decoration_painter.dart';

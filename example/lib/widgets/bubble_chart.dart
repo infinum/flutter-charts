@@ -7,15 +7,16 @@ typedef DataToAxis<T> = String Function(int item);
 
 class BubbleChart<T> extends StatelessWidget {
   BubbleChart({
-    @required this.data,
-    @required this.dataToValue,
+    required this.data,
+    required this.dataToValue,
     this.height = 240.0,
-    this.itemOptions,
+    this.itemOptions = const BubbleItemOptions(),
     this.backgroundDecorations,
     this.foregroundDecorations,
-    Key key,
+    Key? key,
   })  : _mappedValues = [
           data.map((e) => BubbleValue<T>(dataToValue(e))).toList()
+              as List<ChartItem<T>>
         ],
         super(key: key);
 
@@ -26,8 +27,8 @@ class BubbleChart<T> extends StatelessWidget {
   final double height;
   final ItemOptions itemOptions;
 
-  final List<DecorationPainter> backgroundDecorations;
-  final List<DecorationPainter> foregroundDecorations;
+  final List<DecorationPainter>? backgroundDecorations;
+  final List<DecorationPainter>? foregroundDecorations;
 
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,8 @@ part of charts_painter;
 class BubbleValue<T> extends ChartItem<T?> {
   /// Simple bubble value with max value
   BubbleValue(double max) : super(null, max, max);
+  BubbleValue.xAxis(double max, double xAxis)
+      : super(null, max, max, xAxisMin: xAxis);
 
   /// Bubble value with item `T` and max value
   BubbleValue.withValue(T value, double max) : super(value, max, max);

@@ -11,16 +11,16 @@ void main() {
 }
 
 class ChartTest extends StatelessWidget {
-  ChartTest({Key key}) : super(key: key);
+  ChartTest({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final byCount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-    return chart.Chart(
+    return chart.Chart<void>(
       state: chart.ChartState.bar(
         chart.ChartData.fromList(
-          byCount.map((e) => chart.BarValue(e.toDouble())).toList(),
+          byCount.map((e) => chart.BarValue<void>(e.toDouble())).toList(),
         ),
         backgroundDecorations: [
           chart.GridDecoration(
@@ -32,7 +32,7 @@ class ChartTest extends StatelessWidget {
             textStyle: Theme.of(context)
                 .textTheme
                 .subtitle2
-                .copyWith(fontSize: 8, fontWeight: FontWeight.bold),
+                ?.copyWith(fontSize: 8, fontWeight: FontWeight.bold),
             gridColor: Theme.of(context).dividerColor,
           ),
           chart.ValueDecoration(
@@ -40,7 +40,7 @@ class ChartTest extends StatelessWidget {
             hideZeroValues: true,
             // valueGenerator: (_),
             textStyle:
-                Theme.of(context).textTheme.subtitle1.copyWith(fontSize: 8),
+                Theme.of(context).textTheme.subtitle1?.copyWith(fontSize: 8),
           ),
         ],
         // foregroundDecorations: [

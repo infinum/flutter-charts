@@ -124,8 +124,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
   void initDecoration(ChartState state) {
     super.initDecoration(state);
     if (showValues) {
-      _longestText =
-          axisValue.call(state.data.maxValue.toInt()).toString() + '0';
+      _longestText = axisValue.call(state.data.maxValue.toInt()).toString() + '0';
 
       if ((_longestText?.length ?? 0) < (horizontalAxisUnit?.length ?? 0.0)) {
         _longestText = '0' * ((horizontalAxisUnit?.length ?? 0) + 1);
@@ -160,18 +159,15 @@ class HorizontalAxisDecoration extends DecorationPainter {
       final _defaultValue = (axisStep * i + state.data.minValue).toInt();
 
       final _isPositionStart = legendPosition == HorizontalLegendPosition.start;
-      final _startLine = _isPositionStart
-          ? -(marginNeeded().horizontal * (1 - _endWithChart))
-          : 0.0;
+      final _startLine = _isPositionStart ? -(marginNeeded().horizontal * (1 - _endWithChart)) : 0.0;
       final _endLine = _isPositionStart
           ? 0.0
-          : (marginNeeded().horizontal * (1 - _endWithChart));
+          : (marginNeeded().horizontal * (1 - _endWithChart) - (_getTextPainter(_longestText ?? '').width) / 2) -
+              (valuesPadding?.horizontal ?? 0);
 
       if (showLineForValue?.call(_defaultValue) ?? showLines) {
-        gridPath.moveTo(
-            _startLine, size.height - (lineWidth / 2 + axisStep * i * scale));
-        gridPath.lineTo((size.width + _endLine),
-            size.height - (lineWidth / 2 + axisStep * i * scale));
+        gridPath.moveTo(_startLine, size.height - (lineWidth / 2 + axisStep * i * scale));
+        gridPath.lineTo((size.width + _endLine), size.height - (lineWidth / 2 + axisStep * i * scale));
       }
 
       if (!showValues) {
@@ -191,30 +187,15 @@ class HorizontalAxisDecoration extends DecorationPainter {
         continue;
       }
 
-      final _width = _textWidth(_longestText, legendFontStyle);
-      final _textPainter = TextPainter(
-        text: TextSpan(
-          text: _text,
-          style: legendFontStyle,
-        ),
-        textAlign: valuesAlign,
-        maxLines: 1,
-        textDirection: TextDirection.ltr,
-      )..layout();
+      final _textPainter = _getTextPainter(_text);
 
-      final _positionEnd = (size.width) + (valuesPadding?.left ?? 0.0);
-      final _positionStart =
-          -marginNeeded().left + (valuesPadding?.left ?? 0.0);
+      final _positionEnd = size.width - (valuesPadding?.left ?? 0.0) - (_textPainter.width / 2);
+      final _positionStart = -(valuesPadding?.right ?? 0.0) - _textPainter.width;
 
       _textPainter.paint(
           canvas,
-          Offset(
-              legendPosition == HorizontalLegendPosition.end
-                  ? _positionEnd
-                  : _positionStart,
-              _height -
-                  axisStep * i * scale -
-                  (_textPainter.height + (valuesPadding?.bottom ?? 0.0))));
+          Offset(legendPosition == HorizontalLegendPosition.end ? _positionEnd : _positionStart,
+              _height - axisStep * i * scale - (_textPainter.height + (valuesPadding?.bottom ?? 0.0))));
     }
 
     if (dashArray != null) {
@@ -228,37 +209,31 @@ class HorizontalAxisDecoration extends DecorationPainter {
     canvas.restore();
   }
 
+  TextPainter _getTextPainter(String? text, {TextStyle? style}) {
+    return TextPainter(
+      text: TextSpan(
+        text: text,
+        style: style ?? legendFontStyle,
+      ),
+      textAlign: valuesAlign,
+      maxLines: 1,
+      textDirection: TextDirection.ltr,
+    )..layout();
+  }
+
   void _setUnitValue(Canvas canvas, Size size, ChartState state, double scale) {
     if (horizontalAxisUnit == null) {
       return;
     }
 
-    final _textPainter = TextPainter(
-      text: TextSpan(
-        text: horizontalAxisUnit,
-        style: legendFontStyle,
-      ),
-      textAlign: valuesAlign,
-      maxLines: 1,
-      textDirection: TextDirection.ltr,
-    )..layout(
-        maxWidth: state.defaultPadding.horizontal,
-        minWidth: state.defaultPadding.horizontal,
-      );
+    final _textPainter = _getTextPainter(horizontalAxisUnit!);
 
-    _textPainter.paint(
-        canvas, Offset(size.width - (_textPainter.width), _textPainter.height));
+    _textPainter.paint(canvas, Offset(size.width - (_textPainter.width), _textPainter.height));
   }
 
   /// Get width of longest text on axis
   double _textWidth(String? text, TextStyle? style) {
-    final textPainter = TextPainter(
-        text: TextSpan(text: text, style: style),
-        maxLines: 1,
-        textWidthBasis: TextWidthBasis.longestLine,
-        textScaleFactor: textScale,
-        textDirection: TextDirection.ltr)
-      ..layout();
+    final textPainter = _getTextPainter(text, style: style);
     return textPainter.size.width;
   }
 
@@ -268,14 +243,13 @@ class HorizontalAxisDecoration extends DecorationPainter {
       return EdgeInsets.zero;
     }
 
-    final _maxTextWidth = _textWidth(_longestText, legendFontStyle) +
-        (valuesPadding?.horizontal ?? 0.0);
+    final _width = _textWidth(_longestText, legendFontStyle) + (valuesPadding?.horizontal ?? 0.0);
     final _isEnd = legendPosition == HorizontalLegendPosition.end;
 
     return EdgeInsets.only(
-      top: showTopValue ? legendFontStyle?.fontSize ?? 13.0 : 0.0,
-      right: _isEnd ? _maxTextWidth : 0.0,
-      left: _isEnd ? 0.0 : _maxTextWidth,
+      top: showTopValue ? (valuesPadding?.vertical ?? 0) : 0.0,
+      right: _isEnd ? _width : 0.0,
+      left: _isEnd ? 0.0 : _width,
     );
   }
 
@@ -284,25 +258,17 @@ class HorizontalAxisDecoration extends DecorationPainter {
     if (endValue is HorizontalAxisDecoration) {
       return HorizontalAxisDecoration._lerp(
         showValues: t < 0.5 ? showValues : endValue.showValues,
-        endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t) ??
-            endValue._endWithChart,
+        endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t) ?? endValue._endWithChart,
         showTopValue: t < 0.5 ? showTopValue : endValue.showTopValue,
         valuesAlign: t < 0.5 ? valuesAlign : endValue.valuesAlign,
-        valuesPadding:
-            EdgeInsets.lerp(valuesPadding, endValue.valuesPadding, t),
-        lineColor:
-            Color.lerp(lineColor, endValue.lineColor, t) ?? endValue.lineColor,
-        lineWidth:
-            lerpDouble(lineWidth, endValue.lineWidth, t) ?? endValue.lineWidth,
+        valuesPadding: EdgeInsets.lerp(valuesPadding, endValue.valuesPadding, t),
+        lineColor: Color.lerp(lineColor, endValue.lineColor, t) ?? endValue.lineColor,
+        lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t) ?? endValue.lineWidth,
         dashArray: t < 0.5 ? dashArray : endValue.dashArray,
-        axisStep:
-            lerpDouble(axisStep, endValue.axisStep, t) ?? endValue.axisStep,
-        textScale:
-            lerpDouble(textScale, endValue.textScale, t) ?? endValue.textScale,
-        legendFontStyle:
-            TextStyle.lerp(legendFontStyle, endValue.legendFontStyle, t),
-        horizontalAxisUnit:
-            t > 0.5 ? endValue.horizontalAxisUnit : horizontalAxisUnit,
+        axisStep: lerpDouble(axisStep, endValue.axisStep, t) ?? endValue.axisStep,
+        textScale: lerpDouble(textScale, endValue.textScale, t) ?? endValue.textScale,
+        legendFontStyle: TextStyle.lerp(legendFontStyle, endValue.legendFontStyle, t),
+        horizontalAxisUnit: t > 0.5 ? endValue.horizontalAxisUnit : horizontalAxisUnit,
         legendPosition: t > 0.5 ? endValue.legendPosition : legendPosition,
         axisValue: t > 0.5 ? endValue.axisValue : axisValue,
         showLines: t > 0.5 ? endValue.showLines : showLines,

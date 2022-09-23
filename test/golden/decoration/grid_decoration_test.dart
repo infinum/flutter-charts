@@ -26,7 +26,7 @@ void main() {
             showVerticalValues: false,
             textStyle: defaultTextStyle,
             horizontalValuesPadding:
-                const EdgeInsets.only(right: 8.0, left: 4.0),
+                const EdgeInsets.only(right: 8.0, left: 8.0),
           ),
         ]),
       )
@@ -49,7 +49,7 @@ void main() {
             showVerticalValues: true,
             textStyle: defaultTextStyle,
             horizontalValuesPadding:
-                const EdgeInsets.only(right: 8.0, left: 4.0),
+                const EdgeInsets.only(right: 8.0, left: 8.0),
             verticalValuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
           ),
         ]),
@@ -64,7 +64,7 @@ void main() {
             verticalLegendPosition: VerticalLegendPosition.top,
             textStyle: defaultTextStyle,
             horizontalValuesPadding:
-                const EdgeInsets.only(right: 8.0, left: 4.0),
+                const EdgeInsets.only(right: 8.0, left: 8.0),
             verticalValuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
           ),
         ]),
@@ -78,7 +78,7 @@ void main() {
             dashArray: [10, 10],
             textStyle: defaultTextStyle,
             horizontalValuesPadding:
-                const EdgeInsets.only(right: 8.0, left: 4.0),
+                const EdgeInsets.only(right: 8.0, left: 8.0),
             verticalValuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
           ),
         ]),
@@ -92,7 +92,7 @@ void main() {
             verticalAxisStep: 4,
             textStyle: defaultTextStyle,
             horizontalValuesPadding:
-                const EdgeInsets.only(right: 8.0, left: 4.0),
+                const EdgeInsets.only(right: 8.0, left: 8.0),
             verticalValuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
           ),
         ]),
@@ -114,7 +114,7 @@ void main() {
             endWithChart: true,
             textStyle: defaultTextStyle,
             horizontalValuesPadding:
-                const EdgeInsets.only(right: 8.0, left: 4.0),
+                const EdgeInsets.only(right: 8.0, left: 8.0),
             verticalValuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
           ),
         ]),

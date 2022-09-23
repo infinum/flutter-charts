@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ShowcaseChartScreen extends StatefulWidget {
-  ShowcaseChartScreen({Key key}) : super(key: key);
+  ShowcaseChartScreen({Key? key}) : super(key: key);
 
   @override
   _ShowcaseChartScreenState createState() => _ShowcaseChartScreenState();

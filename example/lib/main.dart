@@ -14,7 +14,7 @@ void main() {
 }
 
 class ChartDemo extends StatefulWidget {
-  ChartDemo({Key key}) : super(key: key);
+  ChartDemo({Key? key}) : super(key: key);
 
   @override
   _ChartDemoState createState() => _ChartDemoState();
@@ -25,7 +25,6 @@ class _ChartDemoState extends State<ChartDemo> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.light().copyWith(
-        accentColor: Color(0xFFd8262C),
         colorScheme: ThemeData.light().colorScheme.copyWith(
               primary: Color(0xFFd8262C),
               secondary: Color(0xFF353535),
@@ -44,7 +43,7 @@ class _ChartDemoState extends State<ChartDemo> {
 }
 
 class ShowList extends StatelessWidget {
-  ShowList({Key key}) : super(key: key);
+  ShowList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +56,7 @@ class ShowList extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
             'Chart types',
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
+            style: Theme.of(context).textTheme.bodyText2?.copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 14.0,
                 ),
@@ -69,7 +68,7 @@ class ShowList extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
             'Chart Decorations',
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
+            style: Theme.of(context).textTheme.bodyText2?.copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 14.0,
                 ),
@@ -92,7 +91,7 @@ class ShowList extends StatelessWidget {
                   ),
                   itemOptions: BubbleItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).primaryColor,
                     maxBarWidth: 1.0,
                   ),
                   backgroundDecorations: [
@@ -132,7 +131,7 @@ class ShowList extends StatelessWidget {
                     ),
                     itemOptions: BarItemOptions(
                       padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).primaryColor,
                       maxBarWidth: 4.0,
                     ),
                     backgroundDecorations: [
@@ -167,7 +166,7 @@ class ShowList extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
             'Chart Interactions',
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
+            style: Theme.of(context).textTheme.bodyText2?.copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 14.0,
                 ),
@@ -191,7 +190,7 @@ class ShowList extends StatelessWidget {
                   itemOptions: BarItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).primaryColor,
                   ),
                   backgroundDecorations: [
                     GridDecoration(
@@ -200,7 +199,7 @@ class ShowList extends StatelessWidget {
                       gridColor: Theme.of(context).dividerColor,
                     ),
                     SparkLineDecoration(
-                      lineColor: Theme.of(context).accentColor,
+                      lineColor: Theme.of(context).primaryColor,
                     ),
                   ],
                 ),
@@ -217,7 +216,7 @@ class ShowList extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
             'Complex charts',
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
+            style: Theme.of(context).textTheme.bodyText2?.copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 14.0,
                 ),

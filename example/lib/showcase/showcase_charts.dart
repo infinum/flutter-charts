@@ -1,10 +1,9 @@
 import 'package:charts_painter/chart.dart';
-import 'package:example/charts/multi_bar_chart_screen.dart';
 import 'package:example/charts/showcase_chart_screen.dart';
 import 'package:flutter/material.dart';
 
 class ShowcaseCharts extends StatelessWidget {
-  const ShowcaseCharts({Key key}) : super(key: key);
+  const ShowcaseCharts({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

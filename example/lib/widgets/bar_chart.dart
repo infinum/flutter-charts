@@ -7,16 +7,16 @@ typedef DataToAxis<T> = String Function(int item);
 
 class BarChart<T> extends StatelessWidget {
   BarChart({
-    @required List<T> data,
-    @required this.dataToValue,
+    required List<T> data,
+    this.dataToValue,
     this.height = 240.0,
     this.backgroundDecorations,
     this.foregroundDecorations,
     this.chartBehaviour = const ChartBehaviour(),
     this.itemOptions = const BarItemOptions(),
     this.stack = false,
-    Key key,
-  })  : _mappedValues = [data.map((e) => BarValue<T>(dataToValue(e))).toList()],
+    Key? key,
+  })  : _mappedValues = <List<ChartItem<T?>>>[data.map((e) => BarValue<T>(dataToValue!(e))).toList()],
         super(key: key);
 
   const BarChart.map(
@@ -27,26 +27,24 @@ class BarChart<T> extends StatelessWidget {
     this.chartBehaviour = const ChartBehaviour(),
     this.itemOptions = const BarItemOptions(),
     this.stack = false,
-    Key key,
+    Key? key,
   })  : dataToValue = null,
         super(key: key);
 
-  final DataToValue<T> dataToValue;
-  final List<List<ChartItem<T>>> _mappedValues;
+  final DataToValue<T>? dataToValue;
+  final List<List<ChartItem<T?>>> _mappedValues;
   final double height;
 
   final bool stack;
   final ItemOptions itemOptions;
   final ChartBehaviour chartBehaviour;
-  final List<DecorationPainter> backgroundDecorations;
-  final List<DecorationPainter> foregroundDecorations;
+  final List<DecorationPainter>? backgroundDecorations;
+  final List<DecorationPainter>? foregroundDecorations;
 
   @override
   Widget build(BuildContext context) {
-    final _foregroundDecorations =
-        foregroundDecorations ?? <DecorationPainter>[];
-    final _backgroundDecorations =
-        backgroundDecorations ?? <DecorationPainter>[];
+    final _foregroundDecorations = foregroundDecorations ?? <DecorationPainter>[];
+    final _backgroundDecorations = backgroundDecorations ?? <DecorationPainter>[];
 
     return AnimatedChart<T>(
       height: height,

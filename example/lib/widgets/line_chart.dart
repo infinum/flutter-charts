@@ -7,21 +7,22 @@ typedef DataToAxis<T> = String Function(int item);
 
 class LineChart<T> extends StatelessWidget {
   LineChart({
-    @required this.data,
-    @required this.dataToValue,
+    required this.data,
+    required this.dataToValue,
     this.height = 240.0,
     this.lineWidth = 2.0,
     this.itemColor,
     this.backgroundDecorations,
     this.foregroundDecorations,
-    this.chartItemOptions,
+    required this.chartItemOptions,
     this.chartBehaviour,
-    this.smoothCurves,
+    this.smoothCurves = false,
     this.gradient,
     this.stack = false,
-    Key key,
+    Key? key,
   })  : _mappedValues = [
-          data.map((e) => BubbleValue<T>(dataToValue(e))).toList()
+          data!.map((e) => BubbleValue<T>(dataToValue!(e))).toList()
+              as List<ChartItem<T>>
         ],
         super(key: key);
 
@@ -32,30 +33,30 @@ class LineChart<T> extends StatelessWidget {
     this.itemColor,
     this.backgroundDecorations,
     this.foregroundDecorations,
-    this.chartItemOptions,
+    required this.chartItemOptions,
     this.chartBehaviour,
-    this.smoothCurves,
+    this.smoothCurves = false,
     this.gradient,
     this.stack = false,
-    Key key,
+    Key? key,
   })  : data = null,
         dataToValue = null,
         super(key: key);
 
-  final List<T> data;
-  final DataToValue<T> dataToValue;
+  final List<T>? data;
+  final DataToValue<T>? dataToValue;
 
   final double height;
 
   final bool smoothCurves;
-  final Color itemColor;
-  final Gradient gradient;
+  final Color? itemColor;
+  final Gradient? gradient;
   final double lineWidth;
   final bool stack;
 
-  final List<DecorationPainter> backgroundDecorations;
-  final List<DecorationPainter> foregroundDecorations;
-  final ChartBehaviour chartBehaviour;
+  final List<DecorationPainter>? backgroundDecorations;
+  final List<DecorationPainter>? foregroundDecorations;
+  final ChartBehaviour? chartBehaviour;
   final ItemOptions chartItemOptions;
 
   final List<List<ChartItem<T>>> _mappedValues;
@@ -80,7 +81,7 @@ class LineChart<T> extends StatelessWidget {
           SparkLineDecoration(
             id: 'chart_decoration',
             lineWidth: lineWidth,
-            lineColor: itemColor,
+            lineColor: itemColor ?? Theme.of(context).primaryColor,
             gradient: gradient,
             smoothPoints: smoothCurves,
           ),

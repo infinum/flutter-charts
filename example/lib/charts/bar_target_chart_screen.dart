@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import '../widgets/bar_chart.dart';
 
 class BarTargetChartScreen extends StatefulWidget {
-  BarTargetChartScreen({Key key}) : super(key: key);
+  BarTargetChartScreen({Key? key}) : super(key: key);
 
   @override
   _BarTargetChartScreenState createState() => _BarTargetChartScreenState();
@@ -17,8 +17,8 @@ class BarTargetChartScreen extends StatefulWidget {
 
 class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
   List<BarValue> _values = <BarValue>[];
-  double targetMax;
-  double targetMin;
+  double targetMax = 10;
+  double targetMin = 5;
   bool _showValues = false;
   bool _smoothPoints = false;
   bool _showLine = false;
@@ -76,7 +76,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
               child: BarChart(
                 data: _values,
                 height: MediaQuery.of(context).size.height * 0.4,
-                dataToValue: (BarValue value) => value.max,
+                dataToValue: (BarValue value) => value.max ?? 0,
                 itemOptions: BarItemOptions(
                   padding: const EdgeInsets.symmetric(horizontal: 2.0),
                   minBarWidth: 4.0,
@@ -115,9 +115,10 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                     legendDescription: 'Target line 👇',
                     legendTarget: targetMax,
                     legendStyle: Theme.of(context)
-                        .textTheme
-                        .overline
-                        .copyWith(fontSize: 14),
+                            .textTheme
+                            .overline
+                            ?.copyWith(fontSize: 14) ??
+                        TextStyle(fontSize: 14),
                     padding: EdgeInsets.only(top: -8),
                   ),
                   BorderDecoration(

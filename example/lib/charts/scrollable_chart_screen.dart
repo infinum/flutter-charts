@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ScrollableChartScreen extends StatefulWidget {
-  ScrollableChartScreen({Key key}) : super(key: key);
+  ScrollableChartScreen({Key? key}) : super(key: key);
 
   @override
   _ScrollableChartScreenState createState() => _ScrollableChartScreenState();
@@ -16,14 +16,14 @@ class ScrollableChartScreen extends StatefulWidget {
 
 class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
   List<double> _values = <double>[];
-  double targetMax;
+  double targetMax = 10;
   bool _showValues = false;
   bool _smoothPoints = false;
   bool _showBars = true;
   bool _isScrollable = true;
   bool _fixedAxis = false;
   int minItems = 30;
-  int _selected;
+  int? _selected;
 
   final _controller = ScrollController();
 
@@ -134,7 +134,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
       foregroundDecorations: [
         ValueDecoration(
           alignment: _showBars ? Alignment.bottomCenter : Alignment(0.0, -1.0),
-          textStyle: Theme.of(context).textTheme.button.copyWith(
+          textStyle: Theme.of(context).textTheme.button?.copyWith(
               color: (_showBars
                       ? Theme.of(context).colorScheme.onPrimary
                       : Theme.of(context).colorScheme.primary)
@@ -165,7 +165,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                 shape: BoxShape.circle,
               ),
               child: Text(
-                  '${_selected != null ? _values[_selected].toStringAsPrecision(2) : '...'}'),
+                  '${_selected != null ? _values[_selected!].toStringAsPrecision(2) : '...'}'),
             ),
           ),
           backgroundColor: Theme.of(context)
@@ -227,9 +227,11 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                               axisStep: 1,
                               showValues: true,
                               endWithChart: false,
+                              axisValue: (value) => '$value E',
                               legendFontStyle:
                                   Theme.of(context).textTheme.caption,
                               valuesAlign: TextAlign.center,
+                              valuesPadding: const EdgeInsets.only(right: 8.0),
                               lineColor: Theme.of(context)
                                   .colorScheme
                                   .primaryVariant

@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import '../widgets/bar_chart.dart';
 
 class MultiBarChartScreen extends StatefulWidget {
-  MultiBarChartScreen({Key key}) : super(key: key);
+  MultiBarChartScreen({Key? key}) : super(key: key);
 
   @override
   _MultiBarChartScreenState createState() => _MultiBarChartScreenState();
@@ -17,8 +17,8 @@ class MultiBarChartScreen extends StatefulWidget {
 
 class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
   Map<int, List<BarValue<void>>> _values = <int, List<BarValue<void>>>{};
-  double targetMax;
-  double targetMin;
+  double targetMax = 10;
+  double targetMin = 5;
   bool _showValues = false;
   int minItems = 6;
   bool _legendOnEnd = true;
@@ -54,8 +54,8 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
       return MapEntry(
           key,
           List.generate(minItems, (index) {
-            if (_values[key].length > index) {
-              return _values[key][index];
+            if ((_values[key]?.length ?? 0) > index) {
+              return _values[key]![index];
             }
 
             return BarValue<void>(
@@ -67,20 +67,22 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
   List<List<BarValue<void>>> _getMap() {
     return [
       _values[0]
-          .asMap()
-          .map<int, BarValue<void>>((index, e) {
-            return MapEntry(index, BarValue<void>(e.max));
-          })
-          .values
-          .toList(),
+              ?.asMap()
+              .map<int, BarValue<void>>((index, e) {
+                return MapEntry(index, BarValue<void>(e.max ?? 0));
+              })
+              .values
+              .toList() ??
+          [],
       _values[1]
-          .asMap()
-          .map<int, BarValue<void>>((index, e) {
-            return MapEntry(index, BarValue<void>(e.max));
-          })
-          .values
-          .toList(),
-      _values[2].toList()
+              ?.asMap()
+              .map<int, BarValue<void>>((index, e) {
+                return MapEntry(index, BarValue<void>(e.max ?? 0));
+              })
+              .values
+              .toList() ??
+          [],
+      _values[2]?.toList() ?? [],
     ];
   }
 
@@ -114,7 +116,7 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                   colorForKey: (_, index) {
                     return [
                       Theme.of(context).colorScheme.primary,
-                      Theme.of(context).colorScheme.primaryVariant,
+                      Theme.of(context).colorScheme.inversePrimary,
                       Theme.of(context).colorScheme.secondary
                     ][index];
                   },
@@ -136,7 +138,7 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                     textStyle: Theme.of(context).textTheme.caption,
                     gridColor: Theme.of(context)
                         .colorScheme
-                        .primaryVariant
+                        .inversePrimary
                         .withOpacity(0.2),
                   ),
                 ],
@@ -144,7 +146,7 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                   BorderDecoration(),
                   ValueDecoration(
                     alignment: Alignment.bottomCenter,
-                    textStyle: Theme.of(context).textTheme.button.copyWith(
+                    textStyle: Theme.of(context).textTheme.button?.copyWith(
                         color: Theme.of(context)
                             .colorScheme
                             .onPrimary
@@ -153,7 +155,7 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                   ValueDecoration(
                     valueArrayIndex: 1,
                     alignment: Alignment.bottomCenter,
-                    textStyle: Theme.of(context).textTheme.button.copyWith(
+                    textStyle: Theme.of(context).textTheme.button?.copyWith(
                         color: Theme.of(context)
                             .colorScheme
                             .onSecondary
@@ -162,7 +164,7 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                   ValueDecoration(
                     valueArrayIndex: 2,
                     alignment: Alignment.bottomCenter,
-                    textStyle: Theme.of(context).textTheme.button.copyWith(
+                    textStyle: Theme.of(context).textTheme.button?.copyWith(
                         color: Theme.of(context)
                             .colorScheme
                             .onPrimary

@@ -7,15 +7,15 @@ typedef DataToAxis<T> = String Function(int item);
 
 class CandleChart<T> extends StatelessWidget {
   CandleChart({
-    @required this.data,
-    @required this.dataToValue,
+    required this.data,
+    required this.dataToValue,
     this.height = 240.0,
     this.backgroundDecorations = const [],
-    this.chartBehaviour,
-    this.chartItemOptions,
+    this.chartBehaviour = const ChartBehaviour(),
+    this.chartItemOptions = const BarItemOptions(),
     this.foregroundDecorations = const [],
     this.geometryPainter = barPainter,
-    Key key,
+    Key? key,
   })  : _mappedValues = [data.map(dataToValue).toList()],
         super(key: key);
 

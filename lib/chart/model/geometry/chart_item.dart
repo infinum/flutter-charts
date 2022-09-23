@@ -4,13 +4,20 @@ part of charts_painter;
 class ChartItem<T> {
   /// Protected constructor for animations
   @protected
-  ChartItem(this.value, this.min, this.max);
+  ChartItem(
+    this.value,
+    this.min,
+    this.max, {
+    this.xAxisMin,
+  });
 
   /// Minimum chart item value
   final double? min;
 
   /// Maximum item value
   final double? max;
+
+  final double? xAxisMin;
 
   /// Items can have value attached to them `T`
   final T? value;

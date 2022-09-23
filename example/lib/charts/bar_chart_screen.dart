@@ -1,15 +1,11 @@
 import 'dart:math';
 
 import 'package:charts_painter/chart.dart';
-import 'package:example/widgets/chart_options.dart';
-import 'package:example/widgets/toggle_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/bar_chart.dart';
-
 class BarChartScreen extends StatefulWidget {
-  BarChartScreen({Key key}) : super(key: key);
+  BarChartScreen({Key? key}) : super(key: key);
 
   @override
   _BarChartScreenState createState() => _BarChartScreenState();
@@ -17,8 +13,8 @@ class BarChartScreen extends StatefulWidget {
 
 class _BarChartScreenState extends State<BarChartScreen> {
   List<BarValue<void>> _values = <BarValue<void>>[];
-  double targetMax;
-  double targetMin;
+  double targetMax = 10;
+  double targetMin = 5;
   bool _showValues = false;
   bool _smoothPoints = false;
   bool _colorfulBars = false;
@@ -36,12 +32,9 @@ class _BarChartScreenState extends State<BarChartScreen> {
   void _updateValues() {
     final Random _rand = Random();
     final double _difference = _rand.nextDouble() * 10;
-    targetMax = 5 +
-        ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25))
-            .roundToDouble();
+    targetMax = 5 + ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25)).roundToDouble();
     _values.addAll(List.generate(minItems, (index) {
-      return BarValue<void>(
-          targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
+      return BarValue<void>(targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
     }));
     targetMin = targetMax - ((_rand.nextDouble() * 3) + (targetMax * 0.2));
   }
@@ -52,8 +45,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
         return _values[index];
       }
 
-      return BarValue<void>(
-          targetMax * 0.4 + Random().nextDouble() * targetMax * 0.9);
+      return BarValue<void>(targetMax * 0.4 + Random().nextDouble() * targetMax * 0.9);
     });
   }
 
@@ -67,157 +59,52 @@ class _BarChartScreenState extends State<BarChartScreen> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: BarChart(
-              data: _values,
-              height: MediaQuery.of(context).size.height * 0.4,
-              dataToValue: (BarValue value) => value?.max ?? 0.0,
-              itemOptions: BarItemOptions(
-                padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                minBarWidth: 4.0,
-                // isTargetInclusive: true,
-                color: Theme.of(context).colorScheme.primary,
-                radius: const BorderRadius.vertical(
-                  top: Radius.circular(24.0),
-                ),
-                colorForValue: _colorfulBars
-                    ? (_, value, [min]) {
-                        int _value = ((value / (targetMax * 1.3)) * 10).round();
-                        return Colors.accents[_value];
-                      }
-                    : null,
-              ),
-              backgroundDecorations: [
-                GridDecoration(
-                  showHorizontalValues: _showValues,
-                  showVerticalValues: _showValues,
-                  showTopHorizontalValue: _legendOnBottom ? _showValues : false,
-                  horizontalLegendPosition: _legendOnEnd
-                      ? HorizontalLegendPosition.end
-                      : HorizontalLegendPosition.start,
-                  verticalLegendPosition: _legendOnBottom
-                      ? VerticalLegendPosition.bottom
-                      : VerticalLegendPosition.top,
-                  horizontalAxisStep: 1,
-                  verticalAxisStep: 1,
-                  verticalValuesPadding:
-                      const EdgeInsets.symmetric(vertical: 4.0),
-                  horizontalValuesPadding:
-                      const EdgeInsets.symmetric(horizontal: 4.0),
-                  textStyle: Theme.of(context).textTheme.caption,
-                  gridColor: Theme.of(context)
-                      .colorScheme
-                      .primaryVariant
-                      .withOpacity(0.2),
-                ),
-                TargetAreaDecoration(
-                  targetAreaFillColor:
-                      Theme.of(context).colorScheme.error.withOpacity(0.2),
-                  targetLineColor: Theme.of(context).colorScheme.error,
-                  targetAreaRadius: BorderRadius.circular(12.0),
-                  targetMax: targetMax,
-                  targetMin: targetMin,
-                  colorOverTarget: Theme.of(context).colorScheme.error,
-                ),
-              ],
-              foregroundDecorations: [
-                SparkLineDecoration(
-                  lineWidth: 4.0,
-                  lineColor: Theme.of(context)
-                      .primaryColor
-                      .withOpacity(_showLine ? 1.0 : 0.0),
-                  smoothPoints: _smoothPoints,
-                ),
-                ValueDecoration(
-                  alignment: Alignment.bottomCenter,
-                  textStyle: Theme.of(context)
-                      .textTheme
-                      .button
-                      .copyWith(color: Theme.of(context).colorScheme.onPrimary),
-                ),
-                BorderDecoration(endWithChart: true)
-              ],
-            ),
-          ),
           Expanded(
-            child: ChartOptionsWidget(
-              onRefresh: () {
-                setState(() {
-                  _values.clear();
-                  _updateValues();
-                });
-              },
-              onAddItems: () {
-                setState(() {
-                  minItems += 4;
-                  _addValues();
-                });
-              },
-              onRemoveItems: () {
-                setState(() {
-                  if (_values.length > 4) {
-                    minItems -= 4;
-                    _values.removeRange(_values.length - 4, _values.length);
-                  }
-                });
-              },
-              toggleItems: [
-                ToggleItem(
-                  title: 'Axis values',
-                  value: _showValues,
-                  onChanged: (value) {
-                    setState(() {
-                      _showValues = value;
-                    });
-                  },
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: SizedBox(
+                width: 500,
+                child: Chart(
+                  state: ChartState.line(
+                    ChartData.fromList(
+                      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+                      axisMax: 16,
+                      axisMin: -3,
+                    ),
+                    itemOptions: BubbleItemOptions(
+                      minBarWidth: 4,
+                      maxBarWidth: 4,
+                    ),
+                    behaviour: const ChartBehaviour(
+                      isScrollable: true,
+                    ),
+                    backgroundDecorations: [
+                      GridDecoration(
+                        showVerticalValues: true,
+                        showHorizontalValues: false,
+                        verticalAxisStep: 4,
+                        gridColor: Colors.black26,
+                        textStyle: const TextStyle(
+                          color: Colors.blue,
+                          fontSize: 24,
+                        ),
+                        verticalAxisValueFromIndex: (index) {
+                          var now = DateTime.now();
+                          var midnight = DateTime(now.year, now.month, now.day);
+                          return 'Text here? ${now.day}';
+                        },
+                      ),
+                    ],
+                    foregroundDecorations: [
+                      SparkLineDecoration(
+                        lineWidth: 2.0,
+                        lineColor: Colors.red,
+                        smoothPoints: true,
+                      ),
+                    ],
+                  ),
                 ),
-                ToggleItem(
-                  value: _colorfulBars,
-                  title: 'Rainbow bar items',
-                  onChanged: (value) {
-                    setState(() {
-                      _colorfulBars = value;
-                    });
-                  },
-                ),
-                ToggleItem(
-                  value: _legendOnEnd,
-                  title: 'Legend on end',
-                  onChanged: (value) {
-                    setState(() {
-                      _legendOnEnd = value;
-                    });
-                  },
-                ),
-                ToggleItem(
-                  value: _legendOnBottom,
-                  title: 'Legend on bottom',
-                  onChanged: (value) {
-                    setState(() {
-                      _legendOnBottom = value;
-                    });
-                  },
-                ),
-                ToggleItem(
-                  value: _showLine,
-                  title: 'Show line decoration',
-                  onChanged: (value) {
-                    setState(() {
-                      _showLine = value;
-                    });
-                  },
-                ),
-                ToggleItem(
-                  value: _smoothPoints,
-                  title: 'Smooth line curve',
-                  onChanged: (value) {
-                    setState(() {
-                      _smoothPoints = value;
-                    });
-                  },
-                ),
-              ],
+              ),
             ),
           ),
         ],

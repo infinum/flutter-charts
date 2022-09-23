@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BubbleChartScreen extends StatefulWidget {
-  BubbleChartScreen({Key key}) : super(key: key);
+  BubbleChartScreen({Key? key}) : super(key: key);
 
   @override
   _BubbleChartScreenState createState() => _BubbleChartScreenState();
@@ -16,8 +16,8 @@ class BubbleChartScreen extends StatefulWidget {
 
 class _BubbleChartScreenState extends State<BubbleChartScreen> {
   List<BubbleValue> _values = <BubbleValue>[];
-  double targetMax;
-  double targetMin;
+  double targetMax = 10;
+  double targetMin = 5;
   bool _showValues = false;
   int minItems = 6;
 
@@ -81,7 +81,7 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                     padding: EdgeInsets.symmetric(
                         horizontal: (1 - (_values.length / 17)) * 8.0),
                   ),
-                  dataToValue: (BubbleValue value) => value.max,
+                  dataToValue: (BubbleValue value) => value.max ?? 0,
                   backgroundDecorations: [
                     GridDecoration(
                       showHorizontalValues: _showValues,
@@ -93,12 +93,12 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                       verticalTextAlign: TextAlign.start,
                       gridColor: Theme.of(context)
                           .colorScheme
-                          .primaryVariant
+                          .inversePrimary
                           .withOpacity(0.2),
                       textStyle: Theme.of(context)
                           .textTheme
                           .caption
-                          .copyWith(fontSize: 13.0),
+                          ?.copyWith(fontSize: 13.0),
                     ),
                     tad,
                   ],
