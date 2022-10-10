@@ -2,8 +2,13 @@ import 'package:charts_web/ui/home/presenter/chart_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ChartItemOptionsWidget extends HookConsumerWidget {
-  const ChartItemOptionsWidget({Key? key}) : super(key: key);
+import 'options_component_header.dart';
+
+const _subtitle = '''Options that define how each item looks. There are presets for Bar and Bubble. For super custom solutions you can extend GeomeryPainter and make your own item look.
+''';
+
+class OptionsItemsComponent extends HookConsumerWidget {
+  const OptionsItemsComponent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -11,9 +16,13 @@ class ChartItemOptionsWidget extends HookConsumerWidget {
 
     return Column(
       children: [
-        Text(
-          'Options',
-          style: Theme.of(context).textTheme.headline4,
+        const OptionsComponentHeader(title: 'Item Options', subtitle: _subtitle),
+        SizedBox(
+          width: double.infinity,
+          child: Text(
+            'Item options',
+            style: Theme.of(context).textTheme.headline4!.copyWith(fontWeight: FontWeight.bold, color: Colors.black87),
+          ),
         ),
         Row(
           children: [

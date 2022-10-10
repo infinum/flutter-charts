@@ -1,6 +1,7 @@
 import 'package:charts_painter/chart.dart';
+import 'package:charts_web/ui/common/respo/respo.dart';
+import 'package:charts_web/ui/home/chart_options/chart_options.dart';
 import 'package:charts_web/ui/home/presenter/chart_state_provider.dart';
-import 'package:charts_web/ui/home/widget/side_chart_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,20 +16,44 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final _provider = ref.watch(chartStatePresenter);
 
     return Scaffold(
-      body: Row(
-        children: [
-          Expanded(
-            child: AnimatedChart<void>(
-              duration: Duration(milliseconds: 450),
-              state: _provider.state,
-            ),
-          ),
-          Container(
-            width: 400.0,
-            color: Color(0xFF525F70),
-            child: SideChartOptions(),
-          ),
-        ],
+      backgroundColor: const Color(0xffefefef),
+      body: Respo.of(context).size.maybeMap(small: (_) {
+        return ListView(
+          shrinkWrap: true,
+          children: [
+            ChartOptions(),
+            const SizedBox(height: 500, child: _Chart()),
+          ],
+        );
+      }, orElse: () {
+        return Row(
+          children: [
+            SizedBox(width: 600.0, child: ChartOptions()),
+            const Expanded(child: _Chart()),
+          ],
+        );
+      }),
+    );
+  }
+}
+
+class _Chart extends ConsumerWidget {
+  const _Chart({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final _provider = ref.watch(chartStatePresenter);
+
+    return Container(
+      margin: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+      ),
+      padding: const EdgeInsets.all(20),
+      child: AnimatedChart<void>(
+        duration: Duration(milliseconds: 450),
+        state: _provider.state,
       ),
     );
   }
