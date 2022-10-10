@@ -7,16 +7,24 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final chartStatePresenter = ChangeNotifierProvider((_) => ChartStatePresenter());
 
 class ChartStatePresenter extends ChangeNotifier {
+
+  // data
   List<List<ChartItem<void>>> _data = [
     [4, 6, 3, 6, 7, 9, 3, 2].map((e) => BarValue(e.toDouble())).toList(),
   ];
+  List<Color> listColors = [_presetColors[0]];
 
   DataStrategy _strategy = const DefaultDataStrategy();
 
-  EdgeInsets _chartItemPadding = const EdgeInsets.symmetric(horizontal: 2.0);
+  EdgeInsets chartItemPadding = const EdgeInsets.only(left: 2, right: 2, top: 0, bottom: 0);
   bool bubbleItemPainter = false;
   double? maxBarWidth;
   double? minBarWidth;
+
+  // multi item
+  bool multiItemStack = true;
+  EdgeInsets multiValuePadding = EdgeInsets.zero;
+  bool get isMultiItem => _data.length > 1;
 
   ChartData<void> get _defaultData => ChartData(
         _data,
@@ -44,8 +52,20 @@ class ChartStatePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addList(List<ChartItem<void>> list) {
+  void addDataList(List<ChartItem<void>> list) {
     _data.add(list);
+    listColors.add(_presetColors[_data.length - 1]);
+    notifyListeners();
+  }
+
+  void removeDataList(int listIndex) {
+    listColors.removeAt(listIndex);
+    data.removeAt(listIndex);
+    notifyListeners();
+  }
+
+  void updateListColor(Color color, int listIndex) {
+    listColors[listIndex] = color;
     notifyListeners();
   }
 
@@ -74,8 +94,8 @@ class ChartStatePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateChartItemPadding(EdgeInsets chartItemPadding) {
-    _chartItemPadding = chartItemPadding;
+  void updateChartItemPadding(EdgeInsets newChartItemPadding) {
+    chartItemPadding = newChartItemPadding;
     notifyListeners();
   }
 
@@ -87,31 +107,58 @@ class ChartStatePresenter extends ChangeNotifier {
     minBarWidth = minItemWidth == -1 ? minBarWidth : minItemWidth;
   }
 
+  void updateMinBarWidth(double newMinBarWidth) {
+    minBarWidth = newMinBarWidth;
+    notifyListeners();
+  }
+
+  void updateMaxBarWidth(double newMaxBarWidth) {
+    maxBarWidth = newMaxBarWidth;
+    notifyListeners();
+  }
+
+  void updateMultiItemStack(bool newValue) {
+    multiItemStack = newValue;
+    notifyListeners();
+  }
+
+  void updateMultiValuePadding(EdgeInsets newPadding) {
+    multiValuePadding = newPadding;
+    notifyListeners();
+  }
+
   ItemOptions get _getItemOptions {
     if (bubbleItemPainter) {
       return BubbleItemOptions(
-        padding: _chartItemPadding,
+        padding: chartItemPadding,
         colorForKey: _getColorForKey,
         maxBarWidth: maxBarWidth,
         minBarWidth: minBarWidth,
+        multiItemStack: multiItemStack,
+        multiValuePadding: multiValuePadding,
       );
     } else {
       return BarItemOptions(
-        padding: _chartItemPadding,
+        padding: chartItemPadding,
         colorForKey: _getColorForKey,
         maxBarWidth: maxBarWidth,
         minBarWidth: minBarWidth,
+        multiItemStack: multiItemStack,
+        multiValuePadding: multiValuePadding,
       );
     }
   }
+
+  Color _getColorForKey(ChartItem item, int key) {
+    return listColors[key % 5];
+  }
 }
 
-Color _getColorForKey(ChartItem item, int key) {
-  return [
-    const Color(0xFFD8555F),
-    const Color(0xFFD9A866),
-    const Color(0xFF916794),
-    const Color(0xFF6479C3),
-    const Color(0xFF5A8772),
-  ][key % 5];
-}
+
+const _presetColors = [
+  Color(0xFFD8555F),
+  Color(0xFFD9A866),
+  Color(0xFF916794),
+  Color(0xFF6479C3),
+  Color(0xFF5A8772),
+];

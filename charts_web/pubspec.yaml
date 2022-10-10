@@ -33,10 +33,13 @@ dependencies:
   hooks_riverpod: ^1.0.2
   cupertino_icons: ^1.0.4
   freezed_annotation: ^2.1.0
+  flex_color_picker: ^2.6.1
+  flutter_svg: ^1.1.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^2.1.8
   freezed: ^2.1.0+1
   flutter_lints: ^1.0.4
   flutter_gen_runner: ^4.1.6
@@ -47,13 +50,11 @@ flutter_gen:
 
 # The following section is specific to Flutter.
 flutter:
-  generate: true
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/svg/
+    - assets/png/
 
   fonts:
     - family: InterTight
