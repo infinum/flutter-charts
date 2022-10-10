@@ -11,7 +11,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-const _subtitle = '''Here you can input the data that defines your chart. Each data point is called item.
+const _subtitle = '''Here you can input the data that defines your chart. Each data point is called an item.
 ''';
 
 
@@ -42,8 +42,8 @@ class OptionsDataComponent extends HookConsumerWidget {
           return _DataTextField(_values.toString(), index);
         }).toList(),
         const SizedBox(height: 24),
-        CupertinoButton.filled(
-          child: const Text('Add list'),
+        CupertinoButton(
+          child: const Text('Add another list'),
           onPressed: () {
             final _lists = _provider.data;
             _provider.addList(

@@ -17,13 +17,6 @@ class OptionsItemsComponent extends HookConsumerWidget {
     return Column(
       children: [
         const OptionsComponentHeader(title: 'Item Options', subtitle: _subtitle),
-        SizedBox(
-          width: double.infinity,
-          child: Text(
-            'Item options',
-            style: Theme.of(context).textTheme.headline4!.copyWith(fontWeight: FontWeight.bold, color: Colors.black87),
-          ),
-        ),
         Row(
           children: [
             Expanded(child: Text('Type')),
@@ -43,7 +36,6 @@ class OptionsItemsComponent extends HookConsumerWidget {
                 ),
               ],
             ),
-
             // /// Max width of item in the chart
             // final double? maxBarWidth;
             //
@@ -53,6 +45,7 @@ class OptionsItemsComponent extends HookConsumerWidget {
             // final double? startPosition;
           ],
         ),
+        const SizedBox(height: 24),
       ],
     );
   }
