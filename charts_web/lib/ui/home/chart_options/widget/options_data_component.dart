@@ -28,8 +28,8 @@ class OptionsDataComponent extends HookConsumerWidget {
           SwitchListTile(
             value: _provider.state.data.dataStrategy.runtimeType == DefaultDataStrategy,
             title: _provider.state.data.dataStrategy.runtimeType == DefaultDataStrategy
-                ? const Text('Default')
-                : const Text('Stack'),
+                ? const Text('Default (one next to another)')
+                : const Text('Stack (one on top of another)'),
             subtitle: const Text('Data Strategy - how to show multiple data values'),
             onChanged: (value) {
               _provider.updateDataStrategy(_provider.state.data.dataStrategy.runtimeType == DefaultDataStrategy
