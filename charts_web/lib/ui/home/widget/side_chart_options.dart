@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:charts_painter/chart.dart';
-import 'package:charts_web/ui/home/provider/chart_state_provider.dart';
+import 'package:charts_web/ui/home/presenter/chart_state_provider.dart';
 import 'package:charts_web/ui/home/widget/chart_item_options_widget.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,7 +13,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class SideChartOptions extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _provider = ref.watch(chartStateProvider);
+    final _provider = ref.watch(chartStatePresenter);
 
     return Container(
       margin: const EdgeInsets.all(24.0),
@@ -80,7 +80,7 @@ class DataTextField extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _provider = ref.watch(chartStateProvider);
+    final _provider = ref.watch(chartStatePresenter);
     final controller = useTextEditingController();
 
     useEffect(() {

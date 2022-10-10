@@ -1,4 +1,4 @@
-import 'package:charts_web/ui/home/provider/chart_state_provider.dart';
+import 'package:charts_web/ui/home/presenter/chart_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -7,7 +7,7 @@ class ChartItemOptionsWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _provider = ref.watch(chartStateProvider);
+    final _provider = ref.watch(chartStatePresenter);
 
     return Column(
       children: [

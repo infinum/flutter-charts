@@ -1,5 +1,5 @@
 import 'package:charts_painter/chart.dart';
-import 'package:charts_web/ui/home/provider/chart_state_provider.dart';
+import 'package:charts_web/ui/home/presenter/chart_state_provider.dart';
 import 'package:charts_web/ui/home/widget/side_chart_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +12,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final _provider = ref.watch(chartStateProvider);
+    final _provider = ref.watch(chartStatePresenter);
 
     return Scaffold(
       body: Row(

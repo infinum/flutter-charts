@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final chartStateProvider = ChangeNotifierProvider((_) => ChartStateProvider());
+final chartStatePresenter = ChangeNotifierProvider((_) => ChartStatePresenter());
 
-class ChartStateProvider extends ChangeNotifier {
+class ChartStatePresenter extends ChangeNotifier {
   List<List<ChartItem<void>>> _data = [
     [4, 6, 3, 6, 7, 9, 3, 2].map((e) => BarValue(e.toDouble())).toList(),
   ];
 
-  DataStrategy _strategy = DefaultDataStrategy();
+  DataStrategy _strategy = const DefaultDataStrategy();
 
-  EdgeInsets _chartItemPadding = EdgeInsets.symmetric(horizontal: 2.0);
+  EdgeInsets _chartItemPadding = const EdgeInsets.symmetric(horizontal: 2.0);
   bool bubbleItemPainter = false;
   double? maxBarWidth;
   double? minBarWidth;
@@ -108,10 +108,10 @@ class ChartStateProvider extends ChangeNotifier {
 
 Color _getColorForKey(ChartItem item, int key) {
   return [
-    Color(0xFFD8555F),
-    Color(0xFFD9A866),
-    Color(0xFF916794),
-    Color(0xFF6479C3),
-    Color(0xFF5A8772),
+    const Color(0xFFD8555F),
+    const Color(0xFFD9A866),
+    const Color(0xFF916794),
+    const Color(0xFF6479C3),
+    const Color(0xFF5A8772),
   ][key % 5];
 }
