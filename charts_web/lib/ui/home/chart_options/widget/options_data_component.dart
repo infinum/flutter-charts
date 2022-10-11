@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:charts_painter/chart.dart';
+import 'package:charts_web/assets.gen.dart';
 import 'package:charts_web/ui/common/dialog/color_picker_dialog.dart';
 import 'package:charts_web/ui/home/chart_options/widget/options_component_header.dart';
 import 'package:charts_web/ui/home/presenter/chart_state_provider.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 const _subtitle = '''Here you can input the data that defines your chart. Each data point is called an item.
@@ -24,22 +26,13 @@ class OptionsDataComponent extends HookConsumerWidget {
     return Column(
       children: [
         const OptionsComponentHeader(title: 'Data', subtitle: _subtitle),
-        if (_provider.isMultiItem)
-          SwitchListTile(
-            value: _provider.state.data.dataStrategy.runtimeType == DefaultDataStrategy,
-            title: _provider.state.data.dataStrategy.runtimeType == DefaultDataStrategy
-                ? const Text('Default (one next to another)')
-                : const Text('Stack (one on top of another)'),
-            subtitle: const Text('Data Strategy - how to show multiple data values'),
-            onChanged: (value) {
-              _provider.updateDataStrategy(_provider.state.data.dataStrategy.runtimeType == DefaultDataStrategy
-                  ? StackDataStrategy()
-                  : const DefaultDataStrategy());
-            },
-          ),
+        if (_provider.isMultiItem) _StrategySwitch(provider: _provider),
         const SizedBox(height: 12),
         ..._provider.data.mapIndexed((index, list) {
-          return _DataTextField(index, key: Key('data$index'),);
+          return _DataTextField(
+            index,
+            key: Key('data$index'),
+          );
         }).toList(),
         const SizedBox(height: 24),
         CupertinoButton(
@@ -51,6 +44,56 @@ class OptionsDataComponent extends HookConsumerWidget {
           },
         ),
         const SizedBox(height: 24),
+      ],
+    );
+  }
+}
+
+class _StrategySwitch extends StatelessWidget {
+  const _StrategySwitch({
+    Key? key,
+    required ChartStatePresenter provider,
+  })  : _provider = provider,
+        super(key: key);
+
+  final ChartStatePresenter _provider;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        SwitchListTile(
+          value: _provider.state.data.dataStrategy.runtimeType == DefaultDataStrategy,
+          title: _provider.state.data.dataStrategy.runtimeType == DefaultDataStrategy
+              ? const Text('Default (one next to another)')
+              : const Text('Stack (one on top of another)'),
+          subtitle: const Text('Data Strategy - how to show multiple data values'),
+          onChanged: (value) {
+            _provider.updateDataStrategy(_provider.state.data.dataStrategy.runtimeType == DefaultDataStrategy
+                ? StackDataStrategy()
+                : const DefaultDataStrategy());
+          },
+        ),
+        Positioned(
+          right: 8,
+          top: 2,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: Color(0xffdedede),
+            ),
+            height: 60,
+            width: 60,
+            padding: const EdgeInsets.only(bottom: 8),
+            alignment: Alignment.center,
+            child: SvgPicture.asset(
+              _provider.state.data.dataStrategy.runtimeType == DefaultDataStrategy
+                  ? Assets.svg.strategyDefault
+                  : Assets.svg.strategyStack,
+              height: 50,
+            ),
+          ),
+        )
       ],
     );
   }

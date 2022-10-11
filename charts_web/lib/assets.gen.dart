@@ -17,6 +17,12 @@ class $AssetsSvgGen {
 
   /// File path: assets/svg/bubble_chart_icon.svg
   String get bubbleChartIcon => 'assets/svg/bubble_chart_icon.svg';
+
+  /// File path: assets/svg/strategy default.svg
+  String get strategyDefault => 'assets/svg/strategy default.svg';
+
+  /// File path: assets/svg/strategy stack.svg
+  String get strategyStack => 'assets/svg/strategy stack.svg';
 }
 
 class Assets {
