@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:charts_web/ui/common/dialog/border_dialog.dart';
+import 'package:charts_web/ui/common/dialog/border_radius_dialog.dart';
 import 'package:charts_web/ui/home/presenter/chart_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -53,23 +55,23 @@ class OptionsItemsComponent extends HookConsumerWidget {
         const SizedBox(height: 16),
         Wrap(
           spacing: 16,
-          runSpacing: 4,
+          runSpacing: 16,
           children: [
-            _ItemOptionsInput(
+            ItemOptionsInput(
               name: 'Min bar width',
               value: _provider.minBarWidth,
               step: 2,
               onChanged: _provider.updateMinBarWidth,
               defaultValue: 20,
             ),
-            _ItemOptionsInput(
+            ItemOptionsInput(
               name: 'Max bar width',
               value: _provider.maxBarWidth,
               step: 2,
               onChanged: _provider.updateMaxBarWidth,
               defaultValue: 30,
             ),
-            _ItemOptionsInput(
+            ItemOptionsInput(
               name: 'Padding Left',
               value: _provider.chartItemPadding.left,
               step: 2,
@@ -77,7 +79,7 @@ class OptionsItemsComponent extends HookConsumerWidget {
               defaultValue: _provider.chartItemPadding.left,
               noInputField: true,
             ),
-            _ItemOptionsInput(
+            ItemOptionsInput(
               name: 'Padding Right',
               value: _provider.chartItemPadding.right,
               step: 2,
@@ -85,6 +87,26 @@ class OptionsItemsComponent extends HookConsumerWidget {
               defaultValue: _provider.chartItemPadding.right,
               noInputField: true,
             ),
+            ElevatedButton(
+              child: const Text('Set BarItem border radius'),
+              onPressed: () async {
+                final border =
+                    await BorderSideDialog.show(context, _provider.itemBorderSide, _provider.itemBorderSide.color);
+                if (border != null) {
+                  _provider.updateItemBorderSide(border);
+                }
+              },
+            ),
+            if (!_provider.bubbleItemPainter)
+              ElevatedButton(
+                child: const Text('Set BarItem border radius'),
+                onPressed: () async {
+                  final radius = await BorderRadiusDialog.show(context, _provider.barBorderRadius);
+                  if (radius != null) {
+                    _provider.updateBarBorderRadius(radius);
+                  }
+                },
+              ),
           ],
         ),
         if (_provider.isMultiItem) const _MultiValueOptions(),
@@ -119,7 +141,7 @@ class _MultiValueOptions extends ConsumerWidget {
             ],
           ),
           if (!_provider.multiItemStack)
-            _ItemOptionsInput(
+            ItemOptionsInput(
               name: 'Padding Left',
               value: _provider.multiValuePadding.left,
               step: 2,
@@ -128,7 +150,7 @@ class _MultiValueOptions extends ConsumerWidget {
               noInputField: true,
             ),
           if (!_provider.multiItemStack)
-            _ItemOptionsInput(
+            ItemOptionsInput(
               name: 'Padding Right',
               value: _provider.multiValuePadding.right,
               step: 2,
@@ -174,8 +196,8 @@ class _BarOptionButton extends StatelessWidget {
   }
 }
 
-class _ItemOptionsInput extends HookWidget {
-  _ItemOptionsInput(
+class ItemOptionsInput extends HookWidget {
+  ItemOptionsInput(
       {Key? key,
       required this.name,
       required this.value,

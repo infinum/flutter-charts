@@ -20,8 +20,12 @@ class ChartStatePresenter extends ChangeNotifier {
   bool bubbleItemPainter = false;
   double? maxBarWidth;
   double? minBarWidth;
+  BorderSide itemBorderSide = BorderSide.none;
 
-  // multi item
+  // bar item specific
+  BorderRadius barBorderRadius = BorderRadius.zero;
+
+  // multi item specific
   bool multiItemStack = true;
   EdgeInsets multiValuePadding = EdgeInsets.zero;
   bool get isMultiItem => _data.length > 1;
@@ -99,6 +103,11 @@ class ChartStatePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateBarBorderRadius(BorderRadius newValue) {
+    barBorderRadius = newValue;
+    notifyListeners();
+  }
+
   void updateItemWidth({
     double maxItemWidth = -1,
     double minItemWidth = -1,
@@ -127,6 +136,11 @@ class ChartStatePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateItemBorderSide(BorderSide newSize) {
+    itemBorderSide = newSize;
+    notifyListeners();
+  }
+
   ItemOptions get _getItemOptions {
     if (bubbleItemPainter) {
       return BubbleItemOptions(
@@ -136,6 +150,7 @@ class ChartStatePresenter extends ChangeNotifier {
         minBarWidth: minBarWidth,
         multiItemStack: multiItemStack,
         multiValuePadding: multiValuePadding,
+        border: itemBorderSide,
       );
     } else {
       return BarItemOptions(
@@ -145,6 +160,8 @@ class ChartStatePresenter extends ChangeNotifier {
         minBarWidth: minBarWidth,
         multiItemStack: multiItemStack,
         multiValuePadding: multiValuePadding,
+        radius: barBorderRadius,
+        border: itemBorderSide,
       );
     }
   }
