@@ -174,12 +174,12 @@ class ChartState<T> {
   }
 
   static ChartDataRendererFactory<T?> defaultItemRenderer<T>(List<ItemOptions> itemOptions) {
-    return (data) => ChartLinearDataRenderer<T?>(
-        data,
-        data.items
+    return (chartState) => ChartLinearDataRenderer<T?>(
+        chartState.data,
+        chartState.data.items
             .mapIndexed(
               (key, items) =>
-                  items.map((e) => LeafChartItemRenderer(e, data, itemOptions[key], arrayKey: key)).toList(),
+                  items.map((e) => LeafChartItemRenderer(e, chartState.data, chartState.itemOptionsBuilder(key), arrayKey: key)).toList(),
             )
             .expand((element) => element)
             .toList());

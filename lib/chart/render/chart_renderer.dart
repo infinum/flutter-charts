@@ -10,7 +10,7 @@ class ChartRenderer<T> extends MultiChildRenderObjectWidget {
   ChartRenderer(this.chartState, {Key? key})
       : super(key: key, children: [
           DecorationsRenderer(chartState.backgroundDecorations, chartState),
-          chartState.dataRenderer.call(chartState.data),
+          chartState.dataRenderer.call(chartState),
           DecorationsRenderer(chartState.foregroundDecorations, chartState),
         ]);
 
