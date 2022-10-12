@@ -21,8 +21,9 @@ class _ChartWidget<T> extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         // What size does the item want to be?
-        final _wantedItemWidth = max(state.itemOptions.minBarWidth ?? 0.0,
-            state.itemOptions.maxBarWidth ?? 0.0);
+        // todo(knezzz): find out the index
+        final _wantedItemWidth = max(state.itemOptionsBuilder(0).minBarWidth ?? 0.0,
+            state.itemOptionsBuilder(0).maxBarWidth ?? 0.0);
 
         final _width =
             constraints.maxWidth.isFinite ? constraints.maxWidth : width!;
@@ -31,9 +32,10 @@ class _ChartWidget<T> extends StatelessWidget {
 
         final _listSize = state.data.listSize;
 
+        // todo(knezzz)
         final _size = Size(
             _width +
-                (((_wantedItemWidth + state.itemOptions.padding.horizontal) *
+                (((_wantedItemWidth + state.itemOptionsBuilder(0).padding.horizontal) *
                             _listSize) -
                         _width) *
                     state.behaviour._isScrollable,

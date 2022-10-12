@@ -45,7 +45,7 @@ class ChartStatePresenter extends ChangeNotifier {
 
   ChartState<void> get state => ChartState(
         _defaultData,
-        itemOptions: _getItemOptions,
+        itemOptionsBuilder: _getItemOptions,
         behaviour: _behaviour,
         foregroundDecorations: _foregroundDecorations,
         backgroundDecorations: _backgroundDecorations,
@@ -141,13 +141,14 @@ class ChartStatePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
-  ItemOptions get _getItemOptions {
+  ItemOptions _getItemOptions(int i) {
     if (bubbleItemPainter) {
       return BubbleItemOptions(
         padding: chartItemPadding,
         colorForKey: _getColorForKey,
         maxBarWidth: maxBarWidth,
         minBarWidth: minBarWidth,
+        gradient: i == 0 ? LinearGradient(colors: [Colors.red, Colors.blue]) : LinearGradient(colors: [Colors.yellow, Colors.green]),
         multiItemStack: multiItemStack,
         multiValuePadding: multiValuePadding,
         border: itemBorderSide,
@@ -155,6 +156,7 @@ class ChartStatePresenter extends ChangeNotifier {
     } else {
       return BarItemOptions(
         padding: chartItemPadding,
+        gradient: i == 0 ? LinearGradient(colors: [Colors.red, Colors.blue]) : LinearGradient(colors: [Colors.yellow, Colors.green]),
         colorForKey: _getColorForKey,
         maxBarWidth: maxBarWidth,
         minBarWidth: minBarWidth,
