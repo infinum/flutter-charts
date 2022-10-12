@@ -3,11 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 final chartStatePresenter = ChangeNotifierProvider((_) => ChartStatePresenter());
 
-class ChartStatePresenter extends ChangeNotifier {
+const _itemBorderSideDefault = BorderSide.none;
+const _barBorderRadiusDefault = BorderRadius.zero;
 
+class ChartStatePresenter extends ChangeNotifier {
   // data
   List<List<ChartItem<void>>> _data = [
     [4, 6, 3, 6, 7, 9, 3, 2].map((e) => BarValue(e.toDouble())).toList(),
@@ -16,18 +17,19 @@ class ChartStatePresenter extends ChangeNotifier {
 
   DataStrategy _strategy = const DefaultDataStrategy();
 
+  // Items
   EdgeInsets chartItemPadding = const EdgeInsets.only(left: 2, right: 2, top: 0, bottom: 0);
   bool bubbleItemPainter = false;
   double? maxBarWidth;
   double? minBarWidth;
-  BorderSide itemBorderSide = BorderSide.none;
-
+  List<BorderSide> itemBorderSides = [_itemBorderSideDefault];
+  Map<int, LinearGradient> gradient = {};
   // bar item specific
-  BorderRadius barBorderRadius = BorderRadius.zero;
-
+  List<BorderRadius> barBorderRadius = [_barBorderRadiusDefault];
   // multi item specific
   bool multiItemStack = true;
   EdgeInsets multiValuePadding = EdgeInsets.zero;
+
   bool get isMultiItem => _data.length > 1;
 
   ChartData<void> get _defaultData => ChartData(
@@ -58,13 +60,21 @@ class ChartStatePresenter extends ChangeNotifier {
 
   void addDataList(List<ChartItem<void>> list) {
     _data.add(list);
+
+    /// Add all per-value collections
     listColors.add(_presetColors[_data.length - 1]);
+    barBorderRadius.add(_barBorderRadiusDefault);
+    itemBorderSides.add(_itemBorderSideDefault);
+
     notifyListeners();
   }
 
   void removeDataList(int listIndex) {
     listColors.removeAt(listIndex);
     data.removeAt(listIndex);
+    barBorderRadius.removeAt(listIndex);
+    itemBorderSides.removeAt(listIndex);
+
     notifyListeners();
   }
 
@@ -103,11 +113,6 @@ class ChartStatePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateBarBorderRadius(BorderRadius newValue) {
-    barBorderRadius = newValue;
-    notifyListeners();
-  }
-
   void updateItemWidth({
     double maxItemWidth = -1,
     double minItemWidth = -1,
@@ -136,34 +141,48 @@ class ChartStatePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateItemBorderSide(BorderSide newSize) {
-    itemBorderSide = newSize;
+  void updateBarBorderRadius(BorderRadius newValue, int index) {
+    barBorderRadius[index] = newValue;
     notifyListeners();
   }
 
-  ItemOptions _getItemOptions(int i) {
+  void updateItemBorderSide(BorderSide newSize, int index) {
+    itemBorderSides[index] = newSize;
+    notifyListeners();
+  }
+
+  void updateGradient(LinearGradient? newGradient, int index) {
+    if (newGradient == null) {
+      gradient.removeWhere((key, value) => key == index);
+    } else {
+      gradient[index] = newGradient;
+    }
+    notifyListeners();
+  }
+
+  ItemOptions _getItemOptions(int index) {
     if (bubbleItemPainter) {
       return BubbleItemOptions(
         padding: chartItemPadding,
         colorForKey: _getColorForKey,
         maxBarWidth: maxBarWidth,
         minBarWidth: minBarWidth,
-        gradient: i == 0 ? LinearGradient(colors: [Colors.red, Colors.blue]) : LinearGradient(colors: [Colors.yellow, Colors.green]),
         multiItemStack: multiItemStack,
         multiValuePadding: multiValuePadding,
-        border: itemBorderSide,
+        gradient: gradient[index],
+        border: itemBorderSides[index],
       );
     } else {
       return BarItemOptions(
         padding: chartItemPadding,
-        gradient: i == 0 ? LinearGradient(colors: [Colors.red, Colors.blue]) : LinearGradient(colors: [Colors.yellow, Colors.green]),
         colorForKey: _getColorForKey,
         maxBarWidth: maxBarWidth,
         minBarWidth: minBarWidth,
         multiItemStack: multiItemStack,
         multiValuePadding: multiValuePadding,
-        radius: barBorderRadius,
-        border: itemBorderSide,
+        gradient: gradient[index],
+        radius: barBorderRadius[index],
+        border: itemBorderSides[index],
       );
     }
   }
@@ -172,7 +191,6 @@ class ChartStatePresenter extends ChangeNotifier {
     return listColors[key % 5];
   }
 }
-
 
 const _presetColors = [
   Color(0xFFD8555F),

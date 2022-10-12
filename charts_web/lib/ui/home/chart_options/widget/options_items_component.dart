@@ -1,12 +1,15 @@
 import 'dart:ui';
 
+import 'package:charts_painter/chart.dart';
 import 'package:charts_web/ui/common/dialog/border_dialog.dart';
 import 'package:charts_web/ui/common/dialog/border_radius_dialog.dart';
+import 'package:charts_web/ui/common/dialog/gradient_dialog.dart';
 import 'package:charts_web/ui/home/presenter/chart_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:collection/collection.dart';
 
 import '../../../../assets.gen.dart';
 import 'options_component_header.dart';
@@ -87,28 +90,11 @@ class OptionsItemsComponent extends HookConsumerWidget {
               defaultValue: _provider.chartItemPadding.right,
               noInputField: true,
             ),
-            ElevatedButton(
-              child: const Text('Set BarItem border radius'),
-              onPressed: () async {
-                final border =
-                    await BorderSideDialog.show(context, _provider.itemBorderSide, _provider.itemBorderSide.color);
-                if (border != null) {
-                  _provider.updateItemBorderSide(border);
-                }
-              },
-            ),
-            if (!_provider.bubbleItemPainter)
-              ElevatedButton(
-                child: const Text('Set BarItem border radius'),
-                onPressed: () async {
-                  final radius = await BorderRadiusDialog.show(context, _provider.barBorderRadius);
-                  if (radius != null) {
-                    _provider.updateBarBorderRadius(radius);
-                  }
-                },
-              ),
           ],
         ),
+        ..._provider.data.mapIndexed((index, list) {
+          return _PerValueOptions(index: index);
+        }).toList(),
         if (_provider.isMultiItem) const _MultiValueOptions(),
         // final double? startPosition;
         const SizedBox(height: 16),
@@ -117,6 +103,7 @@ class OptionsItemsComponent extends HookConsumerWidget {
   }
 }
 
+/// Options only applicable for multi-value
 class _MultiValueOptions extends ConsumerWidget {
   const _MultiValueOptions({Key? key}) : super(key: key);
 
@@ -164,6 +151,67 @@ class _MultiValueOptions extends ConsumerWidget {
   }
 }
 
+/// If you have multi-value, you might want to have different optionsItems per each value
+class _PerValueOptions extends ConsumerWidget {
+  const _PerValueOptions({Key? key, required this.index}) : super(key: key);
+
+  final int index;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final _provider = ref.watch(chartStatePresenter);
+
+    return Row(
+      children: [
+        Container(width: 10, height: 50, color: _provider.listColors[index]),
+        const SizedBox(width: 20),
+        Expanded(
+          child: Wrap(
+            spacing: 16,
+            runSpacing: 16,
+            children: [
+              ElevatedButton(
+                child: const Text('Set border side'),
+                onPressed: () async {
+                  final border = await BorderSideDialog.show(
+                      context, _provider.itemBorderSides[index], _provider.itemBorderSides[index].color);
+                  if (border != null) {
+                    _provider.updateItemBorderSide(border, index);
+                  }
+                },
+              ),
+              ElevatedButton(
+                child: const Text('Set gradient'),
+                onPressed: () async {
+                  final currentGradient =
+                      _provider.gradient[index] ?? LinearGradient(colors: [_provider.listColors[index], Colors.black]);
+                  final gradient = await LinearGradientPickerDialog.show(context, currentGradient, onResetGradient: () {
+                    _provider.updateGradient(null, index);
+                  });
+                  if (gradient != null) {
+                    _provider.updateGradient(gradient, index);
+                  }
+                },
+              ),
+              if (!_provider.bubbleItemPainter)
+                ElevatedButton(
+                  child: const Text('Set border radius'),
+                  onPressed: () async {
+                    final radius = await BorderRadiusDialog.show(context, _provider.barBorderRadius[index]);
+                    if (radius != null) {
+                      _provider.updateBarBorderRadius(radius, index);
+                    }
+                  },
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Used for Bar or Bubble selection
 class _BarOptionButton extends StatelessWidget {
   const _BarOptionButton(
       {Key? key, required this.asset, required this.name, required this.selected, required this.onPressed})
@@ -196,6 +244,7 @@ class _BarOptionButton extends StatelessWidget {
   }
 }
 
+/// Small input used for double values, e.g. padding
 class ItemOptionsInput extends HookWidget {
   ItemOptionsInput(
       {Key? key,

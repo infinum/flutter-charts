@@ -23,25 +23,33 @@ class ColorPickerDialog extends StatelessWidget {
       width: double.infinity,
       child: Padding(
         padding: const EdgeInsets.all(6),
-        child: ColorPicker(
-          color: startColor,
-          // Update the screenPickerColor using the callback.
-          onColorChanged: (Color color) {
-            Navigator.of(context).pop(color);
-          },
-          width: 44,
-          height: 44,
-          enableShadesSelection: false,
-          pickersEnabled: {ColorPickerType.primary: true, ColorPickerType.accent: false },
-          borderRadius: 22,
-          heading: Text(
-            'Select color',
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          subheading: Text(
-            'Select color shade',
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+                'In this editor you can select only colors from give pallete. Any color can be given in code.'),
+            SizedBox(height: 16),
+            ColorPicker(
+              color: startColor,
+              // Update the screenPickerColor using the callback.
+              onColorChanged: (Color color) {
+                Navigator.of(context).pop(color);
+              },
+              width: 44,
+              height: 44,
+              enableShadesSelection: false,
+              pickersEnabled: {ColorPickerType.primary: true, ColorPickerType.accent: false },
+              borderRadius: 22,
+              heading: Text(
+                'Select color',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              subheading: Text(
+                'Select color shade',
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+            ),
+          ],
         ),
       ),
     );
