@@ -2,20 +2,20 @@ import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 
 class ColorPickerDialog extends StatelessWidget {
-  const ColorPickerDialog({Key? key, required this.startColor}) : super(key: key);
+  const ColorPickerDialog({Key? key, required this.startColor, this.additionalText}) : super(key: key);
 
-  static Future<Color?> show(BuildContext context, Color startColor) {
+  static Future<Color?> show(BuildContext context, Color startColor, {String? additionalText}) {
     return showDialog<Color>(
         context: context,
         builder: (_) {
           return AlertDialog(
-            content: ColorPickerDialog(startColor: startColor),
+            content: ColorPickerDialog(startColor: startColor, additionalText: additionalText),
           );
         });
   }
 
   final Color startColor;
-  // final ValueChanged<Color> onColorChanged;
+  final String? additionalText;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class ColorPickerDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-                'In this editor you can select only colors from give pallete. Any color can be given in code.'),
+                'In this editor you can select only colors from given pallete. Any color can be given in code.\n$additionalText'),
             SizedBox(height: 16),
             ColorPicker(
               color: startColor,

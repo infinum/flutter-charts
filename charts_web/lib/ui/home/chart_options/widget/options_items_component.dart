@@ -164,7 +164,7 @@ class _PerValueOptions extends ConsumerWidget {
     return Row(
       children: [
         Container(width: 10, height: 50, color: _provider.listColors[index]),
-        const SizedBox(width: 20),
+        const SizedBox(width: 16),
         Expanded(
           child: Wrap(
             spacing: 16,

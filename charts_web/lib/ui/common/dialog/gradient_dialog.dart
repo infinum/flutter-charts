@@ -63,7 +63,7 @@ class _LinearGradientPickerDialogState extends ConsumerState<LinearGradientPicke
               pickersEnabled: {ColorPickerType.primary: true, ColorPickerType.accent: false},
             ),
             ColorPicker(
-              color: widget.startGradient.colors[0],
+              color: widget.startGradient.colors[1],
               onColorChanged: (Color color) {
                 setState(() {
                   end = color;
@@ -75,7 +75,6 @@ class _LinearGradientPickerDialogState extends ConsumerState<LinearGradientPicke
               enableShadesSelection: false,
               pickersEnabled: {ColorPickerType.primary: true, ColorPickerType.accent: false},
             ),
-            const SizedBox(height: 16),
             SizedBox(
               width: 400,
               child: SwitchListTile(
@@ -89,10 +88,12 @@ class _LinearGradientPickerDialogState extends ConsumerState<LinearGradientPicke
                 },
               ),
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 16),
             Container(
-              height: 50,
-              width: 30,
+              height: 80,
+              width: 50,
+              alignment: Alignment.center,
+              child: const Text('Example', style: TextStyle(fontSize: 10, color: Colors.white)),
               decoration: BoxDecoration(
                 gradient: _getGradient(),
               ),

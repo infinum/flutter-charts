@@ -111,6 +111,8 @@ class _DataTextField extends HookConsumerWidget {
 
     return Row(
       children: [
+        Container(width: 10, height: 40, color: _provider.listColors[listIndex]),
+        const SizedBox(width: 16),
         Expanded(
           child: TextField(
             controller: controller,
@@ -133,7 +135,12 @@ class _DataTextField extends HookConsumerWidget {
         IconButton(
           icon: Icon(Icons.format_paint, color: _provider.listColors[listIndex]),
           onPressed: () async {
-            final color = await ColorPickerDialog.show(context, _provider.listColors[listIndex]);
+            final color = await ColorPickerDialog.show(
+              context,
+              _provider.listColors[listIndex],
+              additionalText:
+                  'In code, with colorForValue you can also define different color for each value of the list.',
+            );
             if (color != null) {
               _provider.updateListColor(color, listIndex);
             }
