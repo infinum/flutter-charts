@@ -21,24 +21,24 @@ class _ChartWidget<T> extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         // What size does the item want to be?
-        // todo(knezzz): find out the index
-        final _wantedItemWidth = max(state.itemOptionsBuilder(0).minBarWidth ?? 0.0,
-            state.itemOptionsBuilder(0).maxBarWidth ?? 0.0);
+        final _wantedItemWidth = state.data.items.foldIndexed<double>(0.0, (index, double prevValue, _) {
+          return max(
+              prevValue,
+              max(state.itemOptionsBuilder(index).minBarWidth ?? 0.0,
+                  state.itemOptionsBuilder(index).maxBarWidth ?? 0.0));
+        });
 
-        final _width =
-            constraints.maxWidth.isFinite ? constraints.maxWidth : width!;
-        final _height =
-            constraints.maxHeight.isFinite ? constraints.maxHeight : height!;
+        final _width = constraints.maxWidth.isFinite ? constraints.maxWidth : width!;
+        final _height = constraints.maxHeight.isFinite ? constraints.maxHeight : height!;
 
         final _listSize = state.data.listSize;
 
-        // todo(knezzz)
+        final _horizontalPadding = state.data.items.foldIndexed<double>(0.0, (index, double prevValue, _) {
+          return max(prevValue, state.itemOptionsBuilder(index).padding.horizontal);
+        });
+
         final _size = Size(
-            _width +
-                (((_wantedItemWidth + state.itemOptionsBuilder(0).padding.horizontal) *
-                            _listSize) -
-                        _width) *
-                    state.behaviour._isScrollable,
+            _width + (((_wantedItemWidth + _horizontalPadding) * _listSize) - _width) * state.behaviour._isScrollable,
             _height);
 
         final _chart = Container(
@@ -53,16 +53,14 @@ class _ChartWidget<T> extends StatelessWidget {
 
           final _constraintSize = constraints.biggest;
           final _constraint = state.defaultPadding.deflateSize(_constraintSize);
-          final _itemWidth =
-              (size.width.isFinite ? size.width : _constraint.width) /
-                  _listSize;
+          final _itemWidth = (size.width.isFinite ? size.width : _constraint.width) / _listSize;
 
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTapDown: (tapDetails) => state.behaviour._onChartItemClicked(
-                _getClickLocation(_itemWidth, tapDetails.localPosition)),
-            onPanUpdate: (panUpdate) => state.behaviour._onChartItemClicked(
-                _getClickLocation(_itemWidth, panUpdate.localPosition)),
+            onTapDown: (tapDetails) =>
+                state.behaviour._onChartItemClicked(_getClickLocation(_itemWidth, tapDetails.localPosition)),
+            onPanUpdate: (panUpdate) =>
+                state.behaviour._onChartItemClicked(_getClickLocation(_itemWidth, panUpdate.localPosition)),
             child: _chart,
           );
         }

@@ -19,16 +19,19 @@ class ChartState<T> {
   /// Chart state constructor
   ChartState(
     this.data, {
-    required this.itemOptionsBuilder,
+    ItemOptions itemOptions = const BarItemOptions(),
+    ItemOptionsBuilder? itemOptionsBuilder,
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const <DecorationPainter>[],
     this.foregroundDecorations = const <DecorationPainter>[],
     ChartDataRendererFactory<T?>? dataRenderer,
   })  : assert(data.isNotEmpty, 'No items!'),
         defaultPadding = EdgeInsets.zero,
+        itemOptionsBuilder = itemOptionsBuilder ?? ((int i) => itemOptions),
         defaultMargin = EdgeInsets.zero,
-        dataRenderer =
-            dataRenderer ?? defaultItemRenderer<T>(data.items.mapIndexed((e, _) => itemOptionsBuilder(e)).toList()) {
+        dataRenderer = dataRenderer ??
+            defaultItemRenderer<T>(
+                data.items.mapIndexed((e, _) => (itemOptionsBuilder ?? ((int i) => itemOptions))(e)).toList()) {
     /// Set default padding and margin, decorations padding and margins will be added to this value
     _setUpDecorations();
   }
@@ -178,8 +181,30 @@ class ChartState<T> {
         chartState.data,
         chartState.data.items
             .mapIndexed(
-              (key, items) =>
-                  items.map((e) => LeafChartItemRenderer(e, chartState.data, chartState.itemOptionsBuilder(key), arrayKey: key)).toList(),
+              (key, items) => items
+                  .map((e) =>
+                      LeafChartItemRenderer(e, chartState.data, chartState.itemOptionsBuilder(key), arrayKey: key))
+                  .toList(),
+            )
+            .expand((element) => element)
+            .toList());
+  }
+
+  static ChartDataRendererFactory<T?> widgetItemRenderer<T>(
+      List<ItemOptions> itemOptions, Widget Function(ChartItem<T?> item, int listKey) childBuilder) {
+    return (chartState) => ChartLinearDataRenderer<T?>(
+        chartState.data,
+        chartState.data.items
+            .mapIndexed(
+              (key, items) => items
+                  .map((e) => ChildChartItemRenderer<T?>(
+                        e,
+                        chartState.data,
+                        itemOptions[key],
+                        arrayKey: key,
+                        child: childBuilder(e, key),
+                      ))
+                  .toList(),
             )
             .expand((element) => element)
             .toList());
@@ -190,18 +215,11 @@ class ChartState<T> {
 class ItemOptionsBuilderLerp {
   /// Make new function that will return lerp color based on [a.colorForKey] and [b.colorForKey]
   static ItemOptionsBuilder? lerp(ChartState a, ChartState b, double t) {
-    return b.itemOptionsBuilder;
+    return (int key) {
+      final _aOptions = a.itemOptionsBuilder(key);
+      final _bOptions = b.itemOptionsBuilder(key);
 
-    // todo(knezz): Fix this lerp
-    // if (a.colorForKey == null && b.colorForKey == null) {
-    //   return null;
-    // }
-    //
-    // return (ChartItem item, int index) {
-    //   final _aColor = a.getItemColor(item, index);
-    //   final _bColor = b.getItemColor(item, index);
-    //
-    //   return Color.lerp(_aColor, _bColor, t) ?? _bColor;
-    // };
+      return _aOptions.animateTo(_bOptions, t);
+    };
   }
 }

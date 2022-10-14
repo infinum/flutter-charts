@@ -3,8 +3,7 @@ part of charts_painter;
 /// Align chart data items in linear fashion. Meaning X axis cannot be changed. X axis becomes the index of current item
 /// height of the item is defined by item max or min value.
 class ChartLinearDataRenderer<T> extends ChartDataRenderer<T> {
-  ChartLinearDataRenderer(this.chartData, List<Widget> children, {Key? key})
-      : super(key: key, children: children);
+  ChartLinearDataRenderer(this.chartData, List<Widget> children, {Key? key}) : super(key: key, children: children);
 
   final ChartData<T?> chartData;
 
@@ -14,8 +13,7 @@ class ChartLinearDataRenderer<T> extends ChartDataRenderer<T> {
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, _ChartLinearItemRenderer<T?> renderObject) {
+  void updateRenderObject(BuildContext context, _ChartLinearItemRenderer<T?> renderObject) {
     renderObject.chartData = chartData;
     renderObject.markNeedsLayout();
   }
@@ -56,21 +54,59 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     final _itemWidth = _itemSize.width / _listSize;
     final _offset = (parentData as BoxPaneParentData).offset;
 
-    while (child != null && child is _RenderLeafChartItem<T>) {
+    // Calculate with of current item, height is calculated at [Geometry painter] so we cah just hand
+    // columns with offset and width to the child.
+    void _setLeafChildPosition(_RenderLeafChartItem<T> child) {
       final childParentData = child.parentData! as ChartItemData;
-      childParentData.offset =
-          _offset + Offset(_itemWidth * (childCount[child.key] ?? 0), 0.0);
+
+      childParentData.offset = _offset + Offset(_itemWidth * (childCount[child.key] ?? 0), 0.0);
       final innerConstraints = BoxConstraints(
         maxWidth: _itemWidth,
         maxHeight: _size.height,
       );
 
-      final key = child.key;
+      child.layout(innerConstraints, parentUsesSize: true);
+    }
+
+    // In case you want to show child for ChartItem then we need to constrain it's height as well
+    // this will make sure that widget takes exactly the size we give it.
+    void _setWidgetChildPosition(_RenderChildChartItem<T> child) {
+      final childParentData = child.parentData! as ChartItemData;
+
+      final _maxValue = chartData.maxValue - chartData.minValue;
+      final _verticalMultiplier = _size.height / max(1, _maxValue);
+
+      childParentData.offset = _offset +
+          Offset(_itemWidth * (childCount[child.key] ?? 0),
+              _size.height - ((child.item.max ?? 0.0) * _verticalMultiplier));
+
+      final innerConstraints = BoxConstraints.tightFor(
+        width: _itemWidth,
+        height: (child.item.max ?? 0.0) * _verticalMultiplier,
+      );
 
       child.layout(innerConstraints, parentUsesSize: true);
-      assert(child.parentData == childParentData);
-      child = childParentData.nextSibling;
-      childCount[key] = (childCount[key] ?? 0).toInt() + 1;
+    }
+
+    while (child != null) {
+      final childParentData = child.parentData! as ChartItemData;
+      if (child is _RenderLeafChartItem<T>) {
+        _setLeafChildPosition(child);
+
+        final key = child.key;
+
+        assert(child.parentData == childParentData);
+        child = childParentData.nextSibling;
+        childCount[key] = (childCount[key] ?? 0).toInt() + 1;
+      } else if (child is _RenderChildChartItem<T>) {
+        _setWidgetChildPosition(child);
+
+        final key = child.key;
+
+        assert(child.parentData == childParentData);
+        child = childParentData.nextSibling;
+        childCount[key] = (childCount[key] ?? 0).toInt() + 1;
+      }
     }
 
     size = _size;

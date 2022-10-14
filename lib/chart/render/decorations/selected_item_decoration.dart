@@ -118,11 +118,10 @@ class SelectedItemDecoration extends DecorationPainter {
       selectedStyle,
       hasMaxWidth: false,
     );
-    // todo(knezzz): index
     final _itemWidth = max(
-        state.itemOptionsBuilder(0).minBarWidth ?? 0.0,
-        min(state.itemOptionsBuilder(0).maxBarWidth ?? double.infinity,
-            size.width - state.itemOptionsBuilder(0).padding.horizontal));
+        state.itemOptionsBuilder(selectedArrayIndex).minBarWidth ?? 0.0,
+        min(state.itemOptionsBuilder(selectedArrayIndex).maxBarWidth ?? double.infinity,
+            size.width - state.itemOptionsBuilder(selectedArrayIndex).padding.horizontal));
 
     const _size = 2.0;
     final _maxValue = state.data.maxValue - state.data.minValue;
@@ -137,16 +136,15 @@ class SelectedItemDecoration extends DecorationPainter {
       return;
     }
 
-    // todo(knezzz):
     if (_itemMinValue != 0.0) {
       canvas.drawRect(
         Rect.fromPoints(
           Offset(
-            state.itemOptionsBuilder(0).padding.left + _itemWidth / 2 - _size / 2,
+            state.itemOptionsBuilder(selectedArrayIndex).padding.left + _itemWidth / 2 - _size / 2,
             0.0,
           ),
           Offset(
-            state.itemOptionsBuilder(0).padding.left + _itemWidth / 2 + _size / 2,
+            state.itemOptionsBuilder(selectedArrayIndex).padding.left + _itemWidth / 2 + _size / 2,
             (_itemMaxValue - _itemMinValue) * scale,
           ),
         ),
@@ -211,11 +209,10 @@ class SelectedItemDecoration extends DecorationPainter {
     }
     final _selectedItem = state.data.items[selectedArrayIndex][_item];
 
-    // todo(knezzz):
     final _itemWidth = max(
-        state.itemOptionsBuilder(0).minBarWidth ?? 0.0,
-        min(state.itemOptionsBuilder(0).maxBarWidth ?? double.infinity,
-            size.width - state.itemOptionsBuilder(0).padding.horizontal));
+        state.itemOptionsBuilder(selectedArrayIndex).minBarWidth ?? 0.0,
+        min(state.itemOptionsBuilder(selectedArrayIndex).maxBarWidth ?? double.infinity,
+            size.width - state.itemOptionsBuilder(selectedArrayIndex).padding.horizontal));
 
     const _size = 2.0;
     final _maxValue = state.data.maxValue - state.data.minValue;
@@ -225,15 +222,14 @@ class SelectedItemDecoration extends DecorationPainter {
     final _itemMaxValue = _selectedItem.max ?? 0.0;
     final _itemMinValue = _selectedItem.min ?? 0.0;
 
-    // todo(knezzz):
     canvas.drawRect(
       Rect.fromPoints(
         Offset(
-          state.itemOptionsBuilder(0).padding.left + _itemWidth / 2 - _size / 2,
+          state.itemOptionsBuilder(selectedArrayIndex).padding.left + _itemWidth / 2 - _size / 2,
           (selectedStyle.fontSize ?? 0.0) * 1.4,
         ),
         Offset(
-          state.itemOptionsBuilder(0).padding.left + _itemWidth / 2 + _size / 2,
+          state.itemOptionsBuilder(selectedArrayIndex).padding.left + _itemWidth / 2 + _size / 2,
           size.height -
               ((_itemMaxValue - (min(_itemMinValue, state.data.minValue))) *
                   scale),

@@ -51,6 +51,7 @@ part 'chart/render/decorations/value_decoration.dart';
 part 'chart/render/decorations/vertical_axis_decoration.dart';
 // Geometry painters
 part 'chart/render/geometry/leaf_item_renderer.dart';
+part 'chart/render/geometry/child_item_renderer.dart';
 part 'chart/render/geometry/painters/bar_geometry_painter.dart';
 part 'chart/render/geometry/painters/bubble_geometry_painter.dart';
 part 'chart/render/geometry/painters/geometry_painter.dart';

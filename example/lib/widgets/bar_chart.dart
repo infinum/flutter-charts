@@ -43,10 +43,8 @@ class BarChart<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _foregroundDecorations =
-        foregroundDecorations ?? <DecorationPainter>[];
-    final _backgroundDecorations =
-        backgroundDecorations ?? <DecorationPainter>[];
+    final _foregroundDecorations = foregroundDecorations ?? <DecorationPainter>[];
+    final _backgroundDecorations = backgroundDecorations ?? <DecorationPainter>[];
 
     return AnimatedChart<T>(
       height: height,
@@ -57,6 +55,17 @@ class BarChart<T> extends StatelessWidget {
           _mappedValues,
           valueAxisMaxOver: 1,
           dataStrategy: stack ? StackDataStrategy() : DefaultDataStrategy(),
+        ),
+        dataRenderer: ChartState.widgetItemRenderer(
+          [itemOptions],
+          (item, listKey) => Container(
+            margin: const EdgeInsets.symmetric(horizontal: 3.0),
+            color: Colors.blue,
+            // child: Image.network(
+            //   'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.LxlHIr73N2FnqJ3t0TEn-gHaFr%26pid%3DApi&f=1&ipt=afa66b22e9421c69abbb25704c5e4bcb39e4799643ebbdedcabf90ab8af40a6f&ipo=images',
+            //   fit: BoxFit.fitHeight,
+            // ),
+          ),
         ),
         itemOptions: itemOptions,
         behaviour: chartBehaviour,
