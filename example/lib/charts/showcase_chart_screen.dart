@@ -26,7 +26,8 @@ class _ShowcaseChartScreenState extends State<ShowcaseChartScreen> {
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: AnimatedChart<bool>(
-                  duration: Duration(milliseconds: 650), state: _chartStates[_currentState % _chartStates.length]),
+                  duration: Duration(milliseconds: 650),
+                  state: _chartStates[_currentState % _chartStates.length]),
             ),
           ),
           SizedBox(height: 48.0),
@@ -94,7 +95,9 @@ final List<ChartState<bool>> _chartStates = [
       radius: BorderRadius.all(Radius.circular(12.0)),
       colorForValue: (item, key) {
         final _value = item.value as bool;
-        return (_value is bool && _value) ? Color(0xFF567EF7) : Color(0xFF5ABEF9);
+        return (_value is bool && _value)
+            ? Color(0xFF567EF7)
+            : Color(0xFF5ABEF9);
       },
     ),
     backgroundDecorations: [
@@ -106,9 +109,11 @@ final List<ChartState<bool>> _chartStates = [
         gridColor: Colors.black26,
         dashArray: [8, 8],
         gridWidth: 1.5,
-        horizontalValuesPadding: const EdgeInsets.only(bottom: -7.0, right: 16.0),
+        horizontalValuesPadding:
+            const EdgeInsets.only(bottom: -7.0, right: 16.0),
         horizontalAxisValueFromValue: (value) => '${value}k',
-        textStyle: TextStyle(fontSize: 14.0, color: Colors.black26, fontWeight: FontWeight.w500),
+        textStyle: TextStyle(
+            fontSize: 14.0, color: Colors.black26, fontWeight: FontWeight.w500),
       ),
     ],
     foregroundDecorations: [],
@@ -152,10 +157,12 @@ final List<ChartState<bool>> _chartStates = [
         horizontalLegendPosition: HorizontalLegendPosition.start,
         gridColor: Colors.grey.shade200,
         gridWidth: 1,
-        horizontalValuesPadding: const EdgeInsets.only(bottom: -8.0, right: 8.0),
+        horizontalValuesPadding:
+            const EdgeInsets.only(bottom: -8.0, right: 8.0),
         verticalValuesPadding: const EdgeInsets.only(top: 24.0),
         horizontalAxisValueFromValue: (value) => '${value + 1}h',
-        verticalAxisValueFromIndex: (value) => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][value],
+        verticalAxisValueFromIndex: (value) =>
+            ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][value],
         textStyle: TextStyle(fontSize: 14.0, color: Colors.black45),
       ),
     ],

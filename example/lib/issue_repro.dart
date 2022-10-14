@@ -27,7 +27,8 @@ class ChartTest extends StatelessWidget {
               // byCount.map((e) => BarValue<void>(e.toDouble())).toList()
             ],
           ),
-          itemOptions: WidgetItemOptions(chartItemBuilder: (item, itemIndex, listIndex) {
+          itemOptions:
+              WidgetItemOptions(chartItemBuilder: (item, itemIndex, listIndex) {
             return Container(
               margin: const EdgeInsets.symmetric(horizontal: 4.0),
               color: Colors.red,
@@ -63,7 +64,10 @@ class ChartTest extends StatelessWidget {
               showVerticalValues: true,
               verticalAxisValueFromIndex: (idx) => '${idx + 1}',
               gridWidth: 2,
-              textStyle: Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 8, fontWeight: FontWeight.bold),
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .subtitle2!
+                  .copyWith(fontSize: 8, fontWeight: FontWeight.bold),
               gridColor: Theme.of(context).dividerColor,
             ),
           ],

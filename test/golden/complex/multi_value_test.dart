@@ -18,7 +18,8 @@ void main() {
           size: 4,
           optionsBuilder: (key) => BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][key].withOpacity(0.5),
+            color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][key]
+                .withOpacity(0.5),
           ),
           strategy: DefaultDataStrategy(),
         ),
@@ -29,7 +30,8 @@ void main() {
           size: 4,
           optionsBuilder: (key) => BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][key].withOpacity(0.5),
+            color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][key]
+                .withOpacity(0.5),
             multiItemStack: true,
           ),
           strategy: StackDataStrategy(),
@@ -41,7 +43,8 @@ void main() {
           size: 4,
           optionsBuilder: (key) => BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][key].withOpacity(0.5),
+            color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][key]
+                .withOpacity(0.5),
             multiItemStack: false,
           ),
         ),
@@ -54,7 +57,12 @@ void main() {
             4,
             (index) => SparkLineDecoration(
               lineArrayIndex: index,
-              lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
+              lineColor: [
+                Colors.red,
+                Colors.yellow,
+                Colors.green,
+                Colors.blue
+              ][index],
               lineWidth: 3.0,
               stretchLine: true,
             ),
@@ -73,7 +81,12 @@ void main() {
             4,
             (index) => SparkLineDecoration(
               lineArrayIndex: index,
-              lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
+              lineColor: [
+                Colors.red,
+                Colors.yellow,
+                Colors.green,
+                Colors.blue
+              ][index],
               lineWidth: 3.0,
               stretchLine: true,
             ),
@@ -93,14 +106,20 @@ void main() {
               4,
               (index) => SparkLineDecoration(
                     lineArrayIndex: index,
-                    lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
+                    lineColor: [
+                      Colors.red,
+                      Colors.yellow,
+                      Colors.green,
+                      Colors.blue
+                    ][index],
                     lineWidth: 3.0,
                     startPosition: index / 4,
                   )),
           optionsBuilder: (key) => BarItemOptions(
             multiValuePadding: const EdgeInsets.symmetric(horizontal: 1.0),
             padding: const EdgeInsets.symmetric(horizontal: 1.0),
-            color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][key].withOpacity(0.1),
+            color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][key]
+                .withOpacity(0.1),
             multiItemStack: false,
           ),
         ),
@@ -141,7 +160,8 @@ void main() {
           ],
           optionsBuilder: (key) => BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 1.0),
-            color: [Colors.green, Colors.yellow, Colors.red, Colors.blue][key].withOpacity(0.1),
+            color: [Colors.green, Colors.yellow, Colors.red, Colors.blue][key]
+                .withOpacity(0.1),
           ),
         ),
       )
@@ -226,7 +246,8 @@ void main() {
           behaviour: ChartBehaviour(),
         ),
       );
-    await tester.pumpWidgetBuilder(builder.build(), surfaceSize: const Size(1400, 1000), textScaleSize: 1.4);
+    await tester.pumpWidgetBuilder(builder.build(),
+        surfaceSize: const Size(1400, 1000), textScaleSize: 1.4);
     await screenMatchesGolden(tester, 'complex_multi_charts');
   });
 }

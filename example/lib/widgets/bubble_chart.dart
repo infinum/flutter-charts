@@ -14,7 +14,9 @@ class BubbleChart<T> extends StatelessWidget {
     this.backgroundDecorations = const [],
     this.foregroundDecorations = const [],
     Key? key,
-  })  : _mappedValues = [data.map((e) => BubbleValue<T>(dataToValue(e))).toList()],
+  })  : _mappedValues = [
+          data.map((e) => BubbleValue<T>(dataToValue(e))).toList()
+        ],
         super(key: key);
 
   final List<T> data;

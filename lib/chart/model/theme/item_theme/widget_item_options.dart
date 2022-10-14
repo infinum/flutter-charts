@@ -1,7 +1,8 @@
 part of charts_painter;
 
 // Hidden because it's only used if chart item is a widget.
-GeometryPainter<T> _emptyPainter<T>(ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions) =>
+GeometryPainter<T> _emptyPainter<T>(
+        ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions) =>
     _EmptyGeometryPainter<T>(item, data, itemOptions);
 
 /// Extension options for bar items
@@ -60,14 +61,20 @@ class WidgetItemOptions extends ItemOptions {
 
     return WidgetItemOptions._lerp(
       color: _itemColor,
-      chartItemBuilder: endValue is WidgetItemOptions ? endValue.chartItemBuilder : chartItemBuilder,
+      chartItemBuilder: endValue is WidgetItemOptions
+          ? endValue.chartItemBuilder
+          : chartItemBuilder,
       colorForValue: ColorForValueLerp.lerp(this, endValue, t),
       padding: EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero,
-      multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero,
+      multiValuePadding:
+          EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ??
+              EdgeInsets.zero,
       maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
       minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
-      startPosition: lerpDouble(startPosition, endValue.startPosition, t) ?? 0.5,
-      multiItemStack: lerpDouble(_multiValueStacked, endValue._multiValueStacked, t) ?? 1.0,
+      startPosition:
+          lerpDouble(startPosition, endValue.startPosition, t) ?? 0.5,
+      multiItemStack:
+          lerpDouble(_multiValueStacked, endValue._multiValueStacked, t) ?? 1.0,
     );
   }
 

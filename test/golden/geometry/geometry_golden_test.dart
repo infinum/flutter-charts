@@ -21,7 +21,9 @@ void main() {
           child: Chart<void>(
             state: ChartState(
               ChartData.fromList(
-                [5, 6, 8, 4, 3, 5, 2, 6, 7].map((e) => BarValue<void>(e.toDouble())).toList(),
+                [5, 6, 8, 4, 3, 5, 2, 6, 7]
+                    .map((e) => BarValue<void>(e.toDouble()))
+                    .toList(),
                 valueAxisMaxOver: 2,
               ),
               itemOptions: BarItemOptions(
@@ -33,7 +35,8 @@ void main() {
         ),
       ),
     );
-    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/bar_geometry_golden.png'));
+    await expectLater(find.byType(Padding),
+        matchesGoldenFile('goldens/bar_geometry_golden.png'));
   });
 
   testWidgets('Widget painter', (tester) async {
@@ -49,10 +52,13 @@ void main() {
           child: Chart<void>(
             state: ChartState(
               ChartData.fromList(
-                [5, 6, 8, 4, 3, 5, 2, 6, 7].map((e) => BarValue<void>(e.toDouble())).toList(),
+                [5, 6, 8, 4, 3, 5, 2, 6, 7]
+                    .map((e) => BarValue<void>(e.toDouble()))
+                    .toList(),
                 valueAxisMaxOver: 2,
               ),
-              itemOptions: WidgetItemOptions(chartItemBuilder: (item, itemKey, listKey) {
+              itemOptions:
+                  WidgetItemOptions(chartItemBuilder: (item, itemKey, listKey) {
                 return Container(
                   color: Colors.red,
                   margin: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -84,7 +90,8 @@ void main() {
         ),
       ),
     );
-    await expectLater(find.byKey(ValueKey('chart')), matchesGoldenFile('goldens/widget_geometry_golden.png'));
+    await expectLater(find.byKey(ValueKey('chart')),
+        matchesGoldenFile('goldens/widget_geometry_golden.png'));
   });
 
   testWidgets('Candle painter', (tester) async {
@@ -98,8 +105,8 @@ void main() {
             state: ChartState(
               ChartData.fromList(
                 [5, 6, 8, 4, 3, 5, 2, 6, 7]
-                    .mapIndexed(
-                        (i, e) => CandleValue<void>(e.toDouble(), e.toDouble() + (Random(i).nextDouble() * 10) - 5))
+                    .mapIndexed((i, e) => CandleValue<void>(e.toDouble(),
+                        e.toDouble() + (Random(i).nextDouble() * 10) - 5))
                     .toList(),
                 valueAxisMaxOver: 2,
               ),
@@ -112,7 +119,8 @@ void main() {
         ),
       ),
     );
-    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/candle_geometry_golden.png'));
+    await expectLater(find.byType(Padding),
+        matchesGoldenFile('goldens/candle_geometry_golden.png'));
   });
 
   testWidgets('Bubble painter', (tester) async {
@@ -125,7 +133,9 @@ void main() {
           child: Chart<void>(
             state: ChartState(
               ChartData.fromList(
-                [5, 6, 8, 4, 3, 5, 2, 6, 7].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+                [5, 6, 8, 4, 3, 5, 2, 6, 7]
+                    .map((e) => BubbleValue<void>(e.toDouble()))
+                    .toList(),
                 valueAxisMaxOver: 2,
               ),
               itemOptions: BubbleItemOptions(
@@ -137,6 +147,7 @@ void main() {
         ),
       ),
     );
-    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/bubble_geometry_golden.png'));
+    await expectLater(find.byType(Padding),
+        matchesGoldenFile('goldens/bubble_geometry_golden.png'));
   });
 }

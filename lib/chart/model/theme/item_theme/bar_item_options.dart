@@ -1,7 +1,8 @@
 part of charts_painter;
 
 /// Bar painter
-GeometryPainter<T> barPainter<T>(ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions) =>
+GeometryPainter<T> barPainter<T>(
+        ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions) =>
     BarGeometryPainter<T>(item, data, itemOptions);
 
 /// Extension options for bar items
@@ -76,18 +77,28 @@ class BarItemOptions extends ItemOptions {
     final _itemColor = Color.lerp(color, endValue.color, t) ?? Colors.red;
 
     return BarItemOptions._lerp(
-      gradient: Gradient.lerp(gradient, endValue is BarItemOptions ? endValue.gradient : null, t),
+      gradient: Gradient.lerp(
+          gradient, endValue is BarItemOptions ? endValue.gradient : null, t),
       color: _itemColor,
       colorForValue: ColorForValueLerp.lerp(this, endValue, t),
       padding: EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero,
-      multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero,
-      radius: BorderRadius.lerp(radius, endValue is BarItemOptions ? endValue.radius : null, t),
+      multiValuePadding:
+          EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ??
+              EdgeInsets.zero,
+      radius: BorderRadius.lerp(
+          radius, endValue is BarItemOptions ? endValue.radius : null, t),
       maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
       minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
-      startPosition: lerpDouble(startPosition, endValue.startPosition, t) ?? 0.5,
-      border: BorderSide.lerp(border ?? BorderSide.none,
-          endValue is BarItemOptions ? (endValue.border ?? BorderSide.none) : BorderSide.none, t),
-      multiItemStack: lerpDouble(_multiValueStacked, endValue._multiValueStacked, t) ?? 1.0,
+      startPosition:
+          lerpDouble(startPosition, endValue.startPosition, t) ?? 0.5,
+      border: BorderSide.lerp(
+          border ?? BorderSide.none,
+          endValue is BarItemOptions
+              ? (endValue.border ?? BorderSide.none)
+              : BorderSide.none,
+          t),
+      multiItemStack:
+          lerpDouble(_multiValueStacked, endValue._multiValueStacked, t) ?? 1.0,
     );
   }
 
@@ -97,7 +108,8 @@ class BarItemOptions extends ItemOptions {
 
     if (gradient != null) {
       // Compiler complains that gradient could be null. But unless if fails us that will never be null.
-      _paint.shader = gradient!.createShader(Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
+      _paint.shader = gradient!.createShader(
+          Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
     }
 
     return _paint;

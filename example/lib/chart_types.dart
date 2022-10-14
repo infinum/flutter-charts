@@ -21,7 +21,9 @@ class ChartTypes extends StatelessWidget {
               child: Chart(
                 state: ChartState<void>(
                   ChartData.fromList(
-                    [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
+                    [1, 3, 4, 2, 7, 6, 2, 5, 4]
+                        .map((e) => BarValue<void>(e.toDouble()))
+                        .toList(),
                     axisMax: 9,
                   ),
                   itemOptions: BarItemOptions(
@@ -42,7 +44,8 @@ class ChartTypes extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => BarChartScreen()));
+            Navigator.of(context).push<void>(
+                MaterialPageRoute(builder: (_) => BarChartScreen()));
           },
         ),
         Divider(),
@@ -55,7 +58,9 @@ class ChartTypes extends StatelessWidget {
               child: Chart(
                 state: ChartState<void>(
                   ChartData.fromList(
-                    [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+                    [1, 3, 4, 2, 7, 6, 2, 5, 4]
+                        .map((e) => BubbleValue<void>(e.toDouble()))
+                        .toList(),
                     axisMax: 9,
                   ),
                   itemOptions: BubbleItemOptions(
@@ -74,7 +79,8 @@ class ChartTypes extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => BubbleChartScreen()));
+            Navigator.of(context).push<void>(
+                MaterialPageRoute(builder: (_) => BubbleChartScreen()));
           },
         ),
         Divider(),
@@ -87,7 +93,10 @@ class ChartTypes extends StatelessWidget {
               child: Chart(
                 state: ChartState<void>(
                   ChartData.fromList(
-                    [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => CandleValue<void>(e.toDouble() + 6, e.toDouble())).toList(),
+                    [1, 3, 4, 2, 7, 6, 2, 5, 4]
+                        .map((e) =>
+                            CandleValue<void>(e.toDouble() + 6, e.toDouble()))
+                        .toList(),
                     axisMax: 15,
                   ),
                   itemOptions: BarItemOptions(
@@ -107,7 +116,8 @@ class ChartTypes extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => CandleChartScreen()));
+            Navigator.of(context).push<void>(
+                MaterialPageRoute(builder: (_) => CandleChartScreen()));
           },
         ),
         Divider(),

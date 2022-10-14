@@ -20,7 +20,9 @@ class LineChart<T> extends StatelessWidget {
     this.gradient,
     this.stack = false,
     Key? key,
-  })  : _mappedValues = [data.map((e) => BubbleValue<T>(dataToValue(e))).toList()],
+  })  : _mappedValues = [
+          data.map((e) => BubbleValue<T>(dataToValue(e))).toList()
+        ],
         super(key: key);
 
   LineChart.multiple(

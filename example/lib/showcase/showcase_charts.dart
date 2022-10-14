@@ -76,7 +76,8 @@ class ShowcaseCharts extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => ShowcaseChartScreen()));
+            Navigator.of(context).push<void>(
+                MaterialPageRoute(builder: (_) => ShowcaseChartScreen()));
           },
         ),
         Divider(),

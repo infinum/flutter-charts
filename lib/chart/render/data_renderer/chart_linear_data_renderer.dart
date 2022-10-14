@@ -3,7 +3,8 @@ part of charts_painter;
 /// Align chart data items in linear fashion. Meaning X axis cannot be changed. X axis becomes the index of current item
 /// height of the item is defined by item max or min value.
 class ChartLinearDataRenderer<T> extends ChartDataRenderer<T> {
-  ChartLinearDataRenderer(this.chartState, List<Widget> children, {Key? key}) : super(key: key, children: children);
+  ChartLinearDataRenderer(this.chartState, List<Widget> children, {Key? key})
+      : super(key: key, children: children);
 
   final ChartState<T?> chartState;
 
@@ -13,7 +14,8 @@ class ChartLinearDataRenderer<T> extends ChartDataRenderer<T> {
   }
 
   @override
-  void updateRenderObject(BuildContext context, _ChartLinearItemRenderer<T?> renderObject) {
+  void updateRenderObject(
+      BuildContext context, _ChartLinearItemRenderer<T?> renderObject) {
     renderObject.chartState = chartState;
     renderObject.markNeedsLayout();
   }
@@ -59,7 +61,8 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     void _setLeafChildPosition(_RenderLeafChartItem<T> child) {
       final childParentData = child.parentData! as ChartItemData;
 
-      childParentData.offset = _offset + Offset(_itemWidth * (childCount[child.key] ?? 0), 0.0);
+      childParentData.offset =
+          _offset + Offset(_itemWidth * (childCount[child.key] ?? 0), 0.0);
       final innerConstraints = BoxConstraints(
         maxWidth: _itemWidth,
         maxHeight: _size.height,
@@ -83,7 +86,8 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
       // Get all necessary calculations for ChartItem for layout and position of the child.
       // Size is used to constrain the child of ChartItem.
       var bottomPaddingHeight = 0.0;
-      final _stack = 1 - chartState.itemOptionsBuilder(child.key)._multiValueStacked;
+      final _stack =
+          1 - chartState.itemOptionsBuilder(child.key)._multiValueStacked;
       final _stackSize = max(1.0, (chartState.data.stackSize) * _stack);
       final _stackWidth = _itemWidth / _stackSize;
 
@@ -92,13 +96,15 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
         final _itemIndex = childCount[child.key] ?? 0;
 
         if (child.key + 1 < chartState.data.stackSize) {
-          bottomPaddingHeight = chartState.data.items[child.key + 1][_itemIndex].max ?? 0.0;
+          bottomPaddingHeight =
+              chartState.data.items[child.key + 1][_itemIndex].max ?? 0.0;
         }
       }
 
       final innerConstraints = BoxConstraints.tightFor(
         width: _stackWidth,
-        height: (child.item.max ?? 0.0) * _verticalMultiplier - bottomPaddingHeight * _verticalMultiplier,
+        height: (child.item.max ?? 0.0) * _verticalMultiplier -
+            bottomPaddingHeight * _verticalMultiplier,
       );
 
       child.layout(innerConstraints, parentUsesSize: true);

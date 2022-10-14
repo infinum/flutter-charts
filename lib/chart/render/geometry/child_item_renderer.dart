@@ -1,6 +1,7 @@
 part of charts_painter;
 
-typedef ChildChartItemBuilder<T> = Widget Function(ChartItem<T?> item, int itemKey, int listKey);
+typedef ChildChartItemBuilder<T> = Widget Function(
+    ChartItem<T?> item, int itemKey, int listKey);
 
 /// Child item renderer for chart items. It will render any [Widget] passed as child.
 /// It will constrain it to exact size. Make sure you are not using transparent widgets that could
@@ -8,7 +9,8 @@ typedef ChildChartItemBuilder<T> = Widget Function(ChartItem<T?> item, int itemK
 ///
 /// This is a [ChildRenderObjectWidget], single child can be passed to it.
 class ChildChartItemRenderer<T> extends SingleChildRenderObjectWidget {
-  ChildChartItemRenderer(this.item, this.state, this.itemOptions, {Key? key, Widget? child, this.arrayKey = 0})
+  ChildChartItemRenderer(this.item, this.state, this.itemOptions,
+      {Key? key, Widget? child, this.arrayKey = 0})
       : super(key: key, child: child);
 
   final ChartItem<T> item;
@@ -22,7 +24,8 @@ class ChildChartItemRenderer<T> extends SingleChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(BuildContext context, _RenderChildChartItem<T?> renderObject) {
+  void updateRenderObject(
+      BuildContext context, _RenderChildChartItem<T?> renderObject) {
     renderObject
       ..state = state
       ..itemOptions = itemOptions
@@ -34,7 +37,8 @@ class ChildChartItemRenderer<T> extends SingleChildRenderObjectWidget {
 }
 
 class _RenderChildChartItem<T> extends RenderShiftedBox {
-  _RenderChildChartItem(this._state, this._itemOptions, this._item, {int? key, RenderBox? child})
+  _RenderChildChartItem(this._state, this._itemOptions, this._item,
+      {int? key, RenderBox? child})
       : _key = key ?? 0,
         super(child);
 
@@ -91,7 +95,9 @@ class _RenderChildChartItem<T> extends RenderShiftedBox {
   @override
   bool get sizedByParent => false;
 
-  Size _computeSize({required BoxConstraints constraints, required ChildLayouter layoutChild}) {
+  Size _computeSize(
+      {required BoxConstraints constraints,
+      required ChildLayouter layoutChild}) {
     if (child != null) {
       final childSize = layoutChild(child!, constraints);
       return constraints.constrain(childSize);

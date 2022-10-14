@@ -58,10 +58,13 @@ void main() {
                     lineColor: Colors.white12,
                     dashArray: [8, 8],
                     lineWidth: 1.5,
-                    valuesPadding: const EdgeInsets.only(bottom: 6.0, right: 6.0, left: 6.0),
+                    valuesPadding: const EdgeInsets.only(
+                        bottom: 6.0, right: 6.0, left: 6.0),
                     axisValue: (value) => '${value}k',
-                    legendFontStyle:
-                        defaultTextStyle.copyWith(fontSize: 12.0, color: Colors.white12, fontWeight: FontWeight.w500),
+                    legendFontStyle: defaultTextStyle.copyWith(
+                        fontSize: 12.0,
+                        color: Colors.white12,
+                        fontWeight: FontWeight.w500),
                   ),
                 ],
                 foregroundDecorations: [],
@@ -114,11 +117,14 @@ void main() {
                   horizontalLegendPosition: HorizontalLegendPosition.start,
                   gridColor: Colors.grey.shade200,
                   gridWidth: 1,
-                  horizontalValuesPadding: const EdgeInsets.only(bottom: -8.0, right: 8.0, left: 8.0),
+                  horizontalValuesPadding: const EdgeInsets.only(
+                      bottom: -8.0, right: 8.0, left: 8.0),
                   verticalValuesPadding: const EdgeInsets.only(top: 24.0),
                   horizontalAxisValueFromValue: (value) => '${value + 1}h',
-                  verticalAxisValueFromIndex: (value) => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][value],
-                  textStyle: defaultTextStyle.copyWith(fontSize: 12.0, color: Colors.black45),
+                  verticalAxisValueFromIndex: (value) =>
+                      ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][value],
+                  textStyle: defaultTextStyle.copyWith(
+                      fontSize: 12.0, color: Colors.black45),
                 ),
               ],
               foregroundDecorations: [],
@@ -155,7 +161,8 @@ void main() {
               ),
               itemOptionsBuilder: (key) {
                 return BarItemOptions(
-                  multiValuePadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  multiValuePadding:
+                      const EdgeInsets.symmetric(horizontal: 4.0),
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][key],
                   multiItemStack: false,
@@ -169,9 +176,11 @@ void main() {
                   gridColor: Colors.grey.shade400,
                   gridWidth: 1,
                   dashArray: [4, 4],
-                  verticalValuesPadding: const EdgeInsets.symmetric(vertical: 12.0),
+                  verticalValuesPadding:
+                      const EdgeInsets.symmetric(vertical: 12.0),
                   verticalAxisValueFromIndex: (value) => '0$value',
-                  textStyle: defaultTextStyle.copyWith(fontSize: 14.0, color: Colors.black45),
+                  textStyle: defaultTextStyle.copyWith(
+                      fontSize: 14.0, color: Colors.black45),
                 ),
               ],
               foregroundDecorations: [
@@ -319,9 +328,11 @@ void main() {
                   gridColor: Colors.grey.shade400,
                   gridWidth: 1,
                   dashArray: [4, 4],
-                  verticalValuesPadding: const EdgeInsets.symmetric(vertical: 12.0),
+                  verticalValuesPadding:
+                      const EdgeInsets.symmetric(vertical: 12.0),
                   verticalAxisValueFromIndex: (value) => '0${value + 1}',
-                  textStyle: defaultTextStyle.copyWith(fontSize: 14.0, color: Colors.black45),
+                  textStyle: defaultTextStyle.copyWith(
+                      fontSize: 14.0, color: Colors.black45),
                 ),
               ],
               foregroundDecorations: [
@@ -409,12 +420,16 @@ void main() {
           ),
         ),
       );
-    await tester.pumpWidgetBuilder(builder.build(), surfaceSize: const Size(1400, 660), textScaleSize: 1.4);
+    await tester.pumpWidgetBuilder(builder.build(),
+        surfaceSize: const Size(1400, 660), textScaleSize: 1.4);
     await screenMatchesGolden(tester, 'showcase_charts');
   });
 }
 
 List<double> translateMorse(String morse) {
-  final _s = morse.replaceAll(' ', '0,6,0').replaceAll('.', '2, 1,').replaceAll('-', '6, 1,');
+  final _s = morse
+      .replaceAll(' ', '0,6,0')
+      .replaceAll('.', '2, 1,')
+      .replaceAll('-', '6, 1,');
   return _s.split(',').map((e) => double.tryParse(e) ?? 0).toList()..add(12);
 }

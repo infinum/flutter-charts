@@ -6,7 +6,8 @@ typedef ChartGeometryPainter<T> = GeometryPainter<T> Function(
     ChartItem<T?> item, ChartData data, ItemOptions itemOptions);
 
 /// Get color for current item value
-typedef ColorForValue<T> = Color Function(Color defaultColor, ChartItem<T> item);
+typedef ColorForValue<T> = Color Function(
+    Color defaultColor, ChartItem<T> item);
 
 /// Options for drawing the items
 /// Need to provide [ChartGeometryPainter]
