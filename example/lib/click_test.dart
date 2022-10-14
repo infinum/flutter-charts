@@ -7,14 +7,14 @@ void main() {
 }
 
 class ChartApp extends StatefulWidget {
-  ChartApp({Key key}) : super(key: key);
+  ChartApp({Key? key}) : super(key: key);
 
   @override
   _ChartAppState createState() => _ChartAppState();
 }
 
 class _ChartAppState extends State<ChartApp> {
-  int _selectedIndex = null;
+  int? _selectedIndex = null;
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +25,7 @@ class _ChartAppState extends State<ChartApp> {
         state: ChartState(
             ChartData(
               [
-                [2, 4, 6, 3, 2, 5, 4, 3, 2]
-                    .map((e) => BarValue<void>(e.toDouble()))
-                    .toList(),
+                [2, 4, 6, 3, 2, 5, 4, 3, 2].map((e) => BarValue<void>(e.toDouble())).toList(),
               ],
               valueAxisMaxOver: 2,
             ),

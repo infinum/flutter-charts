@@ -40,7 +40,7 @@ void main() {
                 itemOptions: BarItemOptions(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   radius: BorderRadius.all(Radius.circular(12.0)),
-                  colorForKey: (item, key) {
+                  colorForValue: (item, key) {
                     final dynamic _value = item.value;
                     if (_value is bool) {
                       return _value ? Color(0xFF567EF7) : Color(0xFF5ABEF9);
@@ -99,12 +99,10 @@ void main() {
                 ],
                 axisMax: 4,
               ),
-              itemOptions: BarItemOptions(
+              itemOptionsBuilder: (key) => BarItemOptions(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 radius: BorderRadius.all(Radius.circular(12.0)),
-                colorForKey: (item, key) {
-                  return [Color(0xFFE6E6FD), Color(0xFF4D4DA6)][key];
-                },
+                color: [Color(0xFFE6E6FD), Color(0xFF4D4DA6)][key],
               ),
               backgroundDecorations: [
                 GridDecoration(
@@ -155,14 +153,14 @@ void main() {
                 ],
                 axisMax: 4,
               ),
-              itemOptions: BarItemOptions(
-                multiValuePadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                colorForKey: (item, key) {
-                  return [Color(0xFF5B6ACF), Color(0xFFB6CADD)][key];
-                },
-                multiItemStack: false,
-              ),
+              itemOptionsBuilder: (key) {
+                return BarItemOptions(
+                  multiValuePadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][key],
+                  multiItemStack: false,
+                );
+              },
               backgroundDecorations: [
                 GridDecoration(
                   horizontalAxisStep: 10.0,
@@ -306,13 +304,13 @@ void main() {
                 ],
                 axisMax: 35,
               ),
-              itemOptions: BubbleItemOptions(
-                maxBarWidth: 2.0,
-                colorForKey: (item, key) {
-                  return [Color(0xFF5B6ACF), Color(0xFFB6CADD)][key];
-                },
-                multiItemStack: true,
-              ),
+              itemOptionsBuilder: (key) {
+                return BubbleItemOptions(
+                  maxBarWidth: 2.0,
+                  color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][key],
+                  multiItemStack: true,
+                );
+              },
               backgroundDecorations: [
                 GridDecoration(
                   horizontalAxisStep: 10.0,
@@ -390,14 +388,14 @@ void main() {
                 axisMax: 14,
                 axisMin: -14,
               ),
-              itemOptions: BarItemOptions(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-                colorForKey: (item, key) {
-                  return [Color(0xFF0139A4), Color(0xFF00B6E6)][key];
-                },
-                multiItemStack: true,
-              ),
+              itemOptionsBuilder: (key) {
+                return BarItemOptions(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  radius: BorderRadius.vertical(top: Radius.circular(12.0)),
+                  color: [Color(0xFF0139A4), Color(0xFF00B6E6)][key],
+                  multiItemStack: true,
+                );
+              },
               backgroundDecorations: [
                 GridDecoration(
                   horizontalAxisStep: 7.0,

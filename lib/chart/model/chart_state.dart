@@ -178,7 +178,7 @@ class ChartState<T> {
 
   static ChartDataRendererFactory<T?> defaultItemRenderer<T>(List<ItemOptions> itemOptions) {
     return (chartState) => ChartLinearDataRenderer<T?>(
-        chartState.data,
+        chartState,
         chartState.data.items
             .mapIndexed(
               (key, items) => items
@@ -191,9 +191,9 @@ class ChartState<T> {
   }
 
   static ChartDataRendererFactory<T?> widgetItemRenderer<T>(
-      List<ItemOptions> itemOptions, Widget Function(ChartItem<T?> item, int listKey) childBuilder) {
+      List<ItemOptions> itemOptions, Widget Function(ChartItem<T?> item, int itemKey, int listKey) childBuilder) {
     return (chartState) => ChartLinearDataRenderer<T?>(
-        chartState.data,
+        chartState,
         chartState.data.items
             .mapIndexed(
               (key, items) => items
@@ -202,7 +202,7 @@ class ChartState<T> {
                         chartState.data,
                         itemOptions[key],
                         arrayKey: key,
-                        child: childBuilder(e, key),
+                        child: childBuilder(e, items.indexOf(e), key),
                       ))
                   .toList(),
             )

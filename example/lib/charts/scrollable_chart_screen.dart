@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ScrollableChartScreen extends StatefulWidget {
-  ScrollableChartScreen({Key key}) : super(key: key);
+  ScrollableChartScreen({Key? key}) : super(key: key);
 
   @override
   _ScrollableChartScreenState createState() => _ScrollableChartScreenState();
@@ -16,14 +16,14 @@ class ScrollableChartScreen extends StatefulWidget {
 
 class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
   List<double> _values = <double>[];
-  double targetMax;
+  double targetMax = 0;
   bool _showValues = false;
   bool _smoothPoints = false;
   bool _showBars = true;
   bool _isScrollable = true;
   bool _fixedAxis = false;
   int minItems = 30;
-  int _selected;
+  int? _selected;
 
   final _controller = ScrollController();
 
@@ -121,7 +121,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
       foregroundDecorations: [
         ValueDecoration(
           alignment: _showBars ? Alignment.bottomCenter : Alignment(0.0, -1.0),
-          textStyle: Theme.of(context).textTheme.button.copyWith(
+          textStyle: Theme.of(context).textTheme.button!.copyWith(
               color: (_showBars ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.primary)
                   .withOpacity(_isScrollable ? 1.0 : 0.0)),
         ),
@@ -148,7 +148,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                 border: Border.all(),
                 shape: BoxShape.circle,
               ),
-              child: Text('${_selected != null ? _values[_selected].toStringAsPrecision(2) : '...'}'),
+              child: Text('${_selected != null ? _values[_selected!].toStringAsPrecision(2) : '...'}'),
             ),
           ),
           backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(_isScrollable ? 0.5 : 0.8),

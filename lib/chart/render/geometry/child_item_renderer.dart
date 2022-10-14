@@ -115,22 +115,31 @@ class _RenderChildChartItem<T> extends RenderShiftedBox {
     );
 
     if (child != null) {
-      final childParentData = child!.parentData! as BoxParentData;
+      if (child is _RenderLeafChartItem) {
+        final childParentData = child!.parentData! as BoxParentData;
 
-      final _stack = 1 - _itemOptions._multiValueStacked;
-      final _stackSize = max(1, _state.stackSize * _stack);
+        final _stack = 1 - _itemOptions._multiValueStacked;
+        final _stackSize = max(1, _state.stackSize * _stack);
 
-      final _multiPadding = _itemOptions.multiValuePadding.horizontal * _stackSize * _stack;
+        final _multiPadding = _itemOptions.multiValuePadding.horizontal * _stackSize * _stack;
 
-      final _stackWidth = (size.width - _multiPadding - _itemOptions.padding.horizontal) / _stackSize;
+        final _stackWidth = (size.width - _multiPadding - _itemOptions.padding.horizontal) / _stackSize;
 
-      final offset = Offset(
-          _itemOptions.multiValuePadding.left * _stack +
-              _itemOptions.padding.left +
-              _stackWidth * key * _stack +
-              ((_itemOptions.multiValuePadding.horizontal * key * _stack)),
-          0.0);
-      childParentData.offset = offset;
+        final offset = Offset(
+            _itemOptions.multiValuePadding.left * _stack +
+                _itemOptions.padding.left +
+                _stackWidth * key * _stack +
+                ((_itemOptions.multiValuePadding.horizontal * key * _stack)),
+            0.0);
+        childParentData.offset = offset;
+      } else {
+        final childParentData = child!.parentData! as BoxParentData;
+
+        final _stack = 1 - _itemOptions._multiValueStacked;
+
+        final offset = Offset(size.width * key * _stack, 0.0);
+        childParentData.offset = offset;
+      }
     }
   }
 

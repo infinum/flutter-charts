@@ -7,66 +7,54 @@ typedef DataToAxis<T> = String Function(int item);
 
 class LineChart<T> extends StatelessWidget {
   LineChart({
-    @required this.data,
-    @required this.dataToValue,
+    required List<T> data,
+    required DataToValue<T> dataToValue,
     this.height = 240.0,
     this.lineWidth = 2.0,
-    this.itemColor,
-    this.backgroundDecorations,
-    this.foregroundDecorations,
+    this.itemColor = Colors.red,
+    this.backgroundDecorations = const [],
+    this.foregroundDecorations = const [],
     this.chartItemOptions,
-    this.chartBehaviour,
-    this.smoothCurves,
+    this.chartBehaviour = const ChartBehaviour(),
+    this.smoothCurves = false,
     this.gradient,
     this.stack = false,
-    Key key,
-  })  : _mappedValues = [
-          data.map((e) => BubbleValue<T>(dataToValue(e))).toList()
-        ],
+    Key? key,
+  })  : _mappedValues = [data.map((e) => BubbleValue<T>(dataToValue(e))).toList()],
         super(key: key);
 
   LineChart.multiple(
     this._mappedValues, {
     this.height = 240.0,
     this.lineWidth = 2.0,
-    this.itemColor,
-    this.backgroundDecorations,
-    this.foregroundDecorations,
+    this.itemColor = Colors.red,
+    this.backgroundDecorations = const [],
+    this.foregroundDecorations = const [],
     this.chartItemOptions,
-    this.chartBehaviour,
-    this.smoothCurves,
+    this.chartBehaviour = const ChartBehaviour(),
+    this.smoothCurves = false,
     this.gradient,
     this.stack = false,
-    Key key,
-  })  : data = null,
-        dataToValue = null,
-        super(key: key);
-
-  final List<T> data;
-  final DataToValue<T> dataToValue;
+    Key? key,
+  }) : super(key: key);
 
   final double height;
 
   final bool smoothCurves;
   final Color itemColor;
-  final Gradient gradient;
+  final Gradient? gradient;
   final double lineWidth;
   final bool stack;
 
   final List<DecorationPainter> backgroundDecorations;
   final List<DecorationPainter> foregroundDecorations;
   final ChartBehaviour chartBehaviour;
-  final ItemOptions chartItemOptions;
+  final ItemOptionsBuilder? chartItemOptions;
 
-  final List<List<ChartItem<T>>> _mappedValues;
+  final List<List<BubbleValue<T>>> _mappedValues;
 
   @override
   Widget build(BuildContext context) {
-    final _foregroundDecorations =
-        foregroundDecorations ?? <DecorationPainter>[];
-    final _backgroundDecorations =
-        backgroundDecorations ?? <DecorationPainter>[];
-
     return AnimatedChart<T>(
       height: height,
       duration: const Duration(milliseconds: 450),
@@ -75,7 +63,7 @@ class LineChart<T> extends StatelessWidget {
           _mappedValues,
           dataStrategy: stack ? StackDataStrategy() : DefaultDataStrategy(),
         ),
-        itemOptions: chartItemOptions,
+        itemOptionsBuilder: chartItemOptions ?? (_) => BarItemOptions(),
         foregroundDecorations: [
           SparkLineDecoration(
             id: 'chart_decoration',
@@ -84,10 +72,10 @@ class LineChart<T> extends StatelessWidget {
             gradient: gradient,
             smoothPoints: smoothCurves,
           ),
-          ..._foregroundDecorations,
+          ...foregroundDecorations,
         ],
         backgroundDecorations: [
-          ..._backgroundDecorations,
+          ...backgroundDecorations,
         ],
       ),
     );

@@ -1,8 +1,7 @@
 part of charts_painter;
 
 /// Bubble painter
-GeometryPainter<T> bubblePainter<T>(
-        ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions) =>
+GeometryPainter<T> bubblePainter<T>(ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions) =>
     BubbleGeometryPainter<T>(item, data, itemOptions);
 
 /// Extension options for bar items
@@ -20,14 +19,12 @@ class BubbleItemOptions extends ItemOptions {
     double? minBarWidth,
     Color color = Colors.red,
     ColorForValue? colorForValue,
-    ColorForKey? colorForKey,
     bool multiItemStack = true,
     this.gradient,
     this.border,
   }) : super(
           color: color,
           colorForValue: colorForValue,
-          colorForKey: colorForKey,
           padding: padding,
           multiValuePadding: multiValuePadding,
           minBarWidth: minBarWidth,
@@ -43,14 +40,12 @@ class BubbleItemOptions extends ItemOptions {
     double? minBarWidth,
     Color color = Colors.red,
     ColorForValue? colorForValue,
-    ColorForKey? colorForKey,
     double multiItemStack = 1.0,
     this.gradient,
     this.border,
   }) : super._lerp(
           color: color,
           colorForValue: colorForValue,
-          colorForKey: colorForKey,
           padding: padding,
           multiValuePadding: multiValuePadding,
           minBarWidth: minBarWidth,
@@ -68,25 +63,16 @@ class BubbleItemOptions extends ItemOptions {
   @override
   ItemOptions animateTo(ItemOptions endValue, double t) {
     return BubbleItemOptions._lerp(
-      gradient: Gradient.lerp(gradient,
-          endValue is BubbleItemOptions ? endValue.gradient : null, t),
+      gradient: Gradient.lerp(gradient, endValue is BubbleItemOptions ? endValue.gradient : null, t),
       color: Color.lerp(color, endValue.color, t) ?? endValue.color,
-      colorForKey: ColorForKeyLerp.lerp(this, endValue, t),
       colorForValue: ColorForValueLerp.lerp(this, endValue, t),
       padding: EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero,
-      multiValuePadding:
-          EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ??
-              EdgeInsets.zero,
+      multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero,
       maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
       minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
-      border: BorderSide.lerp(
-          border ?? BorderSide.none,
-          endValue is BubbleItemOptions
-              ? (endValue.border ?? BorderSide.none)
-              : BorderSide.none,
-          t),
-      multiItemStack:
-          lerpDouble(_multiValueStacked, endValue._multiValueStacked, t) ?? 1.0,
+      border: BorderSide.lerp(border ?? BorderSide.none,
+          endValue is BubbleItemOptions ? (endValue.border ?? BorderSide.none) : BorderSide.none, t),
+      multiItemStack: lerpDouble(_multiValueStacked, endValue._multiValueStacked, t) ?? 1.0,
     );
   }
 
@@ -96,8 +82,7 @@ class BubbleItemOptions extends ItemOptions {
 
     if (gradient != null) {
       // Compiler complains that gradient could be null. But unless if fails us that will never be null.
-      _paint.shader = gradient!.createShader(
-          Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
+      _paint.shader = gradient!.createShader(Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
     }
 
     return _paint;

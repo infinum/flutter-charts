@@ -6,11 +6,7 @@ typedef ChartGeometryPainter<T> = GeometryPainter<T> Function(
     ChartItem<T?> item, ChartData data, ItemOptions itemOptions);
 
 /// Get color for current item value
-typedef ColorForValue = Color Function(Color defaultColor, double? value,
-    [double? min]);
-
-/// Get color gor current item key (multiple lists)
-typedef ColorForKey = Color Function(ChartItem item, int index);
+typedef ColorForValue<T> = Color Function(Color defaultColor, ChartItem<T> item);
 
 /// Options for drawing the items
 /// Need to provide [ChartGeometryPainter]
@@ -28,7 +24,6 @@ abstract class ItemOptions {
     this.startPosition = 0.5,
     this.color = Colors.red,
     this.colorForValue,
-    this.colorForKey,
     bool multiItemStack = true,
   }) : _multiValueStacked = multiItemStack ? 1.0 : 0.0;
 
@@ -41,7 +36,6 @@ abstract class ItemOptions {
     this.startPosition = 0.5,
     this.color = Colors.red,
     this.colorForValue,
-    this.colorForKey,
     double multiItemStack = 1.0,
   }) : _multiValueStacked = multiItemStack;
 
@@ -59,9 +53,6 @@ abstract class ItemOptions {
 
   /// Generate item color from current value of the item
   final ColorForValue? colorForValue;
-
-  /// Generate item color from index of list it came from, this is for multiple values only.
-  final ColorForKey? colorForKey;
 
   /// Max width of item in the chart
   final double? maxBarWidth;
@@ -101,16 +92,12 @@ abstract class ItemOptions {
       return color;
     }
 
-    if (colorForKey != null) {
-      return colorForKey?.call(item, index) ?? color;
-    }
-
-    return _getColorForValue(item.max, item.min);
+    return _getColorForValue(item);
   }
 
-  Color _getColorForValue(double? max, [double? min]) {
+  Color _getColorForValue(ChartItem item) {
     if (colorForValue != null) {
-      return colorForValue?.call(color, max, min) ?? color;
+      return colorForValue?.call(color, item) ?? color;
     }
 
     return color;
@@ -130,26 +117,9 @@ class ColorForValueLerp {
       return null;
     }
 
-    return (Color? defaultColor, double? value, [double? min]) {
-      final _aColor = a._getColorForValue(value, min);
-      final _bColor = b._getColorForValue(value, min);
-
-      return Color.lerp(_aColor, _bColor, t) ?? _bColor;
-    };
-  }
-}
-
-/// Lerp [ColorForKey] function to get color for key in animation
-class ColorForKeyLerp {
-  /// Make new function that will return lerp color based on [a.colorForKey] and [b.colorForKey]
-  static ColorForKey? lerp(ItemOptions a, ItemOptions b, double t) {
-    if (a.colorForKey == null && b.colorForKey == null) {
-      return null;
-    }
-
-    return (ChartItem item, int index) {
-      final _aColor = a.getItemColor(item, index);
-      final _bColor = b.getItemColor(item, index);
+    return (Color? defaultColor, ChartItem item) {
+      final _aColor = a._getColorForValue(item);
+      final _bColor = b._getColorForValue(item);
 
       return Color.lerp(_aColor, _bColor, t) ?? _bColor;
     };

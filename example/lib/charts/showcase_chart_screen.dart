@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ShowcaseChartScreen extends StatefulWidget {
-  ShowcaseChartScreen({Key key}) : super(key: key);
+  ShowcaseChartScreen({Key? key}) : super(key: key);
 
   @override
   _ShowcaseChartScreenState createState() => _ShowcaseChartScreenState();
@@ -26,8 +26,7 @@ class _ShowcaseChartScreenState extends State<ShowcaseChartScreen> {
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: AnimatedChart<bool>(
-                  duration: Duration(milliseconds: 650),
-                  state: _chartStates[_currentState % _chartStates.length]),
+                  duration: Duration(milliseconds: 650), state: _chartStates[_currentState % _chartStates.length]),
             ),
           ),
           SizedBox(height: 48.0),
@@ -93,11 +92,9 @@ final List<ChartState<bool>> _chartStates = [
     itemOptions: BarItemOptions(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       radius: BorderRadius.all(Radius.circular(12.0)),
-      colorForKey: (item, key) {
+      colorForValue: (item, key) {
         final _value = item.value as bool;
-        return (_value is bool && _value)
-            ? Color(0xFF567EF7)
-            : Color(0xFF5ABEF9);
+        return (_value is bool && _value) ? Color(0xFF567EF7) : Color(0xFF5ABEF9);
       },
     ),
     backgroundDecorations: [
@@ -109,11 +106,9 @@ final List<ChartState<bool>> _chartStates = [
         gridColor: Colors.black26,
         dashArray: [8, 8],
         gridWidth: 1.5,
-        horizontalValuesPadding:
-            const EdgeInsets.only(bottom: -7.0, right: 16.0),
+        horizontalValuesPadding: const EdgeInsets.only(bottom: -7.0, right: 16.0),
         horizontalAxisValueFromValue: (value) => '${value}k',
-        textStyle: TextStyle(
-            fontSize: 14.0, color: Colors.black26, fontWeight: FontWeight.w500),
+        textStyle: TextStyle(fontSize: 14.0, color: Colors.black26, fontWeight: FontWeight.w500),
       ),
     ],
     foregroundDecorations: [],
@@ -142,12 +137,10 @@ final List<ChartState<bool>> _chartStates = [
       ],
       axisMax: 4,
     ),
-    itemOptions: BarItemOptions(
+    itemOptionsBuilder: (key) => BarItemOptions(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
       radius: BorderRadius.all(Radius.circular(12.0)),
-      colorForKey: (item, key) {
-        return [Color(0xFFE6E6FD), Color(0xFF4D4DA6)][key];
-      },
+      color: [Color(0xFFE6E6FD), Color(0xFF4D4DA6)][key],
     ),
     backgroundDecorations: [
       GridDecoration(
@@ -159,12 +152,10 @@ final List<ChartState<bool>> _chartStates = [
         horizontalLegendPosition: HorizontalLegendPosition.start,
         gridColor: Colors.grey.shade200,
         gridWidth: 1,
-        horizontalValuesPadding:
-            const EdgeInsets.only(bottom: -8.0, right: 8.0),
+        horizontalValuesPadding: const EdgeInsets.only(bottom: -8.0, right: 8.0),
         verticalValuesPadding: const EdgeInsets.only(top: 24.0),
         horizontalAxisValueFromValue: (value) => '${value + 1}h',
-        verticalAxisValueFromIndex: (value) =>
-            ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][value],
+        verticalAxisValueFromIndex: (value) => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][value],
         textStyle: TextStyle(fontSize: 14.0, color: Colors.black45),
       ),
     ],
@@ -192,12 +183,10 @@ final List<ChartState<bool>> _chartStates = [
       ],
       axisMax: 4,
     ),
-    itemOptions: BarItemOptions(
+    itemOptionsBuilder: (key) => BarItemOptions(
       multiValuePadding: const EdgeInsets.symmetric(horizontal: 4.0),
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      colorForKey: (item, key) {
-        return [Color(0xFF5B6ACF), Color(0xFFB6CADD)][key];
-      },
+      color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][key],
       multiItemStack: false,
     ),
     backgroundDecorations: [
@@ -392,12 +381,10 @@ final List<ChartState<bool>> _chartStates = [
       axisMax: 14,
       axisMin: -14,
     ),
-    itemOptions: BarItemOptions(
+    itemOptionsBuilder: (key) => BarItemOptions(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-      colorForKey: (item, key) {
-        return [Color(0xFF0139A4), Color(0xFF00B6E6)][key];
-      },
+      color: [Color(0xFF0139A4), Color(0xFF00B6E6)][key],
       multiItemStack: true,
     ),
     backgroundDecorations: [

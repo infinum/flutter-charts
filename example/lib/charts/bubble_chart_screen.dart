@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BubbleChartScreen extends StatefulWidget {
-  BubbleChartScreen({Key key}) : super(key: key);
+  BubbleChartScreen({Key? key}) : super(key: key);
 
   @override
   _BubbleChartScreenState createState() => _BubbleChartScreenState();
@@ -16,8 +16,8 @@ class BubbleChartScreen extends StatefulWidget {
 
 class _BubbleChartScreenState extends State<BubbleChartScreen> {
   List<BubbleValue> _values = <BubbleValue>[];
-  double targetMax;
-  double targetMin;
+  double targetMax = 0;
+  double targetMin = 0;
   bool _showValues = false;
   int minItems = 6;
 
@@ -55,8 +55,7 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
       targetMin: targetMin,
       colorOverTarget: Theme.of(context).colorScheme.secondary,
       targetLineColor: Theme.of(context).colorScheme.secondary,
-      targetAreaFillColor:
-          Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+      targetAreaFillColor: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
       targetAreaRadius: BorderRadius.circular(8.0),
     );
 
@@ -78,10 +77,9 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                   itemOptions: BubbleItemOptions(
                     color: Theme.of(context).colorScheme.primary,
                     colorForValue: tad.getTargetItemColor(),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: (1 - (_values.length / 17)) * 8.0),
+                    padding: EdgeInsets.symmetric(horizontal: (1 - (_values.length / 17)) * 8.0),
                   ),
-                  dataToValue: (BubbleValue value) => value.max,
+                  dataToValue: (BubbleValue value) => value.max ?? 0,
                   backgroundDecorations: [
                     GridDecoration(
                       showHorizontalValues: _showValues,
@@ -91,14 +89,8 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                       verticalValuesPadding: EdgeInsets.only(left: 8.0),
                       verticalAxisStep: 2,
                       verticalTextAlign: TextAlign.start,
-                      gridColor: Theme.of(context)
-                          .colorScheme
-                          .primaryVariant
-                          .withOpacity(0.2),
-                      textStyle: Theme.of(context)
-                          .textTheme
-                          .caption
-                          .copyWith(fontSize: 13.0),
+                      gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+                      textStyle: Theme.of(context).textTheme.caption!.copyWith(fontSize: 13.0),
                     ),
                     tad,
                   ],
