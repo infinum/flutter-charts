@@ -50,7 +50,9 @@ Sets chart behaviour and interaction like onClick and isScrollable can be set he
 
 ## Item options
 Options that set how it draws each item and how it looks.
-When using `BarItemOptions` or `BubbleItemOptions` geometry painters have been preset, and they include some extra options for their painters. 
+When using `BarItemOptions` or `BubbleItemOptions` geometry painters have been preset, and they include some extra options for their painters.
+
+For more customization you can use `WidgetItemOptions` where you will be given a widget builder. Builder will provide you with current item, item index in the list, and list index in case you provided data with multiple lists
 
 #### Geometry items
 What are geometry items?
@@ -62,6 +64,11 @@ Included in the lib are  2 `GeometryPainters`'s.
 --- | ---
 ![bar_painter] | ![bubble_painter]
 ![candle_painter] | 
+
+##### Empty geometry painter
+There is also empty geometry painter in case you use `WidgetItemOptions`. Reason for that is that we don't paint widget item, we just set it's position and size.
+
+![widget_painter]
 
 ## Decoration
 We use Decorations to enhance our charts. Chart decorations can be painted in the background or in a foreground of the items. Everything that is not chart item is a decoration.
@@ -358,6 +365,7 @@ Scrollable bar chart [example code](https://raw.githubusercontent.com/infinum/fl
 [target_values_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_value_decoration_golden.png
 
 [bar_painter]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/geometry/goldens/bar_geometry_golden.png
+[widget_painter]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/geometry/goldens/widget_geometry_golden.png
 [candle_painter]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/geometry/goldens/candle_geometry_golden.png
 [bubble_painter]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/geometry/goldens/bubble_geometry_golden.png
 

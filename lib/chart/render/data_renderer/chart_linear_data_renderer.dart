@@ -80,8 +80,8 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
           Offset(_itemWidth * (childCount[child.key] ?? 0),
               _size.height - ((child.item.max ?? 0.0) * _verticalMultiplier));
 
-      /// Get all necessary calculations for ChartItem for layout and position of the child.
-      /// Size is used to constrain the child of ChartItem.
+      // Get all necessary calculations for ChartItem for layout and position of the child.
+      // Size is used to constrain the child of ChartItem.
       var bottomPaddingHeight = 0.0;
       final _stack = 1 - chartState.itemOptionsBuilder(child.key)._multiValueStacked;
       final _stackSize = max(1.0, (chartState.data.stackSize) * _stack);

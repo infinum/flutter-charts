@@ -154,8 +154,8 @@ class VerticalAxisDecoration extends DecorationPainter {
         maxLines: 1,
         textDirection: TextDirection.ltr,
       )..layout(
-          maxWidth: _itemWidth,
-          minWidth: _itemWidth,
+          maxWidth: _itemWidth * axisStep,
+          minWidth: _itemWidth * axisStep,
         );
       _textPainter.paint(
         canvas,

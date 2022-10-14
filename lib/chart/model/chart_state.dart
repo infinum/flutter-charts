@@ -24,14 +24,16 @@ class ChartState<T> {
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const <DecorationPainter>[],
     this.foregroundDecorations = const <DecorationPainter>[],
-    ChartDataRendererFactory<T?>? dataRenderer,
   })  : assert(data.isNotEmpty, 'No items!'),
+        assert(!(itemOptions is WidgetItemOptions && itemOptionsBuilder != null),
+            'You cannot use itemOptionsBuilder with WidgetItemOptions'),
         defaultPadding = EdgeInsets.zero,
         itemOptionsBuilder = itemOptionsBuilder ?? ((int i) => itemOptions),
         defaultMargin = EdgeInsets.zero,
-        dataRenderer = dataRenderer ??
-            defaultItemRenderer<T>(
-                data.items.mapIndexed((e, _) => (itemOptionsBuilder ?? ((int i) => itemOptions))(e)).toList()) {
+        dataRenderer = (itemOptions is WidgetItemOptions
+            ? widgetItemRenderer(data.items.mapIndexed((e, _) => (((int i) => itemOptions))(e)).toList())
+            : defaultItemRenderer<T>(
+                data.items.mapIndexed((e, _) => (itemOptionsBuilder ?? ((int i) => itemOptions))(e)).toList())) {
     /// Set default padding and margin, decorations padding and margins will be added to this value
     _setUpDecorations();
   }
@@ -39,6 +41,7 @@ class ChartState<T> {
   /// Create line chart with foreground sparkline decoration and background grid decoration
   factory ChartState.line(
     ChartData<T> data, {
+    ItemOptions itemOptions = const BubbleItemOptions(),
     ItemOptionsBuilder? itemOptionsBuilder,
     ChartBehaviour behaviour = const ChartBehaviour(),
     List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
@@ -46,7 +49,8 @@ class ChartState<T> {
   }) {
     return ChartState(
       data,
-      itemOptionsBuilder: itemOptionsBuilder ?? (index) => BubbleItemOptions(maxBarWidth: 2.0),
+      itemOptions: itemOptions,
+      itemOptionsBuilder: itemOptionsBuilder,
       behaviour: behaviour,
       backgroundDecorations: backgroundDecorations.isEmpty ? [GridDecoration()] : backgroundDecorations,
       foregroundDecorations: foregroundDecorations.isEmpty ? [SparkLineDecoration()] : foregroundDecorations,
@@ -56,6 +60,7 @@ class ChartState<T> {
   /// Create bar chart with background grid decoration
   factory ChartState.bar(
     ChartData<T> data, {
+    ItemOptions itemOptions = const BarItemOptions(),
     ItemOptionsBuilder? itemOptionsBuilder,
     ChartBehaviour behaviour = const ChartBehaviour(),
     List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
@@ -63,8 +68,8 @@ class ChartState<T> {
   }) {
     return ChartState(
       data,
-      itemOptionsBuilder:
-          itemOptionsBuilder ?? (index) => BarItemOptions(padding: EdgeInsets.symmetric(horizontal: 4.0)),
+      itemOptions: itemOptions,
+      itemOptionsBuilder: itemOptionsBuilder,
       behaviour: behaviour,
       backgroundDecorations: backgroundDecorations.isEmpty ? [GridDecoration()] : backgroundDecorations,
       foregroundDecorations: foregroundDecorations,
@@ -92,7 +97,9 @@ class ChartState<T> {
   final ChartDataRendererFactory<T?> dataRenderer;
 
   // Geometry layer
-  /// [ItemOptions] define how each item is painted
+  /// [ItemOptionsBuilder] it can build different [ItemOptions] based on current list key
+  /// if you just pass [itemOptions] to the constructor. But data has multiple lists, then all
+  /// lists will use the same [itemOptions].
   final ItemOptionsBuilder itemOptionsBuilder;
 
   /// [ChartBehaviour] define how chart behaves and how it should react
@@ -195,21 +202,25 @@ class ChartState<T> {
   }
 
   /// It can render chart items as widgets.
-  static ChartDataRendererFactory<T?> widgetItemRenderer<T>(
-      List<ItemOptions> itemOptions, ChildChartItemBuilder<T> chartItemBuilder) {
+  static ChartDataRendererFactory<T?> widgetItemRenderer<T>(List<ItemOptions> itemOptions) {
     return (chartState) => ChartLinearDataRenderer<T>(
         chartState,
         chartState.data.items
             .mapIndexed(
-              (key, items) => items
-                  .map((e) => ChildChartItemRenderer<T?>(
-                        e,
-                        chartState.data,
-                        itemOptions[key],
-                        arrayKey: key,
-                        child: chartItemBuilder(e, items.indexOf(e), key),
-                      ))
-                  .toList(),
+              (key, items) {
+                final _options = itemOptions[key];
+                assert(_options is WidgetItemOptions);
+
+                return items
+                    .map((e) => ChildChartItemRenderer<T?>(
+                          e,
+                          chartState.data,
+                          _options,
+                          arrayKey: key,
+                          child: (_options as WidgetItemOptions).chartItemBuilder(e, items.indexOf(e), key),
+                        ))
+                    .toList();
+              },
             )
             .expand((element) => element)
             .toList());
