@@ -72,15 +72,14 @@ class _BarChartScreenState extends State<BarChartScreen> {
               itemOptions: BarItemOptions(
                 padding: const EdgeInsets.symmetric(horizontal: 2.0),
                 minBarWidth: 4.0,
-                multiItemStack: false,
                 // isTargetInclusive: true,
                 color: Theme.of(context).colorScheme.primary,
                 radius: const BorderRadius.vertical(
                   top: Radius.circular(24.0),
                 ),
                 colorForValue: _colorfulBars
-                    ? (_, item) {
-                        int _value = (((item.max ?? 0) / (targetMax * 1.3)) * 10).round();
+                    ? (_, value) {
+                        int _value = (((value as int) / (targetMax * 1.3)) * 10).round();
                         return Colors.accents[_value];
                       }
                     : null,
@@ -96,18 +95,18 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   horizontalAxisStep: 1,
                   verticalAxisStep: 1,
                   verticalValuesPadding: const EdgeInsets.symmetric(vertical: 4.0),
-                  horizontalValuesPadding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  horizontalValuesPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                   textStyle: Theme.of(context).textTheme.caption,
                   gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                 ),
-                // TargetAreaDecoration(
-                //   targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
-                //   targetLineColor: Theme.of(context).colorScheme.error,
-                //   targetAreaRadius: BorderRadius.circular(12.0),
-                //   targetMax: targetMax,
-                //   targetMin: targetMin,
-                //   colorOverTarget: Theme.of(context).colorScheme.error,
-                // ),
+                TargetAreaDecoration(
+                  targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
+                  targetLineColor: Theme.of(context).colorScheme.error,
+                  targetAreaRadius: BorderRadius.circular(12.0),
+                  targetMax: targetMax,
+                  targetMin: targetMin,
+                  colorOverTarget: Theme.of(context).colorScheme.error,
+                ),
               ],
               foregroundDecorations: [
                 SparkLineDecoration(
@@ -115,11 +114,12 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
                   smoothPoints: _smoothPoints,
                 ),
-                // ValueDecoration(
-                //   alignment: Alignment.bottomCenter,
-                //   textStyle:
-                //       Theme.of(context).textTheme.button?.copyWith(color: Theme.of(context).colorScheme.onPrimary),
-                // ),
+                ValueDecoration(
+                  alignment: Alignment.bottomCenter,
+                  textStyle:
+                      Theme.of(context).textTheme.button!.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                ),
+                BorderDecoration(endWithChart: true)
               ],
             ),
           ),

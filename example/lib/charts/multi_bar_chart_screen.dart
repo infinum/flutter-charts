@@ -64,14 +64,14 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
       _values[0]!
           .asMap()
           .map<int, BarValue<void>>((index, e) {
-            return MapEntry(index, BarValue<void>(e.max ?? 0));
+            return MapEntry(index, BarValue<void>(e.max ?? 0.0));
           })
           .values
           .toList(),
       _values[1]!
           .asMap()
           .map<int, BarValue<void>>((index, e) {
-            return MapEntry(index, BarValue<void>(e.max ?? 0));
+            return MapEntry(index, BarValue<void>(e.max ?? 0.0));
           })
           .values
           .toList(),
@@ -101,14 +101,14 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                   minBarWidth: 4.0,
                   multiValuePadding: const EdgeInsets.symmetric(horizontal: 1.0),
                   // isTargetInclusive: true,
-                  radius: const BorderRadius.vertical(
-                    top: Radius.circular(24.0),
-                  ),
                   color: [
                     Theme.of(context).colorScheme.primary,
                     Theme.of(context).colorScheme.primaryVariant,
                     Theme.of(context).colorScheme.secondary
                   ][key],
+                  radius: const BorderRadius.vertical(
+                    top: Radius.circular(24.0),
+                  ),
                   multiItemStack: _stackItems,
                 ),
                 backgroundDecorations: [
@@ -127,27 +127,27 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                 ],
                 foregroundDecorations: [
                   BorderDecoration(),
-                  // ValueDecoration(
-                  //   alignment: Alignment.bottomCenter,
-                  //   textStyle: Theme.of(context)
-                  //       .textTheme
-                  //       .button!
-                  //       .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(_stackItems ? 1.0 : 0.0)),
-                  // ),
-                  // ValueDecoration(
-                  //   valueArrayIndex: 1,
-                  //   alignment: Alignment.bottomCenter,
-                  //   textStyle: Theme.of(context).textTheme.button!.copyWith(
-                  //       color: Theme.of(context).colorScheme.onSecondary.withOpacity(_stackItems ? 1.0 : 0.0)),
-                  // ),
-                  // ValueDecoration(
-                  //   valueArrayIndex: 2,
-                  //   alignment: Alignment.bottomCenter,
-                  //   textStyle: Theme.of(context)
-                  //       .textTheme
-                  //       .button!
-                  //       .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(_stackItems ? 1.0 : 0.0)),
-                  // ),
+                  ValueDecoration(
+                    alignment: Alignment.bottomCenter,
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .button!
+                        .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(_stackItems ? 1.0 : 0.0)),
+                  ),
+                  ValueDecoration(
+                    valueArrayIndex: 1,
+                    alignment: Alignment.bottomCenter,
+                    textStyle: Theme.of(context).textTheme.button!.copyWith(
+                        color: Theme.of(context).colorScheme.onSecondary.withOpacity(_stackItems ? 1.0 : 0.0)),
+                  ),
+                  ValueDecoration(
+                    valueArrayIndex: 2,
+                    alignment: Alignment.bottomCenter,
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .button!
+                        .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(_stackItems ? 1.0 : 0.0)),
+                  ),
                 ],
               ),
             ),
@@ -168,7 +168,7 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
               },
               onRemoveItems: () {
                 setState(() {
-                  if (minItems > 4) {
+                  if (minItems > 6) {
                     minItems -= 4;
                     _values = _values.map((key, value) {
                       return MapEntry(key, value..removeRange(value.length - 4, value.length));
