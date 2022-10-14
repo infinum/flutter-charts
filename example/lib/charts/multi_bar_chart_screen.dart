@@ -168,7 +168,7 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
               },
               onRemoveItems: () {
                 setState(() {
-                  if (minItems > 6) {
+                  if (minItems > 4) {
                     minItems -= 4;
                     _values = _values.map((key, value) {
                       return MapEntry(key, value..removeRange(value.length - 4, value.length));

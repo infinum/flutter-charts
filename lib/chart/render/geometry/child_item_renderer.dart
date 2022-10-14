@@ -1,8 +1,12 @@
 part of charts_painter;
 
-/// Default renderer for all chart items. Renderers use different painters to paint themselves.
+typedef ChildChartItemBuilder<T> = Widget Function(ChartItem<T?> item, int itemKey, int listKey);
+
+/// Child item renderer for chart items. It will render any [Widget] passed as child.
+/// It will constrain it to exact size. Make sure you are not using transparent widgets that could
+/// taint the data shown!
 ///
-/// This is a [ChildRenderObjectWidget] meaning it cannot have any children.
+/// This is a [ChildRenderObjectWidget], single child can be passed to it.
 class ChildChartItemRenderer<T> extends SingleChildRenderObjectWidget {
   ChildChartItemRenderer(this.item, this.state, this.itemOptions, {Key? key, Widget? child, this.arrayKey = 0})
       : super(key: key, child: child);
@@ -114,32 +118,14 @@ class _RenderChildChartItem<T> extends RenderShiftedBox {
       layoutChild: ChildLayoutHelper.layoutChild,
     );
 
+    // If child exists set it's offset based on [multiValueStacked] setting.
     if (child != null) {
-      if (child is _RenderLeafChartItem) {
-        final childParentData = child!.parentData! as BoxParentData;
+      final childParentData = child!.parentData! as BoxParentData;
 
-        final _stack = 1 - _itemOptions._multiValueStacked;
-        final _stackSize = max(1, _state.stackSize * _stack);
+      final _stack = 1 - _itemOptions._multiValueStacked;
 
-        final _multiPadding = _itemOptions.multiValuePadding.horizontal * _stackSize * _stack;
-
-        final _stackWidth = (size.width - _multiPadding - _itemOptions.padding.horizontal) / _stackSize;
-
-        final offset = Offset(
-            _itemOptions.multiValuePadding.left * _stack +
-                _itemOptions.padding.left +
-                _stackWidth * key * _stack +
-                ((_itemOptions.multiValuePadding.horizontal * key * _stack)),
-            0.0);
-        childParentData.offset = offset;
-      } else {
-        final childParentData = child!.parentData! as BoxParentData;
-
-        final _stack = 1 - _itemOptions._multiValueStacked;
-
-        final offset = Offset(size.width * key * _stack, 0.0);
-        childParentData.offset = offset;
-      }
+      final offset = Offset(size.width * key * _stack, 0.0);
+      childParentData.offset = offset;
     }
   }
 

@@ -176,6 +176,10 @@ class ChartState<T> {
     );
   }
 
+  /// Default item renderer will use [LeafChartItemRenderer] to show items. Items are sized and customized with
+  /// [ItemOptions].
+  ///
+  /// If you need more customization of the individual chart items see [widgetItemRenderer]
   static ChartDataRendererFactory<T?> defaultItemRenderer<T>(List<ItemOptions> itemOptions) {
     return (chartState) => ChartLinearDataRenderer<T?>(
         chartState,
@@ -190,9 +194,10 @@ class ChartState<T> {
             .toList());
   }
 
+  /// It can render chart items as widgets.
   static ChartDataRendererFactory<T?> widgetItemRenderer<T>(
-      List<ItemOptions> itemOptions, Widget Function(ChartItem<T?> item, int itemKey, int listKey) childBuilder) {
-    return (chartState) => ChartLinearDataRenderer<T?>(
+      List<ItemOptions> itemOptions, ChildChartItemBuilder<T> chartItemBuilder) {
+    return (chartState) => ChartLinearDataRenderer<T>(
         chartState,
         chartState.data.items
             .mapIndexed(
@@ -202,7 +207,7 @@ class ChartState<T> {
                         chartState.data,
                         itemOptions[key],
                         arrayKey: key,
-                        child: childBuilder(e, items.indexOf(e), key),
+                        child: chartItemBuilder(e, items.indexOf(e), key),
                       ))
                   .toList(),
             )

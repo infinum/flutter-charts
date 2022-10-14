@@ -54,7 +54,7 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     final _itemWidth = _itemSize.width / _listSize;
     final _offset = (parentData as BoxPaneParentData).offset;
 
-    // Calculate with of current item, height is calculated at [Geometry painter] so we cah just hand
+    // Calculate with of current item, height is calculated in [GeometryPainter] so we can just hand
     // columns with offset and width to the child.
     void _setLeafChildPosition(_RenderLeafChartItem<T> child) {
       final childParentData = child.parentData! as ChartItemData;
@@ -87,7 +87,7 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
       final _stackSize = max(1.0, (chartState.data.stackSize) * _stack);
       final _stackWidth = _itemWidth / _stackSize;
 
-      // Handle stack data strategy
+      // Handle stack data strategy.
       if (chartState.data.dataStrategy is StackDataStrategy) {
         final _itemIndex = childCount[child.key] ?? 0;
 
