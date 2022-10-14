@@ -30,7 +30,7 @@ class VerticalAxisDecoration extends DecorationPainter {
     this.axisStep = 1,
     this.textScale = 1.0,
     this.legendPosition = VerticalLegendPosition.bottom,
-    this.legendFontStyle = const TextStyle(fontSize: 13.0),
+    this.legendFontStyle = const TextStyle(fontSize: 12.0),
   })  : assert(axisStep > 0, 'axisStep must be greater than zero!'),
         _endWithChart = endWithChart ? 1.0 : 0.0;
 
@@ -47,7 +47,7 @@ class VerticalAxisDecoration extends DecorationPainter {
     this.axisStep = 1,
     this.textScale = 1.0,
     this.legendPosition = VerticalLegendPosition.bottom,
-    this.legendFontStyle = const TextStyle(fontSize: 13.0),
+    this.legendFontStyle = const TextStyle(fontSize: 12.0),
   }) : _endWithChart = endWithChart;
 
   /// This decoration can continue beyond padding set by [ChartState]
@@ -119,20 +119,13 @@ class VerticalAxisDecoration extends DecorationPainter {
 
     for (var i = 0; i <= _listSize / axisStep; i++) {
       if (showLines) {
-        final _showValuesTop = legendPosition == VerticalLegendPosition.top
-            ? -(marginNeeded().top * (1 - _endWithChart))
-            : 0.0;
+        final _showValuesTop =
+            legendPosition == VerticalLegendPosition.top ? -(marginNeeded().top * (1 - _endWithChart)) : 0.0;
         final _showValuesBottom = size.height +
-            (legendPosition == VerticalLegendPosition.bottom
-                ? (marginNeeded().vertical * (1 - _endWithChart))
-                : 0.0);
+            (legendPosition == VerticalLegendPosition.bottom ? (marginNeeded().vertical * (1 - _endWithChart)) : 0.0);
 
-        gridPath.moveTo(
-            -marginNeeded().left + lineWidth / 2 + _itemWidth * i * axisStep,
-            _showValuesBottom);
-        gridPath.lineTo(
-            -marginNeeded().left + lineWidth / 2 + _itemWidth * i * axisStep,
-            _showValuesTop);
+        gridPath.moveTo(-marginNeeded().left + lineWidth / 2 + _itemWidth * i * axisStep, _showValuesBottom);
+        gridPath.lineTo(-marginNeeded().left + lineWidth / 2 + _itemWidth * i * axisStep, _showValuesTop);
       }
 
       if (!showValues || i == _listSize / axisStep) {
@@ -156,6 +149,7 @@ class VerticalAxisDecoration extends DecorationPainter {
           text: _text,
           style: legendFontStyle,
         ),
+        textScaleFactor: textScale,
         textAlign: valuesAlign,
         maxLines: 1,
         textDirection: TextDirection.ltr,
@@ -166,9 +160,7 @@ class VerticalAxisDecoration extends DecorationPainter {
       _textPainter.paint(
         canvas,
         Offset(
-            state.defaultPadding.left +
-                _itemWidth * i * axisStep +
-                (valuesPadding?.left ?? 0.0),
+            state.defaultPadding.left + _itemWidth * i * axisStep + (valuesPadding?.left ?? 0.0),
             legendPosition == VerticalLegendPosition.top
                 ? -(valuesPadding?.top ?? 0.0) - _textPainter.height
                 : size.height + (valuesPadding?.top ?? 0.0)),
@@ -188,8 +180,7 @@ class VerticalAxisDecoration extends DecorationPainter {
       return EdgeInsets.zero;
     }
 
-    final _value =
-        _textHeight('0', legendFontStyle) + (valuesPadding?.vertical ?? 0.0);
+    final _value = _textHeight('0', legendFontStyle) + (valuesPadding?.vertical ?? 0.0);
     final _isBottom = legendPosition == VerticalLegendPosition.bottom;
 
     return EdgeInsets.only(
@@ -213,24 +204,19 @@ class VerticalAxisDecoration extends DecorationPainter {
   VerticalAxisDecoration animateTo(DecorationPainter endValue, double t) {
     if (endValue is VerticalAxisDecoration) {
       return VerticalAxisDecoration._lerp(
-        lineColor:
-            Color.lerp(lineColor, endValue.lineColor, t) ?? endValue.lineColor,
-        lineWidth:
-            lerpDouble(lineWidth, endValue.lineWidth, t) ?? endValue.lineWidth,
-        axisStep:
-            lerpDouble(axisStep, endValue.axisStep, t) ?? endValue.axisStep,
-        endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t) ??
-            endValue._endWithChart,
-        valuesPadding:
-            EdgeInsets.lerp(valuesPadding, endValue.valuesPadding, t),
+        lineColor: Color.lerp(lineColor, endValue.lineColor, t) ?? endValue.lineColor,
+        lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t) ?? endValue.lineWidth,
+        axisStep: lerpDouble(axisStep, endValue.axisStep, t) ?? endValue.axisStep,
+        endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t) ?? endValue._endWithChart,
+        valuesPadding: EdgeInsets.lerp(valuesPadding, endValue.valuesPadding, t),
         showLines: t > 0.5 ? endValue.showLines : showLines,
         dashArray: t < 0.5 ? dashArray : endValue.dashArray,
+        textScale: lerpDouble(textScale, endValue.textScale, t) ?? endValue.textScale,
         showValues: t > 0.5 ? endValue.showValues : showValues,
         valuesAlign: t > 0.5 ? endValue.valuesAlign : valuesAlign,
         valueFromIndex: t > 0.5 ? endValue.valueFromIndex : valueFromIndex,
         legendPosition: t > 0.5 ? endValue.legendPosition : legendPosition,
-        legendFontStyle:
-            TextStyle.lerp(legendFontStyle, endValue.legendFontStyle, t),
+        legendFontStyle: TextStyle.lerp(legendFontStyle, endValue.legendFontStyle, t),
       );
     }
 

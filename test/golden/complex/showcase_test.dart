@@ -37,10 +37,10 @@ void main() {
                   ],
                   valueAxisMaxOver: 1,
                 ),
-                itemOptions: BarItemOptions(
+                itemOptionsBuilder: (_) => BarItemOptions(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   radius: BorderRadius.all(Radius.circular(12.0)),
-                  colorForValue: (item, key) {
+                  colorForValue: (color, item) {
                     final dynamic _value = item.value;
                     if (_value is bool) {
                       return _value ? Color(0xFF567EF7) : Color(0xFF5ABEF9);
@@ -58,10 +58,10 @@ void main() {
                     lineColor: Colors.white12,
                     dashArray: [8, 8],
                     lineWidth: 1.5,
-                    valuesPadding: const EdgeInsets.only(bottom: 6.0, right: 12.0, left: 12.0),
+                    valuesPadding: const EdgeInsets.only(bottom: 6.0, right: 6.0, left: 6.0),
                     axisValue: (value) => '${value}k',
                     legendFontStyle:
-                        defaultTextStyle.copyWith(fontSize: 14.0, color: Colors.white12, fontWeight: FontWeight.w500),
+                        defaultTextStyle.copyWith(fontSize: 12.0, color: Colors.white12, fontWeight: FontWeight.w500),
                   ),
                 ],
                 foregroundDecorations: [],
@@ -118,7 +118,7 @@ void main() {
                   verticalValuesPadding: const EdgeInsets.only(top: 24.0),
                   horizontalAxisValueFromValue: (value) => '${value + 1}h',
                   verticalAxisValueFromIndex: (value) => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][value],
-                  textStyle: defaultTextStyle.copyWith(fontSize: 14.0, color: Colors.black45),
+                  textStyle: defaultTextStyle.copyWith(fontSize: 12.0, color: Colors.black45),
                 ),
               ],
               foregroundDecorations: [],

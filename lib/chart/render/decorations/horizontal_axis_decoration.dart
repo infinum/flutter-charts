@@ -35,9 +35,9 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.dashArray,
     this.axisValue = defaultAxisValue,
     this.axisStep = 1.0,
-    this.textScale = 1.5,
+    this.textScale = 1.0,
     this.legendPosition = HorizontalLegendPosition.end,
-    this.legendFontStyle = const TextStyle(fontSize: 13.0),
+    this.legendFontStyle = const TextStyle(fontSize: 12.0),
     this.showLineForValue,
     this.asFixedDecoration = false,
   })  : assert(axisStep > 0, 'axisStep must be greater than zero!'),
@@ -55,10 +55,10 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.horizontalAxisUnit,
     this.axisStep = 1.0,
     this.dashArray,
-    this.textScale = 1.5,
+    this.textScale = 1.0,
     this.axisValue = defaultAxisValue,
     this.legendPosition = HorizontalLegendPosition.end,
-    this.legendFontStyle = const TextStyle(fontSize: 13.0),
+    this.legendFontStyle = const TextStyle(fontSize: 12.0),
     this.showLineForValue,
     this.asFixedDecoration = false,
   }) : _endWithChart = endWithChart;
@@ -135,6 +135,19 @@ class HorizontalAxisDecoration extends DecorationPainter {
   }
 
   @override
+  void initDecoration(ChartState state) {
+    final _maxValue = state.data.maxValue - state.data.minValue;
+
+    for (var i = 0; i * axisStep <= _maxValue; i++) {
+      final _defaultValue = (axisStep * i + state.data.minValue).toInt();
+      final _value = axisValue.call(_defaultValue);
+      if ((_longestText?.length ?? 0) < _value.length) {
+        _longestText = _value;
+      }
+    }
+  }
+
+  @override
   void draw(Canvas canvas, Size size, ChartState state) {
     final _paint = Paint()
       ..color = lineColor
@@ -147,23 +160,12 @@ class HorizontalAxisDecoration extends DecorationPainter {
     final scale = _height / _maxValue;
     final gridPath = Path();
 
-    for (var i = 0; i * axisStep <= _maxValue; i++) {
-      final _defaultValue = (axisStep * i + state.data.minValue).toInt();
-      final _value = axisValue.call(_defaultValue);
-      if ((_longestText?.length ?? 0) < _value.length) {
-        _longestText = _value;
-      }
-    }
-
     for (var i = 0; i * scale * axisStep <= scale * _maxValue; i++) {
       final _defaultValue = (axisStep * i + state.data.minValue).toInt();
 
       final _isPositionStart = legendPosition == HorizontalLegendPosition.start;
-      final _startLine = _isPositionStart ? -(marginNeeded().horizontal * (1 - _endWithChart)) : 0.0;
-      final _endLine = _isPositionStart
-          ? 0.0
-          : (marginNeeded().horizontal * (1 - _endWithChart) - (_getTextPainter(_longestText).width) / 2) -
-              (valuesPadding?.horizontal ?? 0);
+      final _startLine = _isPositionStart ? -((state.defaultMargin.left) * (1 - _endWithChart)) : 0.0;
+      final _endLine = _isPositionStart ? 0.0 : ((state.defaultMargin.right) * (1 - _endWithChart));
 
       if (showLineForValue?.call(_defaultValue) ?? showLines) {
         gridPath.moveTo(_startLine, size.height - (lineWidth / 2 + axisStep * i * scale));
@@ -189,8 +191,8 @@ class HorizontalAxisDecoration extends DecorationPainter {
 
       final _textPainter = _getTextPainter(_text, size: asFixedDecoration ? size : null);
 
-      final _positionEnd = size.width - (valuesPadding?.left ?? 0.0) - (_textPainter.width / 2);
-      final _positionStart = -(valuesPadding?.right ?? 0.0) - _textPainter.width;
+      final _positionEnd = size.width + (valuesPadding?.left ?? 0);
+      final _positionStart = -((valuesPadding?.right ?? 0.0) + _getTextPainter(_longestText).width);
 
       _textPainter.paint(
           canvas,
@@ -222,13 +224,13 @@ class HorizontalAxisDecoration extends DecorationPainter {
   /// Get width of longest text on axis
   TextPainter _getTextPainter(String? text, {Size? size}) {
     final textPainter = TextPainter(
-        text: TextSpan(text: text, style: legendFontStyle),
-        maxLines: 1,
-        textScaleFactor: textScale,
-        textAlign: valuesAlign,
-        textDirection: TextDirection.ltr)
-      ..layout(
-        minWidth: size?.width ?? 0.0,
+      text: TextSpan(text: text, style: legendFontStyle),
+      textScaleFactor: textScale,
+      textAlign: valuesAlign,
+      maxLines: 1,
+      textDirection: TextDirection.ltr,
+    )..layout(
+        minWidth: size?.width ?? 0,
         maxWidth: size?.width ?? double.infinity,
       );
     return textPainter;
@@ -239,11 +241,10 @@ class HorizontalAxisDecoration extends DecorationPainter {
     if (asFixedDecoration || !showValues) {
       return EdgeInsets.zero;
     }
-
     final _painter = _getTextPainter(_longestText);
     final _isEnd = legendPosition == HorizontalLegendPosition.end;
 
-    final _width = _painter.width + (valuesPadding?.horizontal ?? 0);
+    final _width = (_painter.width + (valuesPadding?.horizontal ?? 0));
 
     return EdgeInsets.only(
       top: showTopValue ? (_painter.height + (valuesPadding?.vertical ?? 0)) : 0.0,
@@ -271,6 +272,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
         legendPosition: t > 0.5 ? endValue.legendPosition : legendPosition,
         axisValue: t > 0.5 ? endValue.axisValue : axisValue,
         showLines: t > 0.5 ? endValue.showLines : showLines,
+        asFixedDecoration: t > 0.5 ? endValue.asFixedDecoration : asFixedDecoration,
       );
     }
 

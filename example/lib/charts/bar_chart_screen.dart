@@ -96,13 +96,12 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   horizontalAxisStep: 1,
                   verticalAxisStep: 1,
                   verticalValuesPadding: const EdgeInsets.symmetric(vertical: 4.0),
-                  horizontalValuesPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  horizontalValuesPadding: const EdgeInsets.symmetric(horizontal: 12.0),
                   textStyle: Theme.of(context).textTheme.caption,
                   gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
                 ),
                 // TargetAreaDecoration(
-                //   targetAreaFillColor:
-                //       Theme.of(context).colorScheme.error.withOpacity(0.2),
+                //   targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
                 //   targetLineColor: Theme.of(context).colorScheme.error,
                 //   targetAreaRadius: BorderRadius.circular(12.0),
                 //   targetMax: targetMax,
