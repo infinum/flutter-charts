@@ -1,9 +1,9 @@
 part of charts_painter;
 
-/// Bar painter
-GeometryPainter<T> barPainter<T>(
+// Hidden because it's only used if chart item is a widget.
+GeometryPainter<T> _emptyPainter<T>(
         ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions) =>
-    BarGeometryPainter<T>(item, data, itemOptions);
+    _EmptyGeometryPainter<T>(item, data, itemOptions);
 
 /// Extension options for bar items
 /// [geometryPainter] is set to [BarGeometryPainter]
@@ -12,33 +12,27 @@ GeometryPainter<T> barPainter<T>(
 /// [radius] Define corner radius for each bar item
 /// [border] Define border width and color
 /// [gradient] Item can have gradient color
-class BarItemOptions extends ItemOptions {
+class WidgetItemOptions extends ItemOptions {
   /// Constructor for bar item options, has some extra options just for [BarGeometryPainter]
-  const BarItemOptions({
-    EdgeInsets padding = EdgeInsets.zero,
+  const WidgetItemOptions({
+    required this.chartItemBuilder,
     EdgeInsets multiValuePadding = EdgeInsets.zero,
     double? maxBarWidth,
     double? minBarWidth,
-    double startPosition = 0.5,
-    Color color = Colors.red,
-    ColorForValue? colorForValue,
     bool multiItemStack = true,
-    this.gradient,
-    this.border,
-    this.radius = BorderRadius.zero,
   }) : super(
-          color: color,
-          colorForValue: colorForValue,
-          padding: padding,
+          color: Colors.transparent,
+          colorForValue: null,
+          padding: EdgeInsets.zero,
           multiValuePadding: multiValuePadding,
           maxBarWidth: maxBarWidth,
           minBarWidth: minBarWidth,
-          startPosition: startPosition,
-          geometryPainter: barPainter,
+          geometryPainter: _emptyPainter,
           multiItemStack: multiItemStack,
         );
 
-  const BarItemOptions._lerp({
+  const WidgetItemOptions._lerp({
+    required this.chartItemBuilder,
     EdgeInsets padding = EdgeInsets.zero,
     EdgeInsets multiValuePadding = EdgeInsets.zero,
     double? maxBarWidth,
@@ -47,9 +41,6 @@ class BarItemOptions extends ItemOptions {
     Color color = Colors.red,
     ColorForValue? colorForValue,
     double multiItemStack = 1.0,
-    this.gradient,
-    this.border,
-    this.radius = BorderRadius.zero,
   }) : super._lerp(
           color: color,
           colorForValue: colorForValue,
@@ -58,45 +49,30 @@ class BarItemOptions extends ItemOptions {
           maxBarWidth: maxBarWidth,
           minBarWidth: minBarWidth,
           startPosition: startPosition,
-          geometryPainter: barPainter,
+          geometryPainter: _emptyPainter,
           multiItemStack: multiItemStack,
         );
 
-  /// Set border radius for each item
-  /// Radius will automatically flip when showing values in negative space
-  final BorderRadius? radius;
-
-  /// Set gradient color to chart items
-  final Gradient? gradient;
-
-  /// Set border to bar items
-  final BorderSide? border;
+  final ChildChartItemBuilder chartItemBuilder;
 
   @override
   ItemOptions animateTo(ItemOptions endValue, double t) {
     final _itemColor = Color.lerp(color, endValue.color, t) ?? Colors.red;
 
-    return BarItemOptions._lerp(
-      gradient: Gradient.lerp(
-          gradient, endValue is BarItemOptions ? endValue.gradient : null, t),
+    return WidgetItemOptions._lerp(
       color: _itemColor,
+      chartItemBuilder: endValue is WidgetItemOptions
+          ? endValue.chartItemBuilder
+          : chartItemBuilder,
       colorForValue: ColorForValueLerp.lerp(this, endValue, t),
       padding: EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero,
       multiValuePadding:
           EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ??
               EdgeInsets.zero,
-      radius: BorderRadius.lerp(
-          radius, endValue is BarItemOptions ? endValue.radius : null, t),
       maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
       minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
       startPosition:
           lerpDouble(startPosition, endValue.startPosition, t) ?? 0.5,
-      border: BorderSide.lerp(
-          border ?? BorderSide.none,
-          endValue is BarItemOptions
-              ? (endValue.border ?? BorderSide.none)
-              : BorderSide.none,
-          t),
       multiItemStack:
           lerpDouble(_multiValueStacked, endValue._multiValueStacked, t) ?? 1.0,
     );
@@ -104,14 +80,6 @@ class BarItemOptions extends ItemOptions {
 
   @override
   Paint getPaintForItem(ChartItem item, Size size, int key) {
-    final _paint = super.getPaintForItem(item, size, key);
-
-    if (gradient != null) {
-      // Compiler complains that gradient could be null. But unless if fails us that will never be null.
-      _paint.shader = gradient!.createShader(
-          Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
-    }
-
-    return _paint;
+    return Paint();
   }
 }

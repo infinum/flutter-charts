@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import '../widgets/bar_chart.dart';
 
 class BarChartScreen extends StatefulWidget {
-  BarChartScreen({Key key}) : super(key: key);
+  BarChartScreen({Key? key}) : super(key: key);
 
   @override
   _BarChartScreenState createState() => _BarChartScreenState();
@@ -17,8 +17,8 @@ class BarChartScreen extends StatefulWidget {
 
 class _BarChartScreenState extends State<BarChartScreen> {
   List<BarValue<void>> _values = <BarValue<void>>[];
-  double targetMax;
-  double targetMin;
+  double targetMax = 0;
+  double targetMin = 0;
   bool _showValues = false;
   bool _smoothPoints = false;
   bool _colorfulBars = false;
@@ -72,7 +72,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
             child: BarChart(
               data: _values,
               height: MediaQuery.of(context).size.height * 0.4,
-              dataToValue: (BarValue value) => value?.max ?? 0.0,
+              dataToValue: (BarValue value) => value.max ?? 0.0,
               itemOptions: BarItemOptions(
                 padding: const EdgeInsets.symmetric(horizontal: 2.0),
                 minBarWidth: 4.0,
@@ -82,8 +82,9 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   top: Radius.circular(24.0),
                 ),
                 colorForValue: _colorfulBars
-                    ? (_, value, [min]) {
-                        int _value = ((value / (targetMax * 1.3)) * 10).round();
+                    ? (_, value) {
+                        int _value =
+                            (((value as int) / (targetMax * 1.3)) * 10).round();
                         return Colors.accents[_value];
                       }
                     : null,
@@ -133,7 +134,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   alignment: Alignment.bottomCenter,
                   textStyle: Theme.of(context)
                       .textTheme
-                      .button
+                      .button!
                       .copyWith(color: Theme.of(context).colorScheme.onPrimary),
                 ),
                 BorderDecoration(endWithChart: true)

@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LineChartScreen extends StatefulWidget {
-  LineChartScreen({Key key}) : super(key: key);
+  LineChartScreen({Key? key}) : super(key: key);
 
   @override
   _LineChartScreenState createState() => _LineChartScreenState();
@@ -16,7 +16,7 @@ class LineChartScreen extends StatefulWidget {
 
 class _LineChartScreenState extends State<LineChartScreen> {
   Map<int, List<BubbleValue>> _values = <int, List<BubbleValue>>{};
-  double targetMax;
+  double targetMax = 0;
   bool _showValues = false;
   bool _smoothPoints = false;
   bool _fillLine = false;
@@ -57,15 +57,15 @@ class _LineChartScreenState extends State<LineChartScreen> {
 
   List<List<BubbleValue<void>>> _getMap() {
     return [
-      _values[0].toList(),
-      _values[1]
+      _values[0]!.toList(),
+      _values[1]!
           .asMap()
           .map<int, BubbleValue<void>>((index, e) {
             return MapEntry(index, e);
           })
           .values
           .toList(),
-      _values[2]
+      _values[2]!
           .asMap()
           .map<int, BubbleValue<void>>((index, e) {
             return MapEntry(index, e);
@@ -99,11 +99,9 @@ class _LineChartScreenState extends State<LineChartScreen> {
                         .secondary
                         .withOpacity(_showLine ? 1.0 : 0.0),
                     lineWidth: 2.0,
-                    chartItemOptions: BubbleItemOptions(
+                    chartItemOptions: (key) => BubbleItemOptions(
                       maxBarWidth: _showLine ? 0.0 : 6.0,
-                      colorForKey: (item, key) {
-                        return [Colors.black, Colors.red, Colors.blue][key];
-                      },
+                      color: [Colors.black, Colors.red, Colors.blue][key],
                     ),
                     smoothCurves: _smoothPoints,
                     backgroundDecorations: [

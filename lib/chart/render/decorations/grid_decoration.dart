@@ -26,7 +26,7 @@ class GridDecoration extends DecorationPainter {
     this.dashArray,
     this.verticalAxisStep = 1,
     this.horizontalAxisStep = 1,
-    this.textScale = 1.5,
+    this.textScale = 1.0,
     this.horizontalLegendPosition = HorizontalLegendPosition.end,
     this.verticalLegendPosition = VerticalLegendPosition.bottom,
     this.showHorizontalLineForValue,

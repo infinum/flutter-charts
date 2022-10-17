@@ -19,16 +19,26 @@ class ChartState<T> {
   /// Chart state constructor
   ChartState(
     this.data, {
-    required this.itemOptionsBuilder,
+    ItemOptions itemOptions = const BarItemOptions(),
+    ItemOptionsBuilder? itemOptionsBuilder,
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const <DecorationPainter>[],
     this.foregroundDecorations = const <DecorationPainter>[],
-    ChartDataRendererFactory<T?>? dataRenderer,
   })  : assert(data.isNotEmpty, 'No items!'),
+        assert(
+            !(itemOptions is WidgetItemOptions && itemOptionsBuilder != null),
+            'You cannot use itemOptionsBuilder with WidgetItemOptions'),
         defaultPadding = EdgeInsets.zero,
+        itemOptionsBuilder = itemOptionsBuilder ?? ((int i) => itemOptions),
         defaultMargin = EdgeInsets.zero,
-        dataRenderer =
-            dataRenderer ?? defaultItemRenderer<T>(data.items.mapIndexed((e, _) => itemOptionsBuilder(e)).toList()) {
+        dataRenderer = (itemOptions is WidgetItemOptions
+            ? widgetItemRenderer(data.items
+                .mapIndexed((e, _) => (((int i) => itemOptions))(e))
+                .toList())
+            : defaultItemRenderer<T>(data.items
+                .mapIndexed((e, _) =>
+                    (itemOptionsBuilder ?? ((int i) => itemOptions))(e))
+                .toList())) {
     /// Set default padding and margin, decorations padding and margins will be added to this value
     _setUpDecorations();
   }
@@ -36,6 +46,7 @@ class ChartState<T> {
   /// Create line chart with foreground sparkline decoration and background grid decoration
   factory ChartState.line(
     ChartData<T> data, {
+    ItemOptions itemOptions = const BubbleItemOptions(),
     ItemOptionsBuilder? itemOptionsBuilder,
     ChartBehaviour behaviour = const ChartBehaviour(),
     List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
@@ -43,16 +54,22 @@ class ChartState<T> {
   }) {
     return ChartState(
       data,
-      itemOptionsBuilder: itemOptionsBuilder ?? (index) => BubbleItemOptions(maxBarWidth: 2.0),
+      itemOptions: itemOptions,
+      itemOptionsBuilder: itemOptionsBuilder,
       behaviour: behaviour,
-      backgroundDecorations: backgroundDecorations.isEmpty ? [GridDecoration()] : backgroundDecorations,
-      foregroundDecorations: foregroundDecorations.isEmpty ? [SparkLineDecoration()] : foregroundDecorations,
+      backgroundDecorations: backgroundDecorations.isEmpty
+          ? [GridDecoration()]
+          : backgroundDecorations,
+      foregroundDecorations: foregroundDecorations.isEmpty
+          ? [SparkLineDecoration()]
+          : foregroundDecorations,
     );
   }
 
   /// Create bar chart with background grid decoration
   factory ChartState.bar(
     ChartData<T> data, {
+    ItemOptions itemOptions = const BarItemOptions(),
     ItemOptionsBuilder? itemOptionsBuilder,
     ChartBehaviour behaviour = const ChartBehaviour(),
     List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
@@ -60,10 +77,12 @@ class ChartState<T> {
   }) {
     return ChartState(
       data,
-      itemOptionsBuilder:
-          itemOptionsBuilder ?? (index) => BarItemOptions(padding: EdgeInsets.symmetric(horizontal: 4.0)),
+      itemOptions: itemOptions,
+      itemOptionsBuilder: itemOptionsBuilder,
       behaviour: behaviour,
-      backgroundDecorations: backgroundDecorations.isEmpty ? [GridDecoration()] : backgroundDecorations,
+      backgroundDecorations: backgroundDecorations.isEmpty
+          ? [GridDecoration()]
+          : backgroundDecorations,
       foregroundDecorations: foregroundDecorations,
     );
   }
@@ -89,7 +108,9 @@ class ChartState<T> {
   final ChartDataRendererFactory<T?> dataRenderer;
 
   // Geometry layer
-  /// [ItemOptions] define how each item is painted
+  /// [ItemOptionsBuilder] it can build different [ItemOptions] based on current list key
+  /// if you just pass [itemOptions] to the constructor. But data has multiple lists, then all
+  /// lists will use the same [itemOptions].
   final ItemOptionsBuilder itemOptionsBuilder;
 
   /// [ChartBehaviour] define how chart behaves and how it should react
@@ -113,7 +134,8 @@ class ChartState<T> {
   EdgeInsets defaultPadding;
 
   /// Get all decorations. This will return list of [backgroundDecorations] and [foregroundDecorations] as one list.
-  List<DecorationPainter> get _allDecorations => [...foregroundDecorations, ...backgroundDecorations];
+  List<DecorationPainter> get _allDecorations =>
+      [...foregroundDecorations, ...backgroundDecorations];
 
   /// Set up decorations and calculate chart's [defaultPadding] and [defaultMargin]
   /// Decorations are a bit special, calling init on them with current state
@@ -134,13 +156,16 @@ class ChartState<T> {
 
   /// Init all decorations, pass current chart state so each decoration can access data it requires
   /// to set up it's padding and margin values
-  void _initDecorations() => _allDecorations.forEach((decoration) => decoration.initDecoration(this));
+  void _initDecorations() =>
+      _allDecorations.forEach((decoration) => decoration.initDecoration(this));
 
   /// Get total padding needed by all decorations
-  void _getDecorationsMargin() => _allDecorations.forEach((element) => defaultMargin += element.marginNeeded());
+  void _getDecorationsMargin() => _allDecorations
+      .forEach((element) => defaultMargin += element.marginNeeded());
 
   /// Get total margin needed by all decorations
-  void _getDecorationsPadding() => _allDecorations.forEach((element) => defaultPadding += element.paddingNeeded());
+  void _getDecorationsPadding() => _allDecorations
+      .forEach((element) => defaultPadding += element.paddingNeeded());
 
   /// For later in case charts will have to animate between states.
   static ChartState<T?> lerp<T>(ChartState<T?> a, ChartState<T?> b, double t) {
@@ -149,8 +174,10 @@ class ChartState<T> {
       behaviour: ChartBehaviour.lerp(a.behaviour, b.behaviour, t),
       itemOptionsBuilder: ItemOptionsBuilderLerp.lerp(a, b, t)!,
       // Find background matches, if found, then animate to them, else just show them.
-      backgroundDecorations: b.backgroundDecorations.map<DecorationPainter>((e) {
-        final _match = a.backgroundDecorations.firstWhereOrNull((element) => element.isSameType(e));
+      backgroundDecorations:
+          b.backgroundDecorations.map<DecorationPainter>((e) {
+        final _match = a.backgroundDecorations
+            .firstWhereOrNull((element) => element.isSameType(e));
         if (_match != null) {
           return _match.animateTo(e, t);
         }
@@ -159,7 +186,8 @@ class ChartState<T> {
       }).toList(),
       // Find foreground matches, if found, then animate to them, else just show them.
       foregroundDecorations: b.foregroundDecorations.map((e) {
-        final _match = a.foregroundDecorations.firstWhereOrNull((element) => element.isSameType(e));
+        final _match = a.foregroundDecorations
+            .firstWhereOrNull((element) => element.isSameType(e));
         if (_match != null) {
           return _match.animateTo(e, t);
         }
@@ -167,19 +195,56 @@ class ChartState<T> {
         return e;
       }).toList(),
 
-      defaultMargin: EdgeInsets.lerp(a.defaultMargin, b.defaultMargin, t) ?? EdgeInsets.zero,
-      defaultPadding: EdgeInsets.lerp(a.defaultPadding, b.defaultPadding, t) ?? EdgeInsets.zero,
+      defaultMargin: EdgeInsets.lerp(a.defaultMargin, b.defaultMargin, t) ??
+          EdgeInsets.zero,
+      defaultPadding: EdgeInsets.lerp(a.defaultPadding, b.defaultPadding, t) ??
+          EdgeInsets.zero,
       dataRenderer: t > 0.5 ? b.dataRenderer : a.dataRenderer,
     );
   }
 
-  static ChartDataRendererFactory<T?> defaultItemRenderer<T>(List<ItemOptions> itemOptions) {
+  /// Default item renderer will use [LeafChartItemRenderer] to show items. Items are sized and customized with
+  /// [ItemOptions].
+  ///
+  /// If you need more customization of the individual chart items see [widgetItemRenderer]
+  static ChartDataRendererFactory<T?> defaultItemRenderer<T>(
+      List<ItemOptions> itemOptions) {
     return (chartState) => ChartLinearDataRenderer<T?>(
-        chartState.data,
+        chartState,
         chartState.data.items
             .mapIndexed(
-              (key, items) =>
-                  items.map((e) => LeafChartItemRenderer(e, chartState.data, chartState.itemOptionsBuilder(key), arrayKey: key)).toList(),
+              (key, items) => items
+                  .map((e) => LeafChartItemRenderer(
+                      e, chartState.data, chartState.itemOptionsBuilder(key),
+                      arrayKey: key))
+                  .toList(),
+            )
+            .expand((element) => element)
+            .toList());
+  }
+
+  /// It can render chart items as widgets.
+  static ChartDataRendererFactory<T?> widgetItemRenderer<T>(
+      List<ItemOptions> itemOptions) {
+    return (chartState) => ChartLinearDataRenderer<T>(
+        chartState,
+        chartState.data.items
+            .mapIndexed(
+              (key, items) {
+                final _options = itemOptions[key];
+                assert(_options is WidgetItemOptions);
+
+                return items
+                    .map((e) => ChildChartItemRenderer<T?>(
+                          e,
+                          chartState.data,
+                          _options,
+                          arrayKey: key,
+                          child: (_options as WidgetItemOptions)
+                              .chartItemBuilder(e, items.indexOf(e), key),
+                        ))
+                    .toList();
+              },
             )
             .expand((element) => element)
             .toList());
@@ -190,18 +255,11 @@ class ChartState<T> {
 class ItemOptionsBuilderLerp {
   /// Make new function that will return lerp color based on [a.colorForKey] and [b.colorForKey]
   static ItemOptionsBuilder? lerp(ChartState a, ChartState b, double t) {
-    return b.itemOptionsBuilder;
+    return (int key) {
+      final _aOptions = a.itemOptionsBuilder(key);
+      final _bOptions = b.itemOptionsBuilder(key);
 
-    // todo(knezz): Fix this lerp
-    // if (a.colorForKey == null && b.colorForKey == null) {
-    //   return null;
-    // }
-    //
-    // return (ChartItem item, int index) {
-    //   final _aColor = a.getItemColor(item, index);
-    //   final _bColor = b.getItemColor(item, index);
-    //
-    //   return Color.lerp(_aColor, _bColor, t) ?? _bColor;
-    // };
+      return _aOptions.animateTo(_bOptions, t);
+    };
   }
 }

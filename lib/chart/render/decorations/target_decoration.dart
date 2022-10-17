@@ -84,14 +84,8 @@ class TargetLineDecoration extends DecorationPainter {
   /// Pass this to [ItemOptions.colorForValue] and chart will update item colors
   /// based on target line
   ColorForValue getTargetItemColor() =>
-      (Color defaultColor, double? max, [double? min]) => _getColorForTarget(
-          defaultColor,
-          colorOverTarget,
-          isTargetInclusive,
-          target,
-          null,
-          max,
-          min);
+      (Color defaultColor, ChartItem item) => _getColorForTarget(defaultColor,
+          colorOverTarget, isTargetInclusive, target, null, item.max, item.min);
 
   @override
   Offset applyPaintTransform(ChartState state, Size size) {
@@ -220,14 +214,14 @@ class TargetAreaDecoration extends DecorationPainter {
   /// Pass this to [ItemOptions.colorForValue] and chart will update item colors
   /// based on target area
   ColorForValue getTargetItemColor() =>
-      (Color defaultColor, double? max, [double? min]) => _getColorForTarget(
+      (Color defaultColor, ChartItem item) => _getColorForTarget(
           defaultColor,
           colorOverTarget,
           isTargetInclusive,
           targetMin,
           targetMax,
-          max,
-          min);
+          item.max,
+          item.min);
 
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {

@@ -164,7 +164,7 @@ class ChartStatePresenter extends ChangeNotifier {
     if (bubbleItemPainter) {
       return BubbleItemOptions(
         padding: chartItemPadding,
-        colorForKey: _getColorForKey,
+        color: _getColorForKey(index),
         maxBarWidth: maxBarWidth,
         minBarWidth: minBarWidth,
         multiItemStack: multiItemStack,
@@ -175,7 +175,7 @@ class ChartStatePresenter extends ChangeNotifier {
     } else {
       return BarItemOptions(
         padding: chartItemPadding,
-        colorForKey: _getColorForKey,
+        color: _getColorForKey(index),
         maxBarWidth: maxBarWidth,
         minBarWidth: minBarWidth,
         multiItemStack: multiItemStack,
@@ -187,7 +187,7 @@ class ChartStatePresenter extends ChangeNotifier {
     }
   }
 
-  Color _getColorForKey(ChartItem item, int key) {
+  Color _getColorForKey(int key) {
     return listColors[key % 5];
   }
 }

@@ -4,11 +4,11 @@ import 'package:flutter/scheduler.dart';
 
 class ChartOptionsWidget extends StatefulWidget {
   ChartOptionsWidget({
-    this.onRefresh,
-    this.toggleItems,
-    this.onAddItems,
-    this.onRemoveItems,
-    Key key,
+    required this.onRefresh,
+    required this.toggleItems,
+    required this.onAddItems,
+    required this.onRemoveItems,
+    Key? key,
   }) : super(key: key);
 
   final VoidCallback onRefresh;
@@ -77,7 +77,7 @@ class _ChartOptionsWidgetState extends State<ChartOptionsWidget> {
                 'OPTIONS',
                 style: Theme.of(context)
                     .textTheme
-                    .button
+                    .button!
                     .copyWith(color: Theme.of(context).disabledColor),
               ),
             ),

@@ -14,7 +14,7 @@ void main() {
 }
 
 class ChartDemo extends StatefulWidget {
-  ChartDemo({Key key}) : super(key: key);
+  ChartDemo({Key? key}) : super(key: key);
 
   @override
   _ChartDemoState createState() => _ChartDemoState();
@@ -44,7 +44,7 @@ class _ChartDemoState extends State<ChartDemo> {
 }
 
 class ShowList extends StatelessWidget {
-  ShowList({Key key}) : super(key: key);
+  ShowList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class ShowList extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
             'Chart types',
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 14.0,
                 ),
@@ -69,7 +69,7 @@ class ShowList extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
             'Chart Decorations',
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 14.0,
                 ),
@@ -167,7 +167,7 @@ class ShowList extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
             'Chart Interactions',
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 14.0,
                 ),
@@ -217,7 +217,7 @@ class ShowList extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
             'Complex charts',
-            style: Theme.of(context).textTheme.bodyText2.copyWith(
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 14.0,
                 ),

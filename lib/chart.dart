@@ -29,6 +29,7 @@ part 'chart/model/theme/chart_behaviour.dart';
 part 'chart/model/theme/item_theme/bar_item_options.dart';
 part 'chart/model/theme/item_theme/item_options.dart';
 part 'chart/model/theme/item_theme/line_item_options.dart';
+part 'chart/model/theme/item_theme/widget_item_options.dart';
 
 /// Render
 part 'chart/render/chart_renderer.dart';
@@ -49,10 +50,12 @@ part 'chart/render/decorations/target_decoration.dart';
 part 'chart/render/decorations/target_legends_decoration.dart';
 part 'chart/render/decorations/value_decoration.dart';
 part 'chart/render/decorations/vertical_axis_decoration.dart';
+part 'chart/render/geometry/child_item_renderer.dart';
 // Geometry painters
 part 'chart/render/geometry/leaf_item_renderer.dart';
 part 'chart/render/geometry/painters/bar_geometry_painter.dart';
 part 'chart/render/geometry/painters/bubble_geometry_painter.dart';
+part 'chart/render/geometry/painters/empty_geometry_painter.dart';
 part 'chart/render/geometry/painters/geometry_painter.dart';
 // Utils
 part 'chart/render/util/dashed_path_util.dart';

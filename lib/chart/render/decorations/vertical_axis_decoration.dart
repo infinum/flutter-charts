@@ -30,7 +30,7 @@ class VerticalAxisDecoration extends DecorationPainter {
     this.axisStep = 1,
     this.textScale = 1.0,
     this.legendPosition = VerticalLegendPosition.bottom,
-    this.legendFontStyle = const TextStyle(fontSize: 13.0),
+    this.legendFontStyle = const TextStyle(fontSize: 12.0),
   })  : assert(axisStep > 0, 'axisStep must be greater than zero!'),
         _endWithChart = endWithChart ? 1.0 : 0.0;
 
@@ -47,7 +47,7 @@ class VerticalAxisDecoration extends DecorationPainter {
     this.axisStep = 1,
     this.textScale = 1.0,
     this.legendPosition = VerticalLegendPosition.bottom,
-    this.legendFontStyle = const TextStyle(fontSize: 13.0),
+    this.legendFontStyle = const TextStyle(fontSize: 12.0),
   }) : _endWithChart = endWithChart;
 
   /// This decoration can continue beyond padding set by [ChartState]
@@ -156,12 +156,13 @@ class VerticalAxisDecoration extends DecorationPainter {
           text: _text,
           style: legendFontStyle,
         ),
+        textScaleFactor: textScale,
         textAlign: valuesAlign,
         maxLines: 1,
         textDirection: TextDirection.ltr,
       )..layout(
-          maxWidth: _itemWidth,
-          minWidth: _itemWidth,
+          maxWidth: _itemWidth * axisStep,
+          minWidth: _itemWidth * axisStep,
         );
       _textPainter.paint(
         canvas,
@@ -225,6 +226,8 @@ class VerticalAxisDecoration extends DecorationPainter {
             EdgeInsets.lerp(valuesPadding, endValue.valuesPadding, t),
         showLines: t > 0.5 ? endValue.showLines : showLines,
         dashArray: t < 0.5 ? dashArray : endValue.dashArray,
+        textScale:
+            lerpDouble(textScale, endValue.textScale, t) ?? endValue.textScale,
         showValues: t > 0.5 ? endValue.showValues : showValues,
         valuesAlign: t > 0.5 ? endValue.valuesAlign : valuesAlign,
         valueFromIndex: t > 0.5 ? endValue.valueFromIndex : valueFromIndex,

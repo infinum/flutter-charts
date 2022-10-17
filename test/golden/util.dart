@@ -36,6 +36,7 @@ Widget getMultiValueChart({
   List<DecorationPainter>? foregroundDecorations,
   List<DecorationPainter>? backgroundDecorations,
   ItemOptions? options,
+  ItemOptionsBuilder? optionsBuilder,
   ChartBehaviour? behaviour,
   DataStrategy strategy = const DefaultDataStrategy(),
 }) {
@@ -54,6 +55,7 @@ Widget getMultiValueChart({
           valueAxisMaxOver: 2,
           dataStrategy: strategy,
         ),
+        itemOptionsBuilder: optionsBuilder,
         itemOptions: options ?? BarItemOptions(),
         behaviour: behaviour ?? ChartBehaviour(),
         backgroundDecorations: backgroundDecorations ?? [],

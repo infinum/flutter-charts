@@ -128,13 +128,13 @@ void main() {
               ],
               axisMax: 8.0,
             ),
-            itemOptions: BubbleItemOptions(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              maxBarWidth: 4.0,
-              colorForKey: (item, index) {
-                return [Colors.red, Colors.blue][index];
-              },
-            ),
+            itemOptionsBuilder: (key) {
+              return BubbleItemOptions(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                maxBarWidth: 4.0,
+                color: [Colors.red, Colors.blue][key],
+              );
+            },
             backgroundDecorations: [
               GridDecoration(
                 verticalAxisStep: 1,

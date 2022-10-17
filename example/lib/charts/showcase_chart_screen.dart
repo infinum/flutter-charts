@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ShowcaseChartScreen extends StatefulWidget {
-  ShowcaseChartScreen({Key key}) : super(key: key);
+  ShowcaseChartScreen({Key? key}) : super(key: key);
 
   @override
   _ShowcaseChartScreenState createState() => _ShowcaseChartScreenState();
@@ -93,7 +93,7 @@ final List<ChartState<bool>> _chartStates = [
     itemOptions: BarItemOptions(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       radius: BorderRadius.all(Radius.circular(12.0)),
-      colorForKey: (item, key) {
+      colorForValue: (item, key) {
         final _value = item.value as bool;
         return (_value is bool && _value)
             ? Color(0xFF567EF7)
@@ -142,12 +142,10 @@ final List<ChartState<bool>> _chartStates = [
       ],
       axisMax: 4,
     ),
-    itemOptions: BarItemOptions(
+    itemOptionsBuilder: (key) => BarItemOptions(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
       radius: BorderRadius.all(Radius.circular(12.0)),
-      colorForKey: (item, key) {
-        return [Color(0xFFE6E6FD), Color(0xFF4D4DA6)][key];
-      },
+      color: [Color(0xFFE6E6FD), Color(0xFF4D4DA6)][key],
     ),
     backgroundDecorations: [
       GridDecoration(
@@ -192,12 +190,10 @@ final List<ChartState<bool>> _chartStates = [
       ],
       axisMax: 4,
     ),
-    itemOptions: BarItemOptions(
+    itemOptionsBuilder: (key) => BarItemOptions(
       multiValuePadding: const EdgeInsets.symmetric(horizontal: 4.0),
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      colorForKey: (item, key) {
-        return [Color(0xFF5B6ACF), Color(0xFFB6CADD)][key];
-      },
+      color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][key],
       multiItemStack: false,
     ),
     backgroundDecorations: [
@@ -392,12 +388,10 @@ final List<ChartState<bool>> _chartStates = [
       axisMax: 14,
       axisMin: -14,
     ),
-    itemOptions: BarItemOptions(
+    itemOptionsBuilder: (key) => BarItemOptions(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-      colorForKey: (item, key) {
-        return [Color(0xFF0139A4), Color(0xFF00B6E6)][key];
-      },
+      color: [Color(0xFF0139A4), Color(0xFF00B6E6)][key],
       multiItemStack: true,
     ),
     backgroundDecorations: [

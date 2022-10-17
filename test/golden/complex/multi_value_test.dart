@@ -16,14 +16,9 @@ void main() {
         'Multiple',
         getMultiValueChart(
           size: 4,
-          options: BarItemOptions(
+          optionsBuilder: (key) => BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            colorForKey: (item, key) => [
-              Colors.red,
-              Colors.yellow,
-              Colors.green,
-              Colors.blue
-            ][key]
+            color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][key]
                 .withOpacity(0.5),
           ),
           strategy: DefaultDataStrategy(),
@@ -33,14 +28,9 @@ void main() {
         'Stack',
         getMultiValueChart(
           size: 4,
-          options: BarItemOptions(
+          optionsBuilder: (key) => BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            colorForKey: (item, key) => [
-              Colors.red,
-              Colors.yellow,
-              Colors.green,
-              Colors.blue
-            ][key]
+            color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][key]
                 .withOpacity(0.5),
             multiItemStack: true,
           ),
@@ -51,14 +41,9 @@ void main() {
         'Side by side',
         getMultiValueChart(
           size: 4,
-          options: BarItemOptions(
+          optionsBuilder: (key) => BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            colorForKey: (item, key) => [
-              Colors.red,
-              Colors.yellow,
-              Colors.green,
-              Colors.blue
-            ][key]
+            color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][key]
                 .withOpacity(0.5),
             multiItemStack: false,
           ),
@@ -130,15 +115,10 @@ void main() {
                     lineWidth: 3.0,
                     startPosition: index / 4,
                   )),
-          options: BarItemOptions(
+          optionsBuilder: (key) => BarItemOptions(
             multiValuePadding: const EdgeInsets.symmetric(horizontal: 1.0),
             padding: const EdgeInsets.symmetric(horizontal: 1.0),
-            colorForKey: (item, key) => [
-              Colors.red,
-              Colors.yellow,
-              Colors.green,
-              Colors.blue
-            ][key]
+            color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][key]
                 .withOpacity(0.1),
             multiItemStack: false,
           ),
@@ -178,14 +158,9 @@ void main() {
               stretchLine: true,
             ),
           ],
-          options: BarItemOptions(
+          optionsBuilder: (key) => BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 1.0),
-            colorForKey: (item, key) => [
-              Colors.green,
-              Colors.yellow,
-              Colors.red,
-              Colors.blue
-            ][key]
+            color: [Colors.green, Colors.yellow, Colors.red, Colors.blue][key]
                 .withOpacity(0.1),
           ),
         ),
@@ -210,9 +185,9 @@ void main() {
               stretchLine: true,
             ),
           ],
-          options: BarItemOptions(
+          optionsBuilder: (key) => BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 1.0),
-            colorForKey: (item, key) => [
+            color: [
               Colors.transparent,
               Colors.transparent,
               Colors.yellow.withOpacity(0.8),
@@ -258,9 +233,9 @@ void main() {
               targetAreaFillColor: Colors.blue.withOpacity(0.4),
             ),
           ],
-          options: BarItemOptions(
+          optionsBuilder: (key) => BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 1.0),
-            colorForKey: (item, key) => [
+            color: [
               Colors.transparent,
               Colors.transparent,
               Colors.yellow.withOpacity(0.8),

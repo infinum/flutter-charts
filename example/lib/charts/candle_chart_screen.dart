@@ -15,7 +15,7 @@ class CandleItem {
 }
 
 class CandleChartScreen extends StatefulWidget {
-  CandleChartScreen({Key key}) : super(key: key);
+  CandleChartScreen({Key? key}) : super(key: key);
 
   @override
   _CandleChartScreenState createState() => _CandleChartScreenState();
@@ -23,12 +23,12 @@ class CandleChartScreen extends StatefulWidget {
 
 class _CandleChartScreenState extends State<CandleChartScreen> {
   List<CandleItem> _values = <CandleItem>[];
-  double targetMax;
-  double targetMin;
+  double targetMax = 0;
+  double targetMin = 0;
 
   bool _showValues = false;
   int minItems = 12;
-  int _selected;
+  int? _selected;
 
   @override
   void initState() {
@@ -104,7 +104,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                         .withOpacity(0.2),
                     textStyle: Theme.of(context)
                         .textTheme
-                        .caption
+                        .caption!
                         .copyWith(fontSize: 13.0),
                   ),
                 ],

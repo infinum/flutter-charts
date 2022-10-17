@@ -12,13 +12,13 @@ abstract class ChartDataRenderer<T> extends MultiChildRenderObjectWidget {
 }
 
 abstract class ChartItemRenderer<T> extends RenderBox {
-  ChartItemRenderer(this._chartData) : super();
+  ChartItemRenderer(this._chartState) : super();
 
-  ChartData<T?> _chartData;
-  ChartData<T?> get chartData => _chartData;
-  set chartData(ChartData<T?> data) {
-    if (_chartData != data) {
-      _chartData = data;
+  ChartState<T?> _chartState;
+  ChartState<T?> get chartState => _chartState;
+  set chartState(ChartState<T?> data) {
+    if (_chartState != data) {
+      _chartState = data;
       markNeedsPaint();
       markNeedsSemanticsUpdate();
     }
