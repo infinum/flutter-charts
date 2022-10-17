@@ -6,19 +6,23 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final chartStatePresenter = ChangeNotifierProvider((ref) {
-  final decorationsProvider = ref.watch(chartDecorationsPresenter);
-  return ChartStatePresenter(decorationsProvider);
+  return ChartStatePresenter(ref);
 });
 
 const _itemBorderSideDefault = BorderSide.none;
 const _barBorderRadiusDefault = BorderRadius.zero;
 
 class ChartStatePresenter extends ChangeNotifier {
-  ChartStatePresenter(this._decorationsPresenter) {
+  ChartStatePresenter(this.ref) {
+    _decorationsPresenter =  ref.read(chartDecorationsPresenter);
+    ref.read(chartDecorationsPresenter).addListener(() {
+      notifyListeners();
+    });
     // _ref.listen(chartDecorationsPresenter);
   }
 
-  final ChartDecorationsPresenter _decorationsPresenter;
+  final Ref ref;
+  late ChartDecorationsPresenter _decorationsPresenter;
 
   // data
   List<List<ChartItem<void>>> _data = [
