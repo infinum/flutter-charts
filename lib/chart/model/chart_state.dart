@@ -25,18 +25,15 @@ class ChartState<T> {
     this.backgroundDecorations = const <DecorationPainter>[],
     this.foregroundDecorations = const <DecorationPainter>[],
   })  : assert(data.isNotEmpty, 'No items!'),
-        assert(
-            !(itemOptions is WidgetItemOptions && itemOptionsBuilder != null),
+        assert(!(itemOptions is WidgetItemOptions && itemOptionsBuilder != null),
             'You cannot use itemOptionsBuilder with WidgetItemOptions! chartItemBuilder in WidgetItemOptions already gives you `listKey` that is same as `key` in itemOptionsBuilder'),
         defaultPadding = EdgeInsets.zero,
         itemOptionsBuilder = itemOptionsBuilder ?? ((int i) => itemOptions),
         defaultMargin = EdgeInsets.zero,
         dataRenderer = (itemOptions is WidgetItemOptions
             ? _widgetItemRenderer(itemOptions)
-            : _defaultItemRenderer<T>(data.items
-                .mapIndexed((e, _) =>
-                    (itemOptionsBuilder ?? ((int i) => itemOptions))(e))
-                .toList())) {
+            : _defaultItemRenderer<T>(
+                data.items.mapIndexed((e, _) => (itemOptionsBuilder ?? ((int i) => itemOptions))(e)).toList())) {
     /// Set default padding and margin, decorations padding and margins will be added to this value
     _setUpDecorations();
   }
@@ -55,12 +52,8 @@ class ChartState<T> {
       itemOptions: itemOptions,
       itemOptionsBuilder: itemOptionsBuilder,
       behaviour: behaviour,
-      backgroundDecorations: backgroundDecorations.isEmpty
-          ? [GridDecoration()]
-          : backgroundDecorations,
-      foregroundDecorations: foregroundDecorations.isEmpty
-          ? [SparkLineDecoration()]
-          : foregroundDecorations,
+      backgroundDecorations: backgroundDecorations.isEmpty ? [GridDecoration()] : backgroundDecorations,
+      foregroundDecorations: foregroundDecorations.isEmpty ? [SparkLineDecoration()] : foregroundDecorations,
     );
   }
 
@@ -78,9 +71,7 @@ class ChartState<T> {
       itemOptions: itemOptions,
       itemOptionsBuilder: itemOptionsBuilder,
       behaviour: behaviour,
-      backgroundDecorations: backgroundDecorations.isEmpty
-          ? [GridDecoration()]
-          : backgroundDecorations,
+      backgroundDecorations: backgroundDecorations.isEmpty ? [GridDecoration()] : backgroundDecorations,
       foregroundDecorations: foregroundDecorations,
     );
   }
@@ -132,8 +123,7 @@ class ChartState<T> {
   EdgeInsets defaultPadding;
 
   /// Get all decorations. This will return list of [backgroundDecorations] and [foregroundDecorations] as one list.
-  List<DecorationPainter> get _allDecorations =>
-      [...foregroundDecorations, ...backgroundDecorations];
+  List<DecorationPainter> get _allDecorations => [...foregroundDecorations, ...backgroundDecorations];
 
   /// Set up decorations and calculate chart's [defaultPadding] and [defaultMargin]
   /// Decorations are a bit special, calling init on them with current state
@@ -154,16 +144,13 @@ class ChartState<T> {
 
   /// Init all decorations, pass current chart state so each decoration can access data it requires
   /// to set up it's padding and margin values
-  void _initDecorations() =>
-      _allDecorations.forEach((decoration) => decoration.initDecoration(this));
+  void _initDecorations() => _allDecorations.forEach((decoration) => decoration.initDecoration(this));
 
   /// Get total padding needed by all decorations
-  void _getDecorationsMargin() => _allDecorations
-      .forEach((element) => defaultMargin += element.marginNeeded());
+  void _getDecorationsMargin() => _allDecorations.forEach((element) => defaultMargin += element.marginNeeded());
 
   /// Get total margin needed by all decorations
-  void _getDecorationsPadding() => _allDecorations
-      .forEach((element) => defaultPadding += element.paddingNeeded());
+  void _getDecorationsPadding() => _allDecorations.forEach((element) => defaultPadding += element.paddingNeeded());
 
   /// For later in case charts will have to animate between states.
   static ChartState<T?> lerp<T>(ChartState<T?> a, ChartState<T?> b, double t) {
@@ -172,10 +159,8 @@ class ChartState<T> {
       behaviour: ChartBehaviour.lerp(a.behaviour, b.behaviour, t),
       itemOptionsBuilder: ItemOptionsBuilderLerp.lerp(a, b, t)!,
       // Find background matches, if found, then animate to them, else just show them.
-      backgroundDecorations:
-          b.backgroundDecorations.map<DecorationPainter>((e) {
-        final _match = a.backgroundDecorations
-            .firstWhereOrNull((element) => element.isSameType(e));
+      backgroundDecorations: b.backgroundDecorations.map<DecorationPainter>((e) {
+        final _match = a.backgroundDecorations.firstWhereOrNull((element) => element.isSameType(e));
         if (_match != null) {
           return _match.animateTo(e, t);
         }
@@ -184,8 +169,7 @@ class ChartState<T> {
       }).toList(),
       // Find foreground matches, if found, then animate to them, else just show them.
       foregroundDecorations: b.foregroundDecorations.map((e) {
-        final _match = a.foregroundDecorations
-            .firstWhereOrNull((element) => element.isSameType(e));
+        final _match = a.foregroundDecorations.firstWhereOrNull((element) => element.isSameType(e));
         if (_match != null) {
           return _match.animateTo(e, t);
         }
@@ -193,10 +177,8 @@ class ChartState<T> {
         return e;
       }).toList(),
 
-      defaultMargin: EdgeInsets.lerp(a.defaultMargin, b.defaultMargin, t) ??
-          EdgeInsets.zero,
-      defaultPadding: EdgeInsets.lerp(a.defaultPadding, b.defaultPadding, t) ??
-          EdgeInsets.zero,
+      defaultMargin: EdgeInsets.lerp(a.defaultMargin, b.defaultMargin, t) ?? EdgeInsets.zero,
+      defaultPadding: EdgeInsets.lerp(a.defaultPadding, b.defaultPadding, t) ?? EdgeInsets.zero,
       dataRenderer: t > 0.5 ? b.dataRenderer : a.dataRenderer,
     );
   }
@@ -205,16 +187,14 @@ class ChartState<T> {
   /// [ItemOptions].
   ///
   /// If you need more customization of the individual chart items see [_widgetItemRenderer]
-  static ChartDataRendererFactory<T?> _defaultItemRenderer<T>(
-      List<ItemOptions> itemOptions) {
+  static ChartDataRendererFactory<T?> _defaultItemRenderer<T>(List<ItemOptions> itemOptions) {
     return (chartState) => ChartLinearDataRenderer<T?>(
         chartState,
         chartState.data.items
             .mapIndexed(
               (key, items) => items
-                  .map((e) => LeafChartItemRenderer(
-                      e, chartState.data, chartState.itemOptionsBuilder(key),
-                      arrayKey: key))
+                  .map((e) =>
+                      LeafChartItemRenderer(e, chartState.data, chartState.itemOptionsBuilder(key), arrayKey: key))
                   .toList(),
             )
             .expand((element) => element)
@@ -223,20 +203,19 @@ class ChartState<T> {
 
   /// It can render chart items as widgets, and it only accepts [WidgetItemOptions] since it needs the
   /// [WidgetItemOptions.chartItemBuilder] to build the chart item widgets.
-  static ChartDataRendererFactory<T?> _widgetItemRenderer<T>(
-      WidgetItemOptions itemOptions) {
+  static ChartDataRendererFactory<T?> _widgetItemRenderer<T>(WidgetItemOptions itemOptions) {
     return (chartState) => ChartLinearDataRenderer<T>(
         chartState,
         chartState.data.items
             .mapIndexed(
-              (listKey, items) {
+              (key, items) {
                 return items
-                    .mapIndexed((itemKey, e) => ChildChartItemRenderer<T?>(
+                    .map((e) => ChildChartItemRenderer<T?>(
                           e,
                           chartState.data,
                           itemOptions,
-                          child:
-                              itemOptions.chartItemBuilder(e, itemKey, listKey),
+                          arrayKey: key,
+                          child: itemOptions.chartItemBuilder(e, items.indexOf(e), key),
                         ))
                     .toList();
               },
