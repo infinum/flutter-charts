@@ -61,7 +61,7 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
 
         canvas.drawCircle(
           Offset(size.width * 0.5,
-              _itemMaxValue * _verticalMultiplier - _minValue),
+              size.height - _itemMaxValue * _verticalMultiplier - _minValue),
           _circleSize,
           _borderPaint,
         );

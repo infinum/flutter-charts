@@ -27,15 +27,13 @@ class ChartState<T> {
   })  : assert(data.isNotEmpty, 'No items!'),
         assert(
             !(itemOptions is WidgetItemOptions && itemOptionsBuilder != null),
-            'You cannot use itemOptionsBuilder with WidgetItemOptions'),
+            'You cannot use itemOptionsBuilder with WidgetItemOptions! chartItemBuilder in WidgetItemOptions already gives you `listKey` that is same as `key` in itemOptionsBuilder'),
         defaultPadding = EdgeInsets.zero,
         itemOptionsBuilder = itemOptionsBuilder ?? ((int i) => itemOptions),
         defaultMargin = EdgeInsets.zero,
         dataRenderer = (itemOptions is WidgetItemOptions
-            ? widgetItemRenderer(data.items
-                .mapIndexed((e, _) => (((int i) => itemOptions))(e))
-                .toList())
-            : defaultItemRenderer<T>(data.items
+            ? _widgetItemRenderer(itemOptions)
+            : _defaultItemRenderer<T>(data.items
                 .mapIndexed((e, _) =>
                     (itemOptionsBuilder ?? ((int i) => itemOptions))(e))
                 .toList())) {
@@ -206,8 +204,8 @@ class ChartState<T> {
   /// Default item renderer will use [LeafChartItemRenderer] to show items. Items are sized and customized with
   /// [ItemOptions].
   ///
-  /// If you need more customization of the individual chart items see [widgetItemRenderer]
-  static ChartDataRendererFactory<T?> defaultItemRenderer<T>(
+  /// If you need more customization of the individual chart items see [_widgetItemRenderer]
+  static ChartDataRendererFactory<T?> _defaultItemRenderer<T>(
       List<ItemOptions> itemOptions) {
     return (chartState) => ChartLinearDataRenderer<T?>(
         chartState,
@@ -223,25 +221,22 @@ class ChartState<T> {
             .toList());
   }
 
-  /// It can render chart items as widgets.
-  static ChartDataRendererFactory<T?> widgetItemRenderer<T>(
-      List<ItemOptions> itemOptions) {
+  /// It can render chart items as widgets, and it only accepts [WidgetItemOptions] since it needs the
+  /// [WidgetItemOptions.chartItemBuilder] to build the chart item widgets.
+  static ChartDataRendererFactory<T?> _widgetItemRenderer<T>(
+      WidgetItemOptions itemOptions) {
     return (chartState) => ChartLinearDataRenderer<T>(
         chartState,
         chartState.data.items
             .mapIndexed(
-              (key, items) {
-                final _options = itemOptions[key];
-                assert(_options is WidgetItemOptions);
-
+              (listKey, items) {
                 return items
-                    .map((e) => ChildChartItemRenderer<T?>(
+                    .mapIndexed((itemKey, e) => ChildChartItemRenderer<T?>(
                           e,
                           chartState.data,
-                          _options,
-                          arrayKey: key,
-                          child: (_options as WidgetItemOptions)
-                              .chartItemBuilder(e, items.indexOf(e), key),
+                          itemOptions,
+                          child:
+                              itemOptions.chartItemBuilder(e, itemKey, listKey),
                         ))
                     .toList();
               },
@@ -251,9 +246,9 @@ class ChartState<T> {
   }
 }
 
-/// Lerp [ColorForKey] function to get color for key in animation
+/// Lerp [ItemOptionsBuilder] function to get [ItemOptions] from builder in animation
 class ItemOptionsBuilderLerp {
-  /// Make new function that will return lerp color based on [a.colorForKey] and [b.colorForKey]
+  /// Make new function that will return lerp [ItemOptions] based on [ChartState.itemOptionsBuilder]
   static ItemOptionsBuilder? lerp(ChartState a, ChartState b, double t) {
     return (int key) {
       final _aOptions = a.itemOptionsBuilder(key);

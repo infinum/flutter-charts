@@ -93,13 +93,16 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
         RRect.fromRectAndCorners(
           Rect.fromPoints(
             Offset(
-              0.0,
-              max(data.minValue, item.min ?? 0.0) * _verticalMultiplier +
+              xStart,
+              _maxValue * _verticalMultiplier -
+                  max(data.minValue, item.min ?? 0.0) * _verticalMultiplier +
                   _minValue,
             ),
             Offset(
-              _itemWidth,
-              _itemMaxValue * _verticalMultiplier + _minValue,
+              xEnd,
+              _maxValue * _verticalMultiplier -
+                  _itemMaxValue * _verticalMultiplier +
+                  _minValue,
             ),
           ),
           bottomLeft:
