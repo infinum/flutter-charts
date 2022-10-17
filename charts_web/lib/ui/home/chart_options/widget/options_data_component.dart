@@ -4,7 +4,7 @@ import 'package:charts_painter/chart.dart';
 import 'package:charts_web/assets.gen.dart';
 import 'package:charts_web/ui/common/dialog/color_picker_dialog.dart';
 import 'package:charts_web/ui/home/chart_options/widget/options_component_header.dart';
-import 'package:charts_web/ui/home/presenter/chart_state_provider.dart';
+import 'package:charts_web/ui/home/presenter/chart_state_presenter.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

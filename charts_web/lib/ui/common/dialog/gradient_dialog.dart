@@ -1,4 +1,4 @@
-import 'package:charts_web/ui/home/presenter/chart_state_provider.dart';
+import 'package:charts_web/ui/home/presenter/chart_state_presenter.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

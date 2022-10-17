@@ -1,14 +1,25 @@
 import 'package:charts_painter/chart.dart';
+import 'package:charts_web/ui/home/presenter/chart_decorations_presenter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-final chartStatePresenter = ChangeNotifierProvider((_) => ChartStatePresenter());
+
+final chartStatePresenter = ChangeNotifierProvider((ref) {
+  final decorationsProvider = ref.watch(chartDecorationsPresenter);
+  return ChartStatePresenter(decorationsProvider);
+});
 
 const _itemBorderSideDefault = BorderSide.none;
 const _barBorderRadiusDefault = BorderRadius.zero;
 
 class ChartStatePresenter extends ChangeNotifier {
+  ChartStatePresenter(this._decorationsPresenter) {
+    // _ref.listen(chartDecorationsPresenter);
+  }
+
+  final ChartDecorationsPresenter _decorationsPresenter;
+
   // data
   List<List<ChartItem<void>>> _data = [
     [4, 6, 3, 6, 7, 9, 3, 2].map((e) => BarValue(e.toDouble())).toList(),
@@ -24,8 +35,10 @@ class ChartStatePresenter extends ChangeNotifier {
   double? minBarWidth;
   List<BorderSide> itemBorderSides = [_itemBorderSideDefault];
   Map<int, LinearGradient> gradient = {};
+
   // bar item specific
   List<BorderRadius> barBorderRadius = [_barBorderRadiusDefault];
+
   // multi item specific
   bool multiItemStack = true;
   EdgeInsets multiValuePadding = EdgeInsets.zero;
@@ -42,15 +55,12 @@ class ChartStatePresenter extends ChangeNotifier {
 
   ChartBehaviour _behaviour = const ChartBehaviour();
 
-  final List<DecorationPainter> _foregroundDecorations = [];
-  final List<DecorationPainter> _backgroundDecorations = [];
-
   ChartState<void> get state => ChartState(
         _defaultData,
         itemOptionsBuilder: _getItemOptions,
         behaviour: _behaviour,
-        foregroundDecorations: _foregroundDecorations,
-        backgroundDecorations: _backgroundDecorations,
+        foregroundDecorations: _decorationsPresenter.foregroundDecorations,
+        backgroundDecorations: _decorationsPresenter.backgroundDecorations,
       );
 
   void updateData(List<List<ChartItem<void>>> data) {
@@ -85,16 +95,6 @@ class ChartStatePresenter extends ChangeNotifier {
 
   void updateDataStrategy(DataStrategy dataStrategy) {
     _strategy = dataStrategy;
-    notifyListeners();
-  }
-
-  void addForegroundDecoration(DecorationPainter painter) {
-    _foregroundDecorations.add(painter);
-    notifyListeners();
-  }
-
-  void addBackgroundDecoration(DecorationPainter painter) {
-    _backgroundDecorations.add(painter);
     notifyListeners();
   }
 

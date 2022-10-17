@@ -25,7 +25,7 @@ class ChartOptions extends HookConsumerWidget {
           const SizedBox(height: 24),
           const OptionsDataComponent(),
           const OptionsItemsComponent(),
-          const OptionsDecorationComponent(),
+          const DecorationsComponent(),
         ],
       ),
     );
