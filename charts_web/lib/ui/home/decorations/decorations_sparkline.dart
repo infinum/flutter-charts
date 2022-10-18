@@ -21,103 +21,120 @@ class DecorationsSparkline extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _decorations = ref.watch(chartDecorationsPresenter);
     final _chartStatePresenter = ref.watch(chartStatePresenter);
     final _presenter = ref.watch(decorationSparkLinePresenter(decorationIndex));
 
-    return Column(
-      children: [
-        if (_chartStatePresenter.isMultiItem)
-          Row(
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white54,
+        borderRadius: BorderRadius.circular(24),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          if (_chartStatePresenter.isMultiItem)
+            Row(
+              children: [
+                const Text('Data list: '),
+                const SizedBox(width: 16),
+                ..._chartStatePresenter.data.mapIndexed(
+                  (index, element) => IconButton(
+                    onPressed: () {
+                      _presenter.updateId(index);
+                    },
+                    icon: Icon(
+                      Icons.circle,
+                      color: _chartStatePresenter.listColors[index],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          Wrap(
+            spacing: 16,
+            runSpacing: 16,
             children: [
-              ..._chartStatePresenter.data.mapIndexed((index, element) => IconButton(
+              IconButton(
                   onPressed: () {
-                    _presenter.updateId(index);
+                    ref.read(chartDecorationsPresenter).removeDecoration(decorationIndex);
                   },
-                  icon: Icon(
-                    Icons.circle,
-                    color: _chartStatePresenter.listColors[index],
-                  )))
+                  icon: const Icon(Icons.delete_forever, color: Colors.black54)),
+              SizedBox(
+                width: 200,
+                child: SwitchWithImage(
+                  value: _presenter.filled,
+                  title1: 'Fill',
+                  title2: 'Line',
+                  image1: Assets.svg.lineNo,
+                  image2: Assets.svg.lineYes,
+                  onChanged: _presenter.updateFilled,
+                ),
+              ),
+              SizedBox(
+                width: 200,
+                child: SwitchWithImage(
+                  value: _presenter.smoothPoints,
+                  title1: 'Smooth points',
+                  title2: 'No smooth points',
+                  image1: Assets.svg.smoothedYes,
+                  image2: Assets.svg.smoothedNo,
+                  onChanged: _presenter.updateSmoothPoints,
+                ),
+              ),
+              DoubleOptionInput(
+                name: 'Line Width',
+                value: _presenter.lineWidth,
+                step: 2,
+                onChanged: _presenter.updateLineWidth,
+                defaultValue: _presenter.lineWidth,
+                noInputField: true,
+              ),
+              DoubleOptionInput(
+                name: 'Start Position',
+                value: _presenter.startPosition,
+                step: 0.1,
+                onChanged: _presenter.updateStartPosition,
+                defaultValue: _presenter.startPosition,
+                noInputField: true,
+              ),
+              Row(
+                children: [
+                  ElevatedButton(
+                    child: Row(
+                      children: [Icon(Icons.format_paint, color: _presenter.color), const Text('Set color')],
+                    ),
+                    onPressed: () async {
+                      final color = await ColorPickerDialog.show(
+                        context,
+                        _presenter.color,
+                      );
+                      if (color != null) {
+                        _presenter.updateColor(color);
+                      }
+                    },
+                  ),
+                  const SizedBox(width: 20),
+                  const Text('OR'),
+                  const SizedBox(width: 20),
+                  ElevatedButton(
+                    child: Row(
+                      children: [const Text('Set gradient')],
+                    ),
+                    onPressed: () async {
+                      final gradient = await LinearGradientPickerDialog.show(
+                          context, _presenter.gradient ?? LinearGradient(colors: [_presenter.color, Colors.black]),
+                          onResetGradient: () => _presenter.updateGradient(null));
+                      if (gradient != null) {
+                        _presenter.updateGradient(gradient);
+                      }
+                    },
+                  ),
+                ],
+              ),
             ],
           ),
-        Wrap(
-          spacing: 16,
-          runSpacing: 16,
-          children: [
-            SizedBox(
-              width: 200,
-              child: SwitchWithImage(
-                value: _presenter.filled,
-                title1: 'Fill',
-                title2: 'Line',
-                image1: Assets.svg.lineNo,
-                image2: Assets.svg.lineYes,
-                onChanged: _presenter.updateFilled,
-              ),
-            ),
-            SizedBox(
-              width: 200,
-              child: SwitchWithImage(
-                value: _presenter.smoothPoints,
-                title1: 'Smooth points',
-                title2: 'No smooth points',
-                image1: Assets.svg.smoothedYes,
-                image2: Assets.svg.smoothedNo,
-                onChanged: _presenter.updateSmoothPoints,
-              ),
-            ),
-            DoubleOptionInput(
-              name: 'Line Width',
-              value: _presenter.lineWidth,
-              step: 2,
-              onChanged: _presenter.updateLineWidth,
-              defaultValue: _presenter.lineWidth,
-              noInputField: true,
-            ),
-            DoubleOptionInput(
-              name: 'Start Position',
-              value: _presenter.startPosition,
-              step: 0.1,
-              onChanged: _presenter.updateStartPosition,
-              defaultValue: _presenter.startPosition,
-              noInputField: true,
-            ),
-            Row(children: [
-              ElevatedButton(
-                child: Row(
-                  children: [Icon(Icons.format_paint, color: _presenter.color), const Text('Set color')],
-                ),
-                onPressed: () async {
-                  final color = await ColorPickerDialog.show(
-                    context,
-                    _presenter.color,
-                  );
-                  if (color != null) {
-                    _presenter.updateColor(color);
-                  }
-                },
-              ),
-              const SizedBox(width: 20),
-              const Text('OR'),
-              const SizedBox(width: 20),
-              ElevatedButton(
-                child: Row(
-                  children: [const Text('Set gradient')],
-                ),
-                onPressed: () async {
-                  final gradient = await LinearGradientPickerDialog.show(
-                      context, _presenter.gradient ?? LinearGradient(colors: [_presenter.color, Colors.black]),
-                      onResetGradient: () => _presenter.updateGradient(null));
-                  if (gradient != null) {
-                    _presenter.updateGradient(gradient);
-                  }
-                },
-              ),
-            ],),
-          ],
-        ),
-        const SizedBox(height: 40),
-      ],
+        ],
+      ),
     );
   }
 }

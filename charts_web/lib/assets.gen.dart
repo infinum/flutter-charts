@@ -9,6 +9,25 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsPngGen {
+  const $AssetsPngGen();
+
+  /// File path: assets/png/general_grid_decoration_golden.png
+  AssetGenImage get generalGridDecorationGolden => const AssetGenImage('assets/png/general_grid_decoration_golden.png');
+
+  /// File path: assets/png/general_horizontal_decoration_golden.png
+  AssetGenImage get generalHorizontalDecorationGolden =>
+      const AssetGenImage('assets/png/general_horizontal_decoration_golden.png');
+
+  /// File path: assets/png/general_sparkline_decoration_golden.png
+  AssetGenImage get generalSparklineDecorationGolden =>
+      const AssetGenImage('assets/png/general_sparkline_decoration_golden.png');
+
+  /// File path: assets/png/general_vertical_decoration_golden.png
+  AssetGenImage get generalVerticalDecorationGolden =>
+      const AssetGenImage('assets/png/general_vertical_decoration_golden.png');
+}
+
 class $AssetsSvgGen {
   const $AssetsSvgGen();
 
@@ -40,6 +59,7 @@ class $AssetsSvgGen {
 class Assets {
   Assets._();
 
+  static const $AssetsPngGen png = $AssetsPngGen();
   static const $AssetsSvgGen svg = $AssetsSvgGen();
 }
 

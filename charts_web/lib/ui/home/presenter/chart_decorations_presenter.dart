@@ -50,6 +50,11 @@ class ChartDecorationsPresenter extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removeDecoration(int decorationIndex) {
+    foregroundDecorations.removeWhere((e, _) => e == decorationIndex);
+    notifyListeners();
+  }
+
   int getNewAutoIncrementDecorationIndex() {
     final index = _decorationIndexIncrement;
     _decorationIndexIncrement++;

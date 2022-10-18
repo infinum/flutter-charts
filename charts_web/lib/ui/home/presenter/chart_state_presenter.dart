@@ -34,7 +34,7 @@ class ChartStatePresenter extends ChangeNotifier {
 
   // Items
   EdgeInsets chartItemPadding = const EdgeInsets.only(left: 2, right: 2, top: 0, bottom: 0);
-  bool bubbleItemPainter = false;
+  SelectedPainter selectedPainter = SelectedPainter.bar;
   double? maxBarWidth;
   double? minBarWidth;
   List<BorderSide> itemBorderSides = [_itemBorderSideDefault];
@@ -109,8 +109,8 @@ class ChartStatePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateGeometryRenderer(bool bubble) {
-    bubbleItemPainter = bubble;
+  void updateItemPainter(SelectedPainter painter) {
+    selectedPainter = painter;
     notifyListeners();
   }
 
@@ -167,7 +167,7 @@ class ChartStatePresenter extends ChangeNotifier {
   }
 
   ItemOptions _getItemOptions(int index) {
-    if (bubbleItemPainter) {
+    if (selectedPainter == SelectedPainter.bubble) {
       return BubbleItemOptions(
         padding: chartItemPadding,
         color: _getColorForKey(index),
@@ -178,7 +178,7 @@ class ChartStatePresenter extends ChangeNotifier {
         gradient: gradient[index],
         border: itemBorderSides[index],
       );
-    } else {
+    } else if (selectedPainter == SelectedPainter.bar) {
       return BarItemOptions(
         padding: chartItemPadding,
         color: _getColorForKey(index),
@@ -190,12 +190,24 @@ class ChartStatePresenter extends ChangeNotifier {
         radius: barBorderRadius[index],
         border: itemBorderSides[index],
       );
+    } else if (selectedPainter == SelectedPainter.none) {
+      return const BubbleItemOptions(
+        color: Colors.transparent,
+        maxBarWidth: 0,
+        minBarWidth: 0,
+      );
+    } else {
+      throw 'Not implemeneted';
     }
   }
 
   Color _getColorForKey(int key) {
     return listColors[key % 5];
   }
+}
+
+enum SelectedPainter {
+  bar, bubble, none, widget
 }
 
 const _presetColors = [

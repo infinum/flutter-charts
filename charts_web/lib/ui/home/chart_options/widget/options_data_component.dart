@@ -47,7 +47,7 @@ class OptionsDataComponent extends HookConsumerWidget {
             key: Key('data$index'),
           );
         }).toList(),
-        const SizedBox(height: 24),
+        const SizedBox(height: 8),
         CupertinoButton(
           child: const Text('Add another list'),
           onPressed: () {
@@ -56,7 +56,6 @@ class OptionsDataComponent extends HookConsumerWidget {
                 List.generate(_lists.first.length, (index) => BarValue<void>((Random().nextDouble() * 10))).toList());
           },
         ),
-        const SizedBox(height: 24),
       ],
     );
   }

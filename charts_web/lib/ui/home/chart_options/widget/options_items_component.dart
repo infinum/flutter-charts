@@ -34,23 +34,36 @@ class OptionsItemsComponent extends HookConsumerWidget {
         Row(
           children: [
             Expanded(
+              flex: 2,
               child: _BarOptionButton(
                 asset: Assets.svg.barChartIcon,
                 name: 'Bar',
-                selected: !_provider.bubbleItemPainter,
+                selected: _provider.selectedPainter == SelectedPainter.bar,
                 onPressed: () {
-                  _provider.updateGeometryRenderer(false);
+                  _provider.updateItemPainter(SelectedPainter.bar);
                 },
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
+              flex: 2,
               child: _BarOptionButton(
                 asset: Assets.svg.bubbleChartIcon,
                 name: 'Bubble',
-                selected: _provider.bubbleItemPainter,
+                selected: _provider.selectedPainter == SelectedPainter.bubble,
                 onPressed: () {
-                  _provider.updateGeometryRenderer(true);
+                  _provider.updateItemPainter(SelectedPainter.bubble);
+                },
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              flex: 1,
+              child: _BarOptionButton(
+                name: 'Empty',
+                selected: _provider.selectedPainter == SelectedPainter.none,
+                onPressed: () {
+                  _provider.updateItemPainter(SelectedPainter.none);
                 },
               ),
             ),
@@ -194,7 +207,7 @@ class _PerValueOptions extends ConsumerWidget {
                   }
                 },
               ),
-              if (!_provider.bubbleItemPainter)
+              if (_provider.selectedPainter == SelectedPainter.bar)
                 ElevatedButton(
                   child: const Text('Set border radius'),
                   onPressed: () async {
@@ -215,10 +228,10 @@ class _PerValueOptions extends ConsumerWidget {
 /// Used for Bar or Bubble selection
 class _BarOptionButton extends StatelessWidget {
   const _BarOptionButton(
-      {Key? key, required this.asset, required this.name, required this.selected, required this.onPressed})
+      {Key? key, this.asset, required this.name, required this.selected, required this.onPressed})
       : super(key: key);
 
-  final String asset;
+  final String? asset;
   final String name;
   final bool selected;
   final VoidCallback onPressed;
@@ -228,15 +241,18 @@ class _BarOptionButton extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        padding: EdgeInsets.all(8),
+        height: 50,
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             border: Border.all(width: 3, color: selected ? Theme.of(context).primaryColor : Colors.grey)),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SvgPicture.asset(asset, height: 30, color: selected ? Theme.of(context).primaryColor : Colors.grey),
-            const SizedBox(width: 16),
+            if (asset != null)
+              SvgPicture.asset(asset!, height: 30, color: selected ? Theme.of(context).primaryColor : Colors.grey),
+            if (asset != null)
+              const SizedBox(width: 16),
             Expanded(child: Text(name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
           ],
         ),
