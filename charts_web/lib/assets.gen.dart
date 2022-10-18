@@ -18,6 +18,18 @@ class $AssetsSvgGen {
   /// File path: assets/svg/bubble_chart_icon.svg
   String get bubbleChartIcon => 'assets/svg/bubble_chart_icon.svg';
 
+  /// File path: assets/svg/line_no.svg
+  String get lineNo => 'assets/svg/line_no.svg';
+
+  /// File path: assets/svg/line_yes.svg
+  String get lineYes => 'assets/svg/line_yes.svg';
+
+  /// File path: assets/svg/smoothed_no.svg
+  String get smoothedNo => 'assets/svg/smoothed_no.svg';
+
+  /// File path: assets/svg/smoothed_yes.svg
+  String get smoothedYes => 'assets/svg/smoothed_yes.svg';
+
   /// File path: assets/svg/strategy default.svg
   String get strategyDefault => 'assets/svg/strategy default.svg';
 

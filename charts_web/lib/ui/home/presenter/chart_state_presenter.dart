@@ -63,8 +63,8 @@ class ChartStatePresenter extends ChangeNotifier {
         _defaultData,
         itemOptionsBuilder: _getItemOptions,
         behaviour: _behaviour,
-        foregroundDecorations: _decorationsPresenter.foregroundDecorations,
-        backgroundDecorations: _decorationsPresenter.backgroundDecorations,
+        foregroundDecorations: _decorationsPresenter.foregroundDecorations.values.toList(),
+        backgroundDecorations: _decorationsPresenter.backgroundDecorations.values.toList(),
       );
 
   void updateData(List<List<ChartItem<void>>> data) {
@@ -88,6 +88,8 @@ class ChartStatePresenter extends ChangeNotifier {
     data.removeAt(listIndex);
     barBorderRadius.removeAt(listIndex);
     itemBorderSides.removeAt(listIndex);
+
+    _decorationsPresenter.removeDecorationsDependentOnData(listIndex);
 
     notifyListeners();
   }

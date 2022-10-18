@@ -20,19 +20,27 @@ class DecorationsComponent extends ConsumerWidget {
       children: [
         const OptionsComponentHeader(title: 'Foreground decorations', subtitle: _subtitle),
         SizedBox(height: 24),
-        ElevatedButton(onPressed: () {
-          _presenter.addForegroundDecorations(SparkLineDecoration());
-        }, child: Text('Add SparkLine decoration')),
-        ..._presenter.foregroundDecorations.mapIndexed(_buildDecorationControls),
+        ElevatedButton(
+          onPressed: () {
+            _presenter.addForegroundDecorations(SparkLineDecoration());
+          },
+          child: Text('Add SparkLine decoration'),
+        ),
+        ...mapToWidgets(_presenter.foregroundDecorations),
       ],
     );
   }
 
-  Widget _buildDecorationControls(int index, DecorationPainter decoration) {
-    if (decoration is SparkLineDecoration) {
-      return DecorationsSparkline(decorationIndex: index);
-    } else {
-      return Text('Unknown');
-    }
+  List<Widget> mapToWidgets(Map<int, DecorationPainter> decorations) {
+    final widgets = <Widget>[];
+
+    decorations.forEach((index, decoration) {
+      if (decoration is SparkLineDecoration) {
+        return widgets.add(DecorationsSparkline(decorationIndex: index));
+      }
+      // todo: add other decoration
+    });
+
+    return widgets;
   }
 }

@@ -2,6 +2,8 @@ import 'package:charts_web/ui/home/chart_options/widget/options_items_component.
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 
+import '../widget/double_option_input.dart';
+
 class BorderRadiusDialog extends StatefulWidget {
   const BorderRadiusDialog({Key? key, required this.radius}) : super(key: key);
 
@@ -46,7 +48,7 @@ class _BorderRadiusDialogState extends State<BorderRadiusDialog> {
             children: [
               Column(
                 children: [
-                  ItemOptionsInput(
+                  DoubleOptionInput(
                     name: 'Top-left',
                     value: state.topLeft.x,
                     step: 2,
@@ -57,7 +59,7 @@ class _BorderRadiusDialogState extends State<BorderRadiusDialog> {
                     },
                     defaultValue: widget.radius.topLeft.x,
                   ),
-                  ItemOptionsInput(
+                  DoubleOptionInput(
                       name: 'Bottom-left',
                       value: state.bottomLeft.x,
                       step: 2,
@@ -79,7 +81,7 @@ class _BorderRadiusDialogState extends State<BorderRadiusDialog> {
               const SizedBox(width: 16),
               Column(
                 children: [
-                  ItemOptionsInput(
+                  DoubleOptionInput(
                       name: 'Top-right',
                       value: state.topRight.x,
                       step: 2,
@@ -87,7 +89,7 @@ class _BorderRadiusDialogState extends State<BorderRadiusDialog> {
                         setState(() => state = state.copyWith(topRight: Radius.circular(a)));
                       },
                       defaultValue: widget.radius.topRight.x),
-                  ItemOptionsInput(
+                  DoubleOptionInput(
                       name: 'Bottom-right',
                       value: state.bottomRight.x,
                       step: 2,

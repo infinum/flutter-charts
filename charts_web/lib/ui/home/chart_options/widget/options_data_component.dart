@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:charts_painter/chart.dart';
 import 'package:charts_web/assets.gen.dart';
 import 'package:charts_web/ui/common/dialog/color_picker_dialog.dart';
+import 'package:charts_web/ui/common/widget/switch_with_image.dart';
 import 'package:charts_web/ui/home/chart_options/widget/options_component_header.dart';
 import 'package:charts_web/ui/home/presenter/chart_state_presenter.dart';
 import 'package:collection/collection.dart';
@@ -26,7 +27,19 @@ class OptionsDataComponent extends HookConsumerWidget {
     return Column(
       children: [
         const OptionsComponentHeader(title: 'Data', subtitle: _subtitle),
-        if (_provider.isMultiItem) _StrategySwitch(provider: _provider),
+        if (_provider.isMultiItem)
+          SwitchWithImage(
+            value: _provider.state.data.dataStrategy.runtimeType == DefaultDataStrategy,
+            onChanged: (value) {
+              _provider.updateDataStrategy(_provider.state.data.dataStrategy.runtimeType == DefaultDataStrategy
+                  ? StackDataStrategy()
+                  : const DefaultDataStrategy());
+            },
+            title1: 'Default (one next to another)',
+            title2: 'Stack (one on top of another)',
+            image1: Assets.svg.strategyDefault,
+            image2: Assets.svg.strategyStack,
+            subtitle: 'Data Strategy - how to show multiple data values',),
         const SizedBox(height: 12),
         ..._provider.data.mapIndexed((index, list) {
           return _DataTextField(
@@ -44,56 +57,6 @@ class OptionsDataComponent extends HookConsumerWidget {
           },
         ),
         const SizedBox(height: 24),
-      ],
-    );
-  }
-}
-
-class _StrategySwitch extends StatelessWidget {
-  const _StrategySwitch({
-    Key? key,
-    required ChartStatePresenter provider,
-  })  : _provider = provider,
-        super(key: key);
-
-  final ChartStatePresenter _provider;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SwitchListTile(
-          value: _provider.state.data.dataStrategy.runtimeType == DefaultDataStrategy,
-          title: _provider.state.data.dataStrategy.runtimeType == DefaultDataStrategy
-              ? const Text('Default (one next to another)')
-              : const Text('Stack (one on top of another)'),
-          subtitle: const Text('Data Strategy - how to show multiple data values'),
-          onChanged: (value) {
-            _provider.updateDataStrategy(_provider.state.data.dataStrategy.runtimeType == DefaultDataStrategy
-                ? StackDataStrategy()
-                : const DefaultDataStrategy());
-          },
-        ),
-        Positioned(
-          right: 8,
-          top: 2,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: Color(0xffdedede),
-            ),
-            height: 60,
-            width: 60,
-            padding: const EdgeInsets.only(bottom: 8),
-            alignment: Alignment.center,
-            child: SvgPicture.asset(
-              _provider.state.data.dataStrategy.runtimeType == DefaultDataStrategy
-                  ? Assets.svg.strategyDefault
-                  : Assets.svg.strategyStack,
-              height: 50,
-            ),
-          ),
-        )
       ],
     );
   }
@@ -139,7 +102,7 @@ class _DataTextField extends HookConsumerWidget {
               context,
               _provider.listColors[listIndex],
               additionalText:
-                  'In code, with colorForValue you can also define different color for each value of the list.',
+              'In code, with colorForValue you can also define different color for each value of the list.',
             );
             if (color != null) {
               _provider.updateListColor(color, listIndex);
@@ -153,10 +116,11 @@ class _DataTextField extends HookConsumerWidget {
   String getValuesText(ChartStatePresenter presenter) {
     return presenter.data[listIndex]
         .fold<StringBuffer>(
-            StringBuffer(),
-            (sb, e) => sb
-              ..write(
-                  '${(e.max ?? e.min)?.toStringAsFixed(0) ?? ''}${presenter.data[listIndex].last == e ? '' : ', '}'))
+        StringBuffer(),
+            (sb, e) =>
+        sb
+          ..write(
+              '${(e.max ?? e.min)?.toStringAsFixed(0) ?? ''}${presenter.data[listIndex].last == e ? '' : ', '}'))
         .toString();
   }
 }

@@ -2,7 +2,7 @@ import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../home/chart_options/widget/options_items_component.dart';
+import '../widget/double_option_input.dart';
 
 class BorderSideDialog extends StatefulWidget {
   const BorderSideDialog({Key? key, required this.borderSide, required this.color}) : super(key: key);
@@ -46,7 +46,7 @@ class _BorderSideDialogState extends State<BorderSideDialog> {
           const Text(
               'In this editor you can only edit uniform border. More advanced properties (like border sides, storck style) can be accessed in code.'),
           const SizedBox(height: 16),
-          ItemOptionsInput(
+          DoubleOptionInput(
             name: 'Border width',
             value: width,
             step: 2,

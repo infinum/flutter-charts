@@ -12,6 +12,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:collection/collection.dart';
 
 import '../../../../assets.gen.dart';
+import '../../../common/widget/double_option_input.dart';
 import 'options_component_header.dart';
 
 const _subtitle =
@@ -60,21 +61,21 @@ class OptionsItemsComponent extends HookConsumerWidget {
           spacing: 16,
           runSpacing: 16,
           children: [
-            ItemOptionsInput(
+            DoubleOptionInput(
               name: 'Min bar width',
               value: _provider.minBarWidth,
               step: 2,
               onChanged: _provider.updateMinBarWidth,
               defaultValue: 20,
             ),
-            ItemOptionsInput(
+            DoubleOptionInput(
               name: 'Max bar width',
               value: _provider.maxBarWidth,
               step: 2,
               onChanged: _provider.updateMaxBarWidth,
               defaultValue: 30,
             ),
-            ItemOptionsInput(
+            DoubleOptionInput(
               name: 'Padding Left',
               value: _provider.chartItemPadding.left,
               step: 2,
@@ -82,7 +83,7 @@ class OptionsItemsComponent extends HookConsumerWidget {
               defaultValue: _provider.chartItemPadding.left,
               noInputField: true,
             ),
-            ItemOptionsInput(
+            DoubleOptionInput(
               name: 'Padding Right',
               value: _provider.chartItemPadding.right,
               step: 2,
@@ -128,7 +129,7 @@ class _MultiValueOptions extends ConsumerWidget {
             ],
           ),
           if (!_provider.multiItemStack)
-            ItemOptionsInput(
+            DoubleOptionInput(
               name: 'Padding Left',
               value: _provider.multiValuePadding.left,
               step: 2,
@@ -137,7 +138,7 @@ class _MultiValueOptions extends ConsumerWidget {
               noInputField: true,
             ),
           if (!_provider.multiItemStack)
-            ItemOptionsInput(
+            DoubleOptionInput(
               name: 'Padding Right',
               value: _provider.multiValuePadding.right,
               step: 2,
@@ -241,109 +242,5 @@ class _BarOptionButton extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-/// Small input used for double values, e.g. padding
-class ItemOptionsInput extends HookWidget {
-  ItemOptionsInput(
-      {Key? key,
-      required this.name,
-      required this.value,
-      required this.step,
-      required this.onChanged,
-      required this.defaultValue,
-      this.noInputField = false})
-      : super(key: key);
-
-  final String name;
-  final double? value;
-
-  final int step;
-  final Function(double) onChanged;
-  final double defaultValue;
-  final bool noInputField;
-
-  late TextEditingController textEditingController;
-
-  @override
-  Widget build(BuildContext context) {
-    textEditingController = useTextEditingController(text: value.toString());
-
-    return ClipRRect(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 8.0),
-        child: SizedBox(
-          width: 230,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(child: Text('$name:')),
-              const SizedBox(width: 8),
-              if (!noInputField)
-                SizedBox(
-                  width: 50,
-                  child: TextField(
-                    decoration: InputDecoration(filled: true, isDense: true),
-                    controller: textEditingController,
-                    onChanged: (value) {
-                      final newValue = double.parse(value);
-                      onChanged(newValue);
-                    },
-                    style: Theme.of(context).textTheme.bodyText1?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                )
-              else
-                Text(value.toString()),
-              const SizedBox(width: 8),
-              SizedBox(
-                height: 28,
-                width: 28,
-                child: FloatingActionButton(
-                  elevation: 1,
-                  mini: true,
-                  backgroundColor: Colors.grey,
-                  onPressed: decrease,
-                  child: const Text('-', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                ),
-              ),
-              const SizedBox(width: 4),
-              SizedBox(
-                height: 28,
-                width: 28,
-                child: FloatingActionButton(
-                  elevation: 1,
-                  backgroundColor: Colors.grey,
-                  mini: true,
-                  onPressed: increase,
-                  child: const Text('+', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  void decrease() {
-    if (value == null) {
-      changeValue(defaultValue);
-    } else {
-      changeValue(value! - step);
-    }
-  }
-
-  void increase() {
-    if (value == null) {
-      changeValue(defaultValue);
-    } else {
-      changeValue(value! + step);
-    }
-  }
-
-  void changeValue(double value) {
-    textEditingController.text = value.toString();
-    onChanged(value);
   }
 }

@@ -13,14 +13,19 @@ class DecorationSparkLinePresenter extends ChangeNotifier {
     color = ref.read(chartStatePresenter).listColors.first;
   }
 
+  int lineId = 0;
+
   final int index;
   SparkLineDecoration decoration = SparkLineDecoration();
 
   bool filled = false;
   bool smoothPoints = false;
+  double lineWidth = 1.0;
+  double startPosition = 0.5;
 
   late Color color;
   LinearGradient? gradient;
+
 
   // bool stretchLine = false;
 
@@ -44,7 +49,30 @@ class DecorationSparkLinePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateId(int newLineId) {
+    lineId = newLineId;
+    notifyListeners();
+  }
+
+  void updateLineWidth(double newLineWidth) {
+    lineWidth = newLineWidth;
+    notifyListeners();
+  }
+
+  void updateStartPosition(double startPosition) {
+    this.startPosition = startPosition;
+    notifyListeners();
+  }
+
   SparkLineDecoration buildDecoration() {
-    return SparkLineDecoration(fill: filled, smoothPoints: smoothPoints, lineColor: color, gradient: gradient);
+    return SparkLineDecoration(
+      lineArrayIndex: lineId,
+      fill: filled,
+      smoothPoints: smoothPoints,
+      lineColor: color,
+      lineWidth: lineWidth,
+      gradient: gradient,
+      startPosition: startPosition,
+    );
   }
 }
