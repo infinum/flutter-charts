@@ -44,7 +44,7 @@ class OptionsItemsComponent extends HookConsumerWidget {
                 },
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 8),
             Expanded(
               flex: 2,
               child: _BarOptionButton(
@@ -56,7 +56,7 @@ class OptionsItemsComponent extends HookConsumerWidget {
                 },
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 8),
             Expanded(
               flex: 1,
               child: _BarOptionButton(
@@ -64,6 +64,17 @@ class OptionsItemsComponent extends HookConsumerWidget {
                 selected: _provider.selectedPainter == SelectedPainter.none,
                 onPressed: () {
                   _provider.updateItemPainter(SelectedPainter.none);
+                },
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              flex: 1,
+              child: _BarOptionButton(
+                name: 'Widget',
+                selected: _provider.selectedPainter == SelectedPainter.widget,
+                onPressed: () {
+                  _provider.updateItemPainter(SelectedPainter.widget);
                 },
               ),
             ),
@@ -242,7 +253,7 @@ class _BarOptionButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         height: 50,
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             border: Border.all(width: 3, color: selected ? Theme.of(context).primaryColor : Colors.grey)),

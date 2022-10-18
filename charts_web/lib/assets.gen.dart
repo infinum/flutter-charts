@@ -12,6 +12,18 @@ import 'package:flutter/widgets.dart';
 class $AssetsPngGen {
   const $AssetsPngGen();
 
+  /// File path: assets/png/futurama1.jpeg
+  AssetGenImage get futurama1 => const AssetGenImage('assets/png/futurama1.jpeg');
+
+  /// File path: assets/png/futurama2.jpeg
+  AssetGenImage get futurama2 => const AssetGenImage('assets/png/futurama2.jpeg');
+
+  /// File path: assets/png/futurama4.jpeg
+  AssetGenImage get futurama4 => const AssetGenImage('assets/png/futurama4.jpeg');
+
+  /// File path: assets/png/futurama5.jpeg
+  AssetGenImage get futurama5 => const AssetGenImage('assets/png/futurama5.jpeg');
+
   /// File path: assets/png/general_grid_decoration_golden.png
   AssetGenImage get generalGridDecorationGolden => const AssetGenImage('assets/png/general_grid_decoration_golden.png');
 

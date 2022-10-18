@@ -1,4 +1,5 @@
 import 'package:charts_painter/chart.dart';
+import 'package:charts_web/ui/home/chart_options/widget/futurama_bar_widget.dart';
 import 'package:charts_web/ui/home/presenter/chart_decorations_presenter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ const _barBorderRadiusDefault = BorderRadius.zero;
 
 class ChartStatePresenter extends ChangeNotifier {
   ChartStatePresenter(this.ref) {
-    _decorationsPresenter =  ref.read(chartDecorationsPresenter);
+    _decorationsPresenter = ref.read(chartDecorationsPresenter);
     ref.read(chartDecorationsPresenter).addListener(() {
       notifyListeners();
     });
@@ -34,7 +35,7 @@ class ChartStatePresenter extends ChangeNotifier {
 
   // Items
   EdgeInsets chartItemPadding = const EdgeInsets.only(left: 2, right: 2, top: 0, bottom: 0);
-  SelectedPainter selectedPainter = SelectedPainter.bar;
+  SelectedPainter selectedPainter = SelectedPainter.widget;
   double? maxBarWidth;
   double? minBarWidth;
   List<BorderSide> itemBorderSides = [_itemBorderSideDefault];
@@ -61,7 +62,8 @@ class ChartStatePresenter extends ChangeNotifier {
 
   ChartState<void> get state => ChartState(
         _defaultData,
-        itemOptionsBuilder: _getItemOptions,
+        itemOptions: selectedPainter == SelectedPainter.widget ? _getItemOptions(0) : const BarItemOptions(),
+        itemOptionsBuilder:  selectedPainter == SelectedPainter.widget ? null : _getItemOptions,
         behaviour: _behaviour,
         foregroundDecorations: _decorationsPresenter.foregroundDecorations.values.toList(),
         backgroundDecorations: _decorationsPresenter.backgroundDecorations.values.toList(),
@@ -196,8 +198,15 @@ class ChartStatePresenter extends ChangeNotifier {
         maxBarWidth: 0,
         minBarWidth: 0,
       );
+    } else if (selectedPainter == SelectedPainter.widget) {
+      return WidgetItemOptions(
+        multiItemStack: multiItemStack,
+        chartItemBuilder: (item, itemKey, listKey) {
+          return FuturamaBarWidget(stackItems: multiItemStack, listKey: listKey, item: item);
+        },
+      );
     } else {
-      throw 'Not implemeneted';
+      throw 'Unknown selected painter';
     }
   }
 
@@ -206,9 +215,7 @@ class ChartStatePresenter extends ChangeNotifier {
   }
 }
 
-enum SelectedPainter {
-  bar, bubble, none, widget
-}
+enum SelectedPainter { bar, bubble, none, widget }
 
 const _presetColors = [
   Color(0xFFD8555F),
