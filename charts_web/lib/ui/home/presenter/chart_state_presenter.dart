@@ -207,8 +207,6 @@ class ChartStatePresenter extends ChangeNotifier {
     } else if (selectedPainter == SelectedPainter.widget) {
       return WidgetItemOptions(
         multiItemStack: multiItemStack,
-        maxBarWidth: maxBarWidth,
-        minBarWidth: minBarWidth,
         chartItemBuilder: (item, itemKey, listKey) {
           return FuturamaBarWidget(stackItems: multiItemStack, listKey: listKey, item: item);
         },

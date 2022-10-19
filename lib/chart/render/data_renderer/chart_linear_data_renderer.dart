@@ -71,7 +71,6 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
           currentValue: _currentValue,
         );
 
-        final key = child.key;
 
         assert(child.parentData == childParentData);
         child = childParentData.nextSibling;
@@ -151,7 +150,7 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     // In case we have multiple data and we have [WidgetItemOptions.multiValuePadding] set to true then
     // we need to add padding to the item, and change the starting offset.
     final _multiValuePadding =
-        chartState.itemOptionsBuilder(child.key).multiValuePadding;
+        chartState.itemOptions.multiValuePadding;
 
     // Animated multiValueStacked value
     final _stack =
