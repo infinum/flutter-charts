@@ -5,6 +5,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:collection/collection.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -28,7 +29,7 @@ part 'chart/model/geometry/chart_item.dart';
 part 'chart/model/theme/chart_behaviour.dart';
 part 'chart/model/theme/item_theme/bar_item_options.dart';
 part 'chart/model/theme/item_theme/item_options.dart';
-part 'chart/model/theme/item_theme/line_item_options.dart';
+part 'chart/model/theme/item_theme/bubble_item_options.dart';
 part 'chart/model/theme/item_theme/widget_item_options.dart';
 
 /// Render

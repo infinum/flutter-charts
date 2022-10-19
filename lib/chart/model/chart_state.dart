@@ -19,21 +19,16 @@ class ChartState<T> {
   /// Chart state constructor
   ChartState(
     this.data, {
-    ItemOptions itemOptions = const BarItemOptions(),
-    ItemOptionsBuilder? itemOptionsBuilder,
+    required this.itemOptions,
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const <DecorationPainter>[],
     this.foregroundDecorations = const <DecorationPainter>[],
   })  : assert(data.isNotEmpty, 'No items!'),
-        assert(!(itemOptionsBuilder != null && itemOptionsBuilder(0) is WidgetItemOptions),
-            'You cannot use itemOptionsBuilder with WidgetItemOptions! Use chartItemBuilder in WidgetItemOptions already gives you `listKey` that is same as `key` in itemOptionsBuilder'),
         defaultPadding = EdgeInsets.zero,
-        itemOptionsBuilder = itemOptionsBuilder ?? ((int i) => itemOptions),
         defaultMargin = EdgeInsets.zero,
         dataRenderer = (itemOptions is WidgetItemOptions
             ? _widgetItemRenderer(itemOptions)
-            : _defaultItemRenderer<T>(
-                data.items.mapIndexed((e, _) => (itemOptionsBuilder ?? ((int i) => itemOptions))(e)).toList())) {
+            : _defaultItemRenderer<T>(itemOptions)) {
     /// Set default padding and margin, decorations padding and margins will be added to this value
     _setUpDecorations();
   }
@@ -41,7 +36,7 @@ class ChartState<T> {
   /// Create line chart with foreground sparkline decoration and background grid decoration
   factory ChartState.line(
     ChartData<T> data, {
-    ItemOptions itemOptions = const BubbleItemOptions(),
+    required BubbleItemOptions itemOptions,
     ItemOptionsBuilder? itemOptionsBuilder,
     ChartBehaviour behaviour = const ChartBehaviour(),
     List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
@@ -50,7 +45,6 @@ class ChartState<T> {
     return ChartState(
       data,
       itemOptions: itemOptions,
-      itemOptionsBuilder: itemOptionsBuilder,
       behaviour: behaviour,
       backgroundDecorations: backgroundDecorations.isEmpty ? [GridDecoration()] : backgroundDecorations,
       foregroundDecorations: foregroundDecorations.isEmpty ? [SparkLineDecoration()] : foregroundDecorations,
@@ -60,7 +54,7 @@ class ChartState<T> {
   /// Create bar chart with background grid decoration
   factory ChartState.bar(
     ChartData<T> data, {
-    ItemOptions itemOptions = const BarItemOptions(),
+    required BarItemOptions itemOptions,
     ItemOptionsBuilder? itemOptionsBuilder,
     ChartBehaviour behaviour = const ChartBehaviour(),
     List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
@@ -69,7 +63,6 @@ class ChartState<T> {
     return ChartState(
       data,
       itemOptions: itemOptions,
-      itemOptionsBuilder: itemOptionsBuilder,
       behaviour: behaviour,
       backgroundDecorations: backgroundDecorations.isEmpty ? [GridDecoration()] : backgroundDecorations,
       foregroundDecorations: foregroundDecorations,
@@ -78,13 +71,13 @@ class ChartState<T> {
 
   ChartState._lerp(
     this.data, {
-    required this.itemOptionsBuilder,
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const [],
     this.foregroundDecorations = const [],
     required this.dataRenderer,
     required this.defaultMargin,
     required this.defaultPadding,
+    required this.itemOptions, // todo: lerp
   }) {
     _initDecorations();
   }
@@ -97,10 +90,8 @@ class ChartState<T> {
   final ChartDataRendererFactory<T?> dataRenderer;
 
   // Geometry layer
-  /// [ItemOptionsBuilder] it can build different [ItemOptions] based on current list key
-  /// if you just pass [itemOptions] to the constructor. But data has multiple lists, then all
-  /// lists will use the same [itemOptions].
-  final ItemOptionsBuilder itemOptionsBuilder;
+  // Todo: add comment
+  final ItemOptions itemOptions;
 
   /// [ChartBehaviour] define how chart behaves and how it should react
   final ChartBehaviour behaviour;
@@ -157,7 +148,6 @@ class ChartState<T> {
     return ChartState<T?>._lerp(
       ChartData.lerp(a.data, b.data, t),
       behaviour: ChartBehaviour.lerp(a.behaviour, b.behaviour, t),
-      itemOptionsBuilder: ItemOptionsBuilderLerp.lerp(a, b, t)!,
       // Find background matches, if found, then animate to them, else just show them.
       backgroundDecorations: b.backgroundDecorations.map<DecorationPainter>((e) {
         final _match = a.backgroundDecorations.firstWhereOrNull((element) => element.isSameType(e));
@@ -180,6 +170,7 @@ class ChartState<T> {
       defaultMargin: EdgeInsets.lerp(a.defaultMargin, b.defaultMargin, t) ?? EdgeInsets.zero,
       defaultPadding: EdgeInsets.lerp(a.defaultPadding, b.defaultPadding, t) ?? EdgeInsets.zero,
       dataRenderer: t > 0.5 ? b.dataRenderer : a.dataRenderer,
+      itemOptions: a.itemOptions.animateTo(b.itemOptions, t),
     );
   }
 
@@ -187,14 +178,22 @@ class ChartState<T> {
   /// [ItemOptions].
   ///
   /// If you need more customization of the individual chart items see [_widgetItemRenderer]
-  static ChartDataRendererFactory<T?> _defaultItemRenderer<T>(List<ItemOptions> itemOptions) {
+  static ChartDataRendererFactory<T?> _defaultItemRenderer<T>(ItemOptions itemOptions) {
+    // TODO: do the build here
+    print('Creating item renderer for ${itemOptions}');
     return (chartState) => ChartLinearDataRenderer<T?>(
         chartState,
         chartState.data.items
             .mapIndexed(
-              (key, items) => items
-                  .map((e) =>
-                      LeafChartItemRenderer(e, chartState.data, chartState.itemOptionsBuilder(key), arrayKey: key))
+              (lineKey, items) => items
+                  .mapIndexed((itemKey, item) => LeafChartItemRenderer(
+                        item,
+                        chartState.data,
+                        itemOptions,
+                        itemKey: itemKey,
+                        listKey: lineKey,
+                        chartDataItem: itemOptions.itemBuilder(item, itemKey, lineKey) as ChartDataItem,
+                      ))
                   .toList(),
             )
             .expand((element) => element)
@@ -208,15 +207,17 @@ class ChartState<T> {
         chartState,
         chartState.data.items
             .mapIndexed(
-              (key, items) {
+              (lineKey, items) {
                 return items
-                    .map((e) => ChildChartItemRenderer<T?>(
-                          e,
-                          chartState.data,
-                          itemOptions,
-                          arrayKey: key,
-                          child: itemOptions.chartItemBuilder(e, items.indexOf(e), key),
-                        ))
+                    .mapIndexed(
+                      (itemKey, e) => ChildChartItemRenderer<T?>(
+                        e,
+                        chartState.data,
+                        itemOptions,
+                        arrayKey: lineKey,
+                        child: itemOptions.chartItemBuilder(e, itemKey, lineKey),
+                      ),
+                    )
                     .toList();
               },
             )
@@ -226,14 +227,14 @@ class ChartState<T> {
 }
 
 /// Lerp [ItemOptionsBuilder] function to get [ItemOptions] from builder in animation
-class ItemOptionsBuilderLerp {
-  /// Make new function that will return lerp [ItemOptions] based on [ChartState.itemOptionsBuilder]
-  static ItemOptionsBuilder? lerp(ChartState a, ChartState b, double t) {
-    return (int key) {
-      final _aOptions = a.itemOptionsBuilder(key);
-      final _bOptions = b.itemOptionsBuilder(key);
-
-      return _aOptions.animateTo(_bOptions, t);
-    };
-  }
-}
+// class ItemOptionsBuilderLerp {
+//   /// Make new function that will return lerp [ItemOptions] based on [ChartState.itemOptionsBuilder]
+//   static ItemOptionsBuilder? lerp(ChartState a, ChartState b, double t) {
+//     return (int key) {
+//       final _aOptions = a.itemOptionsBuilder(key);
+//       final _bOptions = b.itemOptionsBuilder(key);
+//
+//       return _aOptions.animateTo(_bOptions, t);
+//     };
+//   }
+// }

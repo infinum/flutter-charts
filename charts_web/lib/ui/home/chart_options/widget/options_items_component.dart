@@ -99,27 +99,30 @@ class OptionsItemsComponent extends HookConsumerWidget {
               onChanged: _provider.updateMaxBarWidth,
               defaultValue: 30,
             ),
-            DoubleOptionInput(
-              name: 'Padding Left',
-              value: _provider.chartItemPadding.left,
-              step: 2,
-              onChanged: (v) => _provider.updateChartItemPadding(_provider.chartItemPadding.copyWith(left: v)),
-              defaultValue: _provider.chartItemPadding.left,
-              noInputField: true,
-            ),
-            DoubleOptionInput(
-              name: 'Padding Right',
-              value: _provider.chartItemPadding.right,
-              step: 2,
-              onChanged: (v) => _provider.updateChartItemPadding(_provider.chartItemPadding.copyWith(right: v)),
-              defaultValue: _provider.chartItemPadding.right,
-              noInputField: true,
-            ),
+            if (_provider.selectedPainter == SelectedPainter.bar || _provider.selectedPainter == SelectedPainter.bubble)
+              DoubleOptionInput(
+                name: 'Padding Left',
+                value: _provider.chartItemPadding.left,
+                step: 2,
+                onChanged: (v) => _provider.updateChartItemPadding(_provider.chartItemPadding.copyWith(left: v)),
+                defaultValue: _provider.chartItemPadding.left,
+                noInputField: true,
+              ),
+            if (_provider.selectedPainter == SelectedPainter.bar || _provider.selectedPainter == SelectedPainter.bubble)
+              DoubleOptionInput(
+                name: 'Padding Right',
+                value: _provider.chartItemPadding.right,
+                step: 2,
+                onChanged: (v) => _provider.updateChartItemPadding(_provider.chartItemPadding.copyWith(right: v)),
+                defaultValue: _provider.chartItemPadding.right,
+                noInputField: true,
+              ),
           ],
         ),
-        ..._provider.data.mapIndexed((index, list) {
-          return _PerValueOptions(index: index);
-        }).toList(),
+        if (_provider.selectedPainter == SelectedPainter.bar || _provider.selectedPainter == SelectedPainter.bubble)
+          ..._provider.data.mapIndexed((index, list) {
+            return _PerValueOptions(index: index);
+          }).toList(),
         if (_provider.isMultiItem) const _MultiValueOptions(),
         // final double? startPosition;
         const SizedBox(height: 16),

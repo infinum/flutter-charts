@@ -65,7 +65,7 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
           childCount: childCount,
         );
 
-        final key = child.key;
+        final key = child.listKey;
 
         assert(child.parentData == childParentData);
         child = childParentData.nextSibling;
@@ -111,7 +111,7 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
   }) {
     final childParentData = child.parentData! as ChartItemData;
 
-    childParentData.offset = offset + Offset(itemWidth * (childCount[child.key] ?? 0), 0.0);
+    childParentData.offset = offset + Offset(itemWidth * (childCount[child.listKey] ?? 0), 0.0);
     final innerConstraints = BoxConstraints(
       maxWidth: itemWidth,
       maxHeight: size.height,
@@ -140,7 +140,7 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     // Get all necessary calculations for ChartItem for layout and position of the child.
     // Size is used to constrain the child of ChartItem.
     var bottomPaddingHeight = 0.0;
-    final _stack = 1 - chartState.itemOptionsBuilder(child.key)._multiValueStacked;
+    final _stack = 1 - chartState.itemOptions._multiValueStacked;
     final _stackSize = max(1.0, (chartState.data.stackSize) * _stack);
     final _stackWidth = itemWidth / _stackSize;
 

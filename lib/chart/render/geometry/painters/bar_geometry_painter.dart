@@ -25,8 +25,10 @@ part of charts_painter;
 class BarGeometryPainter<T> extends GeometryPainter<T> {
   /// Constructor for Bar painter
   BarGeometryPainter(
-      ChartItem<T> item, ChartData<T?> data, ItemOptions itemOptions)
+      ChartItem<T> item, ChartData<T?> data, ItemOptions itemOptions, this.chartDataItem)
       : super(item, data, itemOptions);
+
+  final BarItem chartDataItem;
 
   @override
   void draw(Canvas canvas, Size size, Paint paint) {
@@ -34,9 +36,7 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
     final _verticalMultiplier = size.height / max(1, _maxValue);
     final _minValue = (data.minValue * _verticalMultiplier);
 
-    final _radius = itemOptions is BarItemOptions
-        ? ((itemOptions as BarItemOptions).radius ?? BorderRadius.zero)
-        : BorderRadius.zero;
+    final _radius = chartDataItem.radius ?? BorderRadius.zero;
 
     final _itemWidth = itemWidth(size);
 
@@ -79,9 +79,7 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
       paint,
     );
 
-    final _border = itemOptions is BarItemOptions
-        ? (itemOptions as BarItemOptions).border
-        : null;
+    final _border = chartDataItem.border;
 
     if (_border != null && _border.style == BorderStyle.solid) {
       final _borderPaint = Paint();

@@ -19,8 +19,6 @@ class ChartDecorationsPresenter extends ChangeNotifier {
   final Map<int, DecorationPainter> foregroundDecorations = {};
   final Map<int, DecorationPainter> backgroundDecorations = {};
 
-  final Map<int, Function> _listeners = {};
-
   void addForegroundDecorations(DecorationPainter decoration) {
     final index = getNewAutoIncrementDecorationIndex();
 

@@ -18,6 +18,7 @@ class _ChartWidget<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return LayoutBuilder(
       builder: (context, constraints) {
         // What size does the item want to be?
@@ -25,8 +26,8 @@ class _ChartWidget<T> extends StatelessWidget {
             (index, double prevValue, _) {
           return max(
               prevValue,
-              max(state.itemOptionsBuilder(index).minBarWidth ?? 0.0,
-                  state.itemOptionsBuilder(index).maxBarWidth ?? 0.0));
+              max(state.itemOptions.minBarWidth ?? 0.0,
+                  state.itemOptions.maxBarWidth ?? 0.0));
         });
 
         final _width =
@@ -39,7 +40,7 @@ class _ChartWidget<T> extends StatelessWidget {
         final _horizontalPadding = state.data.items.foldIndexed<double>(0.0,
             (index, double prevValue, _) {
           return max(
-              prevValue, state.itemOptionsBuilder(index).padding.horizontal);
+              prevValue, state.itemOptions.padding.horizontal);
         });
 
         final _size = Size(

@@ -19,7 +19,6 @@ class ChartStatePresenter extends ChangeNotifier {
     ref.read(chartDecorationsPresenter).addListener(() {
       notifyListeners();
     });
-    // _ref.listen(chartDecorationsPresenter);
   }
 
   final Ref ref;
@@ -35,7 +34,7 @@ class ChartStatePresenter extends ChangeNotifier {
 
   // Items
   EdgeInsets chartItemPadding = const EdgeInsets.only(left: 2, right: 2, top: 0, bottom: 0);
-  SelectedPainter selectedPainter = SelectedPainter.widget;
+  SelectedPainter selectedPainter = SelectedPainter.bar;
   double? maxBarWidth;
   double? minBarWidth;
   List<BorderSide> itemBorderSides = [_itemBorderSideDefault];
@@ -62,8 +61,7 @@ class ChartStatePresenter extends ChangeNotifier {
 
   ChartState<void> get state => ChartState(
         _defaultData,
-        itemOptions: selectedPainter == SelectedPainter.widget ? _getItemOptions(0) : const BarItemOptions(),
-        itemOptionsBuilder:  selectedPainter == SelectedPainter.widget ? null : _getItemOptions,
+        itemOptions: _getItemOptions(),
         behaviour: _behaviour,
         foregroundDecorations: _decorationsPresenter.foregroundDecorations.values.toList(),
         backgroundDecorations: _decorationsPresenter.backgroundDecorations.values.toList(),
@@ -168,39 +166,49 @@ class ChartStatePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
-  ItemOptions _getItemOptions(int index) {
+  ItemOptions _getItemOptions() {
     if (selectedPainter == SelectedPainter.bubble) {
       return BubbleItemOptions(
         padding: chartItemPadding,
-        color: _getColorForKey(index),
+        bubbleItemBuilder: (item, itemKey, listKey) {
+          return BubbleItem(
+              color: _getColorForKey(listKey), gradient: gradient[listKey], border: itemBorderSides[listKey]);
+        },
+        // color: _getColorForKey(index),
         maxBarWidth: maxBarWidth,
         minBarWidth: minBarWidth,
         multiItemStack: multiItemStack,
         multiValuePadding: multiValuePadding,
-        gradient: gradient[index],
-        border: itemBorderSides[index],
       );
     } else if (selectedPainter == SelectedPainter.bar) {
       return BarItemOptions(
         padding: chartItemPadding,
-        color: _getColorForKey(index),
+        barItemBuilder: (item, itemKey, listKey) {
+          return BarItem(
+            color: _getColorForKey(listKey),
+            gradient: gradient[listKey],
+            border: itemBorderSides[listKey],
+            radius: barBorderRadius[listKey],
+          );
+        },
         maxBarWidth: maxBarWidth,
         minBarWidth: minBarWidth,
         multiItemStack: multiItemStack,
         multiValuePadding: multiValuePadding,
-        gradient: gradient[index],
-        radius: barBorderRadius[index],
-        border: itemBorderSides[index],
       );
     } else if (selectedPainter == SelectedPainter.none) {
-      return const BubbleItemOptions(
-        color: Colors.transparent,
+      return BubbleItemOptions(
+        bubbleItemBuilder: (item, itemKey, listKey) {
+          return BubbleItem(color: Colors.transparent);
+        },
         maxBarWidth: 0,
         minBarWidth: 0,
       );
     } else if (selectedPainter == SelectedPainter.widget) {
       return WidgetItemOptions(
         multiItemStack: multiItemStack,
+        maxBarWidth: maxBarWidth,
+        minBarWidth: minBarWidth,
         chartItemBuilder: (item, itemKey, listKey) {
           return FuturamaBarWidget(stackItems: multiItemStack, listKey: listKey, item: item);
         },

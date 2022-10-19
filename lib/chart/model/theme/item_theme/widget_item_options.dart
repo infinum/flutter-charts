@@ -2,7 +2,7 @@ part of charts_painter;
 
 // Hidden because it's only used if chart item is a widget.
 GeometryPainter<T> _emptyPainter<T>(
-        ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions) =>
+        ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions, ChartDataItem chartDataItem) =>
     _EmptyGeometryPainter<T>(item, data, itemOptions);
 
 /// Options for widget items
@@ -20,7 +20,7 @@ class WidgetItemOptions extends ItemOptions {
     double? minBarWidth,
     bool multiItemStack = true,
   }) : super(
-          color: Colors.transparent,
+          // color: Colors.transparent,
           colorForValue: null,
           padding: EdgeInsets.zero,
           multiValuePadding: multiValuePadding,
@@ -28,6 +28,7 @@ class WidgetItemOptions extends ItemOptions {
           minBarWidth: minBarWidth,
           geometryPainter: _emptyPainter,
           multiItemStack: multiItemStack,
+          itemBuilder: chartItemBuilder,
         );
 
   const WidgetItemOptions._lerp({
@@ -42,6 +43,7 @@ class WidgetItemOptions extends ItemOptions {
           minBarWidth: minBarWidth,
           geometryPainter: _emptyPainter,
           multiItemStack: multiItemStack,
+          itemBuilder: chartItemBuilder,
         );
 
   final ChildChartItemBuilder chartItemBuilder;
@@ -49,21 +51,16 @@ class WidgetItemOptions extends ItemOptions {
   @override
   ItemOptions animateTo(ItemOptions endValue, double t) {
     return WidgetItemOptions._lerp(
-      chartItemBuilder: endValue is WidgetItemOptions
-          ? endValue.chartItemBuilder
-          : chartItemBuilder,
-      multiValuePadding:
-          EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ??
-              EdgeInsets.zero,
+      chartItemBuilder: endValue is WidgetItemOptions ? endValue.chartItemBuilder : chartItemBuilder,
+      multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero,
       maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
       minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
-      multiItemStack:
-          lerpDouble(_multiValueStacked, endValue._multiValueStacked, t) ?? 1.0,
+      multiItemStack: lerpDouble(_multiValueStacked, endValue._multiValueStacked, t) ?? 1.0,
     );
   }
-
-  @override
-  Paint getPaintForItem(ChartItem item, Size size, int key) {
-    return Paint();
-  }
+//
+// @override
+// Paint getPaintForItem(ChartItem item, Size size, int key) {
+//   return Paint();
+// }
 }

@@ -3,7 +3,7 @@ part of charts_painter;
 /// Item painter, use [barPainter] or [bubblePainter].
 /// Custom painter can also be added by extending [GeometryPainter]
 typedef ChartGeometryPainter<T> = GeometryPainter<T> Function(
-    ChartItem<T?> item, ChartData data, ItemOptions itemOptions);
+    ChartItem<T?> item, ChartData data, ItemOptions itemOptions, ChartDataItem chartDataItem);
 
 /// Get color for current item value
 typedef ColorForValue<T> = Color Function(
@@ -23,9 +23,10 @@ abstract class ItemOptions {
     this.maxBarWidth,
     this.minBarWidth,
     this.startPosition = 0.5,
-    this.color = Colors.red,
-    this.colorForValue,
+    // this.color = Colors.red,
+    this.colorForValue, // todo: remove
     bool multiItemStack = true,
+    required this.itemBuilder,
   }) : _multiValueStacked = multiItemStack ? 1.0 : 0.0;
 
   const ItemOptions._lerp({
@@ -35,9 +36,10 @@ abstract class ItemOptions {
     this.maxBarWidth,
     this.minBarWidth,
     this.startPosition = 0.5,
-    this.color = Colors.red,
+    // this.color = Colors.red,
     this.colorForValue,
     double multiItemStack = 1.0,
+    required this.itemBuilder,
   }) : _multiValueStacked = multiItemStack;
 
   /// Item padding, if [minBarWidth] and [padding] are more then available space
@@ -49,8 +51,9 @@ abstract class ItemOptions {
   final EdgeInsets multiValuePadding;
   final double _multiValueStacked;
 
+  final ItemBuilder itemBuilder;
   /// Define color for value, this allows different colors for different values
-  final Color color;
+  // final Color color;
 
   /// Generate item color from current value of the item
   final ColorForValue? colorForValue;
@@ -80,34 +83,6 @@ abstract class ItemOptions {
   /// When making custom [ItemOptions] make sure to override this return custom painter
   /// with all available options, otherwise changes in options won't be animated
   ItemOptions animateTo(ItemOptions endValue, double t);
-
-  /// Get current item color
-  ///
-  /// Order for getting item color is:
-  /// 1. [item] is null then just [color] is returned.
-  /// 2. [colorForKey] is set then return color we get from [colorForKey]
-  /// 3. [colorForValue] is set then return color we get from [colorForValue]
-  /// 4. both [colorForKey] and [colorForValue] are null then return [color]
-  Color getItemColor(ChartItem? item, int index) {
-    if (item == null) {
-      return color;
-    }
-
-    return _getColorForValue(item);
-  }
-
-  Color _getColorForValue(ChartItem item) {
-    if (colorForValue != null) {
-      return colorForValue?.call(color, item) ?? color;
-    }
-
-    return color;
-  }
-
-  /// Get paint used to draw this item.
-  Paint getPaintForItem(ChartItem item, Size size, int key) {
-    return Paint()..color = getItemColor(item, key);
-  }
 }
 
 /// Lerp [ColorForValue] function to get color in the animation
@@ -118,11 +93,11 @@ class ColorForValueLerp {
       return null;
     }
 
-    return (Color? defaultColor, ChartItem item) {
-      final _aColor = a._getColorForValue(item);
-      final _bColor = b._getColorForValue(item);
-
-      return Color.lerp(_aColor, _bColor, t) ?? _bColor;
-    };
+    // return (Color? defaultColor, ChartItem item) {
+    //   final _aColor = a._getColorForValue(item);
+    //   final _bColor = b._getColorForValue(item);
+    //
+    //   return Color.lerp(_aColor, _bColor, t) ?? _bColor;
+    // };
   }
 }
