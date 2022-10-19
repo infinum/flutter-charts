@@ -21,6 +21,21 @@ GeometryPainter<T> _emptyPainter<T>(ChartItem<T> item, ChartData<T> data, ItemOp
 /// ),
 /// ```
 ///
+/// You can replace your [ValueDecoration] with [WidgetItemOptions] like this:
+/// ```dart
+/// itemOptions: WidgetItemOptions(
+///  chartItemBuilder: (item, itemKey, listKey) => Container(
+///   color: Colors.red,
+///   child: Center(
+///     child: Text(
+///       '${item.max?.toString()}',
+///       style: TextStyle(color: Colors.white),
+///     ),
+///   ),
+///  ),
+/// ),
+/// ```
+///
 /// Other options are reverted to 0 since you can set everything in the builder.
 ///
 class WidgetItemOptions extends ItemOptions {
