@@ -2,9 +2,11 @@ part of charts_painter;
 
 class ChartDecorationChildRenderer<T> extends SingleChildRenderObjectWidget {
   ChartDecorationChildRenderer(
-      this.chartState, this.decorationPainter, Widget child,
-      {Key? key})
-      : super(key: key, child: child);
+    this.chartState,
+    this.decorationPainter,
+    Widget child, {
+    Key? key,
+  }) : super(key: key, child: child);
 
   final ChartState<T?> chartState;
   final DecorationPainter decorationPainter;
@@ -15,30 +17,27 @@ class ChartDecorationChildRenderer<T> extends SingleChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, _RenderChartDecorationChildren renderObject) {
+  void updateRenderObject(BuildContext context, _RenderChartDecorationChildren renderObject) {
     renderObject
       ..chartState = chartState
-      ..item = decorationPainter;
+      ..decorationPainter = decorationPainter;
 
     renderObject.markNeedsLayout();
   }
 }
 
 class _RenderChartDecorationChildren<T> extends RenderShiftedBox {
-  _RenderChartDecorationChildren(this._chartState, this._decoration,
-      [RenderBox? child])
-      : super(child);
+  _RenderChartDecorationChildren(this._chartState, this._decoration, [RenderBox? child]) : super(child);
 
   DecorationPainter _decoration;
-  set item(DecorationPainter decoration) {
+  set decorationPainter(DecorationPainter decoration) {
     if (decoration != _decoration) {
       _decoration = decoration;
       markNeedsPaint();
     }
   }
 
-  DecorationPainter get item => _decoration;
+  DecorationPainter get decorationPainter => _decoration;
 
   ChartState<T?> _chartState;
   set chartState(ChartState<T?> chartState) {
@@ -67,9 +66,7 @@ class _RenderChartDecorationChildren<T> extends RenderShiftedBox {
   @override
   bool get sizedByParent => false;
 
-  Size _computeSize(
-      {required BoxConstraints constraints,
-      required ChildLayouter layoutChild}) {
+  Size _computeSize({required BoxConstraints constraints, required ChildLayouter layoutChild}) {
     if (child != null) {
       final childSize = layoutChild(child!, constraints);
       final double width = max(childSize.width, _defaultSize);
@@ -100,17 +97,8 @@ class _RenderChartDecorationChildren<T> extends RenderShiftedBox {
 
     if (child != null) {
       final childParentData = child!.parentData! as BoxParentData;
-      final _difference = Offset(
-          ((constraints.biggest.width - _chartState.defaultMargin.horizontal) /
-                  _chartState.data.listSize) -
-              size.width,
-          0.0);
-
-      final offset =
-          _decoration.applyPaintTransform(_chartState, constraints.biggest) +
-              (_difference / 2);
-      childParentData.offset =
-          Alignment.center.alongOffset(size - child!.size as Offset) + offset;
+      final offset = _decoration.applyPaintTransform(_chartState, constraints.biggest);
+      childParentData.offset = Alignment.center.alongOffset(size - child!.size as Offset) + offset;
     }
   }
 
@@ -123,8 +111,7 @@ class _RenderChartDecorationChildren<T> extends RenderShiftedBox {
 
     final _canvas = context.canvas;
 
-    final _position =
-        _decoration.applyPaintTransform(_chartState, constraints.biggest);
+    final _position = _decoration.applyPaintTransform(_chartState, constraints.biggest);
     _canvas.save();
     _canvas.translate(_position.dx, _position.dy);
     _decoration.draw(context.canvas, size, _chartState);

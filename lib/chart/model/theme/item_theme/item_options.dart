@@ -6,13 +6,12 @@ typedef ChartGeometryPainter<T> = GeometryPainter<T> Function(
     ChartItem<T?> item, ChartData data, ItemOptions itemOptions);
 
 /// Get color for current item value
-typedef ColorForValue<T> = Color Function(
-    Color defaultColor, ChartItem<T> item);
+typedef ColorForValue<T> = Color Function(Color defaultColor, ChartItem<T> item);
 
-/// Options for drawing the items
-/// Need to provide [ChartGeometryPainter]
+/// Options for chart items, need to provide [geometryPainter] for drawing the items on the chart.
+/// Extend this to make your custom options if needed.
 ///
-/// Extend this to make your custom options if needed. For example see [BarItemOptions] or [BubbleItemOptions]
+/// [WidgetItemOptions] is only [ItemOptions] that is not using [geometryPainter] and instead is passing [_EmptyGeometryPainter] as the painter, and defaulting all other values to 0.0.
 abstract class ItemOptions {
   /// Default constructor for ItemOptions
   /// It's recommended to make/use custom item options for custom painters.
@@ -85,9 +84,7 @@ abstract class ItemOptions {
   ///
   /// Order for getting item color is:
   /// 1. [item] is null then just [color] is returned.
-  /// 2. [colorForKey] is set then return color we get from [colorForKey]
-  /// 3. [colorForValue] is set then return color we get from [colorForValue]
-  /// 4. both [colorForKey] and [colorForValue] are null then return [color]
+  /// 2. [colorForValue] is set then return color we get from [colorForValue]
   Color getItemColor(ChartItem? item, int index) {
     if (item == null) {
       return color;
@@ -96,6 +93,7 @@ abstract class ItemOptions {
     return _getColorForValue(item);
   }
 
+  /// Get color from current item
   Color _getColorForValue(ChartItem item) {
     if (colorForValue != null) {
       return colorForValue?.call(color, item) ?? color;
