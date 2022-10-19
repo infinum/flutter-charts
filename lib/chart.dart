@@ -51,6 +51,7 @@ part 'chart/render/decorations/target_decoration.dart';
 part 'chart/render/decorations/target_legends_decoration.dart';
 part 'chart/render/decorations/value_decoration.dart';
 part 'chart/render/decorations/vertical_axis_decoration.dart';
+part 'chart/render/decorations/widget_decoration.dart';
 part 'chart/render/geometry/child_item_renderer.dart';
 // Geometry painters
 part 'chart/render/geometry/leaf_item_renderer.dart';
