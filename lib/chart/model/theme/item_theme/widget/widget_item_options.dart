@@ -9,10 +9,7 @@ typedef WidgetItemBuilder<T> = Widget Function(ItemBuilderData<T>);
 
 /// Options for widget items.
 ///
-/// **You cannot pass this to [ChartState.itemOptionsBuilder]**, since builder already has the list key,
-/// there is no need to use the builder. Use just [ChartState.itemOptions] instead.
-///
-/// [widgetItemBuilder] return a [Widget] that will be shown as [ChartItem].
+/// [widgetItemBuilder] returns a [Widget] that will be shown as [ChartItem].
 ///
 /// [multiStackItem] This has effect only if you have multiple lists.
 /// Should the items stack one on top of the other. If false items will be shown side by side in single [itemWidth]
@@ -76,9 +73,4 @@ class WidgetItemOptions extends ItemOptions {
       multiItemStack: lerpDouble(_multiValueStacked, endValue._multiValueStacked, t) ?? 1.0,
     );
   }
-//
-// @override
-// Paint getPaintForItem(ChartItem item, Size size, int key) {
-//   return Paint();
-// }
 }

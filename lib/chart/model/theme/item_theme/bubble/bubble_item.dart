@@ -1,8 +1,11 @@
 part of charts_painter;
 
 class BubbleItem extends DrawDataItem {
-  const BubbleItem({Gradient? gradient, BorderSide? border, Color? color})
-      : super(color: color, gradient: gradient, border: border);
+  const BubbleItem({
+    Gradient? gradient,
+    BorderSide? border,
+    Color? color,
+  }) : super(color: color, gradient: gradient, border: border);
 
   BubbleItem lerp(BubbleItem endValue, double t) {
     return BubbleItem(
@@ -17,7 +20,6 @@ class BubbleItem extends DrawDataItem {
 }
 
 class BubbleItemBuilderLerp {
-  /// Make new function that will return lerp [ItemOptions] based on [ChartState.itemOptionsBuilder]
   static BubbleItemBuilder lerp(BubbleItemOptions a, BubbleItemOptions b, double t) {
     return (ItemBuilderData data) {
       final _aItem = a.bubbleItemBuilder(data);

@@ -5,10 +5,16 @@ part of charts_painter;
 typedef ChartGeometryPainter<T> = GeometryPainter<T> Function(
     ChartItem<T?> item, ChartData data, ItemOptions itemOptions, DrawDataItem drawDataItem);
 
-/// Options for chart items, need to provide [geometryPainter] for drawing the items on the chart.
-/// Extend this to make your custom options if needed.
+/// Options for chart items. You can use this subclasses: [BarItemOptions], [BubbleItemOptions], [WidgetItemOptions]
 ///
-/// [WidgetItemOptions] is only [ItemOptions] that is not using [geometryPainter] and instead is passing [_EmptyGeometryPainter] as the painter, and defaulting all other values to 0.0.
+/// Required [itemBuilder] parameter is used to provide a data for each item on the chart.
+///
+/// Required [geometryPainter] specifies how to draw these items on the chart.
+///
+/// Extend this to make your custom options or painters if needed.
+///
+/// [WidgetItemOptions] is only [ItemOptions] that is not using [geometryPainter] and
+/// instead is passing [_EmptyGeometryPainter] as the painter, and defaulting all other values to 0.0.
 abstract class ItemOptions {
   /// Default constructor for ItemOptions
   /// It's recommended to make/use custom item options for custom painters.

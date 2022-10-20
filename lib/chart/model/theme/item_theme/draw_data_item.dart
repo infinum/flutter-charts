@@ -1,5 +1,8 @@
 part of charts_painter;
 
+/// Data needed for drawing on the canvas
+///
+/// Use subclasses [BarItem], [BubbleItem]
 abstract class DrawDataItem extends Equatable {
   const DrawDataItem({Color? color, this.gradient, BorderSide? border})
       : color = color ?? Colors.black,

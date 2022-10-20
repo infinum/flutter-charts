@@ -1,8 +1,12 @@
 part of charts_painter;
 
 class BarItem extends DrawDataItem {
-  const BarItem({this.radius, Gradient? gradient, BorderSide? border, Color? color})
-      : super(color: color, gradient: gradient, border: border);
+  const BarItem({
+    this.radius,
+    Gradient? gradient,
+    BorderSide? border,
+    Color? color,
+  }) : super(color: color, gradient: gradient, border: border);
 
   /// Set border radius for each item
   /// Radius will automatically flip when showing values in negative space
@@ -21,9 +25,7 @@ class BarItem extends DrawDataItem {
   List<Object?> get props => [radius, gradient, border, color];
 }
 
-
 class BarItemBuilderLerp {
-  /// Make new function that will return lerp [ItemOptions] based on [ChartState.itemOptionsBuilder]
   static BarItemBuilder lerp(BarItemOptions a, BarItemOptions b, double t) {
     return (ItemBuilderData data) {
       final _aItem = a.barItemBuilder(data);
