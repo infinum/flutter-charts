@@ -23,7 +23,7 @@ class ChartTest extends StatelessWidget {
         state: ChartState(
           ChartData(
             [
-              byCount.map((e) => BarValue<void>(e.toDouble())).toList(),
+              byCount.map((e) => ChartItem<void>(e.toDouble())).toList(),
               // byCount.map((e) => BarValue<void>(e.toDouble())).toList()
             ],
           ),

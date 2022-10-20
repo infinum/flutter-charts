@@ -188,7 +188,7 @@ class ChartItemsLerp {
     final _listLength = lerpDouble(a.length, b.length, t) ?? b.length;
 
     /// Empty value for generated list.
-    final _emptyValue = ChartItem<T?>(null, 0.0, 0.0);
+    final _emptyValue = ChartItem<T?>( 0.0, value: null, min: 0.0);
 
     return List<ChartItem<T?>>.generate(_listLength.ceil(), (int index) {
       // If old list and new list have value at [index], then just animate from,
