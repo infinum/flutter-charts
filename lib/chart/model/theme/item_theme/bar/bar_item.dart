@@ -25,9 +25,9 @@ class BarItem extends DrawDataItem {
 class BarItemBuilderLerp {
   /// Make new function that will return lerp [ItemOptions] based on [ChartState.itemOptionsBuilder]
   static BarItemBuilder lerp(BarItemOptions a, BarItemOptions b, double t) {
-    return (ChartItem item, int itemKey, int listKey) {
-      final _aItem = a.barItemBuilder(item, itemKey, listKey);
-      final _bItem = b.barItemBuilder(item, itemKey, listKey);
+    return (ItemBuilderData data) {
+      final _aItem = a.barItemBuilder(data);
+      final _bItem = b.barItemBuilder(data);
       return _aItem.lerp(_bItem, t);
     };
   }

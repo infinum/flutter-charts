@@ -148,7 +148,7 @@ void main() {
                 valueAxisMaxOver: 2,
               ),
               itemOptions: BarItemOptions(
-                color: Colors.transparent,
+                barItemBuilder: (_) => BarItem(color: Colors.transparent),
               ),
               foregroundDecorations: [
                 SparkLineDecoration(

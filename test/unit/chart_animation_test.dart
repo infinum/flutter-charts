@@ -31,7 +31,7 @@ void main() {
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
       expect(_middleState.items[0],
-          [ChartItem<void>(null, min: null, value: 15), ChartItem<void>(0.0, min: 0.0, value: 5)]);
+          [ChartItem<void>(15), ChartItem<void>(5, min: 0.0)]);
     });
 
     test('Bar -> Bubble animates different type items', () {
@@ -41,7 +41,7 @@ void main() {
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items[0], [ChartItem<void>(10, min: null, value: 15)]);
+      expect(_middleState.items[0], [ChartItem<void>(15, min: 10)]);
     });
 
     test('Bubble -> Bar animates different type items', () {
@@ -51,7 +51,7 @@ void main() {
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items[0], [ChartItem<void>(5, min: null, value: 15)]);
+      expect(_middleState.items[0], [ChartItem<void>(15, min: 5)]);
     });
 
     test('Bar -> Candle animates different type items', () {
@@ -71,7 +71,7 @@ void main() {
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items[0], [ChartItem<void>(5, min: null, value: 15)]);
+      expect(_middleState.items[0], [ChartItem<void>(15, min: 5)]);
     });
 
     test('Bubble -> Candle animates different type items', () {
@@ -91,7 +91,7 @@ void main() {
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items[0], [ChartItem<void>(10, value:  15)]);
+      expect(_middleState.items[0], [ChartItem<void>(15, min: 10)]);
     });
   });
 

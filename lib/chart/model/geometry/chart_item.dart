@@ -4,7 +4,7 @@ part of charts_painter;
 class ChartItem<T> {
 
   /// Constructor for regular items
-  ChartItem(this.max, {this.min = 0.0, this.value});
+  ChartItem(this.max, {this.min, this.value});
 
   /// Minimum chart item value
   final double? min;

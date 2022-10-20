@@ -91,9 +91,8 @@ final List<ChartState<bool>> _chartStates = [
     ),
     itemOptions: BarItemOptions(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      barItemBuilder: (item, __, lineKey) {
-        // todo: crashes here
-        dynamic _value = item.value;
+      barItemBuilder: (data) {
+        dynamic _value = data.item.value;
         final color = (_value is bool && _value) ? Color(0xFF567EF7) : Color(0xFF5ABEF9);
         return BarItem(
           color: color,
@@ -143,10 +142,10 @@ final List<ChartState<bool>> _chartStates = [
     ),
     itemOptions: BarItemOptions(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
-      barItemBuilder: (_, __, lineKey) {
+      barItemBuilder: (data) {
         return BarItem(
           radius: BorderRadius.all(Radius.circular(12.0)),
-          color: [Color(0xFFE6E6FD), Color(0xFF4D4DA6)][lineKey],
+          color: [Color(0xFFE6E6FD), Color(0xFF4D4DA6)][data.listKey],
         );
       },
     ),
@@ -192,8 +191,8 @@ final List<ChartState<bool>> _chartStates = [
       axisMax: 4,
     ),
     itemOptions: BarItemOptions(
-      barItemBuilder: (_, __, lineKey) {
-        return BarItem(color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][lineKey]);
+      barItemBuilder: (data) {
+        return BarItem(color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][data.listKey]);
       },
       multiValuePadding: const EdgeInsets.symmetric(horizontal: 4.0),
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -256,7 +255,7 @@ final List<ChartState<bool>> _chartStates = [
       axisMax: 30,
     ),
     itemOptions: BarItemOptions(
-      barItemBuilder: (_, __, ___) {
+      barItemBuilder: (_) {
         return BarItem(color: Colors.transparent);
       },
       multiItemStack: false,
@@ -322,7 +321,7 @@ final List<ChartState<bool>> _chartStates = [
       axisMax: 35,
     ),
     itemOptions: BarItemOptions(
-      barItemBuilder: (_, __, ___) {
+      barItemBuilder: (_) {
         return BarItem(color: Colors.transparent);
       },
     ),
@@ -396,10 +395,10 @@ final List<ChartState<bool>> _chartStates = [
       axisMin: -14,
     ),
     itemOptions: BarItemOptions(
-      barItemBuilder: (_, __, lineKey) {
+      barItemBuilder: (data) {
         return BarItem(
           radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-          color: [Color(0xFF0139A4), Color(0xFF00B6E6)][lineKey],
+          color: [Color(0xFF0139A4), Color(0xFF00B6E6)][data.listKey],
         );
       },
       padding: const EdgeInsets.symmetric(horizontal: 12.0),

@@ -1,16 +1,12 @@
 part of charts_painter;
 
-typedef ChildChartItemBuilder<T> = Widget Function(
-    ChartItem<T?> item, int itemKey, int listKey);
-
 /// Child item renderer for chart items. It will render any [Widget] passed as child.
 /// It will constrain it to exact size. Make sure you are not using transparent widgets that could
 /// taint the data shown!
 ///
 /// This is a [ChildRenderObjectWidget], single child can be passed to it.
 class ChildChartItemRenderer<T> extends SingleChildRenderObjectWidget {
-  ChildChartItemRenderer(this.item, this.state, this.itemOptions,
-      {Key? key, Widget? child, this.arrayKey = 0})
+  ChildChartItemRenderer(this.item, this.state, this.itemOptions, {Key? key, Widget? child, this.arrayKey = 0})
       : super(key: key, child: child);
 
   final ChartItem<T> item;
@@ -24,8 +20,7 @@ class ChildChartItemRenderer<T> extends SingleChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, _RenderChildChartItem<T?> renderObject) {
+  void updateRenderObject(BuildContext context, _RenderChildChartItem<T?> renderObject) {
     renderObject
       ..state = state
       ..itemOptions = itemOptions
@@ -37,14 +32,14 @@ class ChildChartItemRenderer<T> extends SingleChildRenderObjectWidget {
 }
 
 class _RenderChildChartItem<T> extends RenderShiftedBox {
-  _RenderChildChartItem(this._state, this._itemOptions, this._item,
-      {int? key, RenderBox? child})
+  _RenderChildChartItem(this._state, this._itemOptions, this._item, {int? key, RenderBox? child})
       : _key = key ?? 0,
         super(child);
 
   int _key;
 
   int get key => _key;
+
   set key(int key) {
     if (key != _key) {
       _key = key;
@@ -53,6 +48,7 @@ class _RenderChildChartItem<T> extends RenderShiftedBox {
   }
 
   ChartItem<T> _item;
+
   set item(ChartItem<T> item) {
     if (item != _item) {
       _item = item;
@@ -63,6 +59,7 @@ class _RenderChildChartItem<T> extends RenderShiftedBox {
   ChartItem<T> get item => _item;
 
   ChartData<T> _state;
+
   set state(ChartData<T> state) {
     if (state != _state) {
       _state = state;
@@ -71,6 +68,7 @@ class _RenderChildChartItem<T> extends RenderShiftedBox {
   }
 
   ItemOptions _itemOptions;
+
   set itemOptions(ItemOptions itemOptions) {
     if (itemOptions != _itemOptions) {
       _itemOptions = itemOptions;
@@ -95,9 +93,7 @@ class _RenderChildChartItem<T> extends RenderShiftedBox {
   @override
   bool get sizedByParent => false;
 
-  Size _computeSize(
-      {required BoxConstraints constraints,
-      required ChildLayouter layoutChild}) {
+  Size _computeSize({required BoxConstraints constraints, required ChildLayouter layoutChild}) {
     if (child != null) {
       final childSize = layoutChild(child!, constraints);
       return constraints.constrain(childSize);

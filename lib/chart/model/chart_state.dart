@@ -13,8 +13,6 @@ part of charts_painter;
 /// More different decorations can be added by extending [DecorationPainter]
 ///
 
-typedef ItemOptionsBuilder = ItemOptions Function(int);
-
 class ChartState<T> {
   /// Chart state constructor
   ChartState(
@@ -37,7 +35,6 @@ class ChartState<T> {
   factory ChartState.line(
     ChartData<T> data, {
     required BubbleItemOptions itemOptions,
-    ItemOptionsBuilder? itemOptionsBuilder,
     ChartBehaviour behaviour = const ChartBehaviour(),
     List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
     List<DecorationPainter> foregroundDecorations = const <DecorationPainter>[],
@@ -59,7 +56,6 @@ class ChartState<T> {
   factory ChartState.bar(
     ChartData<T> data, {
     required BarItemOptions itemOptions,
-    ItemOptionsBuilder? itemOptionsBuilder,
     ChartBehaviour behaviour = const ChartBehaviour(),
     List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
     List<DecorationPainter> foregroundDecorations = const <DecorationPainter>[],
@@ -206,7 +202,7 @@ class ChartState<T> {
                         itemOptions,
                         itemKey: itemKey,
                         listKey: lineKey,
-                        drawDataItem: itemOptions.itemBuilder(item, itemKey, lineKey) as DrawDataItem,
+                        drawDataItem: itemOptions.itemBuilder(ItemBuilderData<T?>(item, itemKey, lineKey)) as DrawDataItem,
                       ))
                   .toList(),
             )
@@ -216,7 +212,7 @@ class ChartState<T> {
   }
 
   /// It can render chart items as widgets, and it only accepts [WidgetItemOptions] since it needs the
-  /// [WidgetItemOptions.chartItemBuilder] to build the chart item widgets.
+  /// [WidgetItemOptions.widgetItemBuilder] to build the chart item widgets.
   static ChartDataRendererFactory<T?> _widgetItemRenderer<T>(
       WidgetItemOptions itemOptions) {
     return (chartState) => ChartLinearDataRenderer<T>(
@@ -231,7 +227,7 @@ class ChartState<T> {
                         chartState.data,
                         itemOptions,
                         arrayKey: lineKey,
-                        child: itemOptions.chartItemBuilder(e, itemKey, lineKey),
+                        child: itemOptions.widgetItemBuilder(ItemBuilderData<T?>(e, itemKey, lineKey)),
                       ),
                     )
                     .toList();
@@ -242,15 +238,3 @@ class ChartState<T> {
   }
 }
 
-/// Lerp [ItemOptionsBuilder] function to get [ItemOptions] from builder in animation
-// class ItemOptionsBuilderLerp {
-//   /// Make new function that will return lerp [ItemOptions] based on [ChartState.itemOptionsBuilder]
-//   static ItemOptionsBuilder? lerp(ChartState a, ChartState b, double t) {
-//     return (int key) {
-//       final _aOptions = a.itemOptionsBuilder(key);
-//       final _bOptions = b.itemOptionsBuilder(key);
-//
-//       return _aOptions.animateTo(_bOptions, t);
-//     };
-//   }
-// }

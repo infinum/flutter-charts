@@ -97,8 +97,8 @@ class _LineChartScreenState extends State<LineChartScreen> {
                     lineWidth: 2.0,
                     chartItemOptions: BubbleItemOptions(
                       maxBarWidth: _showLine ? 0.0 : 6.0,
-                      bubbleItemBuilder: (_, __, lineKey) =>
-                          BubbleItem(color: [Colors.black, Colors.red, Colors.blue][lineKey]),
+                      bubbleItemBuilder: (data) =>
+                          BubbleItem(color: [Colors.black, Colors.red, Colors.blue][data.listKey]),
                     ),
                     smoothCurves: _smoothPoints,
                     backgroundDecorations: [

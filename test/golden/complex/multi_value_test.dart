@@ -16,10 +16,12 @@ void main() {
         'Multiple',
         getMultiValueChart(
           size: 4,
-          optionsBuilder: (key) => BarItemOptions(
+          options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][key]
-                .withOpacity(0.5),
+            barItemBuilder: (data) {
+              return BarItem(
+                  color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listKey].withOpacity(0.5));
+            },
           ),
           strategy: DefaultDataStrategy(),
         ),
@@ -28,10 +30,13 @@ void main() {
         'Stack',
         getMultiValueChart(
           size: 4,
-          optionsBuilder: (key) => BarItemOptions(
+          options: BarItemOptions(
+            barItemBuilder: (data) {
+              return BarItem(
+                color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listKey].withOpacity(0.5),
+              );
+            },
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][key]
-                .withOpacity(0.5),
             multiItemStack: true,
           ),
           strategy: StackDataStrategy(),
@@ -41,10 +46,13 @@ void main() {
         'Side by side',
         getMultiValueChart(
           size: 4,
-          optionsBuilder: (key) => BarItemOptions(
+          options: BarItemOptions(
+            barItemBuilder: (data) {
+              return BarItem(
+                color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listKey].withOpacity(0.5),
+              );
+            },
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][key]
-                .withOpacity(0.5),
             multiItemStack: false,
           ),
         ),
@@ -57,19 +65,14 @@ void main() {
             4,
             (index) => SparkLineDecoration(
               lineArrayIndex: index,
-              lineColor: [
-                Colors.red,
-                Colors.yellow,
-                Colors.green,
-                Colors.blue
-              ][index],
+              lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
               lineWidth: 3.0,
               stretchLine: true,
             ),
           ),
           options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            color: Colors.red.withOpacity(0.025),
+            barItemBuilder: (_) => BarItem(color: Colors.red.withOpacity(0.025)),
           ),
         ),
       )
@@ -81,12 +84,7 @@ void main() {
             4,
             (index) => SparkLineDecoration(
               lineArrayIndex: index,
-              lineColor: [
-                Colors.red,
-                Colors.yellow,
-                Colors.green,
-                Colors.blue
-              ][index],
+              lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
               lineWidth: 3.0,
               stretchLine: true,
             ),
@@ -94,7 +92,7 @@ void main() {
           strategy: StackDataStrategy(),
           options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            color: Colors.red.withOpacity(0.025),
+            barItemBuilder: (data) => BarItem(color: Colors.red.withOpacity(0.025)),
           ),
         ),
       )
@@ -106,20 +104,17 @@ void main() {
               4,
               (index) => SparkLineDecoration(
                     lineArrayIndex: index,
-                    lineColor: [
-                      Colors.red,
-                      Colors.yellow,
-                      Colors.green,
-                      Colors.blue
-                    ][index],
+                    lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
                     lineWidth: 3.0,
                     startPosition: index / 4,
                   )),
-          optionsBuilder: (key) => BarItemOptions(
+          options: BarItemOptions(
+            barItemBuilder: (data) {
+              return BarItem(
+                  color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listKey].withOpacity(0.1));
+            },
             multiValuePadding: const EdgeInsets.symmetric(horizontal: 1.0),
             padding: const EdgeInsets.symmetric(horizontal: 1.0),
-            color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][key]
-                .withOpacity(0.1),
             multiItemStack: false,
           ),
         ),
@@ -158,10 +153,12 @@ void main() {
               stretchLine: true,
             ),
           ],
-          optionsBuilder: (key) => BarItemOptions(
+          options: BarItemOptions(
+            barItemBuilder: (data) {
+              return BarItem(
+                  color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listKey].withOpacity(0.1));
+            },
             padding: const EdgeInsets.symmetric(horizontal: 1.0),
-            color: [Colors.green, Colors.yellow, Colors.red, Colors.blue][key]
-                .withOpacity(0.1),
           ),
         ),
       )
@@ -185,14 +182,18 @@ void main() {
               stretchLine: true,
             ),
           ],
-          optionsBuilder: (key) => BarItemOptions(
+          options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 1.0),
-            color: [
-              Colors.transparent,
-              Colors.transparent,
-              Colors.yellow.withOpacity(0.8),
-              Colors.green.withOpacity(0.8),
-            ][key],
+            barItemBuilder: (data) {
+              return BarItem(
+                color: [
+                  Colors.transparent,
+                  Colors.transparent,
+                  Colors.yellow.withOpacity(0.8),
+                  Colors.green.withOpacity(0.8),
+                ][data.listKey],
+              );
+            },
             multiItemStack: false,
           ),
         ),
@@ -233,21 +234,24 @@ void main() {
               targetAreaFillColor: Colors.blue.withOpacity(0.4),
             ),
           ],
-          optionsBuilder: (key) => BarItemOptions(
+          options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 1.0),
-            color: [
-              Colors.transparent,
-              Colors.transparent,
-              Colors.yellow.withOpacity(0.8),
-              Colors.green.withOpacity(0.8),
-            ][key],
+            barItemBuilder: (data) {
+              return BarItem(
+                color: [
+                  Colors.transparent,
+                  Colors.transparent,
+                  Colors.yellow.withOpacity(0.8),
+                  Colors.green.withOpacity(0.8),
+                ][data.listKey],
+              );
+            },
             multiItemStack: false,
           ),
           behaviour: ChartBehaviour(),
         ),
       );
-    await tester.pumpWidgetBuilder(builder.build(),
-        surfaceSize: const Size(1400, 1000), textScaleSize: 1.4);
+    await tester.pumpWidgetBuilder(builder.build(), surfaceSize: const Size(1400, 1000), textScaleSize: 1.4);
     await screenMatchesGolden(tester, 'complex_multi_charts');
   });
 }

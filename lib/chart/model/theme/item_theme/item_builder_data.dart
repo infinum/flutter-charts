@@ -1,7 +1,7 @@
 part of charts_painter;
 
 
-typedef ItemBuilder<T> = dynamic Function(ChartItem<T?> item, int itemKey, int listKey);
+typedef ItemBuilder<T> = dynamic Function(ItemBuilderData<T>);
 
 
 /// Data that can be used when building items to looks different.

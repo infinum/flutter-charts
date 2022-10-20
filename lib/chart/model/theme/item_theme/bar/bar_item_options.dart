@@ -5,7 +5,7 @@ GeometryPainter<T> barPainter<T>(
         ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions, DrawDataItem drawDataItem) =>
     BarGeometryPainter<T>(item, data, itemOptions, drawDataItem as BarItem);
 
-typedef BarItemBuilder<T> = BarItem Function(ChartItem<T?> item, int itemKey, int listKey);
+typedef BarItemBuilder<T> = BarItem Function(ItemBuilderData data);
 
 /// Extension options for bar items
 /// [geometryPainter] is set to [BarGeometryPainter]
@@ -72,6 +72,6 @@ class BarItemOptions extends ItemOptions {
   }
 }
 
-BarItem _defaultBarItem(ChartItem item, int itemKey, int listKey) {
+BarItem _defaultBarItem(ItemBuilderData _) {
   return BarItem();
 }

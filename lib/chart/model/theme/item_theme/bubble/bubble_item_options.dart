@@ -5,7 +5,7 @@ GeometryPainter<T> bubblePainter<T>(
         ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions, DrawDataItem drawDataItem) =>
     BubbleGeometryPainter<T>(item, data, itemOptions, drawDataItem as BubbleItem);
 
-typedef BubbleItemBuilder<T> = BubbleItem Function(ChartItem<T?> item, int itemKey, int listKey);
+typedef BubbleItemBuilder<T> = BubbleItem Function(ItemBuilderData<T>);
 
 /// Extension options for bar items
 /// [geometryPainter] is set to [BubbleGeometryPainter]
@@ -67,6 +67,6 @@ class BubbleItemOptions extends ItemOptions {
   }
 }
 
-BubbleItem _defaultBubbleItem(ChartItem item, int itemKey, int listKey) {
+BubbleItem _defaultBubbleItem(ItemBuilderData _) {
   return BubbleItem();
 }

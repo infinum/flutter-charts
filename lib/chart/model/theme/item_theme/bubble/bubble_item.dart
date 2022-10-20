@@ -19,9 +19,9 @@ class BubbleItem extends DrawDataItem {
 class BubbleItemBuilderLerp {
   /// Make new function that will return lerp [ItemOptions] based on [ChartState.itemOptionsBuilder]
   static BubbleItemBuilder lerp(BubbleItemOptions a, BubbleItemOptions b, double t) {
-    return (ChartItem item, int itemKey, int listKey) {
-      final _aItem = a.bubbleItemBuilder(item, itemKey, listKey);
-      final _bItem = b.bubbleItemBuilder(item, itemKey, listKey);
+    return (ItemBuilderData data) {
+      final _aItem = a.bubbleItemBuilder(data);
+      final _bItem = b.bubbleItemBuilder(data);
       return _aItem.lerp(_bItem, t);
     };
   }

@@ -30,14 +30,14 @@ class ComplexCharts extends StatelessWidget {
                   itemOptions: BarItemOptions(
                       padding: const EdgeInsets.symmetric(horizontal: 2.0),
                       maxBarWidth: 12.0,
-                      barItemBuilder: (_, __, lineKey) {
+                      barItemBuilder: (data) {
                         return BarItem(
                             radius: BorderRadius.vertical(top: Radius.circular(12.0)),
                             color: [
                               Theme.of(context).colorScheme.primary,
                               Theme.of(context).colorScheme.secondary,
                               Theme.of(context).colorScheme.primaryVariant,
-                            ][lineKey]);
+                            ][data.listKey]);
                       }),
                   backgroundDecorations: [
                     GridDecoration(
@@ -75,13 +75,13 @@ class ComplexCharts extends StatelessWidget {
                   itemOptions: BarItemOptions(
                       padding: const EdgeInsets.symmetric(horizontal: 2.0),
                       maxBarWidth: 12.0,
-                      barItemBuilder: (_, __, lineKey) {
+                      barItemBuilder: (data) {
                         return BarItem(
                           color: [
                             Theme.of(context).colorScheme.primary,
                             Theme.of(context).colorScheme.secondary,
                             Theme.of(context).colorScheme.primaryVariant,
-                          ][lineKey],
+                          ][data.listKey],
                           radius: BorderRadius.vertical(top: Radius.circular(12.0)),
                         );
                       }),

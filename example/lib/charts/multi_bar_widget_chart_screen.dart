@@ -98,7 +98,7 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
                 height: MediaQuery.of(context).size.height * 0.4,
                 itemOptions: WidgetItemOptions(
                     multiItemStack: _stackItems,
-                    chartItemBuilder: (item, itemKey, listKey) {
+                    widgetItemBuilder: (data) {
                       final _images = [
                         'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.LxlHIr73N2FnqJ3t0TEn-gHaFr%26pid%3DApi&f=1&ipt=afa66b22e9421c69abbb25704c5e4bcb39e4799643ebbdedcabf90ab8af40a6f&ipo=images',
                         'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages3.alphacoders.com%2F283%2F28305.jpg&f=1&nofb=1&ipt=901963091e95b05a0e8de0829ed79cfb7a310a1c45c155f3a7e5bb9d299b4a56&ipo=images',
@@ -109,25 +109,25 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
                         margin: const EdgeInsets.symmetric(horizontal: 3.0),
                         decoration: BoxDecoration(
                           borderRadius:
-                              BorderRadius.vertical(top: Radius.circular((!_stackItems || listKey == 0) ? 12 : 0)),
+                              BorderRadius.vertical(top: Radius.circular((!_stackItems || data.listKey == 0) ? 12 : 0)),
                         ),
                         foregroundDecoration: BoxDecoration(
                           borderRadius:
-                              BorderRadius.vertical(top: Radius.circular((!_stackItems || listKey == 0) ? 12 : 0)),
-                          color: Colors.accents[listKey].withOpacity(0.2),
+                              BorderRadius.vertical(top: Radius.circular((!_stackItems || data.listKey == 0) ? 12 : 0)),
+                          color: Colors.accents[data.listKey].withOpacity(0.2),
                           border: Border.all(
                             width: 2,
-                            color: Colors.accents[listKey],
+                            color: Colors.accents[data.listKey],
                           ),
                         ),
                         child: ClipRRect(
                           borderRadius:
-                              BorderRadius.vertical(top: Radius.circular((!_stackItems || listKey == 0) ? 12 : 0)),
+                              BorderRadius.vertical(top: Radius.circular((!_stackItems || data.listKey == 0) ? 12 : 0)),
                           child: Stack(
                             children: [
                               Positioned.fill(
                                 child: Image.network(
-                                  _images[listKey],
+                                  _images[data.listKey],
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -136,7 +136,7 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
                                 left: 0.0,
                                 right: 0.0,
                                 child: Text(
-                                  '${item.max?.toStringAsFixed(2)}',
+                                  '${data.item.max?.toStringAsFixed(2)}',
                                   textAlign: TextAlign.center,
                                   style: Theme.of(context).textTheme.subtitle1!.copyWith(
                                         color: Colors.black87,

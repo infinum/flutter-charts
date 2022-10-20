@@ -79,7 +79,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                 chartItemOptions: BarItemOptions(
                   minBarWidth: 4.0,
                   padding: EdgeInsets.symmetric(horizontal: 2.0),
-                  barItemBuilder: (_, __, ___) {
+                  barItemBuilder: (_) {
                     return BarItem(
                       color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
                       radius: BorderRadius.all(

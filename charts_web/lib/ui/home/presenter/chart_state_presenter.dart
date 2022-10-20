@@ -170,9 +170,12 @@ class ChartStatePresenter extends ChangeNotifier {
     if (selectedPainter == SelectedPainter.bubble) {
       return BubbleItemOptions(
         padding: chartItemPadding,
-        bubbleItemBuilder: (item, itemKey, listKey) {
+        bubbleItemBuilder: (data) {
           return BubbleItem(
-              color: _getColorForKey(listKey), gradient: gradient[listKey], border: itemBorderSides[listKey]);
+            color: _getColorForKey(data.listKey),
+            gradient: gradient[data.listKey],
+            border: itemBorderSides[data.listKey],
+          );
         },
         // color: _getColorForKey(index),
         maxBarWidth: maxBarWidth,
@@ -183,12 +186,12 @@ class ChartStatePresenter extends ChangeNotifier {
     } else if (selectedPainter == SelectedPainter.bar) {
       return BarItemOptions(
         padding: chartItemPadding,
-        barItemBuilder: (item, itemKey, listKey) {
+        barItemBuilder: (data) {
           return BarItem(
-            color: _getColorForKey(listKey),
-            gradient: gradient[listKey],
-            border: itemBorderSides[listKey],
-            radius: barBorderRadius[listKey],
+            color: _getColorForKey(data.listKey),
+            gradient: gradient[data.listKey],
+            border: itemBorderSides[data.listKey],
+            radius: barBorderRadius[data.listKey],
           );
         },
         maxBarWidth: maxBarWidth,
@@ -198,8 +201,8 @@ class ChartStatePresenter extends ChangeNotifier {
       );
     } else if (selectedPainter == SelectedPainter.none) {
       return BubbleItemOptions(
-        bubbleItemBuilder: (item, itemKey, listKey) {
-          return BubbleItem(color: Colors.transparent);
+        bubbleItemBuilder: (_) {
+          return const BubbleItem(color: Colors.transparent);
         },
         maxBarWidth: 0,
         minBarWidth: 0,
@@ -207,8 +210,8 @@ class ChartStatePresenter extends ChangeNotifier {
     } else if (selectedPainter == SelectedPainter.widget) {
       return WidgetItemOptions(
         multiItemStack: multiItemStack,
-        chartItemBuilder: (item, itemKey, listKey) {
-          return FuturamaBarWidget(stackItems: multiItemStack, listKey: listKey, item: item);
+        widgetItemBuilder: (data) {
+          return FuturamaBarWidget(stackItems: multiItemStack, listKey: data.listKey, item: data.item);
         },
       );
     } else {

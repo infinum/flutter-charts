@@ -90,7 +90,7 @@ class ShowList extends StatelessWidget {
                   ),
                   itemOptions: BubbleItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    bubbleItemBuilder: (_, __, ___) => BubbleItem(color:Theme.of(context).accentColor),
+                    bubbleItemBuilder: (_) => BubbleItem(color:Theme.of(context).accentColor),
                     maxBarWidth: 1.0,
                   ),
                   backgroundDecorations: [
@@ -127,7 +127,7 @@ class ShowList extends StatelessWidget {
                     ),
                     itemOptions: BarItemOptions(
                       padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                      barItemBuilder: (_, __, ___) => BarItem(color: Theme.of(context).accentColor),
+                      barItemBuilder: (_) => BarItem(color: Theme.of(context).accentColor),
                       maxBarWidth: 4.0,
                     ),
                     backgroundDecorations: [
@@ -181,7 +181,7 @@ class ShowList extends StatelessWidget {
                   ),
                   itemOptions: BarItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    barItemBuilder: (_, __, ___) => BarItem(
+                    barItemBuilder: (_) => BarItem(
                       color: Theme.of(context).accentColor,
                       radius: BorderRadius.vertical(top: Radius.circular(12.0)),
                     ),

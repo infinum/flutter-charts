@@ -65,7 +65,7 @@ class LineChart<T> extends StatelessWidget {
           _mappedValues,
           dataStrategy: stack ? StackDataStrategy() : DefaultDataStrategy(),
         ),
-        itemOptions: chartItemOptions ?? BarItemOptions(barItemBuilder: (_, __, ___) => BarItem()),
+        itemOptions: chartItemOptions ?? BarItemOptions(barItemBuilder: (_) => BarItem()),
         foregroundDecorations: [
           SparkLineDecoration(
             id: 'chart_decoration',

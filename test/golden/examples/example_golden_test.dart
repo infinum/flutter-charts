@@ -15,6 +15,7 @@ void main() {
                   .map((e) => BubbleValue<void>(e))
                   .toList(),
             ),
+            itemOptions: BubbleItemOptions(),
           ),
         ),
       ),
@@ -35,6 +36,7 @@ void main() {
                   .map((e) => BarValue<void>(e))
                   .toList(),
             ),
+            itemOptions: BarItemOptions(),
           ),
         ),
       ),
@@ -57,7 +59,11 @@ void main() {
                 axisMax: 8.0),
             itemOptions: BarItemOptions(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              radius: BorderRadius.vertical(top: Radius.circular(42.0)),
+              barItemBuilder: (_) {
+                return BarItem(
+                  radius: BorderRadius.vertical(top: Radius.circular(42.0)),
+                );
+              },
             ),
             backgroundDecorations: [
               GridDecoration(
@@ -128,13 +134,13 @@ void main() {
               ],
               axisMax: 8.0,
             ),
-            itemOptionsBuilder: (key) {
-              return BubbleItemOptions(
+            itemOptions: BubbleItemOptions(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 maxBarWidth: 4.0,
-                color: [Colors.red, Colors.blue][key],
-              );
-            },
+                bubbleItemBuilder: (data) {
+                  return BubbleItem(color: [Colors.red, Colors.blue][data.listKey]);
+                },
+              ),
             backgroundDecorations: [
               GridDecoration(
                 verticalAxisStep: 1,

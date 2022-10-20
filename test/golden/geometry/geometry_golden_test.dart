@@ -28,7 +28,9 @@ void main() {
               ),
               itemOptions: BarItemOptions(
                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                color: Colors.red,
+                barItemBuilder: (data) {
+                  return BarItem(color: Colors.red);
+                },
               ),
             ),
           ),
@@ -58,7 +60,7 @@ void main() {
                 valueAxisMaxOver: 2,
               ),
               itemOptions:
-                  WidgetItemOptions(chartItemBuilder: (item, itemKey, listKey) {
+                  WidgetItemOptions(widgetItemBuilder: (data) {
                 return Container(
                   color: Colors.red,
                   margin: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -112,7 +114,9 @@ void main() {
               ),
               itemOptions: BarItemOptions(
                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                color: Colors.red,
+                barItemBuilder: (data) {
+                  return BarItem(color: Colors.red);
+                },
               ),
             ),
           ),
@@ -140,7 +144,9 @@ void main() {
               ),
               itemOptions: BubbleItemOptions(
                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                color: Colors.red,
+                bubbleItemBuilder: (data) {
+                  return BubbleItem(color: Colors.red);
+                },
               ),
             ),
           ),
