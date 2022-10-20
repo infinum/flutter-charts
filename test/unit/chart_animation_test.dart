@@ -31,7 +31,7 @@ void main() {
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
       expect(_middleState.items[0],
-          [ChartItem<void>(null, null, 15), ChartItem<void>(null, 0.0, 5)]);
+          [ChartItem<void>(null, min: null, value: 15), ChartItem<void>(0.0, min: 0.0, value: 5)]);
     });
 
     test('Bar -> Bubble animates different type items', () {
@@ -41,7 +41,7 @@ void main() {
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items[0], [ChartItem<void>(null, 10, 15)]);
+      expect(_middleState.items[0], [ChartItem<void>(10, min: null, value: 15)]);
     });
 
     test('Bubble -> Bar animates different type items', () {
@@ -51,7 +51,7 @@ void main() {
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items[0], [ChartItem<void>(null, 5, 15)]);
+      expect(_middleState.items[0], [ChartItem<void>(5, min: null, value: 15)]);
     });
 
     test('Bar -> Candle animates different type items', () {
@@ -71,7 +71,7 @@ void main() {
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items[0], [ChartItem<void>(null, 5, 15)]);
+      expect(_middleState.items[0], [ChartItem<void>(5, min: null, value: 15)]);
     });
 
     test('Bubble -> Candle animates different type items', () {
@@ -91,7 +91,7 @@ void main() {
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items[0], [ChartItem<void>(null, 10, 15)]);
+      expect(_middleState.items[0], [ChartItem<void>(10, value:  15)]);
     });
   });
 
@@ -103,6 +103,7 @@ void main() {
                 .map((e) => BarValue<void>(e.toDouble()))
                 .toList(),
           ),
+          itemOptions: BarItemOptions(),
           foregroundDecorations: [
             HorizontalAxisDecoration(
               axisStep: 1,
@@ -115,6 +116,7 @@ void main() {
                 .map((e) => BarValue<void>(e.toDouble()))
                 .toList(),
           ),
+          itemOptions: BarItemOptions(),
           foregroundDecorations: [
             HorizontalAxisDecoration(
               axisStep: 5,
@@ -139,6 +141,7 @@ void main() {
                 .map((e) => BarValue<void>(e.toDouble()))
                 .toList(),
           ),
+          itemOptions: BarItemOptions(),
           foregroundDecorations: [
             HorizontalAxisDecoration(
               axisStep: 1,
@@ -151,6 +154,7 @@ void main() {
                 .map((e) => BarValue<void>(e.toDouble()))
                 .toList(),
           ),
+          itemOptions: BarItemOptions(),
           foregroundDecorations: [
             VerticalAxisDecoration(
               axisStep: 5,
