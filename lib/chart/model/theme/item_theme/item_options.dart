@@ -3,10 +3,14 @@ part of charts_painter;
 /// Item painter, use [barPainter] or [bubblePainter].
 /// Custom painter can also be added by extending [GeometryPainter]
 typedef ChartGeometryPainter<T> = GeometryPainter<T> Function(
-    ChartItem<T?> item, ChartData data, ItemOptions itemOptions, ChartDataItem chartDataItem);
+    ChartItem<T?> item, ChartData data, ItemOptions itemOptions, DrawDataItem drawDataItem);
 
-/// Get color for current item value
-typedef ColorForValue<T> = Color Function(Color defaultColor, ChartItem<T> item);
+
+/// ItemBuilder that builds item for each item
+/// With this it's possible to build different style of an item for each separate itemKey or listKey
+/// itemKey -> index of item in list
+/// listKey -> when showing multiple lists, this is index of list
+typedef ItemBuilder<T> = dynamic Function(ChartItem<T?> item, int itemKey, int listKey);
 
 /// Options for chart items, need to provide [geometryPainter] for drawing the items on the chart.
 /// Extend this to make your custom options if needed.

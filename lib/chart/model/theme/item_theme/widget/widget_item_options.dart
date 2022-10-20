@@ -1,7 +1,7 @@
 part of charts_painter;
 
 // Hidden because it's only used if chart item is a widget.
-GeometryPainter<T> _emptyPainter<T>(ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions, ChartDataItem chartDataItem) =>
+GeometryPainter<T> _emptyPainter<T>(ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions, DrawDataItem drawDataItem) =>
     _EmptyGeometryPainter<T>(item, data, itemOptions);
 
 /// Options for widget items.

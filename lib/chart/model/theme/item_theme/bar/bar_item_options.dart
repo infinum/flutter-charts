@@ -2,24 +2,23 @@ part of charts_painter;
 
 /// Bar painter
 GeometryPainter<T> barPainter<T>(
-        ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions, ChartDataItem chartDataItem) =>
-    BarGeometryPainter<T>(item, data, itemOptions, chartDataItem as BarItem);
-
-typedef ItemBuilder<T> = dynamic Function(ChartItem<T?> item, int itemKey, int listKey);
+        ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions, DrawDataItem drawDataItem) =>
+    BarGeometryPainter<T>(item, data, itemOptions, drawDataItem as BarItem);
 
 typedef BarItemBuilder<T> = BarItem Function(ChartItem<T?> item, int itemKey, int listKey);
 
-abstract class ChartDataItem extends Equatable {
-  ChartDataItem({Color? color, this.gradient, BorderSide? border})
+abstract class DrawDataItem extends Equatable {
+  DrawDataItem({Color? color, this.gradient, BorderSide? border})
       : color = color ?? Colors.black,
         border = border ?? BorderSide.none;
 
+  /// Set solid color to chart items
   final Color color;
 
   /// Set gradient color to chart items
   final Gradient? gradient;
 
-  /// Set border to bar items
+  /// Set border to chart items
   final BorderSide border;
 
   Paint getPaint(Size size) {
@@ -33,38 +32,6 @@ abstract class ChartDataItem extends Equatable {
 
     return _paint;
   }
-}
-
-class BarItemBuilderLerp {
-  /// Make new function that will return lerp [ItemOptions] based on [ChartState.itemOptionsBuilder]
-  static BarItemBuilder lerp(BarItemOptions a, BarItemOptions b, double t) {
-    return (ChartItem item, int itemKey, int listKey) {
-      final _aItem = a.barItemBuilder(item, itemKey, listKey);
-      final _bItem = b.barItemBuilder(item, itemKey, listKey);
-      return _aItem.lerp(_bItem, t);
-    };
-  }
-}
-
-class BarItem extends ChartDataItem {
-  BarItem({this.radius, Gradient? gradient, BorderSide? border, Color? color})
-      : super(color: color, gradient: gradient, border: border);
-
-  /// Set border radius for each item
-  /// Radius will automatically flip when showing values in negative space
-  final BorderRadius? radius;
-
-  BarItem lerp(BarItem endValue, double t) {
-    return BarItem(
-      radius: BorderRadius.lerp(radius, endValue is BarItemOptions ? endValue.radius : null, t),
-      gradient: Gradient.lerp(gradient, endValue is BarItemOptions ? endValue.gradient : null, t),
-      border: BorderSide.lerp(border, endValue is BarItemOptions ? (endValue.border) : BorderSide.none, t),
-      color: Color.lerp(color, endValue.color, t),
-    );
-  }
-
-  @override
-  List<Object?> get props => [radius, gradient, border, color];
 }
 
 /// Extension options for bar items
@@ -110,8 +77,7 @@ class BarItemOptions extends ItemOptions {
             startPosition: startPosition,
             geometryPainter: barPainter,
             multiItemStack: multiItemStack,
-            itemBuilder: barItemBuilder
-            );
+            itemBuilder: barItemBuilder);
 
   final BarItemBuilder barItemBuilder;
 

@@ -14,10 +14,10 @@ part of charts_painter;
 class BubbleGeometryPainter<T> extends GeometryPainter<T> {
   /// Constructor for bubble painter
   BubbleGeometryPainter(
-      ChartItem<T> item, ChartData<T?> data, ItemOptions itemOptions, this.chartDataItem)
+      ChartItem<T> item, ChartData<T?> data, ItemOptions itemOptions, this.drawDataItem)
       : super(item, data, itemOptions);
 
-  final BubbleItem chartDataItem;
+  final BubbleItem drawDataItem;
 
   @override
   void draw(Canvas canvas, Size size, Paint paint) {
@@ -52,7 +52,7 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
     );
 
     if (itemOptions is BubbleItemOptions) {
-      final _border = chartDataItem.border;
+      final _border = drawDataItem.border;
 
       if (_border != null && _border.style == BorderStyle.solid) {
         final _borderPaint = Paint();

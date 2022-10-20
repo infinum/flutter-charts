@@ -6,12 +6,12 @@ part of charts_painter;
 /// All customization for this list items can be done with [BarItemOptions] or [BubbleItemOptions]
 class LeafChartItemRenderer<T> extends LeafRenderObjectWidget {
   LeafChartItemRenderer(this.item, this.state, this.itemOptions,
-      {this.listKey = 0, this.itemKey = 0, required this.chartDataItem});
+      {this.listKey = 0, this.itemKey = 0, required this.drawDataItem});
 
   final ChartItem<T?> item;
   final ChartData<T?> state;
   final ItemOptions itemOptions;
-  final ChartDataItem chartDataItem;
+  final DrawDataItem drawDataItem;
   final int listKey;
   final int itemKey;
 
@@ -23,7 +23,7 @@ class LeafChartItemRenderer<T> extends LeafRenderObjectWidget {
       item,
       listKey: listKey,
       itemKey: itemKey,
-      chartDataItem: chartDataItem,
+      drawDataItem: drawDataItem,
     );
   }
 
@@ -34,7 +34,7 @@ class LeafChartItemRenderer<T> extends LeafRenderObjectWidget {
       ..itemOptions = itemOptions
       ..listKey = listKey
       ..itemKey = itemKey
-      ..chartDataItem = chartDataItem
+      ..drawDataItem = drawDataItem
       ..item = item;
 
     renderObject.markNeedsLayout();
@@ -48,9 +48,9 @@ class _RenderLeafChartItem<T> extends RenderBox {
     this._item, {
     int? listKey,
     required int itemKey,
-    required ChartDataItem chartDataItem,
+    required DrawDataItem drawDataItem,
   })  : _listKey = listKey ?? 0,
-        _chartDataItem = chartDataItem,
+        _drawDataItem = drawDataItem,
         _itemKey = itemKey;
 
   int _listKey;
@@ -66,13 +66,13 @@ class _RenderLeafChartItem<T> extends RenderBox {
     }
   }
 
-  ChartDataItem _chartDataItem;
+  DrawDataItem _drawDataItem;
 
-  ChartDataItem get chartDataItem => _chartDataItem;
+  DrawDataItem get drawDataItem => _drawDataItem;
 
-  set chartDataItem(ChartDataItem chartDataItem) {
-    if (chartDataItem != _chartDataItem) {
-      _chartDataItem = chartDataItem;
+  set drawDataItem(DrawDataItem drawDataItem) {
+    if (drawDataItem != _drawDataItem) {
+      _drawDataItem = drawDataItem;
       markNeedsPaint();
     }
   }
@@ -163,16 +163,15 @@ class _RenderLeafChartItem<T> extends RenderBox {
         0.0);
 
     // Use item painter from ItemOptions to draw the item on the chart
-    // _itemOptions is BubbleItemOptions && chartDataItem is BarItem
     final _itemPainter = _itemOptions.geometryPainter(
       item,
       _state,
       _itemOptions,
-      chartDataItem,
+      drawDataItem,
     );
 
     // Draw the item on selected position
-    _itemPainter.draw(canvas, Size(_stackWidth, size.height), chartDataItem.getPaint(Size(_stackWidth, size.height)));
+    _itemPainter.draw(canvas, Size(_stackWidth, size.height), drawDataItem.getPaint(Size(_stackWidth, size.height)));
 
     canvas.restore();
   }

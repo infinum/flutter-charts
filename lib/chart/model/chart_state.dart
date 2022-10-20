@@ -205,7 +205,7 @@ class ChartState<T> {
                         itemOptions,
                         itemKey: itemKey,
                         listKey: lineKey,
-                        chartDataItem: itemOptions.itemBuilder(item, itemKey, lineKey) as ChartDataItem,
+                        drawDataItem: itemOptions.itemBuilder(item, itemKey, lineKey) as DrawDataItem,
                       ))
                   .toList(),
             )

@@ -1,33 +1,5 @@
 part of charts_painter;
 
-/// Check iv item is inside the target
-bool _isInTarget(double? max, {double? min, double? targetMin, double? targetMax, bool inclusive = true}) {
-  if (targetMin == null && targetMax == null) {
-    return true;
-  }
-
-  final _min = min ?? max;
-
-  if ((targetMin != null && _min! <= targetMin) || (targetMax != null && max! >= targetMax)) {
-    // Check if target is inclusive, don't show error color in that case
-    if (inclusive && (_min == targetMin || max == targetMax)) {
-      return true;
-    }
-
-    return false;
-  }
-
-  return true;
-}
-
-Color _getColorForTarget(
-    Color color, Color? colorOverTarget, bool isTargetInclusive, double? targetMin, double? targetMax, double? max,
-    [double? min]) {
-  return _isInTarget(max, min: min, targetMax: targetMax, targetMin: targetMin, inclusive: isTargetInclusive)
-      ? color
-      : (colorOverTarget ?? color);
-}
-
 /// Target line decoration will draw target line horizontally across the chart
 /// height of the line is defined by [target]
 ///
@@ -69,13 +41,6 @@ class TargetLineDecoration extends DecorationPainter {
 
   /// Color item should take once target is missed
   final Color? colorOverTarget;
-
-  /// Return [ColorForValue] set up to pair with this decoration
-  ///
-  /// Pass this to [ItemOptions.colorForValue] and chart will update item colors
-  /// based on target line
-  ColorForValue getTargetItemColor() => (Color defaultColor, ChartItem item) =>
-      _getColorForTarget(defaultColor, colorOverTarget, isTargetInclusive, target, null, item.max, item.min);
 
   @override
   Offset applyPaintTransform(ChartState state, Size size) {
@@ -185,13 +150,6 @@ class TargetAreaDecoration extends DecorationPainter {
 
   /// Fill color for [TargetAreaDecoration]
   final Color? targetAreaFillColor;
-
-  /// Return [ColorForValue] set up to pair with this decoration
-  ///
-  /// Pass this to [ItemOptions.colorForValue] and chart will update item colors
-  /// based on target area
-  ColorForValue getTargetItemColor() => (Color defaultColor, ChartItem item) =>
-      _getColorForTarget(defaultColor, colorOverTarget, isTargetInclusive, targetMin, targetMax, item.max, item.min);
 
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {

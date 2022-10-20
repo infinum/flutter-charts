@@ -2,37 +2,10 @@ part of charts_painter;
 
 /// Bubble painter
 GeometryPainter<T> bubblePainter<T>(
-        ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions, ChartDataItem chartDataItem) =>
-    BubbleGeometryPainter<T>(item, data, itemOptions, chartDataItem as BubbleItem);
+        ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions, DrawDataItem drawDataItem) =>
+    BubbleGeometryPainter<T>(item, data, itemOptions, drawDataItem as BubbleItem);
 
 typedef BubbleItemBuilder<T> = BubbleItem Function(ChartItem<T?> item, int itemKey, int listKey);
-
-class BubbleItem extends ChartDataItem {
-  BubbleItem({Gradient? gradient, BorderSide? border, Color? color})
-      : super(color: color, gradient: gradient, border: border);
-
-  BubbleItem lerp(BubbleItem endValue, double t) {
-    return BubbleItem(
-      gradient: Gradient.lerp(gradient, endValue is BubbleItemOptions ? endValue.gradient : null, t),
-      border: BorderSide.lerp(border, endValue is BubbleItemOptions ? (endValue.border) : BorderSide.none, t),
-      color: Color.lerp(color, endValue.color, t),
-    );
-  }
-
-  @override
-  List<Object?> get props => [gradient, border, color];
-}
-
-class BubbleItemBuilderLerp {
-  /// Make new function that will return lerp [ItemOptions] based on [ChartState.itemOptionsBuilder]
-  static BubbleItemBuilder lerp(BubbleItemOptions a, BubbleItemOptions b, double t) {
-    return (ChartItem item, int itemKey, int listKey) {
-      final _aItem = a.bubbleItemBuilder(item, itemKey, listKey);
-      final _bItem = b.bubbleItemBuilder(item, itemKey, listKey);
-      return _aItem.lerp(_bItem, t);
-    };
-  }
-}
 
 /// Extension options for bar items
 /// [geometryPainter] is set to [BubbleGeometryPainter]
@@ -47,8 +20,6 @@ class BubbleItemOptions extends ItemOptions {
     EdgeInsets multiValuePadding = EdgeInsets.zero,
     double? maxBarWidth,
     double? minBarWidth,
-    // Color color = Colors.red,
-    ColorForValue? colorForValue,
     bool multiItemStack = true,
     required this.bubbleItemBuilder,
   }) : super(

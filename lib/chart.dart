@@ -27,10 +27,12 @@ part 'chart/model/geometry/chart_item.dart';
 
 /// Theme
 part 'chart/model/theme/chart_behaviour.dart';
-part 'chart/model/theme/item_theme/bar_item_options.dart';
+part 'chart/model/theme/item_theme/bar/bar_item_options.dart';
 part 'chart/model/theme/item_theme/item_options.dart';
-part 'chart/model/theme/item_theme/bubble_item_options.dart';
-part 'chart/model/theme/item_theme/widget_item_options.dart';
+part 'chart/model/theme/item_theme/bar/bar_item.dart';
+part 'chart/model/theme/item_theme/bubble/bubble_item.dart';
+part 'chart/model/theme/item_theme/bubble/bubble_item_options.dart';
+part 'chart/model/theme/item_theme/widget/widget_item_options.dart';
 
 /// Render
 part 'chart/render/chart_renderer.dart';
