@@ -31,56 +31,46 @@ class OptionsItemsComponent extends HookConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         const OptionsComponentHeader(title: 'Item Options', subtitle: _subtitle),
-        Row(
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
           children: [
-            Expanded(
-              flex: 2,
-              child: _BarOptionButton(
-                asset: Assets.svg.barChartIcon,
-                name: 'Bar',
-                selected: _provider.selectedPainter == SelectedPainter.bar,
-                onPressed: () {
-                  _provider.updateItemPainter(SelectedPainter.bar);
-                },
-              ),
+            _BarOptionButton(
+              asset: Assets.svg.barChartIcon,
+              name: 'Bar',
+              selected: _provider.selectedPainter == SelectedPainter.bar,
+              onPressed: () {
+                _provider.updateItemPainter(SelectedPainter.bar);
+              },
             ),
-            const SizedBox(width: 8),
-            Expanded(
-              flex: 2,
-              child: _BarOptionButton(
-                asset: Assets.svg.bubbleChartIcon,
-                name: 'Bubble',
-                selected: _provider.selectedPainter == SelectedPainter.bubble,
-                onPressed: () {
-                  _provider.updateItemPainter(SelectedPainter.bubble);
-                },
-              ),
+            _BarOptionButton(
+              asset: Assets.svg.bubbleChartIcon,
+              name: 'Bubble',
+              selected: _provider.selectedPainter == SelectedPainter.bubble,
+              onPressed: () {
+                _provider.updateItemPainter(SelectedPainter.bubble);
+              },
             ),
-            const SizedBox(width: 8),
-            Expanded(
-              flex: 1,
-              child: _BarOptionButton(
-                name: 'Empty',
-                selected: _provider.selectedPainter == SelectedPainter.none,
-                onPressed: () {
-                  _provider.updateItemPainter(SelectedPainter.none);
-                },
-              ),
+            _BarOptionButton(
+              name: 'Empty',
+              selected: _provider.selectedPainter == SelectedPainter.none,
+              onPressed: () {
+                _provider.updateItemPainter(SelectedPainter.none);
+              },
             ),
-            const SizedBox(width: 8),
-            Expanded(
-              flex: 1,
-              child: _BarOptionButton(
-                name: 'Widget',
-                selected: _provider.selectedPainter == SelectedPainter.widget,
-                onPressed: () {
-                  _provider.updateItemPainter(SelectedPainter.widget);
-                },
-              ),
+            _BarOptionButton(
+              imageAsset: Assets.png.futurama1.path,
+              name: 'Widget',
+              selected: _provider.selectedPainter == SelectedPainter.widget,
+              onPressed: () {
+                _provider.updateItemPainter(SelectedPainter.widget);
+              },
             ),
           ],
         ),
         const SizedBox(height: 16),
+        if (_provider.selectedPainter == SelectedPainter.widget)
+          const Text('With WidgetItemOptions you can provide any kind of widget that you want!'),
         if (_provider.selectedPainter == SelectedPainter.bar || _provider.selectedPainter == SelectedPainter.bubble)
           Wrap(
             spacing: 16,
@@ -240,10 +230,17 @@ class _PerValueOptions extends ConsumerWidget {
 
 /// Used for Bar or Bubble selection
 class _BarOptionButton extends StatelessWidget {
-  const _BarOptionButton({Key? key, this.asset, required this.name, required this.selected, required this.onPressed})
-      : super(key: key);
+  const _BarOptionButton({
+    Key? key,
+    this.asset,
+    required this.name,
+    required this.selected,
+    required this.onPressed,
+    this.imageAsset,
+  }) : super(key: key);
 
   final String? asset;
+  final String? imageAsset;
   final String name;
   final bool selected;
   final VoidCallback onPressed;
@@ -254,16 +251,27 @@ class _BarOptionButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         height: 50,
-        padding: const EdgeInsets.all(4),
+        width: 200,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             border: Border.all(width: 3, color: selected ? Theme.of(context).primaryColor : Colors.grey)),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+            if (imageAsset == null)
+              const SizedBox(width: 8),
             if (asset != null)
               SvgPicture.asset(asset!, height: 30, color: selected ? Theme.of(context).primaryColor : Colors.grey),
-            if (asset != null) const SizedBox(width: 16),
+            if (imageAsset != null)
+              ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.asset(
+                    imageAsset!,
+                    height: 50,
+                    width: 45,
+                    fit: BoxFit.cover,
+                  )),
+            if (asset != null || imageAsset != null) const SizedBox(width: 16),
             Expanded(child: Text(name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
           ],
         ),

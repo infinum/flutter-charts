@@ -10,7 +10,17 @@ import 'charts/line_chart_screen.dart';
 import 'charts/scrollable_chart_screen.dart';
 
 void main() {
-  runApp(ChartDemo());
+  runApp(MaterialApp(
+      theme: ThemeData.light().copyWith(
+        accentColor: Color(0xFFd8262C),
+        colorScheme: ThemeData.light().colorScheme.copyWith(
+              primary: Color(0xFFd8262C),
+              secondary: Color(0xFF353535),
+              error: Colors.lightBlue,
+            ),
+        primaryColor: Colors.red,
+      ),
+      home: ChartDemo()));
 }
 
 class ChartDemo extends StatefulWidget {
@@ -23,22 +33,12 @@ class ChartDemo extends StatefulWidget {
 class _ChartDemoState extends State<ChartDemo> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData.light().copyWith(
-        accentColor: Color(0xFFd8262C),
-        colorScheme: ThemeData.light().colorScheme.copyWith(
-              primary: Color(0xFFd8262C),
-              secondary: Color(0xFF353535),
-              error: Colors.lightBlue,
-            ),
-        primaryColor: Colors.red,
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        title: Text('Charts showcase'),
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Charts showcase'),
-        ),
-        body: ShowList(),
-      ),
+      body: ShowList(),
     );
   }
 }
@@ -90,7 +90,7 @@ class ShowList extends StatelessWidget {
                   ),
                   itemOptions: BubbleItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    bubbleItemBuilder: (_) => BubbleItem(color:Theme.of(context).accentColor),
+                    bubbleItemBuilder: (_) => BubbleItem(color: Theme.of(context).accentColor),
                     maxBarWidth: 1.0,
                   ),
                   backgroundDecorations: [

@@ -55,6 +55,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/line_yes.svg
   String get lineYes => 'assets/svg/line_yes.svg';
 
+  /// File path: assets/svg/showcase.svg
+  String get showcase => 'assets/svg/showcase.svg';
+
   /// File path: assets/svg/smoothed_no.svg
   String get smoothedNo => 'assets/svg/smoothed_no.svg';
 

@@ -26,6 +26,8 @@ dependencies:
 
   charts_painter:
     path: ../../flutter-charts
+  example:
+    path: ../example
 
   flutter_riverpod: ^1.0.3
   riverpod: ^1.0.3

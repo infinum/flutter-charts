@@ -1,10 +1,12 @@
-
+import 'package:charts_web/assets.gen.dart';
 import 'package:charts_web/ui/home/chart_options/widget/options_data_component.dart';
 import 'package:charts_web/ui/home/chart_options/widget/options_decoration_component.dart';
 import 'package:charts_web/ui/home/chart_options/widget/options_items_component.dart';
+import 'package:example/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ChartOptions extends HookConsumerWidget {
@@ -16,11 +18,31 @@ class ChartOptions extends HookConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CupertinoButton.filled(
-            child: const Text('Show code'),
-            onPressed: () {
-              // todo
-            },
+          Row(
+            children: [
+              Expanded(
+                child: CupertinoButton(
+                  child: const Text('Show code'),
+                  onPressed: () {
+                    // todo
+                  },
+                ),
+              ),
+              Expanded(
+                child: CupertinoButton.filled(
+                  child: Row(
+                    children: [
+                      Opacity(opacity: 0.8, child: SvgPicture.asset(Assets.svg.showcase, width: 50)),
+                      const SizedBox(width: 16),
+                      const Text('Showcase'),
+                    ],
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => ChartDemo()));
+                  },
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 24),
           const OptionsDataComponent(),
