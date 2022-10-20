@@ -87,14 +87,11 @@ class SelectedItemDecoration extends DecorationPainter {
       final _height = size.height - marginNeeded().vertical;
       final scale = _height / _maxValue;
 
-      final _offset = Offset(_width * 0.25, 0.0);
-
       return Offset(
           state.defaultMargin.left + _width * selectedItem,
           showOnTop
               ? (state.defaultMargin - marginNeeded()).top
-              : size.height - ((_selectedItemMax - (min(_selectedItemMin, state.data.minValue))) * scale))+
-          _offset;
+              : size.height - ((_selectedItemMax - (min(_selectedItemMin, state.data.minValue))) * scale));
     }
 
     return Offset.zero;
