@@ -1,7 +1,7 @@
 part of charts_painter;
 
 class BarItem extends DrawDataItem {
-  BarItem({this.radius, Gradient? gradient, BorderSide? border, Color? color})
+  const BarItem({this.radius, Gradient? gradient, BorderSide? border, Color? color})
       : super(color: color, gradient: gradient, border: border);
 
   /// Set border radius for each item

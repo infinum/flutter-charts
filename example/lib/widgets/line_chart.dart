@@ -51,7 +51,7 @@ class LineChart<T> extends StatelessWidget {
   final List<DecorationPainter> backgroundDecorations;
   final List<DecorationPainter> foregroundDecorations;
   final ChartBehaviour chartBehaviour;
-  final ItemOptionsBuilder? chartItemOptions;
+  final ItemOptions? chartItemOptions;
 
   final List<List<BubbleValue<T>>> _mappedValues;
 
@@ -65,7 +65,7 @@ class LineChart<T> extends StatelessWidget {
           _mappedValues,
           dataStrategy: stack ? StackDataStrategy() : DefaultDataStrategy(),
         ),
-        itemOptionsBuilder: chartItemOptions ?? (_) => BarItemOptions(),
+        itemOptions: chartItemOptions ?? BarItemOptions(barItemBuilder: (_, __, ___) => BarItem()),
         foregroundDecorations: [
           SparkLineDecoration(
             id: 'chart_decoration',

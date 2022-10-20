@@ -76,18 +76,15 @@ class _BarChartScreenState extends State<BarChartScreen> {
               itemOptions: BarItemOptions(
                 padding: const EdgeInsets.symmetric(horizontal: 2.0),
                 minBarWidth: 4.0,
-                // isTargetInclusive: true,
-                color: Theme.of(context).colorScheme.primary,
-                radius: const BorderRadius.vertical(
-                  top: Radius.circular(24.0),
-                ),
-                colorForValue: _colorfulBars
-                    ? (_, value) {
-                        int _value =
-                            (((value as int) / (targetMax * 1.3)) * 10).round();
-                        return Colors.accents[_value];
-                      }
-                    : null,
+                barItemBuilder: (_, itemKey, __) {
+                  final colorForValue =  Colors.accents[itemKey % 15];
+                  return BarItem(
+                      radius: const BorderRadius.vertical(
+                        top: Radius.circular(24.0),
+                      ),
+                    color: _colorfulBars ? colorForValue : Theme.of(context).colorScheme.primary,
+                  );
+                },
               ),
               backgroundDecorations: [
                 GridDecoration(

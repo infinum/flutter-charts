@@ -1,7 +1,7 @@
 part of charts_painter;
 
 class BubbleItem extends DrawDataItem {
-  BubbleItem({Gradient? gradient, BorderSide? border, Color? color})
+  const BubbleItem({Gradient? gradient, BorderSide? border, Color? color})
       : super(color: color, gradient: gradient, border: border);
 
   BubbleItem lerp(BubbleItem endValue, double t) {

@@ -27,16 +27,18 @@ class ComplexCharts extends StatelessWidget {
                     ],
                     axisMax: 9.0,
                   ),
-                  itemOptionsBuilder: (key) => BarItemOptions(
-                    padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-                    maxBarWidth: 12.0,
-                    color: [
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(context).colorScheme.secondary,
-                      Theme.of(context).colorScheme.primaryVariant,
-                    ][key],
-                  ),
+                  itemOptions: BarItemOptions(
+                      padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                      maxBarWidth: 12.0,
+                      barItemBuilder: (_, __, lineKey) {
+                        return BarItem(
+                            radius: BorderRadius.vertical(top: Radius.circular(12.0)),
+                            color: [
+                              Theme.of(context).colorScheme.primary,
+                              Theme.of(context).colorScheme.secondary,
+                              Theme.of(context).colorScheme.primaryVariant,
+                            ][lineKey]);
+                      }),
                   backgroundDecorations: [
                     GridDecoration(
                       verticalAxisStep: 1,
@@ -70,16 +72,19 @@ class ComplexCharts extends StatelessWidget {
                     ],
                     axisMax: 9.0,
                   ),
-                  itemOptionsBuilder: (key) => BarItemOptions(
-                    padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-                    maxBarWidth: 12.0,
-                    color: [
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(context).colorScheme.secondary,
-                      Theme.of(context).colorScheme.primaryVariant,
-                    ][key],
-                  ),
+                  itemOptions: BarItemOptions(
+                      padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                      maxBarWidth: 12.0,
+                      barItemBuilder: (_, __, lineKey) {
+                        return BarItem(
+                          color: [
+                            Theme.of(context).colorScheme.primary,
+                            Theme.of(context).colorScheme.secondary,
+                            Theme.of(context).colorScheme.primaryVariant,
+                          ][lineKey],
+                          radius: BorderRadius.vertical(top: Radius.circular(12.0)),
+                        );
+                      }),
                   backgroundDecorations: [
                     GridDecoration(
                       verticalAxisStep: 1,

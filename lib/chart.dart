@@ -31,6 +31,7 @@ part 'chart/model/theme/item_theme/bar/bar_item_options.dart';
 part 'chart/model/theme/item_theme/item_options.dart';
 part 'chart/model/theme/item_theme/bar/bar_item.dart';
 part 'chart/model/theme/item_theme/bubble/bubble_item.dart';
+part 'chart/model/theme/item_theme/draw_data_item.dart';
 part 'chart/model/theme/item_theme/bubble/bubble_item_options.dart';
 part 'chart/model/theme/item_theme/widget/widget_item_options.dart';
 

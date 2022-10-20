@@ -21,7 +21,7 @@ class BubbleItemOptions extends ItemOptions {
     double? maxBarWidth,
     double? minBarWidth,
     bool multiItemStack = true,
-    required this.bubbleItemBuilder,
+    this.bubbleItemBuilder = _defaultBubbleItem,
   }) : super(
             padding: padding,
             multiValuePadding: multiValuePadding,
@@ -65,4 +65,8 @@ class BubbleItemOptions extends ItemOptions {
       return endValue;
     }
   }
+}
+
+BubbleItem _defaultBubbleItem(ChartItem item, int itemKey, int listKey) {
+  return BubbleItem();
 }

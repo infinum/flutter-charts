@@ -77,15 +77,17 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
       itemOptions: BarItemOptions(
         padding: EdgeInsets.symmetric(horizontal: _isScrollable ? 12.0 : 2.0),
         minBarWidth: _isScrollable ? 36.0 : 4.0,
-        // isTargetInclusive: true,
-        color: Theme.of(context)
-            .colorScheme
-            .primary
-            .withOpacity(_showBars ? 1.0 : 0.0),
-        radius: const BorderRadius.vertical(
-          top: Radius.circular(24.0),
-        ),
-        colorForValue: targetArea.getTargetItemColor(),
+        barItemBuilder: (item, _, __) {
+          return BarItem(
+            color: targetArea.getTargetItemColor(Theme.of(context)
+                .colorScheme
+                .primary
+                .withOpacity(_showBars ? 1.0 : 0.0), item),
+            radius: const BorderRadius.vertical(
+              top: Radius.circular(24.0),
+            ),
+          );
+        },
       ),
       behaviour: ChartBehaviour(
         isScrollable: _isScrollable,

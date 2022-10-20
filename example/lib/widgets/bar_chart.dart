@@ -56,7 +56,6 @@ class BarChart<T> extends StatelessWidget {
       state: ChartState<T>(
         _data,
         itemOptions: itemOptions,
-        itemOptionsBuilder: itemOptionsBuilder,
         behaviour: chartBehaviour,
         foregroundDecorations: foregroundDecorations,
         backgroundDecorations: [

@@ -38,9 +38,11 @@ class ShowcaseCharts extends StatelessWidget {
                     ],
                     axisMax: 35,
                   ),
-                  itemOptionsBuilder: (key) => BubbleItemOptions(
+                  itemOptions: BubbleItemOptions(
                     maxBarWidth: 2.0,
-                    color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][key],
+                    bubbleItemBuilder: (_, __, lineKey) {
+                      return BubbleItem(color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][lineKey]);
+                    },
                     multiItemStack: true,
                   ),
                   backgroundDecorations: [

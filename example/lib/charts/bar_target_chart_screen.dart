@@ -80,12 +80,14 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                 itemOptions: BarItemOptions(
                   padding: const EdgeInsets.symmetric(horizontal: 2.0),
                   minBarWidth: 4.0,
-                  // isTargetInclusive: true,
-                  color: Theme.of(context).colorScheme.primary,
-                  radius: const BorderRadius.vertical(
-                    top: Radius.circular(24.0),
-                  ),
-                  colorForValue: _targetDecoration.getTargetItemColor(),
+                  barItemBuilder: (item, __, ___) {
+                    return BarItem(
+                      color: _targetDecoration.getTargetItemColor(Theme.of(context).colorScheme.primary, item),
+                      radius: const BorderRadius.vertical(
+                        top: Radius.circular(24.0),
+                      ),
+                    );
+                  },
                 ),
                 backgroundDecorations: [
                   GridDecoration(

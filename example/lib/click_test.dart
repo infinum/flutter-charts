@@ -32,6 +32,7 @@ class _ChartAppState extends State<ChartApp> {
               valueAxisMaxOver: 2,
             ),
             itemOptions: BarItemOptions(
+              barItemBuilder: (_, __, ___) => BarItem(),
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
             ), behaviour: ChartBehaviour(
           onItemClicked: (index) {

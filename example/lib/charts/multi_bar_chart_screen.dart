@@ -106,15 +106,18 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                   minBarWidth: 4.0,
                   multiValuePadding:
                       const EdgeInsets.symmetric(horizontal: 1.0),
-                  // isTargetInclusive: true,
-                  color: [
-                    Theme.of(context).colorScheme.primary,
-                    Theme.of(context).colorScheme.primaryVariant,
-                    Theme.of(context).colorScheme.secondary
-                  ][key],
-                  radius: const BorderRadius.vertical(
-                    top: Radius.circular(24.0),
-                  ),
+                  barItemBuilder: (_, __, lineKey) {
+                    return BarItem(
+                      color: [
+                        Theme.of(context).colorScheme.primary,
+                        Theme.of(context).colorScheme.primaryVariant,
+                        Theme.of(context).colorScheme.secondary
+                      ][lineKey],
+                      radius: const BorderRadius.vertical(
+                        top: Radius.circular(24.0),
+                      ),
+                    );
+                  },
                   multiItemStack: _stackItems,
                 ),
                 backgroundDecorations: [

@@ -194,7 +194,8 @@ class ChartState<T> {
   ///
   /// If you need more customization of the individual chart items see [_widgetItemRenderer]
   static ChartDataRendererFactory<T?> _defaultItemRenderer<T>(ItemOptions itemOptions) {
-    return (chartState) => ChartLinearDataRenderer<T?>(
+    return (chartState) {
+      return ChartLinearDataRenderer<T?>(
         chartState,
         chartState.data.items
             .mapIndexed(
@@ -211,6 +212,7 @@ class ChartState<T> {
             )
             .expand((element) => element)
             .toList());
+    };
   }
 
   /// It can render chart items as widgets, and it only accepts [WidgetItemOptions] since it needs the
