@@ -45,8 +45,6 @@ class WidgetItemOptions extends ItemOptions {
     EdgeInsets multiValuePadding = EdgeInsets.zero,
     bool multiItemStack = true,
   }) : super(
-          // color: Colors.transparent,
-          colorForValue: null,
           padding: EdgeInsets.zero,
           multiValuePadding: multiValuePadding,
           geometryPainter: _emptyPainter,

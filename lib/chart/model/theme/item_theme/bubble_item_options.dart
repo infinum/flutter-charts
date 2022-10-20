@@ -1,31 +1,37 @@
 part of charts_painter;
 
 /// Bubble painter
-GeometryPainter<T> bubblePainter<T>(ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions, ChartDataItem chartDataItem) =>
+GeometryPainter<T> bubblePainter<T>(
+        ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions, ChartDataItem chartDataItem) =>
     BubbleGeometryPainter<T>(item, data, itemOptions, chartDataItem as BubbleItem);
 
 typedef BubbleItemBuilder<T> = BubbleItem Function(ChartItem<T?> item, int itemKey, int listKey);
 
 class BubbleItem extends ChartDataItem {
-  BubbleItem({this.gradient, this.border, Color? color}) : super(color);
-
-  /// Set gradient color to chart items
-  final Gradient? gradient;
-
-  /// Set border to bar items
-  final BorderSide? border;
+  BubbleItem({Gradient? gradient, BorderSide? border, Color? color})
+      : super(color: color, gradient: gradient, border: border);
 
   BubbleItem lerp(BubbleItem endValue, double t) {
     return BubbleItem(
       gradient: Gradient.lerp(gradient, endValue is BubbleItemOptions ? endValue.gradient : null, t),
-      border: BorderSide.lerp(border ?? BorderSide.none,
-          endValue is BubbleItemOptions ? (endValue.border ?? BorderSide.none) : BorderSide.none, t),
+      border: BorderSide.lerp(border, endValue is BubbleItemOptions ? (endValue.border) : BorderSide.none, t),
       color: Color.lerp(color, endValue.color, t),
     );
   }
 
   @override
   List<Object?> get props => [gradient, border, color];
+}
+
+class BubbleItemBuilderLerp {
+  /// Make new function that will return lerp [ItemOptions] based on [ChartState.itemOptionsBuilder]
+  static BubbleItemBuilder lerp(BubbleItemOptions a, BubbleItemOptions b, double t) {
+    return (ChartItem item, int itemKey, int listKey) {
+      final _aItem = a.bubbleItemBuilder(item, itemKey, listKey);
+      final _bItem = b.bubbleItemBuilder(item, itemKey, listKey);
+      return _aItem.lerp(_bItem, t);
+    };
+  }
 }
 
 /// Extension options for bar items
@@ -46,7 +52,6 @@ class BubbleItemOptions extends ItemOptions {
     bool multiItemStack = true,
     required this.bubbleItemBuilder,
   }) : super(
-            colorForValue: colorForValue,
             padding: padding,
             multiValuePadding: multiValuePadding,
             minBarWidth: minBarWidth,
@@ -60,12 +65,9 @@ class BubbleItemOptions extends ItemOptions {
     EdgeInsets multiValuePadding = EdgeInsets.zero,
     double? maxBarWidth,
     double? minBarWidth,
-    // Color color = Colors.red,
-    ColorForValue? colorForValue,
     double multiItemStack = 1.0,
     required this.bubbleItemBuilder,
   }) : super._lerp(
-          colorForValue: colorForValue,
           padding: padding,
           multiValuePadding: multiValuePadding,
           minBarWidth: minBarWidth,
@@ -79,26 +81,17 @@ class BubbleItemOptions extends ItemOptions {
 
   @override
   ItemOptions animateTo(ItemOptions endValue, double t) {
-    return BubbleItemOptions._lerp(
-      bubbleItemBuilder: endValue is BubbleItemOptions ? endValue.bubbleItemBuilder : bubbleItemBuilder,
-      colorForValue: ColorForValueLerp.lerp(this, endValue, t),
-      padding: EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero,
-      multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero,
-      maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
-      minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
-      multiItemStack: lerpDouble(_multiValueStacked, endValue._multiValueStacked, t) ?? 1.0,
-    );
+    if (endValue is BubbleItemOptions) {
+      return BubbleItemOptions._lerp(
+        bubbleItemBuilder: BubbleItemBuilderLerp.lerp(this, endValue, t),
+        padding: EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero,
+        multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero,
+        maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
+        minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
+        multiItemStack: lerpDouble(_multiValueStacked, endValue._multiValueStacked, t) ?? 1.0,
+      );
+    } else {
+      return endValue;
+    }
   }
-
-// @override
-// Paint getPaintForItem(ChartItem item, Size size, int key) {
-//   final _paint = super.getPaintForItem(item, size, key);
-//
-//   if (gradient != null) {
-//     // Compiler complains that gradient could be null. But unless if fails us that will never be null.
-//     _paint.shader = gradient!.createShader(Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
-//   }
-//
-//   return _paint;
-// }
 }

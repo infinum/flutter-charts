@@ -16,7 +16,7 @@ import '../../../common/widget/double_option_input.dart';
 import 'options_component_header.dart';
 
 const _subtitle =
-    '''Options that define how each item looks. There are presets for Bar and Bubble. For super custom solutions you can extend GeomeryPainter and make your own item look.
+    '''Options that define how each item looks. There are presets for Bar and Bubble. For super custom solutions use WidgetItemOptions or you can extend GeomeryPainter and draw on canvas.
 ''';
 
 class OptionsItemsComponent extends HookConsumerWidget {
@@ -81,25 +81,25 @@ class OptionsItemsComponent extends HookConsumerWidget {
           ],
         ),
         const SizedBox(height: 16),
-        Wrap(
-          spacing: 16,
-          runSpacing: 16,
-          children: [
-            DoubleOptionInput(
-              name: 'Min bar width',
-              value: _provider.minBarWidth,
-              step: 2,
-              onChanged: _provider.updateMinBarWidth,
-              defaultValue: 20,
-            ),
-            DoubleOptionInput(
-              name: 'Max bar width',
-              value: _provider.maxBarWidth,
-              step: 2,
-              onChanged: _provider.updateMaxBarWidth,
-              defaultValue: 30,
-            ),
-            if (_provider.selectedPainter == SelectedPainter.bar || _provider.selectedPainter == SelectedPainter.bubble)
+        if (_provider.selectedPainter == SelectedPainter.bar || _provider.selectedPainter == SelectedPainter.bubble)
+          Wrap(
+            spacing: 16,
+            runSpacing: 16,
+            children: [
+              DoubleOptionInput(
+                name: 'Min bar width',
+                value: _provider.minBarWidth,
+                step: 2,
+                onChanged: _provider.updateMinBarWidth,
+                defaultValue: 20,
+              ),
+              DoubleOptionInput(
+                name: 'Max bar width',
+                value: _provider.maxBarWidth,
+                step: 2,
+                onChanged: _provider.updateMaxBarWidth,
+                defaultValue: 30,
+              ),
               DoubleOptionInput(
                 name: 'Padding Left',
                 value: _provider.chartItemPadding.left,
@@ -108,7 +108,6 @@ class OptionsItemsComponent extends HookConsumerWidget {
                 defaultValue: _provider.chartItemPadding.left,
                 noInputField: true,
               ),
-            if (_provider.selectedPainter == SelectedPainter.bar || _provider.selectedPainter == SelectedPainter.bubble)
               DoubleOptionInput(
                 name: 'Padding Right',
                 value: _provider.chartItemPadding.right,
@@ -117,8 +116,8 @@ class OptionsItemsComponent extends HookConsumerWidget {
                 defaultValue: _provider.chartItemPadding.right,
                 noInputField: true,
               ),
-          ],
-        ),
+            ],
+          ),
         if (_provider.selectedPainter == SelectedPainter.bar || _provider.selectedPainter == SelectedPainter.bubble)
           ..._provider.data.mapIndexed((index, list) {
             return _PerValueOptions(index: index);
@@ -241,8 +240,7 @@ class _PerValueOptions extends ConsumerWidget {
 
 /// Used for Bar or Bubble selection
 class _BarOptionButton extends StatelessWidget {
-  const _BarOptionButton(
-      {Key? key, this.asset, required this.name, required this.selected, required this.onPressed})
+  const _BarOptionButton({Key? key, this.asset, required this.name, required this.selected, required this.onPressed})
       : super(key: key);
 
   final String? asset;
@@ -265,8 +263,7 @@ class _BarOptionButton extends StatelessWidget {
           children: [
             if (asset != null)
               SvgPicture.asset(asset!, height: 30, color: selected ? Theme.of(context).primaryColor : Colors.grey),
-            if (asset != null)
-              const SizedBox(width: 16),
+            if (asset != null) const SizedBox(width: 16),
             Expanded(child: Text(name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
           ],
         ),

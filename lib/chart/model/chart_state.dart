@@ -83,7 +83,7 @@ class ChartState<T> {
     required this.dataRenderer,
     required this.defaultMargin,
     required this.defaultPadding,
-    required this.itemOptions, // todo: lerp
+    required this.itemOptions,
   }) {
     _initDecorations();
   }
@@ -194,7 +194,6 @@ class ChartState<T> {
   ///
   /// If you need more customization of the individual chart items see [_widgetItemRenderer]
   static ChartDataRendererFactory<T?> _defaultItemRenderer<T>(ItemOptions itemOptions) {
-    print('Creating item renderer for ${itemOptions}');
     return (chartState) => ChartLinearDataRenderer<T?>(
         chartState,
         chartState.data.items

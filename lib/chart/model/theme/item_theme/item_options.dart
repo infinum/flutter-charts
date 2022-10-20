@@ -22,8 +22,6 @@ abstract class ItemOptions {
     this.maxBarWidth,
     this.minBarWidth,
     this.startPosition = 0.5,
-    // this.color = Colors.red,
-    this.colorForValue, // todo: remove
     bool multiItemStack = true,
     required this.itemBuilder,
   }) : _multiValueStacked = multiItemStack ? 1.0 : 0.0;
@@ -35,8 +33,6 @@ abstract class ItemOptions {
     this.maxBarWidth,
     this.minBarWidth,
     this.startPosition = 0.5,
-    // this.color = Colors.red,
-    this.colorForValue,
     double multiItemStack = 1.0,
     required this.itemBuilder,
   }) : _multiValueStacked = multiItemStack;
@@ -52,10 +48,6 @@ abstract class ItemOptions {
 
   final ItemBuilder itemBuilder;
   /// Define color for value, this allows different colors for different values
-  // final Color color;
-
-  /// Generate item color from current value of the item
-  final ColorForValue? colorForValue;
 
   /// Max width of item in the chart
   final double? maxBarWidth;
@@ -84,19 +76,3 @@ abstract class ItemOptions {
   ItemOptions animateTo(ItemOptions endValue, double t);
 }
 
-/// Lerp [ColorForValue] function to get color in the animation
-class ColorForValueLerp {
-  /// Make new function that will return lerp color based on [a.colorForValue] and [b.colorForValue]
-  static ColorForValue? lerp(ItemOptions a, ItemOptions b, double t) {
-    if (a.colorForValue == null && b.colorForValue == null) {
-      return null;
-    }
-
-    // return (Color? defaultColor, ChartItem item) {
-    //   final _aColor = a._getColorForValue(item);
-    //   final _bColor = b._getColorForValue(item);
-    //
-    //   return Color.lerp(_aColor, _bColor, t) ?? _bColor;
-    // };
-  }
-}

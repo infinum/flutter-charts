@@ -172,7 +172,7 @@ class _RenderLeafChartItem<T> extends RenderBox {
     );
 
     // Draw the item on selected position
-    _itemPainter.draw(canvas, Size(_stackWidth, size.height), Paint()..color = chartDataItem.color ?? Colors.black);
+    _itemPainter.draw(canvas, Size(_stackWidth, size.height), chartDataItem.getPaint(Size(_stackWidth, size.height)));
 
     canvas.restore();
   }
