@@ -43,6 +43,7 @@ void main() {
           VerticalAxisDecoration(
               showValues: true,
               axisStep: 2.0,
+              valuesAlign: TextAlign.start,
               legendFontStyle: defaultTextStyle,
               valuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0)),
         ]),

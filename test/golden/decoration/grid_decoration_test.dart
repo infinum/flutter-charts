@@ -86,6 +86,7 @@ void main() {
             showHorizontalValues: true,
             showVerticalValues: true,
             verticalAxisStep: 4,
+            verticalTextAlign: TextAlign.start,
             textStyle: defaultTextStyle,
             horizontalValuesPadding: const EdgeInsets.only(right: 8.0, left: 8.0),
             verticalValuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
