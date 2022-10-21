@@ -11,17 +11,14 @@ void main() {
           height: 600.0,
           state: ChartState.line(
             ChartData.fromList(
-              <double>[1, 3, 4, 2, 7, 6, 2, 5, 4]
-                  .map((e) => BubbleValue<void>(e))
-                  .toList(),
+              <double>[1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e)).toList(),
             ),
             itemOptions: BubbleItemOptions(),
           ),
         ),
       ),
     );
-    await expectLater(find.byType(Padding),
-        matchesGoldenFile('goldens/simple_line_chart.png'));
+    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/simple_line_chart.png'));
   });
 
   testWidgets('Simple bar chart', (tester) async {
@@ -32,17 +29,14 @@ void main() {
           height: 600.0,
           state: ChartState.bar(
             ChartData.fromList(
-              <double>[1, 3, 4, 2, 7, 6, 2, 5, 4]
-                  .map((e) => BarValue<void>(e))
-                  .toList(),
+              <double>[1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e)).toList(),
             ),
             itemOptions: BarItemOptions(),
           ),
         ),
       ),
     );
-    await expectLater(find.byType(Padding),
-        matchesGoldenFile('goldens/simple_bar_chart.png'));
+    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/simple_bar_chart.png'));
   });
 
   testWidgets('Bar chart', (tester) async {
@@ -52,10 +46,7 @@ void main() {
         child: Chart<void>(
           height: 600.0,
           state: ChartState(
-            ChartData.fromList(
-                [1, 3, 4, 2, 7, 6, 2, 5, 4]
-                    .map((e) => BarValue<void>(e.toDouble()))
-                    .toList(),
+            ChartData.fromList([1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
                 axisMax: 8.0),
             itemOptions: BarItemOptions(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -78,8 +69,7 @@ void main() {
         ),
       ),
     );
-    await expectLater(
-        find.byType(Padding), matchesGoldenFile('goldens/bar_chart.png'));
+    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/bar_chart.png'));
   });
 
   testWidgets('Line chart', (tester) async {
@@ -89,10 +79,7 @@ void main() {
         child: Chart<void>(
           height: 600.0,
           state: ChartState(
-            ChartData.fromList(
-                [1, 3, 4, 2, 7, 6, 2, 5, 4]
-                    .map((e) => BubbleValue<void>(e.toDouble()))
-                    .toList(),
+            ChartData.fromList([1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
                 axisMax: 8.0),
             itemOptions: BubbleItemOptions(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -112,8 +99,7 @@ void main() {
         ),
       ),
     );
-    await expectLater(
-        find.byType(Padding), matchesGoldenFile('goldens/line_chart.png'));
+    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/line_chart.png'));
   });
 
   testWidgets('Multi line chart', (tester) async {
@@ -125,22 +111,18 @@ void main() {
           state: ChartState(
             ChartData(
               [
-                [1, 3, 4, 2, 7, 6, 2, 5, 4]
-                    .map((e) => BubbleValue<void>(e.toDouble()))
-                    .toList(),
-                [4, 6, 3, 3, 2, 1, 4, 7, 5]
-                    .map((e) => BubbleValue<void>(e.toDouble()))
-                    .toList(),
+                [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+                [4, 6, 3, 3, 2, 1, 4, 7, 5].map((e) => BubbleValue<void>(e.toDouble())).toList(),
               ],
               axisMax: 8.0,
             ),
             itemOptions: BubbleItemOptions(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                maxBarWidth: 4.0,
-                bubbleItemBuilder: (data) {
-                  return BubbleItem(color: [Colors.red, Colors.blue][data.listKey]);
-                },
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              maxBarWidth: 4.0,
+              bubbleItemBuilder: (data) {
+                return BubbleItem(color: [Colors.red, Colors.blue][data.listKey]);
+              },
+            ),
             backgroundDecorations: [
               GridDecoration(
                 verticalAxisStep: 1,
@@ -161,7 +143,6 @@ void main() {
         ),
       ),
     );
-    await expectLater(find.byType(Padding),
-        matchesGoldenFile('goldens/multi_line_chart.png'));
+    await expectLater(find.byType(Padding), matchesGoldenFile('goldens/multi_line_chart.png'));
   });
 }

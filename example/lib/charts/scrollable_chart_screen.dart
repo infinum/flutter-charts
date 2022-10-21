@@ -113,7 +113,6 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
               Theme.of(context).colorScheme.primaryVariant.withOpacity(0.8),
         ),
         GridDecoration(
-          endWithChart: false,
           showVerticalGrid: true,
           showHorizontalValues: _fixedAxis ? false : _showValues,
           showVerticalValues: _fixedAxis ? true : _showValues,

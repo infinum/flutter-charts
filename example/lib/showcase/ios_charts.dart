@@ -1,16 +1,16 @@
 import 'package:charts_painter/chart.dart';
-import 'package:example/charts/showcase_chart_screen.dart';
+import 'package:example/charts/ios_charts_screen.dart';
 import 'package:flutter/material.dart';
 
-class ShowcaseCharts extends StatelessWidget {
-  const ShowcaseCharts({Key? key}) : super(key: key);
+class IosCharts extends StatelessWidget {
+  const IosCharts({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         ListTile(
-          title: Text('Showcase charts'),
+          title: Text('iOS charts'),
           trailing: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Container(
@@ -83,7 +83,7 @@ class ShowcaseCharts extends StatelessWidget {
           ),
           onTap: () {
             Navigator.of(context).push<void>(
-                MaterialPageRoute(builder: (_) => ShowcaseChartScreen()));
+                MaterialPageRoute(builder: (_) => IosChartScreen()));
           },
         ),
         Divider(),

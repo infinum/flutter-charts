@@ -97,12 +97,19 @@ class VerticalAxisDecoration extends DecorationPainter {
 
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
-    return constraints.deflate(state.defaultMargin).biggest;
+    return constraints
+        .deflate(state.defaultMargin +
+            state.defaultPadding.copyWith(
+              top: _endWithChart * state.defaultPadding.top,
+              bottom: _endWithChart * state.defaultPadding.bottom,
+            ))
+        .biggest;
   }
 
   @override
   Offset applyPaintTransform(ChartState state, Size size) {
-    return Offset(state.defaultMargin.left, state.defaultMargin.top);
+    return Offset(state.defaultMargin.left + state.defaultPadding.left,
+        state.defaultMargin.top + (_endWithChart * state.defaultPadding.top));
   }
 
   @override
@@ -120,11 +127,13 @@ class VerticalAxisDecoration extends DecorationPainter {
     for (var i = 0; i <= _listSize / axisStep; i++) {
       if (showLines) {
         final _showValuesTop = legendPosition == VerticalLegendPosition.top
-            ? -(marginNeeded().top * (1 - _endWithChart))
+            ? -((state.defaultMargin - marginNeeded()).top *
+                (1 - _endWithChart))
             : 0.0;
         final _showValuesBottom = size.height +
             (legendPosition == VerticalLegendPosition.bottom
-                ? (marginNeeded().vertical * (1 - _endWithChart))
+                ? ((state.defaultMargin - marginNeeded()).bottom *
+                    (1 - _endWithChart))
                 : 0.0);
 
         gridPath.moveTo(
@@ -171,8 +180,9 @@ class VerticalAxisDecoration extends DecorationPainter {
                 _itemWidth * i * axisStep +
                 (valuesPadding?.left ?? 0.0),
             legendPosition == VerticalLegendPosition.top
-                ? -(valuesPadding?.top ?? 0.0) - _textPainter.height
-                : size.height + (valuesPadding?.top ?? 0.0)),
+                ? (-(valuesPadding?.top ?? 0.0) - _textPainter.height)
+                : (((state.defaultMargin).inflateSize(size)).height -
+                    (valuesPadding?.vertical ?? 0.0))),
       );
     }
 

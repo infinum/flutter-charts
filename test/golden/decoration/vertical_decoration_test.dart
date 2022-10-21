@@ -43,6 +43,7 @@ void main() {
           VerticalAxisDecoration(
               showValues: true,
               axisStep: 2.0,
+              valuesAlign: TextAlign.start,
               legendFontStyle: defaultTextStyle,
               valuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0)),
         ]),
@@ -67,8 +68,7 @@ void main() {
               valuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0)),
         ]),
       );
-    await tester.pumpWidgetBuilder(builder.build(),
-        surfaceSize: const Size(1400, 660), textScaleSize: 1.4);
+    await tester.pumpWidgetBuilder(builder.build(), surfaceSize: const Size(1400, 660), textScaleSize: 1.4);
     await screenMatchesGolden(tester, 'vertical_decoration_golden');
   });
 }
