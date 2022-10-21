@@ -59,7 +59,7 @@ class OptionsItemsComponent extends HookConsumerWidget {
               },
             ),
             _BarOptionButton(
-              imageAsset: Assets.png.futurama1.path,
+              imageAsset: Assets.png.futuramaSmall.path,
               name: 'Widget',
               selected: _provider.selectedPainter == SelectedPainter.widget,
               onPressed: () {
@@ -70,7 +70,7 @@ class OptionsItemsComponent extends HookConsumerWidget {
         ),
         const SizedBox(height: 16),
         if (_provider.selectedPainter == SelectedPainter.widget)
-          const Text('With WidgetItemOptions you can provide any kind of widget that you want!'),
+          const Text('With WidgetItemOptions you can provide any kind of widget that you want! Here is one example'),
         if (_provider.selectedPainter == SelectedPainter.bar || _provider.selectedPainter == SelectedPainter.bubble)
           Wrap(
             spacing: 16,
@@ -108,12 +108,36 @@ class OptionsItemsComponent extends HookConsumerWidget {
               ),
             ],
           ),
+
+        if (_provider.isMultiItem)
+          Wrap(
+            spacing: 16,
+            runSpacing: 16,
+            children: [
+              const _MultiValueOptions(),
+              ElevatedButton(
+                child: const Text('Set border radius for all'),
+                onPressed: () async {
+                  final radius = await BorderRadiusDialog.show(context, _provider.barBorderRadius[0]);
+                  if (radius != null) {
+                    _provider.updateBarBorderRadius(radius, 0, forAll: true);
+                  }
+                },
+              ),
+            ],
+          ),
+        // final double? startPosition;
+        SizedBox(height: 16),
+        if ((_provider.selectedPainter == SelectedPainter.bar || _provider.selectedPainter == SelectedPainter.bubble) &&
+            _provider.isMultiItem)
+          const Text(
+            'Different options per line:',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
         if (_provider.selectedPainter == SelectedPainter.bar || _provider.selectedPainter == SelectedPainter.bubble)
           ..._provider.data.mapIndexed((index, list) {
             return _PerValueOptions(index: index);
           }).toList(),
-        if (_provider.isMultiItem) const _MultiValueOptions(),
-        // final double? startPosition;
         const SizedBox(height: 16),
       ],
     );
@@ -189,6 +213,7 @@ class _PerValueOptions extends ConsumerWidget {
             children: [
               ElevatedButton(
                 child: const Text('Set border side'),
+                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(_provider.listColors[index])),
                 onPressed: () async {
                   final border = await BorderSideDialog.show(
                       context, _provider.itemBorderSides[index], _provider.itemBorderSides[index].color);
@@ -199,6 +224,7 @@ class _PerValueOptions extends ConsumerWidget {
               ),
               ElevatedButton(
                 child: const Text('Set gradient'),
+                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(_provider.listColors[index])),
                 onPressed: () async {
                   final currentGradient =
                       _provider.gradient[index] ?? LinearGradient(colors: [_provider.listColors[index], Colors.black]);
@@ -213,6 +239,7 @@ class _PerValueOptions extends ConsumerWidget {
               if (_provider.selectedPainter == SelectedPainter.bar)
                 ElevatedButton(
                   child: const Text('Set border radius'),
+                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(_provider.listColors[index])),
                   onPressed: () async {
                     final radius = await BorderRadiusDialog.show(context, _provider.barBorderRadius[index]);
                     if (radius != null) {
@@ -258,8 +285,7 @@ class _BarOptionButton extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (imageAsset == null)
-              const SizedBox(width: 8),
+            if (imageAsset == null) const SizedBox(width: 8),
             if (asset != null)
               SvgPicture.asset(asset!, height: 30, color: selected ? Theme.of(context).primaryColor : Colors.grey),
             if (imageAsset != null)
@@ -268,7 +294,7 @@ class _BarOptionButton extends StatelessWidget {
                   child: Image.asset(
                     imageAsset!,
                     height: 50,
-                    width: 45,
+                    width: 50,
                     fit: BoxFit.cover,
                   )),
             if (asset != null || imageAsset != null) const SizedBox(width: 16),

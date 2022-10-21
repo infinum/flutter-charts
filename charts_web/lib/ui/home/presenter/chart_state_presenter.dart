@@ -30,7 +30,7 @@ class ChartStatePresenter extends ChangeNotifier {
   ];
   List<Color> listColors = [_presetColors[0]];
 
-  DataStrategy _strategy = const DefaultDataStrategy();
+  DataStrategy _strategy = StackDataStrategy();
 
   // Items
   EdgeInsets chartItemPadding = const EdgeInsets.only(left: 2, right: 2, top: 0, bottom: 0);
@@ -147,8 +147,15 @@ class ChartStatePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateBarBorderRadius(BorderRadius newValue, int index) {
+  void updateBarBorderRadius(BorderRadius newValue, int index, {bool forAll = false}) {
     barBorderRadius[index] = newValue;
+
+    if (forAll) {
+      for (int i=0; i<barBorderRadius.length; i++) {
+        barBorderRadius[i] = newValue;
+      }
+    }
+
     notifyListeners();
   }
 

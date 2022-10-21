@@ -11,8 +11,8 @@ class FuturamaBarWidget extends StatelessWidget {
 
   final _images = [
     Assets.png.futurama1.path,
-    Assets.png.futurama5.path,
     Assets.png.futurama2.path,
+    Assets.png.futurama5.path,
     Assets.png.futurama4.path,
     Assets.png.futurama1.path,
   ];

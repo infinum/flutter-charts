@@ -24,6 +24,9 @@ class $AssetsPngGen {
   /// File path: assets/png/futurama5.jpeg
   AssetGenImage get futurama5 => const AssetGenImage('assets/png/futurama5.jpeg');
 
+  /// File path: assets/png/futurama_small.png
+  AssetGenImage get futuramaSmall => const AssetGenImage('assets/png/futurama_small.png');
+
   /// File path: assets/png/general_grid_decoration_golden.png
   AssetGenImage get generalGridDecorationGolden => const AssetGenImage('assets/png/general_grid_decoration_golden.png');
 
