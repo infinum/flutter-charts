@@ -176,8 +176,7 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     // Handle stack data strategy.
     if (chartState.data.dataStrategy is StackDataStrategy) {
       if (child.key + 1 < chartState.data.stackSize) {
-        bottomPaddingHeight =
-            chartState.data.items[child.key + 1][currentValue].max ?? 0.0;
+        bottomPaddingHeight = (chartState.data.items[child.key + 1][currentValue].max ?? 0.0) * (1 - _stack);
       }
     }
 
