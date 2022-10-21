@@ -109,7 +109,8 @@ void main() {
               ),
               backgroundDecorations: [
                 GridDecoration(
-                  endWithChart: true,
+                  endWithChartVertical: true,
+                  endWithChartHorizontal: true,
                   showHorizontalValues: true,
                   showVerticalGrid: false,
                   showVerticalValues: true,
@@ -310,9 +311,7 @@ void main() {
               itemOptions: BubbleItemOptions(
                 maxBarWidth: 2.0,
                 bubbleItemBuilder: (data) {
-                  return BubbleItem(
-                    color:  [Color(0xFF5B6ACF), Color(0xFFB6CADD)][data.listKey]
-                  );
+                  return BubbleItem(color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][data.listKey]);
                 },
                 multiItemStack: true,
               ),
@@ -394,15 +393,15 @@ void main() {
                 axisMin: -14,
               ),
               itemOptions: BarItemOptions(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  barItemBuilder: (data) {
-                    return BarItem(
-                      radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-                      color: [Color(0xFF0139A4), Color(0xFF00B6E6)][data.listKey],
-                    );
-                  },
-                  multiItemStack: true,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                barItemBuilder: (data) {
+                  return BarItem(
+                    radius: BorderRadius.vertical(top: Radius.circular(12.0)),
+                    color: [Color(0xFF0139A4), Color(0xFF00B6E6)][data.listKey],
+                  );
+                },
+                multiItemStack: true,
+              ),
               backgroundDecorations: [
                 GridDecoration(
                   horizontalAxisStep: 7.0,

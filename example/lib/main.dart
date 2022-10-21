@@ -2,6 +2,7 @@ import 'package:charts_painter/chart.dart';
 import 'package:example/chart_types.dart';
 import 'package:example/charts/bar_target_chart_screen.dart';
 import 'package:example/complex/complex_charts.dart';
+import 'package:example/showcase/ios_charts.dart';
 import 'package:example/showcase/showcase_charts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -85,12 +86,15 @@ class ShowList extends StatelessWidget {
               child: Chart(
                 state: ChartState<void>(
                   ChartData.fromList(
-                    [2, 7, 2, 4, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+                    [2, 7, 2, 4, 7, 6, 2, 5, 4]
+                        .map((e) => BubbleValue<void>(e.toDouble()))
+                        .toList(),
                     axisMax: 9,
                   ),
                   itemOptions: BubbleItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    bubbleItemBuilder: (_) => BubbleItem(color: Theme.of(context).accentColor),
+                    bubbleItemBuilder: (_) =>
+                        BubbleItem(color: Theme.of(context).accentColor),
                     maxBarWidth: 1.0,
                   ),
                   backgroundDecorations: [
@@ -109,7 +113,8 @@ class ShowList extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => LineChartScreen()));
+            Navigator.of(context).push<void>(
+                MaterialPageRoute(builder: (_) => LineChartScreen()));
           },
         ),
         Divider(),
@@ -122,12 +127,15 @@ class ShowList extends StatelessWidget {
               child: Chart(
                 state: ChartState<void>(
                     ChartData.fromList(
-                      [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
+                      [1, 3, 4, 2, 7, 6, 2, 5, 4]
+                          .map((e) => BarValue<void>(e.toDouble()))
+                          .toList(),
                       axisMax: 8,
                     ),
                     itemOptions: BarItemOptions(
                       padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                      barItemBuilder: (_) => BarItem(color: Theme.of(context).accentColor),
+                      barItemBuilder: (_) =>
+                          BarItem(color: Theme.of(context).accentColor),
                       maxBarWidth: 4.0,
                     ),
                     backgroundDecorations: [
@@ -141,7 +149,8 @@ class ShowList extends StatelessWidget {
                       TargetLineDecoration(
                         target: 6,
                         colorOverTarget: Theme.of(context).colorScheme.error,
-                        targetLineColor: Theme.of(context).colorScheme.secondary,
+                        targetLineColor:
+                            Theme.of(context).colorScheme.secondary,
                       ),
                       BorderDecoration(
                         borderWidth: 1.5,
@@ -152,7 +161,8 @@ class ShowList extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => BarTargetChartScreen()));
+            Navigator.of(context).push<void>(
+                MaterialPageRoute(builder: (_) => BarTargetChartScreen()));
           },
         ),
         Divider(),
@@ -176,7 +186,9 @@ class ShowList extends StatelessWidget {
               child: Chart(
                 state: ChartState<void>(
                   ChartData.fromList(
-                    [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
+                    [1, 3, 4, 2, 7, 6, 2, 5, 4]
+                        .map((e) => BarValue<void>(e.toDouble()))
+                        .toList(),
                     axisMax: 8,
                   ),
                   itemOptions: BarItemOptions(
@@ -201,7 +213,8 @@ class ShowList extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => ScrollableChartScreen()));
+            Navigator.of(context).push<void>(
+                MaterialPageRoute(builder: (_) => ScrollableChartScreen()));
           },
         ),
         Divider(),
@@ -218,6 +231,7 @@ class ShowList extends StatelessWidget {
         Divider(),
         ComplexCharts(),
         ShowcaseCharts(),
+        IosCharts(),
         SizedBox(
           height: 24.0,
         ),

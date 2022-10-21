@@ -107,12 +107,16 @@ class ChartState<T> {
   /// Decorations for chart foreground, they are drawn last, and the go above items
   final List<DecorationPainter> foregroundDecorations;
 
-  /// Margin of chart drawing area where items are drawn. This is so decorations
-  /// can be placed outside of the chart drawing area without actually scaling the chart.
+  /// Margin of chart drawing area where items are drawn.
+  ///
+  /// Whole chart and all items will move with margin
   EdgeInsets defaultMargin;
 
   /// Padding is used for decorations that want other decorations to be drawn on them.
-  /// Unlike [defaultMargin] decorations can draw inside the padding area.
+  /// Unlike [defaultMargin] some decorations don't need to respect padding.
+  /// Sometimes decorations paint over this padding.
+  ///
+  /// Whole chart and all items will move with margin
   EdgeInsets defaultPadding;
 
   /// Get all decorations. This will return list of [backgroundDecorations] and [foregroundDecorations] as one list.
@@ -189,25 +193,28 @@ class ChartState<T> {
   /// [ItemOptions].
   ///
   /// If you need more customization of the individual chart items see [_widgetItemRenderer]
-  static ChartDataRendererFactory<T?> _defaultItemRenderer<T>(ItemOptions itemOptions) {
+  static ChartDataRendererFactory<T?> _defaultItemRenderer<T>(
+      ItemOptions itemOptions) {
     return (chartState) {
       return ChartLinearDataRenderer<T?>(
-        chartState,
-        chartState.data.items
-            .mapIndexed(
-              (lineKey, items) => items
-                  .mapIndexed((itemKey, item) => LeafChartItemRenderer(
-                        item,
-                        chartState.data,
-                        itemOptions,
-                        itemKey: itemKey,
-                        listKey: lineKey,
-                        drawDataItem: itemOptions.itemBuilder(ItemBuilderData<T?>(item, itemKey, lineKey)) as DrawDataItem,
-                      ))
-                  .toList(),
-            )
-            .expand((element) => element)
-            .toList());
+          chartState,
+          chartState.data.items
+              .mapIndexed(
+                (lineKey, items) => items
+                    .mapIndexed((itemKey, item) => LeafChartItemRenderer(
+                          item,
+                          chartState.data,
+                          itemOptions,
+                          itemKey: itemKey,
+                          listKey: lineKey,
+                          drawDataItem: itemOptions.itemBuilder(
+                                  ItemBuilderData<T?>(item, itemKey, lineKey))
+                              as DrawDataItem,
+                        ))
+                    .toList(),
+              )
+              .expand((element) => element)
+              .toList());
     };
   }
 
@@ -227,7 +234,8 @@ class ChartState<T> {
                         chartState.data,
                         itemOptions,
                         arrayKey: lineKey,
-                        child: itemOptions.widgetItemBuilder(ItemBuilderData<T?>(e, itemKey, lineKey)),
+                        child: itemOptions.widgetItemBuilder(
+                            ItemBuilderData<T?>(e, itemKey, lineKey)),
                       ),
                     )
                     .toList();
@@ -237,4 +245,3 @@ class ChartState<T> {
             .toList());
   }
 }
-

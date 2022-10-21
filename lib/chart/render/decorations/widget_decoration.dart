@@ -42,10 +42,13 @@ class WidgetDecoration extends DecorationPainter {
   /// Constructor for selected item decoration
   WidgetDecoration({
     required this.widgetDecorationBuilder,
+    this.margin = EdgeInsets.zero,
   });
 
   /// Builder for widget decoration
   final WidgetDecorationBuilder widgetDecorationBuilder;
+
+  final EdgeInsets margin;
 
   @override
   Widget getRenderer(ChartState state) {
@@ -56,7 +59,7 @@ class WidgetDecoration extends DecorationPainter {
         builder: (context, constraints) {
           // Get all the data we need to draw the decoration and pass to the builder
           // This will ensure that we have right data in the builder and that we can show decoration to scale.
-          final _size = (state.defaultMargin).deflateSize(constraints.biggest);
+          final _size = (state.defaultMargin + state.defaultPadding).deflateSize(constraints.biggest);
           final _listSize = state.data.listSize;
           final _itemWidth = _size.width / _listSize;
 
@@ -74,10 +77,16 @@ class WidgetDecoration extends DecorationPainter {
     if (endValue is WidgetDecoration) {
       return WidgetDecoration(
         widgetDecorationBuilder: t > 0.5 ? endValue.widgetDecorationBuilder : widgetDecorationBuilder,
+        margin: EdgeInsets.lerp(margin, endValue.margin, t) ?? endValue.margin,
       );
     }
 
     return this;
+  }
+
+  @override
+  EdgeInsets marginNeeded() {
+    return margin;
   }
 
   @override
