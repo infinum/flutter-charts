@@ -52,6 +52,12 @@ class $AssetsSvgGen {
   /// File path: assets/svg/bubble_chart_icon.svg
   String get bubbleChartIcon => 'assets/svg/bubble_chart_icon.svg';
 
+  /// File path: assets/svg/deco_background.svg
+  String get decoBackground => 'assets/svg/deco_background.svg';
+
+  /// File path: assets/svg/deco_foreground.svg
+  String get decoForeground => 'assets/svg/deco_foreground.svg';
+
   /// File path: assets/svg/line_no.svg
   String get lineNo => 'assets/svg/line_no.svg';
 

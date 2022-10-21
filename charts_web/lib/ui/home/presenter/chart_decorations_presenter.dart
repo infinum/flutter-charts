@@ -16,25 +16,38 @@ class ChartDecorationsPresenter extends ChangeNotifier {
   /// We have unique id for each decoration, so we use this to track which IDs are taken
   int _decorationIndexIncrement = 0;
 
-  final Map<int, DecorationPainter> foregroundDecorations = {};
-  final Map<int, DecorationPainter> backgroundDecorations = {};
+  final Map<int, _DecorationData> _decorations = {};
 
-  void addForegroundDecorations(DecorationPainter decoration) {
+  Map<int, DecorationPainter> get foregroundDecorations => _decorationsByLayer(DecorationLayer.foreground);
+
+  Map<int, DecorationPainter> get backgroundDecorations => _decorationsByLayer(DecorationLayer.background);
+
+  void addDecoration(DecorationPainter decoration, {DecorationLayer layer = DecorationLayer.foreground}) {
     final index = getNewAutoIncrementDecorationIndex();
 
-    foregroundDecorations[index] = ref.read(decorationSparkLinePresenter(index)).buildDecoration();
+    _decorations[index] = _DecorationData(ref.read(decorationSparkLinePresenter(index)).buildDecoration(), layer);
 
     ref.read(decorationSparkLinePresenter(index)).addListener(() => registerNewListener(index));
 
     notifyListeners();
   }
 
+  void moveDecorationToLayer(int decorationIndex, DecorationLayer layer) {
+    _decorations[decorationIndex] = _DecorationData(_decorations[decorationIndex]!.decorationPainter, layer);
+    notifyListeners();
+  }
+
+  DecorationLayer getLayerOfDecoration(int decorationIndex) {
+    return _decorations[decorationIndex]!.layer;
+  }
+
   void removeDecorationsDependentOnData(int lineIndex) {
     final decorationsIndexToRemove = <int>[];
 
-    foregroundDecorations.forEach((decorationIndex, element) {
-      if (element is SparkLineDecoration) {
-        if (element.lineArrayIndex == lineIndex) {
+    _decorations.forEach((decorationIndex, element) {
+      final decoration = element.decorationPainter;
+      if (decoration is SparkLineDecoration) {
+        if (decoration.lineArrayIndex == lineIndex) {
           decorationsIndexToRemove.add(decorationIndex);
           ref.read(decorationSparkLinePresenter(decorationIndex)).dispose();
         }
@@ -42,14 +55,14 @@ class ChartDecorationsPresenter extends ChangeNotifier {
     });
 
     for (final decorationIndex in decorationsIndexToRemove) {
-      foregroundDecorations.removeWhere((e, _) => e == decorationIndex);
+      _decorations.removeWhere((e, _) => e == decorationIndex);
     }
 
     notifyListeners();
   }
 
   void removeDecoration(int decorationIndex) {
-    foregroundDecorations.removeWhere((e, _) => e == decorationIndex);
+    _decorations.removeWhere((e, _) => e == decorationIndex);
     notifyListeners();
   }
 
@@ -60,7 +73,29 @@ class ChartDecorationsPresenter extends ChangeNotifier {
   }
 
   void registerNewListener(int index) {
-    foregroundDecorations[index] = ref.read(decorationSparkLinePresenter(index)).buildDecoration();
+    _decorations[index] = _DecorationData(ref.read(decorationSparkLinePresenter(index)).buildDecoration(),
+        _decorations.containsKey(index) ? _decorations[index]!.layer : DecorationLayer.foreground);
     notifyListeners();
   }
+
+  Map<int, DecorationPainter> _decorationsByLayer(DecorationLayer layer) {
+    final Map<int, DecorationPainter> toReturn = {};
+
+    _decorations.forEach((key, value) {
+      if (value.layer == layer) {
+        toReturn[key] = value.decorationPainter;
+      }
+    });
+
+    return toReturn;
+  }
 }
+
+class _DecorationData {
+  _DecorationData(this.decorationPainter, this.layer);
+
+  final DecorationPainter decorationPainter;
+  final DecorationLayer layer;
+}
+
+enum DecorationLayer { background, foreground }

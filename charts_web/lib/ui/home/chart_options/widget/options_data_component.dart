@@ -22,16 +22,16 @@ class OptionsDataComponent extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _provider = ref.watch(chartStatePresenter);
+    final _presenter = ref.watch(chartStatePresenter);
 
     return Column(
       children: [
         const OptionsComponentHeader(title: 'Data', subtitle: _subtitle),
-        if (_provider.isMultiItem)
+        if (_presenter.isMultiItem)
           SwitchWithImage(
-            value: _provider.state.data.dataStrategy.runtimeType == DefaultDataStrategy,
+            value: _presenter.state.data.dataStrategy.runtimeType == DefaultDataStrategy,
             onChanged: (value) {
-              _provider.updateDataStrategy(_provider.state.data.dataStrategy.runtimeType == DefaultDataStrategy
+              _presenter.updateDataStrategy(_presenter.state.data.dataStrategy.runtimeType == DefaultDataStrategy
                   ? StackDataStrategy()
                   : const DefaultDataStrategy());
             },
@@ -39,23 +39,30 @@ class OptionsDataComponent extends HookConsumerWidget {
             title2: 'Stack (one on top of another)',
             image1: Assets.svg.strategyDefault,
             image2: Assets.svg.strategyStack,
-            subtitle: 'Data Strategy - how to show multiple data values',),
+            subtitle: 'Data Strategy - how to show multiple data values',
+          ),
         const SizedBox(height: 12),
-        ..._provider.data.mapIndexed((index, list) {
+        ..._presenter.data.mapIndexed((index, list) {
           return _DataTextField(
             index,
             key: Key('data$index'),
           );
         }).toList(),
         const SizedBox(height: 8),
-        CupertinoButton(
-          child: const Text('Add another list'),
-          onPressed: () {
-            final _lists = _provider.data;
-            _provider.addDataList(
-                List.generate(_lists.first.length, (index) => BarValue<void>((Random().nextDouble() * 10))).toList());
-          },
-        ),
+        if (!_presenter.showMaxDataListMessage)
+          CupertinoButton(
+            child: const Text('Add another list'),
+            onPressed: () {
+              final _lists = _presenter.data;
+              _presenter.addDataList(
+                  List.generate(_lists.first.length, (index) => BarValue<void>((Random().nextDouble() * 10))).toList());
+            },
+          ),
+        if (_presenter.showMaxDataListMessage)
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.0),
+            child: Text("You can have more lists, but for demo let's stop at 5.", style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
       ],
     );
   }
@@ -101,7 +108,7 @@ class _DataTextField extends HookConsumerWidget {
               context,
               _provider.listColors[listIndex],
               additionalText:
-              'In code, with colorForValue you can also define different color for each value of the list.',
+                  'In code, with colorForValue you can also define different color for each value of the list.',
             );
             if (color != null) {
               _provider.updateListColor(color, listIndex);
@@ -115,11 +122,10 @@ class _DataTextField extends HookConsumerWidget {
   String getValuesText(ChartStatePresenter presenter) {
     return presenter.data[listIndex]
         .fold<StringBuffer>(
-        StringBuffer(),
-            (sb, e) =>
-        sb
-          ..write(
-              '${(e.max ?? e.min)?.toStringAsFixed(0) ?? ''}${presenter.data[listIndex].last == e ? '' : ', '}'))
+            StringBuffer(),
+            (sb, e) => sb
+              ..write(
+                  '${(e.max ?? e.min)?.toStringAsFixed(0) ?? ''}${presenter.data[listIndex].last == e ? '' : ', '}'))
         .toString();
   }
 }

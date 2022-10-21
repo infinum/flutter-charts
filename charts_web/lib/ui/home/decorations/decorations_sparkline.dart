@@ -2,6 +2,7 @@ import 'package:charts_painter/chart.dart';
 import 'package:charts_web/assets.gen.dart';
 import 'package:charts_web/ui/common/dialog/gradient_dialog.dart';
 import 'package:charts_web/ui/common/widget/switch_with_image.dart';
+import 'package:charts_web/ui/home/decorations/common_decoration_box.dart';
 import 'package:charts_web/ui/home/decorations/presenters/decorations_sparkline_presenter.dart';
 import 'package:charts_web/ui/home/presenter/chart_decorations_presenter.dart';
 import 'package:charts_web/ui/home/presenter/chart_state_presenter.dart';
@@ -21,44 +22,17 @@ class DecorationsSparkline extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _chartStatePresenter = ref.watch(chartStatePresenter);
     final _presenter = ref.watch(decorationSparkLinePresenter(decorationIndex));
 
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white54,
-        borderRadius: BorderRadius.circular(24),
-      ),
-      padding: const EdgeInsets.all(16),
+    return CommonDecorationBox(
+      onDataListSelected: _presenter.updateId,
+      decorationIndex: decorationIndex,
       child: Column(
         children: [
-          if (_chartStatePresenter.isMultiItem)
-            Row(
-              children: [
-                const Text('Data list: '),
-                const SizedBox(width: 16),
-                ..._chartStatePresenter.data.mapIndexed(
-                  (index, element) => IconButton(
-                    onPressed: () {
-                      _presenter.updateId(index);
-                    },
-                    icon: Icon(
-                      Icons.circle,
-                      color: _chartStatePresenter.listColors[index],
-                    ),
-                  ),
-                )
-              ],
-            ),
           Wrap(
             spacing: 16,
             runSpacing: 16,
             children: [
-              IconButton(
-                  onPressed: () {
-                    ref.read(chartDecorationsPresenter).removeDecoration(decorationIndex);
-                  },
-                  icon: const Icon(Icons.delete_forever, color: Colors.black54)),
               SizedBox(
                 width: 200,
                 child: SwitchWithImage(

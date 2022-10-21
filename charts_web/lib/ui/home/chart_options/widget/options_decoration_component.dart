@@ -32,7 +32,7 @@ class DecorationsComponent extends ConsumerWidget {
               name: 'SparkLine',
               image: Assets.png.generalSparklineDecorationGolden.path,
               onPressed: () {
-                _presenter.addForegroundDecorations(SparkLineDecoration());
+                _presenter.addDecoration(SparkLineDecoration());
               },
             ),
             _DecorationItem(
@@ -62,6 +62,8 @@ class DecorationsComponent extends ConsumerWidget {
         const Text('Current decorations:', style: TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         ...mapToWidgets(_presenter.foregroundDecorations),
+        const Divider(),
+        ...mapToWidgets(_presenter.backgroundDecorations),
       ],
     );
   }

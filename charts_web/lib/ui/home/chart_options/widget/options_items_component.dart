@@ -127,7 +127,7 @@ class OptionsItemsComponent extends HookConsumerWidget {
             ],
           ),
         // final double? startPosition;
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         if ((_provider.selectedPainter == SelectedPainter.bar || _provider.selectedPainter == SelectedPainter.bubble) &&
             _provider.isMultiItem)
           const Text(

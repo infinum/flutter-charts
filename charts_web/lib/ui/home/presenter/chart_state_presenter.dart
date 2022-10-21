@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:charts_painter/chart.dart';
 import 'package:charts_web/ui/home/chart_options/widget/futurama_bar_widget.dart';
 import 'package:charts_web/ui/home/presenter/chart_decorations_presenter.dart';
@@ -28,9 +30,10 @@ class ChartStatePresenter extends ChangeNotifier {
   List<List<ChartItem<void>>> _data = [
     [4, 6, 3, 6, 7, 9, 3, 2].map((e) => BarValue(e.toDouble())).toList(),
   ];
-  List<Color> listColors = [_presetColors[0]];
-
   DataStrategy _strategy = StackDataStrategy();
+  bool showMaxDataListMessage = false;
+
+  List<Color> listColors = [_presetColors[0]];
 
   // Items
   EdgeInsets chartItemPadding = const EdgeInsets.only(left: 2, right: 2, top: 0, bottom: 0);
@@ -73,6 +76,12 @@ class ChartStatePresenter extends ChangeNotifier {
   }
 
   void addDataList(List<ChartItem<void>> list) {
+    if (_data.length == 5) {
+      showMaxDataListMessage = true;
+      notifyListeners();
+      return;
+    }
+
     _data.add(list);
 
     /// Add all per-value collections
@@ -84,12 +93,23 @@ class ChartStatePresenter extends ChangeNotifier {
   }
 
   void removeDataList(int listIndex) {
-    listColors.removeAt(listIndex);
+    if (showMaxDataListMessage) {
+      showMaxDataListMessage = false;
+    }
+
     data.removeAt(listIndex);
-    barBorderRadius.removeAt(listIndex);
-    itemBorderSides.removeAt(listIndex);
 
     _decorationsPresenter.removeDecorationsDependentOnData(listIndex);
+
+
+    /// When deleting we still need data a little bit for lerp animation to finish
+    scheduleMicrotask(() async {
+      await Future.delayed(Duration(milliseconds: 30));
+      listColors.removeAt(listIndex);
+      barBorderRadius.removeAt(listIndex);
+      itemBorderSides.removeAt(listIndex);
+      notifyListeners();
+    });
 
     notifyListeners();
   }
@@ -139,6 +159,12 @@ class ChartStatePresenter extends ChangeNotifier {
 
   void updateMultiItemStack(bool newValue) {
     multiItemStack = newValue;
+
+    if (!multiItemStack && selectedPainter == SelectedPainter.bar) {
+      // It doesn't really make sense to have stack strategy when multiItemStack is selected. So changing it here:
+      updateDataStrategy(const DefaultDataStrategy());
+    }
+
     notifyListeners();
   }
 
@@ -151,7 +177,7 @@ class ChartStatePresenter extends ChangeNotifier {
     barBorderRadius[index] = newValue;
 
     if (forAll) {
-      for (int i=0; i<barBorderRadius.length; i++) {
+      for (int i = 0; i < barBorderRadius.length; i++) {
         barBorderRadius[i] = newValue;
       }
     }
@@ -179,12 +205,11 @@ class ChartStatePresenter extends ChangeNotifier {
         padding: chartItemPadding,
         bubbleItemBuilder: (data) {
           return BubbleItem(
-            color: _getColorForKey(data.listKey),
+            color: _getColorForList(data.listKey),
             gradient: gradient[data.listKey],
             border: itemBorderSides[data.listKey],
           );
         },
-        // color: _getColorForKey(index),
         maxBarWidth: maxBarWidth,
         minBarWidth: minBarWidth,
         multiItemStack: multiItemStack,
@@ -195,7 +220,7 @@ class ChartStatePresenter extends ChangeNotifier {
         padding: chartItemPadding,
         barItemBuilder: (data) {
           return BarItem(
-            color: _getColorForKey(data.listKey),
+            color: _getColorForList(data.listKey),
             gradient: gradient[data.listKey],
             border: itemBorderSides[data.listKey],
             radius: barBorderRadius[data.listKey],
@@ -226,8 +251,8 @@ class ChartStatePresenter extends ChangeNotifier {
     }
   }
 
-  Color _getColorForKey(int key) {
-    return listColors[key % 5];
+  Color _getColorForList(int listKey) {
+    return listColors[listKey % 5];
   }
 }
 
