@@ -132,8 +132,7 @@ class VerticalAxisDecoration extends DecorationPainter {
             : 0.0;
         final _showValuesBottom = size.height +
             (legendPosition == VerticalLegendPosition.bottom
-                ? ((state.defaultMargin - marginNeeded()).bottom *
-                    (1 - _endWithChart))
+                ? ((state.defaultMargin).bottom * (1 - _endWithChart))
                 : 0.0);
 
         gridPath.moveTo(
