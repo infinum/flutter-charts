@@ -197,6 +197,7 @@ final List<ChartState<bool>> _chartStates = [
         ],
       ],
       axisMax: 4,
+      dataStrategy: DefaultDataStrategy(stackMultipleValues: false),
     ),
     itemOptions: BarItemOptions(
       barItemBuilder: (data) {
@@ -205,7 +206,6 @@ final List<ChartState<bool>> _chartStates = [
       },
       multiValuePadding: const EdgeInsets.symmetric(horizontal: 4.0),
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      multiItemStack: false,
     ),
     backgroundDecorations: [
       GridDecoration(
@@ -263,12 +263,12 @@ final List<ChartState<bool>> _chartStates = [
         ],
       ],
       axisMax: 30,
+      dataStrategy: DefaultDataStrategy(stackMultipleValues: false),
     ),
     itemOptions: BarItemOptions(
       barItemBuilder: (_) {
         return BarItem(color: Colors.transparent);
       },
-      multiItemStack: false,
     ),
     backgroundDecorations: [
       GridDecoration(
@@ -403,6 +403,7 @@ final List<ChartState<bool>> _chartStates = [
       ],
       axisMax: 14,
       axisMin: -14,
+      dataStrategy: StackDataStrategy(),
     ),
     itemOptions: BarItemOptions(
       barItemBuilder: (data) {
@@ -412,7 +413,6 @@ final List<ChartState<bool>> _chartStates = [
         );
       },
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      multiItemStack: true,
     ),
     backgroundDecorations: [
       GridDecoration(

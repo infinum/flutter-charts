@@ -10,7 +10,7 @@ class ChartData<T> {
   /// [valueAxisMaxOver] - How much should chart draw above max value in the chart
   ChartData(
     this._items, {
-    this.dataStrategy = const DefaultDataStrategy(),
+    this.dataStrategy = const DefaultDataStrategy(stackMultipleValues: true),
     this.axisMax,
     this.valueAxisMaxOver,
     this.axisMin,
@@ -64,7 +64,7 @@ class ChartData<T> {
 
   ChartData._lerp(
     this._items, {
-    this.dataStrategy = const DefaultDataStrategy(),
+    this.dataStrategy = const DefaultDataStrategy(stackMultipleValues: true),
     this.axisMax,
     this.axisMin,
     this.valueAxisMaxOver,

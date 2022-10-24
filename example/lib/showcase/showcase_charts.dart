@@ -37,6 +37,7 @@ class ShowcaseCharts extends StatelessWidget {
                       ],
                     ],
                     axisMax: 35,
+                    dataStrategy: DefaultDataStrategy(stackMultipleValues: true),
                   ),
                   itemOptions: BubbleItemOptions(
                     maxBarWidth: 2.0,
@@ -47,7 +48,6 @@ class ShowcaseCharts extends StatelessWidget {
                         Color(0xFFB6CADD)
                       ][data.listKey]);
                     },
-                    multiItemStack: true,
                   ),
                   backgroundDecorations: [
                     GridDecoration(

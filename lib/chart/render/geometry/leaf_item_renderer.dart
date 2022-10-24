@@ -148,7 +148,7 @@ class _RenderLeafChartItem<T> extends RenderBox {
     canvas.save();
     canvas.translate(offset.dx, offset.dy);
 
-    final _stack = 1 - _itemOptions._multiValueStacked;
+    final _stack = 1 - _state.dataStrategy._stackMultipleValuesProgress;
     final _stackSize = max(1, _state.stackSize * _stack);
 
     final _multiPadding = _itemOptions.multiValuePadding.horizontal * _stackSize * _stack;

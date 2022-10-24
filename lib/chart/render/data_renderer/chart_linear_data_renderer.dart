@@ -152,9 +152,9 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     final _multiValuePadding =
         chartState.itemOptions.multiValuePadding;
 
-    // Animated multiValueStacked value
+    // Animated multiValueStacked value (goes from 0.0 meaning no stack - to 1.0 stack)
     final _stack =
-        1 - chartState.itemOptions._multiValueStacked;
+        1 - chartState.data.dataStrategy._stackMultipleValuesProgress;
     // How many items will we fit in the vertical space
     final _stackSize = max(1.0, (chartState.data.stackSize) * _stack);
 

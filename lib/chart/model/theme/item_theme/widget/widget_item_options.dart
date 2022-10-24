@@ -43,23 +43,19 @@ class WidgetItemOptions extends ItemOptions {
   const WidgetItemOptions({
     required this.widgetItemBuilder,
     EdgeInsets multiValuePadding = EdgeInsets.zero,
-    bool multiItemStack = true,
   }) : super(
           padding: EdgeInsets.zero,
           multiValuePadding: multiValuePadding,
           geometryPainter: _emptyPainter,
-          multiItemStack: multiItemStack,
           itemBuilder: widgetItemBuilder,
         );
 
   const WidgetItemOptions._lerp({
     required this.widgetItemBuilder,
     EdgeInsets multiValuePadding = EdgeInsets.zero,
-    double multiItemStack = 1.0,
   }) : super._lerp(
           multiValuePadding: multiValuePadding,
           geometryPainter: _emptyPainter,
-          multiItemStack: multiItemStack,
           itemBuilder: widgetItemBuilder,
         );
 
@@ -69,8 +65,7 @@ class WidgetItemOptions extends ItemOptions {
   ItemOptions animateTo(ItemOptions endValue, double t) {
     return WidgetItemOptions._lerp(
       widgetItemBuilder: endValue is WidgetItemOptions ? endValue.widgetItemBuilder : widgetItemBuilder,
-      multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero,
-      multiItemStack: lerpDouble(_multiValueStacked, endValue._multiValueStacked, t) ?? 1.0,
+      multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero
     );
   }
 }

@@ -25,9 +25,8 @@ abstract class ItemOptions {
     this.maxBarWidth,
     this.minBarWidth,
     this.startPosition = 0.5,
-    bool multiItemStack = true,
     required this.itemBuilder,
-  }) : _multiValueStacked = multiItemStack ? 1.0 : 0.0;
+  });
 
   const ItemOptions._lerp({
     required this.geometryPainter,
@@ -38,7 +37,7 @@ abstract class ItemOptions {
     this.startPosition = 0.5,
     double multiItemStack = 1.0,
     required this.itemBuilder,
-  }) : _multiValueStacked = multiItemStack;
+  });
 
   /// Item padding, if [minBarWidth] and [padding] are more then available space
   /// [padding] will get ignored
@@ -47,7 +46,6 @@ abstract class ItemOptions {
   /// Multi value chart padding, this will `group` values with same index from different lists
   /// use to make space between index changes in multi value charts
   final EdgeInsets multiValuePadding;
-  final double _multiValueStacked;
 
   final ItemBuilder itemBuilder;
   /// Define color for value, this allows different colors for different values
@@ -69,9 +67,6 @@ abstract class ItemOptions {
 
   /// Geometry
   final ChartGeometryPainter geometryPainter;
-
-  /// Return true if multi item drawing is set to stack
-  bool get multiValueStack => _multiValueStacked > 0.5;
 
   /// Animate to next [ItemOptions] state
   /// When making custom [ItemOptions] make sure to override this return custom painter

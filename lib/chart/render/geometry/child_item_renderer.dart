@@ -124,7 +124,7 @@ class _RenderChildChartItem<T> extends RenderShiftedBox {
     if (child != null) {
       final childParentData = child!.parentData! as BoxParentData;
 
-      final _stack = 1 - _itemOptions._multiValueStacked;
+      final _stack = 1 - _state.dataStrategy._stackMultipleValuesProgress;
 
       final offset = Offset(size.width * key * _stack, 0.0);
       childParentData.offset = offset;

@@ -22,7 +22,6 @@ class BarItemOptions extends ItemOptions {
     double? maxBarWidth,
     double? minBarWidth,
     double startPosition = 0.5,
-    bool multiItemStack = true,
     this.barItemBuilder = _defaultBarItem,
   }) : super(
             padding: padding,
@@ -31,7 +30,6 @@ class BarItemOptions extends ItemOptions {
             minBarWidth: minBarWidth,
             startPosition: startPosition,
             geometryPainter: barPainter,
-            multiItemStack: multiItemStack,
             itemBuilder: barItemBuilder);
 
   BarItemOptions._lerp(
@@ -40,7 +38,6 @@ class BarItemOptions extends ItemOptions {
       double? maxBarWidth,
       double? minBarWidth,
       double startPosition = 0.5,
-      double multiItemStack = 1.0,
       required this.barItemBuilder})
       : super._lerp(
             padding: padding,
@@ -49,7 +46,6 @@ class BarItemOptions extends ItemOptions {
             minBarWidth: minBarWidth,
             startPosition: startPosition,
             geometryPainter: barPainter,
-            multiItemStack: multiItemStack,
             itemBuilder: barItemBuilder);
 
   final BarItemBuilder barItemBuilder;
@@ -64,7 +60,6 @@ class BarItemOptions extends ItemOptions {
         maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
         minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
         startPosition: lerpDouble(startPosition, endValue.startPosition, t) ?? 0.5,
-        multiItemStack: lerpDouble(_multiValueStacked, endValue._multiValueStacked, t) ?? 1.0,
       );
     } else {
       return endValue;

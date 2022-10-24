@@ -63,7 +63,7 @@ class LineChart<T> extends StatelessWidget {
       state: ChartState<T>(
         ChartData(
           _mappedValues,
-          dataStrategy: stack ? StackDataStrategy() : DefaultDataStrategy(),
+          dataStrategy: stack ? StackDataStrategy() : DefaultDataStrategy(stackMultipleValues: true),
         ),
         itemOptions: chartItemOptions ?? BarItemOptions(barItemBuilder: (_) => BarItem()),
         foregroundDecorations: [

@@ -33,7 +33,7 @@ class OptionsDataComponent extends HookConsumerWidget {
             onChanged: (value) {
               _presenter.updateDataStrategy(_presenter.state.data.dataStrategy.runtimeType == DefaultDataStrategy
                   ? StackDataStrategy()
-                  : const DefaultDataStrategy());
+                  : const DefaultDataStrategy(stackMultipleValues: true));
             },
             title1: 'Default (one next to another)',
             title2: 'Stack (one on top of another)',

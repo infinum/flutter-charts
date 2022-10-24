@@ -159,12 +159,6 @@ class ChartStatePresenter extends ChangeNotifier {
 
   void updateMultiItemStack(bool newValue) {
     multiItemStack = newValue;
-
-    if (!multiItemStack && selectedPainter == SelectedPainter.bar) {
-      // It doesn't really make sense to have stack strategy when multiItemStack is selected. So changing it here:
-      updateDataStrategy(const DefaultDataStrategy());
-    }
-
     notifyListeners();
   }
 

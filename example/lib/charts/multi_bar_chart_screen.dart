@@ -112,7 +112,6 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                       ),
                     );
                   },
-                  multiItemStack: _stackItems,
                 ),
                 backgroundDecorations: [
                   GridDecoration(

@@ -20,7 +20,6 @@ class BubbleItemOptions extends ItemOptions {
     EdgeInsets multiValuePadding = EdgeInsets.zero,
     double? maxBarWidth,
     double? minBarWidth,
-    bool multiItemStack = true,
     this.bubbleItemBuilder = _defaultBubbleItem,
   }) : super(
             padding: padding,
@@ -28,7 +27,6 @@ class BubbleItemOptions extends ItemOptions {
             minBarWidth: minBarWidth,
             maxBarWidth: maxBarWidth,
             geometryPainter: bubblePainter,
-            multiItemStack: multiItemStack,
             itemBuilder: bubbleItemBuilder);
 
   BubbleItemOptions._lerp({
@@ -36,7 +34,6 @@ class BubbleItemOptions extends ItemOptions {
     EdgeInsets multiValuePadding = EdgeInsets.zero,
     double? maxBarWidth,
     double? minBarWidth,
-    double multiItemStack = 1.0,
     required this.bubbleItemBuilder,
   }) : super._lerp(
           padding: padding,
@@ -44,8 +41,7 @@ class BubbleItemOptions extends ItemOptions {
           minBarWidth: minBarWidth,
           maxBarWidth: maxBarWidth,
           geometryPainter: bubblePainter,
-          multiItemStack: multiItemStack,
-          itemBuilder: bubbleItemBuilder, // todo lerp
+          itemBuilder: bubbleItemBuilder,
         );
 
   final BubbleItemBuilder bubbleItemBuilder;
@@ -59,7 +55,6 @@ class BubbleItemOptions extends ItemOptions {
         multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero,
         maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
         minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
-        multiItemStack: lerpDouble(_multiValueStacked, endValue._multiValueStacked, t) ?? 1.0,
       );
     } else {
       return endValue;

@@ -97,7 +97,6 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
                 stack: _stackItems,
                 height: MediaQuery.of(context).size.height * 0.4,
                 itemOptions: WidgetItemOptions(
-                    multiItemStack: _stackItems,
                     widgetItemBuilder: (data) {
                       final _images = [
                         'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.LxlHIr73N2FnqJ3t0TEn-gHaFr%26pid%3DApi&f=1&ipt=afa66b22e9421c69abbb25704c5e4bcb39e4799643ebbdedcabf90ab8af40a6f&ipo=images',
