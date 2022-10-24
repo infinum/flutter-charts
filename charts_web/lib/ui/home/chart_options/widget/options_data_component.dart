@@ -41,6 +41,13 @@ class OptionsDataComponent extends HookConsumerWidget {
             image2: Assets.svg.strategyStack,
             subtitle: 'Data Strategy - how to show multiple data values',
           ),
+        if (_presenter.isMultiItem && _presenter.state.data.dataStrategy.runtimeType == DefaultDataStrategy)
+          Row(
+            children: [
+              Text('Stack Multiple Values'),
+              Switch(value: _presenter.stackMultipleValues, onChanged: _presenter.updateStackMultipleValues),
+            ],
+          ),
         const SizedBox(height: 12),
         ..._presenter.data.mapIndexed((index, list) {
           return _DataTextField(

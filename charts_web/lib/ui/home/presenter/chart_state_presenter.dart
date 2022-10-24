@@ -47,7 +47,7 @@ class ChartStatePresenter extends ChangeNotifier {
   List<BorderRadius> barBorderRadius = [_barBorderRadiusDefault];
 
   // multi item specific
-  bool multiItemStack = true;
+  bool stackMultipleValues = true;
   EdgeInsets multiValuePadding = EdgeInsets.zero;
 
   bool get isMultiItem => _data.length > 1;
@@ -124,6 +124,17 @@ class ChartStatePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateStackMultipleValues(bool newValue) {
+    if (_strategy is DefaultDataStrategy) {
+      _strategy = DefaultDataStrategy(stackMultipleValues: newValue);
+      stackMultipleValues = newValue;
+      notifyListeners();
+    } else {
+      print('Cannot change multi stack whne using StackDataStrategy');
+    }
+  }
+
+
   void updateChartBehaviour(ChartBehaviour behaviour) {
     _behaviour = behaviour;
     notifyListeners();
@@ -154,11 +165,6 @@ class ChartStatePresenter extends ChangeNotifier {
 
   void updateMaxBarWidth(double newMaxBarWidth) {
     maxBarWidth = newMaxBarWidth;
-    notifyListeners();
-  }
-
-  void updateMultiItemStack(bool newValue) {
-    multiItemStack = newValue;
     notifyListeners();
   }
 
@@ -206,7 +212,6 @@ class ChartStatePresenter extends ChangeNotifier {
         },
         maxBarWidth: maxBarWidth,
         minBarWidth: minBarWidth,
-        multiItemStack: multiItemStack,
         multiValuePadding: multiValuePadding,
       );
     } else if (selectedPainter == SelectedPainter.bar) {
@@ -222,7 +227,6 @@ class ChartStatePresenter extends ChangeNotifier {
         },
         maxBarWidth: maxBarWidth,
         minBarWidth: minBarWidth,
-        multiItemStack: multiItemStack,
         multiValuePadding: multiValuePadding,
       );
     } else if (selectedPainter == SelectedPainter.none) {
@@ -235,9 +239,8 @@ class ChartStatePresenter extends ChangeNotifier {
       );
     } else if (selectedPainter == SelectedPainter.widget) {
       return WidgetItemOptions(
-        multiItemStack: multiItemStack,
         widgetItemBuilder: (data) {
-          return FuturamaBarWidget(stackItems: multiItemStack, listKey: data.listKey, item: data.item);
+          return FuturamaBarWidget(stackItems: stackMultipleValues, listKey: data.listKey, item: data.item);
         },
       );
     } else {

@@ -51,7 +51,7 @@ class _BorderRadiusDialogState extends State<BorderRadiusDialog> {
                   DoubleOptionInput(
                     name: 'Top-left',
                     value: state.topLeft.x,
-                    step: 2,
+                    step: 4,
                     onChanged: (a) {
                       setState(() {
                         state = state.copyWith(topLeft: Radius.circular(a));
@@ -62,7 +62,7 @@ class _BorderRadiusDialogState extends State<BorderRadiusDialog> {
                   DoubleOptionInput(
                       name: 'Bottom-left',
                       value: state.bottomLeft.x,
-                      step: 2,
+                      step: 4,
                       onChanged: (a) {
                         setState(() => state = state.copyWith(bottomLeft: Radius.circular(a)));
                       },
@@ -84,7 +84,7 @@ class _BorderRadiusDialogState extends State<BorderRadiusDialog> {
                   DoubleOptionInput(
                       name: 'Top-right',
                       value: state.topRight.x,
-                      step: 2,
+                      step: 4,
                       onChanged: (a) {
                         setState(() => state = state.copyWith(topRight: Radius.circular(a)));
                       },
@@ -92,7 +92,7 @@ class _BorderRadiusDialogState extends State<BorderRadiusDialog> {
                   DoubleOptionInput(
                       name: 'Bottom-right',
                       value: state.bottomRight.x,
-                      step: 2,
+                      step: 4,
                       onChanged: (a) {
                         setState(() => state = state.copyWith(bottomRight: Radius.circular(a)));
                       },

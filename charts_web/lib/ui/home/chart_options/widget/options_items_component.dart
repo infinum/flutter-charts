@@ -162,13 +162,7 @@ class _MultiValueOptions extends ConsumerWidget {
             'Multi Item options:',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          Row(
-            children: [
-              Text('Multi Item Stack'),
-              Switch(value: _provider.multiItemStack, onChanged: _provider.updateMultiItemStack),
-            ],
-          ),
-          if (!_provider.multiItemStack)
+          if (!_provider.stackMultipleValues)
             DoubleOptionInput(
               name: 'Padding Left',
               value: _provider.multiValuePadding.left,
@@ -177,7 +171,7 @@ class _MultiValueOptions extends ConsumerWidget {
               defaultValue: _provider.multiValuePadding.left,
               noInputField: true,
             ),
-          if (!_provider.multiItemStack)
+          if (!_provider.stackMultipleValues)
             DoubleOptionInput(
               name: 'Padding Right',
               value: _provider.multiValuePadding.right,
