@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:charts_painter/chart.dart';
+import 'package:charts_web/ui/home/presenter/chart_decorations_presenter.dart';
 import 'package:charts_web/ui/home/presenter/chart_state_presenter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final decorationSparkLinePresenter =
     ChangeNotifierProvider.family<DecorationSparkLinePresenter, int>((ref, a) => DecorationSparkLinePresenter(a, ref));
 
-class DecorationSparkLinePresenter extends ChangeNotifier {
+class DecorationSparkLinePresenter extends ChangeNotifier implements DecorationBuilder {
   DecorationSparkLinePresenter(this.index, Ref ref) {
     color = ref.read(chartStatePresenter).listColors.first;
   }
@@ -16,7 +17,6 @@ class DecorationSparkLinePresenter extends ChangeNotifier {
   int lineId = 0;
 
   final int index;
-  SparkLineDecoration decoration = SparkLineDecoration();
 
   bool filled = false;
   bool smoothPoints = false;
@@ -64,6 +64,7 @@ class DecorationSparkLinePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
+  @override
   SparkLineDecoration buildDecoration() {
     return SparkLineDecoration(
       lineArrayIndex: lineId,

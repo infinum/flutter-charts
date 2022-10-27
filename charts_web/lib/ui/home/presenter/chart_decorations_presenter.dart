@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:charts_painter/chart.dart';
+import 'package:charts_web/ui/home/decorations/presenters/decorations_horizontal_axis_presenter.dart';
 import 'package:charts_web/ui/home/decorations/presenters/decorations_sparkline_presenter.dart';
+import 'package:charts_web/ui/home/decorations/presenters/decorations_vertical_axis_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:collection/collection.dart';
@@ -25,9 +27,22 @@ class ChartDecorationsPresenter extends ChangeNotifier {
   void addDecoration(DecorationPainter decoration, {DecorationLayer layer = DecorationLayer.foreground}) {
     final index = getNewAutoIncrementDecorationIndex();
 
-    _decorations[index] = _DecorationData(ref.read(decorationSparkLinePresenter(index)).buildDecoration(), layer);
-
-    ref.read(decorationSparkLinePresenter(index)).addListener(() => registerNewListener(index));
+    if (decoration is SparkLineDecoration) {
+      final presenter = ref.read(decorationSparkLinePresenter(index));
+      _decorations[index] = _DecorationData(presenter.buildDecoration(), layer);
+      presenter.addListener(() => updateDecoration(index, presenter));
+    } else if (decoration is VerticalAxisDecoration) {
+      final presenter = ref.read(decorationVerticalAxisPresenter(index));
+      _decorations[index] = _DecorationData(presenter.buildDecoration(), layer);
+      presenter.addListener(() => updateDecoration(index, presenter));
+    } else if (decoration is HorizontalAxisDecoration) {
+      final presenter = ref.read(decorationHorizontalAxisPresenter(index));
+      _decorations[index] = _DecorationData(presenter.buildDecoration(), layer);
+      presenter.addListener(() => updateDecoration(index, presenter));
+    } else {
+      // todo: add other decorations (here and in option_decorations_component)
+      throw 'Unknown decoration, not implemented $decoration';
+    }
 
     notifyListeners();
   }
@@ -72,8 +87,8 @@ class ChartDecorationsPresenter extends ChangeNotifier {
     return index;
   }
 
-  void registerNewListener(int index) {
-    _decorations[index] = _DecorationData(ref.read(decorationSparkLinePresenter(index)).buildDecoration(),
+  void updateDecoration(int index, DecorationBuilder decorationBuilder) {
+    _decorations[index] = _DecorationData(decorationBuilder.buildDecoration(),
         _decorations.containsKey(index) ? _decorations[index]!.layer : DecorationLayer.foreground);
     notifyListeners();
   }
@@ -99,3 +114,7 @@ class _DecorationData {
 }
 
 enum DecorationLayer { background, foreground }
+
+abstract class DecorationBuilder {
+  DecorationPainter buildDecoration();
+}

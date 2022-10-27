@@ -1,6 +1,8 @@
 import 'package:charts_painter/chart.dart';
 import 'package:charts_web/assets.gen.dart';
+import 'package:charts_web/ui/home/decorations/decorations_horizontal_axis.dart';
 import 'package:charts_web/ui/home/decorations/decorations_sparkline.dart';
+import 'package:charts_web/ui/home/decorations/decorations_vertical_axis.dart';
 import 'package:charts_web/ui/home/presenter/chart_decorations_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,14 +41,14 @@ class DecorationsComponent extends ConsumerWidget {
               name: 'Horizontal',
               image: Assets.png.generalHorizontalDecorationGolden.path,
               onPressed: () {
-                // _presenter.addForegroundDecorations(SparkLineDecoration());
+                _presenter.addDecoration(HorizontalAxisDecoration());
               },
             ),
             _DecorationItem(
               name: 'Vertical',
               image: Assets.png.generalVerticalDecorationGolden.path,
               onPressed: () {
-                // _presenter.addForegroundDecorations(SparkLineDecoration());
+                _presenter.addDecoration(VerticalAxisDecoration());
               },
             ),
             _DecorationItem(
@@ -73,9 +75,13 @@ class DecorationsComponent extends ConsumerWidget {
 
     decorations.forEach((index, decoration) {
       if (decoration is SparkLineDecoration) {
-        return widgets.add(DecorationsSparkline(decorationIndex: index));
+        widgets.add(DecorationsSparkline(decorationIndex: index));
+      } else if (decoration is VerticalAxisDecoration) {
+        widgets.add(DecorationsVerticalAxis(decorationIndex: index));
+      } else if (decoration is HorizontalAxisDecoration) {
+        widgets.add(DecorationsHorizontalAxis(decorationIndex: index));
       }
-      // todo: add other decoration
+      // todo: add other decoration (here and in chart_decorations_presenter)
     });
 
     return widgets;
