@@ -27,7 +27,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
   double targetMin = 0;
 
   bool _showValues = false;
-  int minItems = 12;
+  int minItems = 25;
   int? _selected;
 
   @override

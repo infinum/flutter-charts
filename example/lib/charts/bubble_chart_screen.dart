@@ -19,7 +19,7 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
   double targetMax = 0;
   double targetMin = 0;
   bool _showValues = false;
-  int minItems = 6;
+  int minItems = 8;
 
   @override
   void initState() {
@@ -76,6 +76,7 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                   data: _values,
                   height: MediaQuery.of(context).size.height * 0.3,
                   itemOptions: BubbleItemOptions(
+                    maxBarWidth: 60,
                     bubbleItemBuilder: (data) {
                       return BubbleItem(
                         color: tad.getTargetItemColor(Theme.of(context).colorScheme.primary, data.item)

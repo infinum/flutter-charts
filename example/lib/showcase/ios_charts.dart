@@ -10,71 +10,30 @@ class IosCharts extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          title: Text('iOS charts'),
+          title: Text('Apple battery chart'),
           trailing: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Container(
               width: 100.0,
-              child: Chart<bool>(
-                state: ChartState(
-                  ChartData(
-                    [
-                      [
-                        BubbleValue(10),
-                        BubbleValue(8),
-                        BubbleValue(20),
-                        BubbleValue(18),
-                        BubbleValue(9),
-                        BubbleValue(30),
-                      ],
-                      [
-                        BubbleValue(18),
-                        BubbleValue(25),
-                        BubbleValue(10),
-                        BubbleValue(24),
-                        BubbleValue(19),
-                        BubbleValue(21),
-                      ],
-                    ],
-                    axisMax: 35,
-                    dataStrategy: DefaultDataStrategy(stackMultipleValues: true),
+              child: Chart(
+                state: ChartState<void>(
+                  ChartData.fromList(
+                    [1, 3, 4, 2, 7, 7, 7, 7, 4, 5, 7, 8, 9, 4].map((e) => ChartItem<void>(e.toDouble())).toList(),
+                    axisMax: 9,
                   ),
-                  itemOptions: BubbleItemOptions(
-                    maxBarWidth: 2.0,
-                    bubbleItemBuilder: (data) {
-                      return BubbleItem(
-                          color: [
-                        Color(0xFF5B6ACF),
-                        Color(0xFFB6CADD)
-                      ][data.listKey]);
-                    },
+                  itemOptions: BarItemOptions(
+                    barItemBuilder: (_) => BarItem(
+                      radius: BorderRadius.vertical(top: Radius.circular(12.0)),
+                      color: Colors.green,
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                    maxBarWidth: 8.0,
                   ),
                   backgroundDecorations: [
                     GridDecoration(
-                      horizontalAxisStep: 10.0,
-                      showVerticalGrid: false,
-                      gridColor: Colors.grey.shade400,
-                      gridWidth: 0.4,
-                    ),
-                  ],
-                  foregroundDecorations: [
-                    BorderDecoration(
-                      sidesWidth: Border(
-                        bottom: BorderSide(
-                          color: Colors.grey.shade400,
-                          width: 1.0,
-                        ),
-                      ),
-                      endWithChart: true,
-                    ),
-                    SparkLineDecoration(
-                      lineArrayIndex: 1,
-                      lineColor: Color(0xFFB6CADD),
-                      lineWidth: 1.0,
-                    ),
-                    SparkLineDecoration(
-                      lineColor: Color(0xFF5B6ACF),
-                      lineWidth: 1.0,
+                      verticalAxisStep: 1,
+                      horizontalAxisStep: 1.5,
+                      gridColor: Theme.of(context).dividerColor,
                     ),
                   ],
                 ),
