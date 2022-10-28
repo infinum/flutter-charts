@@ -38,7 +38,7 @@ class ColorPickerDialog extends StatelessWidget {
               width: 44,
               height: 44,
               enableShadesSelection: false,
-              pickersEnabled: {ColorPickerType.primary: true, ColorPickerType.accent: false },
+              pickersEnabled: {ColorPickerType.primary: true, ColorPickerType.accent: false},
               borderRadius: 22,
               heading: Text(
                 'Select color',
@@ -54,4 +54,8 @@ class ColorPickerDialog extends StatelessWidget {
       ),
     );
   }
+}
+
+String colorToCode(Color color) {
+  return 'Color.fromARGB(${color.alpha}, ${color.red}, ${color.green}, ${color.blue})';
 }

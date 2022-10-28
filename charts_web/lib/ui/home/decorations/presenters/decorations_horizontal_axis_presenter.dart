@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:charts_painter/chart.dart';
+import 'package:charts_web/ui/common/dialog/color_picker_dialog.dart';
 import 'package:charts_web/ui/home/presenter/chart_state_presenter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -67,4 +68,19 @@ class DecorationHorizontalAxisPresenter extends ChangeNotifier implements Decora
       lineColor: lineColor,
     );
   }
+
+  @override
+  String buildDecorationCode() {
+    return '''    HorizontalAxisDecoration(
+      showLines: $showLines,
+      textScale: 1.2,
+      showValues: $showValues,
+      endWithChart: $endWithChart,
+      lineWidth: $lineWidth,
+      axisStep: $axisStep,
+      lineColor: ${colorToCode(lineColor)},
+    ),
+    ''';
+  }
+
 }

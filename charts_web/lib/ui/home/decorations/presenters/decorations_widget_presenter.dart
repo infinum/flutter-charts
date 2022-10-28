@@ -87,4 +87,18 @@ class DecorationWidgetPresenter extends ChangeNotifier implements DecorationBuil
       throw 'Unknown type $type';
     }
   }
+
+  @override
+  String buildDecorationCode() {
+    return '''    WidgetDecoration(
+          widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplayer) {
+            return Container(
+              decoration: BoxDecoration(border: Border.all(color: Colors.blue, width: 3)),
+              width: double.infinity,
+              height: double.infinity,
+            );
+          },
+          margin: EdgeInsets.all(3),
+    ''';
+  }
 }

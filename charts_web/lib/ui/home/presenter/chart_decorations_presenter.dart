@@ -122,4 +122,5 @@ enum DecorationLayer { background, foreground }
 
 abstract class DecorationBuilder {
   DecorationPainter buildDecoration();
+  String buildDecorationCode();
 }
