@@ -16,7 +16,7 @@ class DecorationsVerticalAxis extends HookConsumerWidget {
     final _presenter = ref.watch(decorationVerticalAxisPresenter(decorationIndex));
 
     return CommonDecorationBox(
-      // onDataListSelected: _presenter.updateId,
+      name: 'Vertical Axis Decoration',
       decorationIndex: decorationIndex,
       child: Column(
         children: [

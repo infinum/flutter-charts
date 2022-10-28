@@ -3,6 +3,7 @@ import 'package:charts_web/assets.gen.dart';
 import 'package:charts_web/ui/home/decorations/decorations_horizontal_axis.dart';
 import 'package:charts_web/ui/home/decorations/decorations_sparkline.dart';
 import 'package:charts_web/ui/home/decorations/decorations_vertical_axis.dart';
+import 'package:charts_web/ui/home/decorations/decorations_widget.dart';
 import 'package:charts_web/ui/home/presenter/chart_decorations_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -52,20 +53,27 @@ class DecorationsComponent extends ConsumerWidget {
               },
             ),
             _DecorationItem(
-              name: 'Grid',
-              image: Assets.png.generalGridDecorationGolden.path,
+              name: 'Widget',
+              image: Assets.png.futuramaSmall.path,
               onPressed: () {
-                // _presenter.addForegroundDecorations(SparkLineDecoration());
+                _presenter.addDecoration(
+                  WidgetDecoration(
+                    widgetDecorationBuilder: (context, state, itemHeight, verticalMultiplier) {
+                      return SizedBox.shrink();
+                    },
+                  ),
+                );
               },
             ),
           ],
         ),
-        const SizedBox(height: 36),
+        const SizedBox(height: 16),
         const Text('Current decorations:', style: TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         ...mapToWidgets(_presenter.foregroundDecorations),
         const Divider(),
         ...mapToWidgets(_presenter.backgroundDecorations),
+        const SizedBox(height: 24),
       ],
     );
   }
@@ -80,6 +88,10 @@ class DecorationsComponent extends ConsumerWidget {
         widgets.add(DecorationsVerticalAxis(decorationIndex: index));
       } else if (decoration is HorizontalAxisDecoration) {
         widgets.add(DecorationsHorizontalAxis(decorationIndex: index));
+      } else if (decoration is WidgetDecoration) {
+        widgets.add(DecorationsWidget(
+          decorationIndex: index,
+        ));
       }
       // todo: add other decoration (here and in chart_decorations_presenter)
     });
@@ -102,7 +114,7 @@ class _DecorationItem extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(image, width: 100),
+          Image.asset(image, width: 100, height: 100,),
           Text(name),
         ],
       ),

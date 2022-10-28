@@ -120,7 +120,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                                 ? 1.0
                                 : 0.2
                             : 0.0),
-                        lineArrayIndex: 0,
+                        lineKey: 0,
                       ),
                       SparkLineDecoration(
                         id: 'second_line_fill',
@@ -131,7 +131,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                                 ? 1.0
                                 : 0.2
                             : 0.0),
-                        lineArrayIndex: 1,
+                        lineKey: 1,
                       ),
                       SparkLineDecoration(
                         id: 'third_line_fill',
@@ -144,7 +144,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                                 ? 1.0
                                 : 0.2
                             : 0.0),
-                        lineArrayIndex: 2,
+                        lineKey: 2,
                       ),
                     ],
                     foregroundDecorations: [
@@ -153,7 +153,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                         lineWidth: 2.0,
                         smoothPoints: _smoothPoints,
                         lineColor: Theme.of(context).colorScheme.primary.withOpacity(_showLine ? 1.0 : 0.0),
-                        lineArrayIndex: 1,
+                        lineKey: 1,
                       ),
                       SparkLineDecoration(
                         id: 'third_line',
@@ -162,7 +162,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                         gradient: LinearGradient(
                             begin: Alignment.centerLeft, end: Alignment.centerRight, colors: Colors.accents),
                         lineColor: Theme.of(context).colorScheme.primary.withOpacity(_showLine ? 1.0 : 0.0),
-                        lineArrayIndex: 2,
+                        lineKey: 2,
                       ),
                     ],
                   ),

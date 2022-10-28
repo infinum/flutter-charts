@@ -1,6 +1,7 @@
 part of charts_painter;
 
 /// Show selected item in Cupertino style (Health app)
+@Deprecated('You can make this decoration and much more using WidgetDecoration. Check migration guide for more info')
 class SelectedItemDecoration extends DecorationPainter {
   /// Constructor for selected item decoration
   SelectedItemDecoration(
@@ -11,7 +12,7 @@ class SelectedItemDecoration extends DecorationPainter {
     this.animate = false,
     bool showText = true,
     this.showOnTop = true,
-    this.selectedArrayIndex = 0,
+    this.selectedLineKey = 0,
     this.child,
     this.topMargin = 0.0,
   }) : showText = showText && (child == null);
@@ -41,7 +42,7 @@ class SelectedItemDecoration extends DecorationPainter {
 
   /// Index of list whose data to show
   /// By default it will use first list to this value will be `0`
-  final int selectedArrayIndex;
+  final int selectedLineKey;
 
   @override
   Widget getRenderer(ChartState state) {
@@ -59,7 +60,7 @@ class SelectedItemDecoration extends DecorationPainter {
   @override
   void initDecoration(ChartState state) {
     super.initDecoration(state);
-    assert(state.data.stackSize > selectedArrayIndex,
+    assert(state.data.stackSize > selectedLineKey,
         'Selected key is not in the list!\nCheck the `selectedKey` you are passing.');
   }
 
@@ -80,8 +81,8 @@ class SelectedItemDecoration extends DecorationPainter {
 
     final selectedItem = this.selectedItem;
     if (selectedItem != null) {
-      final _selectedItemMax = state.data.items[selectedArrayIndex][selectedItem].max ?? 0.0;
-      final _selectedItemMin = state.data.items[selectedArrayIndex][selectedItem].min ?? 0.0;
+      final _selectedItemMax = state.data.items[selectedLineKey][selectedItem].max ?? 0.0;
+      final _selectedItemMin = state.data.items[selectedLineKey][selectedItem].min ?? 0.0;
 
       final _maxValue = state.data.maxValue - state.data.minValue;
       final _height = size.height - marginNeeded().vertical;
@@ -103,7 +104,7 @@ class SelectedItemDecoration extends DecorationPainter {
       return;
     }
     final width = size.width;
-    final _selectedItem = state.data.items[selectedArrayIndex][_item];
+    final _selectedItem = state.data.items[selectedLineKey][_item];
 
     final _maxValuePainter = ValueDecoration.makeTextPainter(
       _selectedItem.max?.toStringAsFixed(2) ?? '',
@@ -190,7 +191,7 @@ class SelectedItemDecoration extends DecorationPainter {
     if (_item == null) {
       return;
     }
-    final _selectedItem = state.data.items[selectedArrayIndex][_item];
+    final _selectedItem = state.data.items[selectedLineKey][_item];
 
     final _itemWidth = max(state.itemOptions.minBarWidth ?? 0.0,
         min(state.itemOptions.maxBarWidth ?? double.infinity, size.width - state.itemOptions.padding.horizontal));
@@ -271,7 +272,7 @@ class SelectedItemDecoration extends DecorationPainter {
         backgroundColor: Color.lerp(backgroundColor, endValue.backgroundColor, t) ?? endValue.backgroundColor,
         selectedStyle: TextStyle.lerp(selectedStyle, endValue.selectedStyle, t) ?? endValue.selectedStyle,
         animate: endValue.animate,
-        selectedArrayIndex: endValue.selectedArrayIndex,
+        selectedLineKey: endValue.selectedLineKey,
         showOnTop: t < 0.5 ? showOnTop : endValue.showOnTop,
         showText: t < 0.5 ? showText : endValue.showText,
         child: t < 0.5 ? child : endValue.child,

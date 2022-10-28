@@ -25,6 +25,7 @@ class DecorationsSparkline extends HookConsumerWidget {
     final _presenter = ref.watch(decorationSparkLinePresenter(decorationIndex));
 
     return CommonDecorationBox(
+      name: 'SparkLine Decoration',
       onDataListSelected: _presenter.updateId,
       decorationIndex: decorationIndex,
       child: Column(

@@ -265,7 +265,7 @@ void main() {
                   ),
                   SparkLineDecoration(
                     smoothPoints: true,
-                    lineArrayIndex: 1,
+                    lineKey: 1,
                     stretchLine: true,
                     lineWidth: 3.0,
                     gradient: LinearGradient(
@@ -339,7 +339,7 @@ void main() {
                   endWithChart: true,
                 ),
                 SparkLineDecoration(
-                  lineArrayIndex: 1,
+                  lineKey: 1,
                   lineColor: Color(0xFFB6CADD),
                   lineWidth: 4.0,
                 ),

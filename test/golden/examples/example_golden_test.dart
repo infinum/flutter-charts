@@ -134,7 +134,7 @@ void main() {
               SparkLineDecoration(
                 // Specify key that this [SparkLineDecoration] will follow
                 // Throws if `lineKey` does not exist in chart data
-                lineArrayIndex: 1,
+                lineKey: 1,
                 lineColor: Colors.blue,
               ),
               SparkLineDecoration(),

@@ -137,13 +137,13 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                         .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(_stackItems ? 1.0 : 0.0)),
                   ),
                   ValueDecoration(
-                    valueArrayIndex: 1,
+                    lineKey: 1,
                     alignment: Alignment.bottomCenter,
                     textStyle: Theme.of(context).textTheme.button!.copyWith(
                         color: Theme.of(context).colorScheme.onSecondary.withOpacity(_stackItems ? 1.0 : 0.0)),
                   ),
                   ValueDecoration(
-                    valueArrayIndex: 2,
+                    lineKey: 2,
                     alignment: Alignment.bottomCenter,
                     textStyle: Theme.of(context)
                         .textTheme

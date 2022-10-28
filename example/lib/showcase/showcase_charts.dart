@@ -68,7 +68,7 @@ class ShowcaseCharts extends StatelessWidget {
                       endWithChart: true,
                     ),
                     SparkLineDecoration(
-                      lineArrayIndex: 1,
+                      lineKey: 1,
                       lineColor: Color(0xFFB6CADD),
                       lineWidth: 1.0,
                     ),

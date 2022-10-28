@@ -67,7 +67,7 @@ class DecorationSparkLinePresenter extends ChangeNotifier implements DecorationB
   @override
   SparkLineDecoration buildDecoration() {
     return SparkLineDecoration(
-      lineArrayIndex: lineId,
+      lineKey: lineId,
       fill: filled,
       smoothPoints: smoothPoints,
       lineColor: color,

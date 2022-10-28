@@ -44,6 +44,7 @@ Color _getColorForTarget(Color color, Color? colorOverTarget,
 ///
 /// In order to change the color of item when it didn't meet the target
 /// criteria, you will need to add [getTargetItemColor] to [ItemOptions.colorForValue]
+@Deprecated('You can make this decoration and much more using WidgetDecoration. Check migration guide for more info')
 class TargetLineDecoration extends DecorationPainter {
   /// Constructor for target line decoration
   ///

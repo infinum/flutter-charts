@@ -19,7 +19,7 @@ class DecorationsHorizontalAxis extends HookConsumerWidget {
 
 
     return CommonDecorationBox(
-      // onDataListSelected: _presenter.updateId,
+      name: 'Horizontal Axis Decoration',
       decorationIndex: decorationIndex,
       child: Column(
         children: [

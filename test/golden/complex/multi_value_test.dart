@@ -64,7 +64,7 @@ void main() {
           foregroundDecorations: List.generate(
             4,
             (index) => SparkLineDecoration(
-              lineArrayIndex: index,
+              lineKey: index,
               lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
               lineWidth: 3.0,
               stretchLine: true,
@@ -83,7 +83,7 @@ void main() {
           foregroundDecorations: List.generate(
             4,
             (index) => SparkLineDecoration(
-              lineArrayIndex: index,
+              lineKey: index,
               lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
               lineWidth: 3.0,
               stretchLine: true,
@@ -103,7 +103,7 @@ void main() {
           foregroundDecorations: List.generate(
               4,
               (index) => SparkLineDecoration(
-                    lineArrayIndex: index,
+                    lineKey: index,
                     lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
                     lineWidth: 3.0,
                     startPosition: index / 4,
@@ -125,21 +125,21 @@ void main() {
           size: 4,
           foregroundDecorations: [
             SparkLineDecoration(
-              lineArrayIndex: 0,
+              lineKey: 0,
               fill: true,
               smoothPoints: true,
               lineColor: Colors.green.withOpacity(0.8),
               stretchLine: true,
             ),
             SparkLineDecoration(
-              lineArrayIndex: 1,
+              lineKey: 1,
               lineColor: Colors.blue,
               lineWidth: 2.0,
               dashArray: [10, 10],
               stretchLine: true,
             ),
             SparkLineDecoration(
-              lineArrayIndex: 2,
+              lineKey: 2,
               lineColor: Colors.red,
               lineWidth: 4.0,
               smoothPoints: true,
@@ -147,7 +147,7 @@ void main() {
               stretchLine: true,
             ),
             SparkLineDecoration(
-              lineArrayIndex: 3,
+              lineKey: 3,
               lineColor: Colors.yellow,
               lineWidth: 2.0,
               stretchLine: true,
@@ -168,14 +168,14 @@ void main() {
           size: 4,
           foregroundDecorations: [
             SparkLineDecoration(
-              lineArrayIndex: 0,
+              lineKey: 0,
               fill: true,
               smoothPoints: true,
               lineColor: Colors.red.withOpacity(0.6),
               stretchLine: true,
             ),
             SparkLineDecoration(
-              lineArrayIndex: 1,
+              lineKey: 1,
               lineColor: Colors.blue,
               lineWidth: 2.0,
               dashArray: [15, 5],
@@ -204,14 +204,14 @@ void main() {
           size: 4,
           foregroundDecorations: [
             SparkLineDecoration(
-              lineArrayIndex: 0,
+              lineKey: 0,
               fill: true,
               smoothPoints: true,
               lineColor: Colors.redAccent.withOpacity(0.6),
               stretchLine: true,
             ),
             SparkLineDecoration(
-              lineArrayIndex: 1,
+              lineKey: 1,
               lineColor: Colors.red,
               lineWidth: 2.0,
               smoothPoints: true,

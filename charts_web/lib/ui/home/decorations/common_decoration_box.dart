@@ -8,12 +8,13 @@ import 'package:collection/collection.dart';
 import '../presenter/chart_state_presenter.dart';
 
 class CommonDecorationBox extends HookConsumerWidget {
-  const CommonDecorationBox({Key? key, this.onDataListSelected, required this.child, required this.decorationIndex})
+  const CommonDecorationBox({Key? key, this.onDataListSelected, required this.child, required this.decorationIndex, required this.name})
       : super(key: key);
 
   final ValueChanged<int>? onDataListSelected;
   final Widget child;
   final int decorationIndex;
+  final String name;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,6 +33,7 @@ class CommonDecorationBox extends HookConsumerWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

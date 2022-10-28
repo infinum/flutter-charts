@@ -14,7 +14,7 @@ class ValueDecoration extends DecorationPainter {
   ValueDecoration({
     this.textStyle,
     this.alignment = Alignment.topCenter,
-    this.valueArrayIndex = 0,
+    this.lineKey = 0,
     this.valueGenerator = defaultValueForItem,
     this.hideZeroValues = false,
     this.labelGenerator,
@@ -36,7 +36,7 @@ class ValueDecoration extends DecorationPainter {
   /// Index of list in items, this is used if there are multiple lists in the chart
   ///
   /// By default this will show first list and value will be 0
-  final int valueArrayIndex;
+  final int lineKey;
   final bool hideZeroValues;
 
   @override
@@ -45,7 +45,7 @@ class ValueDecoration extends DecorationPainter {
       return ValueDecoration(
         textStyle: TextStyle.lerp(textStyle, endValue.textStyle, t),
         alignment: Alignment.lerp(alignment, endValue.alignment, t) ?? endValue.alignment,
-        valueArrayIndex: endValue.valueArrayIndex,
+        lineKey: endValue.lineKey,
         valueGenerator: endValue.valueGenerator,
       );
     }
@@ -65,7 +65,7 @@ class ValueDecoration extends DecorationPainter {
   void initDecoration(ChartState state) {
     super.initDecoration(state);
     assert(
-        state.data.stackSize > valueArrayIndex, 'Value key is not in the list!\nCheck the `valueKey` you are passing.');
+        state.data.stackSize > lineKey, 'Value key is not in the list!\nCheck the `valueKey` you are passing.');
   }
 
   void _paintText(Canvas canvas, Size size, ChartItem item, double width, double verticalMultiplier, double minValue) {
@@ -110,7 +110,7 @@ class ValueDecoration extends DecorationPainter {
     final _listSize = state.data.listSize;
     final _itemWidth = size.width / _listSize;
 
-    state.data.items[valueArrayIndex].asMap().forEach((index, value) {
+    state.data.items[lineKey].asMap().forEach((index, value) {
       if (hideZeroValues && (value.max ?? 0) == 0 && (value.min ?? 0) == 0) {
         return;
       }

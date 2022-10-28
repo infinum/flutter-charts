@@ -4,6 +4,7 @@ import 'package:charts_painter/chart.dart';
 import 'package:charts_web/ui/home/decorations/presenters/decorations_horizontal_axis_presenter.dart';
 import 'package:charts_web/ui/home/decorations/presenters/decorations_sparkline_presenter.dart';
 import 'package:charts_web/ui/home/decorations/presenters/decorations_vertical_axis_presenter.dart';
+import 'package:charts_web/ui/home/decorations/presenters/decorations_widget_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:collection/collection.dart';
@@ -39,6 +40,10 @@ class ChartDecorationsPresenter extends ChangeNotifier {
       final presenter = ref.read(decorationHorizontalAxisPresenter(index));
       _decorations[index] = _DecorationData(presenter.buildDecoration(), layer);
       presenter.addListener(() => updateDecoration(index, presenter));
+    } else if (decoration is WidgetDecoration) {
+      final presenter = ref.read(decorationWidgetPresenter(index));
+      _decorations[index] = _DecorationData(presenter.buildDecoration(), layer);
+      presenter.addListener(() => updateDecoration(index, presenter));
     } else {
       // todo: add other decorations (here and in option_decorations_component)
       throw 'Unknown decoration, not implemented $decoration';
@@ -62,7 +67,7 @@ class ChartDecorationsPresenter extends ChangeNotifier {
     _decorations.forEach((decorationIndex, element) {
       final decoration = element.decorationPainter;
       if (decoration is SparkLineDecoration) {
-        if (decoration.lineArrayIndex == lineIndex) {
+        if (decoration.lineKey == lineIndex) {
           decorationsIndexToRemove.add(decorationIndex);
           ref.read(decorationSparkLinePresenter(decorationIndex)).dispose();
         }
