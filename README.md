@@ -1,4 +1,4 @@
-![chart_image]
+![](https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/chart_image.png)
 
 # Charts painter    [![pub package](https://img.shields.io/pub/v/charts_painter?logo=flutter&style=for-the-badge)](https://pub.dartlang.org/packages/charts_painter)
 Idea behind this lib is to allow highly customizable charts. By having items and decorations as Widgets or predefined renderers where you can achieve the look of desired chart.
@@ -70,7 +70,7 @@ For item options, you can use one of three defined options:
 
 You could create anything with `WidgetItemOptions`, but Bar and Bubble are often used and here they are drawn directly on canvas to make sure chart is performant. This graphic might help when choosing:
 
-[insert graphic here]
+![](https://user-images.githubusercontent.com/11093480/198997421-d8474537-4192-4005-862c-baaaab6b1822.png)
 
 Options have several parameter, and the required is `itemBuilder`. With it, you describe how to build an item. For example, to make bar item:
 
@@ -110,7 +110,7 @@ WidgetDecoration(
 
 The builder returns context, `chartState` where from you can read details like all the values. And `itemWidth` and `verticalMultiplier` can help with laying out and position the decoration:
 
-[insert graphic here]
+![](https://user-images.githubusercontent.com/11093480/198998268-698593c3-11d3-4d77-a1a1-6f998c6a64b3.png)
 
 It's possible that you want to draw in the margins of the chart. For this case you can use `Transform.translate` or negative value in `Positioned` that's placed in `Stack`.
 
@@ -131,7 +131,7 @@ Chart(
 
 Which will produce a chart looking like:
 
-[insert graphic here]
+![](https://user-images.githubusercontent.com/11093480/198998394-43252209-4c0c-47f0-9f9f-43db897b7606.png)
 
 A bit more complex example with two data lists coloured differently and grid decoration would look like:
 
@@ -156,7 +156,7 @@ Chart(
 
 Which produces a chart:
 
-[insert graphic here]
+![](https://user-images.githubusercontent.com/11093480/198998481-2e98eaae-2ee9-4e49-9e0d-c9a3edb0250b.png)
 
 There’s a lot more things possible with this package, but to keep this README readable, we recommend you checking out the [demo and showcase web app](https://infinum.github.io/flutter-charts/).
 
@@ -188,8 +188,7 @@ Bar chart with area
 
 ![https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/bar_chart_animating.gif](https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/bar_chart_animating.gif)
 
-### Scrollable chart
-
-Scrollable bar chart
-
-[example code](https://raw.githubusercontent.com/infinum/flutter-charts/master/example/lib/charts/scrollable_chart_screen.dart)
+[bar_chart_animating]: https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/bar_chart_animating.gif
+[scrollable_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/scrollable_chart.gif
+[line_chart_animating]: https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/line_chart_animating.gif
+[fixed_axis_scroll_chart]: https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/fixed_axis_scroll_chart.gif
