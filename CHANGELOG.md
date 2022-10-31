@@ -5,10 +5,8 @@
 * Deprecated: BarValue, BubbleValue,TargetLineDecoration, TargetLineTextDecoration,
 TargetAreaDecoration, BorderDecoration, SelectedItemDecoration, ValueDecoration
 * multiItemStack moved to DefaultDataStrategy stackMultipleValues
+* Fix: Add alignment to chart items when max item size is set
 * Migration guide: https://github.com/infinum/flutter-charts/wiki/Migration-guide-to-3.0
-
-## [2.0.x] -
-* Add alignment to chart items when max item size is set
 
 ## [2.0.0+2] - 05.04.2022.
 * Reduce final .apk app size when using this lib
