@@ -1,13 +1,16 @@
-![chart_image]
+![](https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/chart_image.png)
 
 # Charts painter    [![pub package](https://img.shields.io/pub/v/charts_painter?logo=flutter&style=for-the-badge)](https://pub.dartlang.org/packages/charts_painter)
 Idea behind this lib is to allow highly customizable charts. By having items and decorations as Widgets or predefined renderers where you can achieve the look of desired chart.
+
+### [3.0 Migration guide](https://github.com/infinum/flutter-charts/wiki/Migration-guide-to-3.0)
+Read the migration guide if you are interested in migrating from 2.0 to 3.0.
 
 ## [Web demo](https://infinum.github.io/flutter-charts/)
 
 Check out [web demo](https://infinum.github.io/flutter-charts/) to see what’s possible to do with the charts_painter
 
-<img src="https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/showcase.gif" data-canonical-src="https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/showcase.gif" height="250" />
+<img src="https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/showcase.gif" data-canonical-src="https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/showcase.gif" height="300" />
 
 ## Usage
 
@@ -70,7 +73,7 @@ For item options, you can use one of three defined options:
 
 You could create anything with `WidgetItemOptions`, but Bar and Bubble are often used and here they are drawn directly on canvas to make sure chart is performant. This graphic might help when choosing:
 
-[insert graphic here]
+![](https://user-images.githubusercontent.com/11093480/198997421-d8474537-4192-4005-862c-baaaab6b1822.png)
 
 Options have several parameter, and the required is `itemBuilder`. With it, you describe how to build an item. For example, to make bar item:
 
@@ -93,7 +96,11 @@ Besides builder, the other useful parameters in item options are `maxBarWidth` ,
 
 Decorations enhance and complete the look of the chart. Everything that’s drawn on a chart, and it’s not a chart item is considered a decoration. So that means a lot of the chart will be a decoration. Just like with the items, you can use ********************************WidgetDecoration******************************** to draw any kind of the decoration, but the most common cases for decoration are already made on a canvas and ready to be used:
 
-[insert decorations here]
+|   |   |   |
+:------: | :------: | :------: 
+[![horizontal_decoration] Horizontal decoration](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#horizontal-decoration-golden) | [![vertical_decoration] Vertical decoration](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#vertical-decoration-golden) | [![grid_decoration] Grid decoration](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#grid-decoration-golden) 
+[![sparkline_decoration] Sparkline decoration](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#sparkline-decoration-golden) |   
+
 
 ### Widget decoration
 
@@ -110,7 +117,7 @@ WidgetDecoration(
 
 The builder returns context, `chartState` where from you can read details like all the values. And `itemWidth` and `verticalMultiplier` can help with laying out and position the decoration:
 
-[insert graphic here]
+![](https://user-images.githubusercontent.com/11093480/198998268-698593c3-11d3-4d77-a1a1-6f998c6a64b3.png)
 
 It's possible that you want to draw in the margins of the chart. For this case you can use `Transform.translate` or negative value in `Positioned` that's placed in `Stack`.
 
@@ -131,7 +138,7 @@ Chart(
 
 Which will produce a chart looking like:
 
-[insert graphic here]
+![](https://user-images.githubusercontent.com/11093480/198998394-43252209-4c0c-47f0-9f9f-43db897b7606.png)
 
 A bit more complex example with two data lists coloured differently and grid decoration would look like:
 
@@ -156,7 +163,7 @@ Chart(
 
 Which produces a chart:
 
-[insert graphic here]
+![](https://user-images.githubusercontent.com/11093480/198998481-2e98eaae-2ee9-4e49-9e0d-c9a3edb0250b.png)
 
 There’s a lot more things possible with this package, but to keep this README readable, we recommend you checking out the [demo and showcase web app](https://infinum.github.io/flutter-charts/).
 
@@ -188,8 +195,14 @@ Bar chart with area
 
 ![https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/bar_chart_animating.gif](https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/bar_chart_animating.gif)
 
-### Scrollable chart
 
-Scrollable bar chart
-
-[example code](https://raw.githubusercontent.com/infinum/flutter-charts/master/example/lib/charts/scrollable_chart_screen.dart)
+[horizontal_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_horizontal_decoration_golden.png
+[vertical_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_vertical_decoration_golden.png
+[grid_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_grid_decoration_golden.png
+[border_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_border_decoration_golden.png
+[sparkline_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_sparkline_decoration_golden.png
+[target_line_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_target_line_decoration_golden.png
+[target_area_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_target_area_decoration_golden.png
+[target_line_legend_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_target_line_text_decoration_golden.png
+[selected_item_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_selected_item_decoration_golden.png
+[target_values_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_value_decoration_golden.png
