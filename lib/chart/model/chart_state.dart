@@ -33,6 +33,7 @@ class ChartState<T> {
   }
 
   /// Create line chart with foreground sparkline decoration and background grid decoration
+  @Deprecated('Use ChartState(foregroundDecorations: [SparkLineDecoration()])')
   factory ChartState.line(ChartData<T> data, {
     required BubbleItemOptions itemOptions,
     ChartBehaviour behaviour = const ChartBehaviour(),
@@ -49,6 +50,7 @@ class ChartState<T> {
   }
 
   /// Create bar chart with background grid decoration
+  @Deprecated('Use ChartState(itemOptions: BarItemOptions())')
   factory ChartState.bar(ChartData<T> data, {
     required BarItemOptions itemOptions,
     ChartBehaviour behaviour = const ChartBehaviour(),
