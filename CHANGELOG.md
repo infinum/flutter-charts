@@ -1,4 +1,13 @@
-## [2.0.x] - 
+## [3.0.0] - 02.11.2022
+* Introduction of WidgetItemOptions and WidgetDecoration
+* ChartState: data and itemOptions are now required named parameters
+* New item options builder parameter
+* Deprecated: BarValue, BubbleValue,TargetLineDecoration, TargetLineTextDecoration,
+TargetAreaDecoration, BorderDecoration, SelectedItemDecoration, ValueDecoration
+* multiItemStack moved to DefaultDataStrategy stackMultipleValues
+* Migration guide: https://github.com/infinum/flutter-charts/wiki/Migration-guide-to-3.0
+
+## [2.0.x] -
 * Add alignment to chart items when max item size is set
 
 ## [2.0.0+2] - 05.04.2022.
