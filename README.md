@@ -3,6 +3,9 @@
 # Charts painter    [![pub package](https://img.shields.io/pub/v/charts_painter?logo=flutter&style=for-the-badge)](https://pub.dartlang.org/packages/charts_painter)
 Idea behind this lib is to allow highly customizable charts. By having items and decorations as Widgets or predefined renderers where you can achieve the look of desired chart.
 
+### [3.0 Migration guide](https://github.com/infinum/flutter-charts/wiki/Migration-guide-to-3.0)
+Read the migration guide if you are interested in migrating from 2.0 to 3.0.
+
 ## [Web demo](https://infinum.github.io/flutter-charts/)
 
 Check out [web demo](https://infinum.github.io/flutter-charts/) to see what’s possible to do with the charts_painter
