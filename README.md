@@ -7,7 +7,7 @@ Idea behind this lib is to allow highly customizable charts. By having items and
 
 Check out [web demo](https://infinum.github.io/flutter-charts/) to see what’s possible to do with the charts_painter
 
-<img src="https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/showcase.gif" data-canonical-src="https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/showcase.gif" height="250" />
+<img src="https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/showcase.gif" data-canonical-src="https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/showcase.gif" height="300" />
 
 ## Usage
 
