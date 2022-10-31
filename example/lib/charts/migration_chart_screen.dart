@@ -26,7 +26,7 @@ class MigrationChartScreen extends StatelessWidget {
                   _Header(title: 'Target line decoration'),
                   _buildChartWithDecoration(
                     decoration:
-                    WidgetDecoration(widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
+                        WidgetDecoration(widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
                       return Stack(
                         children: [
                           Positioned(
@@ -85,15 +85,12 @@ class MigrationChartScreen extends StatelessWidget {
                     decoration: WidgetDecoration(
                         widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
                           return Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.red, width: 3)
-                            ),
+                            decoration: BoxDecoration(border: Border.all(color: Colors.red, width: 3)),
                             width: double.infinity,
                             height: double.infinity,
                           );
                         },
-                        margin: EdgeInsets.all(3)
-                    ),
+                        margin: EdgeInsets.all(3)),
                   ),
                 ],
               ),
@@ -107,21 +104,21 @@ class MigrationChartScreen extends StatelessWidget {
       width: 450,
       child: Chart(
           state: ChartState<void>(
-            data: ChartData([_data.map((e) => ChartItem<void>(e.toDouble())).toList()]),
-            itemOptions: BarItemOptions(
-              padding: const EdgeInsets.symmetric(horizontal: 2.0),
-              minBarWidth: 4.0,
-              barItemBuilder: (data) {
-                return BarItem(
-                  radius: const BorderRadius.vertical(
-                    top: Radius.circular(24.0),
-                  ),
-                  color: Colors.red.withOpacity(0.4),
-                );
-              },
-            ),
-            backgroundDecorations: [decoration],
-          )),
+        data: ChartData([_data.map((e) => ChartItem<void>(e.toDouble())).toList()]),
+        itemOptions: BarItemOptions(
+          padding: const EdgeInsets.symmetric(horizontal: 2.0),
+          minBarWidth: 4.0,
+          barItemBuilder: (data) {
+            return BarItem(
+              radius: const BorderRadius.vertical(
+                top: Radius.circular(24.0),
+              ),
+              color: Colors.red.withOpacity(0.4),
+            );
+          },
+        ),
+        backgroundDecorations: [decoration],
+      )),
     );
   }
 }
@@ -146,13 +143,3 @@ class _Header extends StatelessWidget {
   }
 }
 
-// void a() {
-//   Chart(
-//     state: ChartState<void>(
-//       data: ChartData(
-//           [[3,5,7,9,4,3,6].map((e) => ChartItem(e)).toList()]
-//       ),
-//
-//     ),
-//   )
-// }

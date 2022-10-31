@@ -93,7 +93,7 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                       showVerticalGrid: true,
                       showVerticalValues: _showValues,
                       verticalValuesPadding: EdgeInsets.only(left: 8.0),
-                      verticalAxisStep: 2,
+                      verticalAxisStep: 4,
                       verticalTextAlign: TextAlign.start,
                       gridColor: Theme.of(context)
                           .colorScheme
