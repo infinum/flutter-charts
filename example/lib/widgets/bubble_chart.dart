@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 typedef DataToValue<T> = double Function(T item);
 typedef DataToAxis<T> = String Function(int item);
 
+/// Short-hand to easier create several bubble charts
 class BubbleChart<T> extends StatelessWidget {
   BubbleChart({
     required this.data,
@@ -35,7 +36,7 @@ class BubbleChart<T> extends StatelessWidget {
       height: height,
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
-        ChartData(_mappedValues, valueAxisMaxOver: 5.0),
+        data: ChartData(_mappedValues, valueAxisMaxOver: 5.0),
         itemOptions: itemOptions,
         foregroundDecorations: foregroundDecorations,
         backgroundDecorations: [

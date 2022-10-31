@@ -61,7 +61,7 @@ class LineChart<T> extends StatelessWidget {
       height: height,
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
-        ChartData(
+        data: ChartData(
           _mappedValues,
           dataStrategy: stack ? StackDataStrategy() : DefaultDataStrategy(stackMultipleValues: true),
         ),

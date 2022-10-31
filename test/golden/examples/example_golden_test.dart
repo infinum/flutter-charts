@@ -46,7 +46,7 @@ void main() {
         child: Chart<void>(
           height: 600.0,
           state: ChartState(
-            ChartData.fromList([1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
+            data: ChartData.fromList([1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
                 axisMax: 8.0),
             itemOptions: BarItemOptions(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -79,7 +79,7 @@ void main() {
         child: Chart<void>(
           height: 600.0,
           state: ChartState(
-            ChartData.fromList([1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+            data: ChartData.fromList([1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
                 axisMax: 8.0),
             itemOptions: BubbleItemOptions(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -109,7 +109,7 @@ void main() {
         child: Chart<void>(
           height: 600.0,
           state: ChartState(
-            ChartData(
+            data: ChartData(
               [
                 [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
                 [4, 6, 3, 3, 2, 1, 4, 7, 5].map((e) => BubbleValue<void>(e.toDouble())).toList(),

@@ -18,31 +18,18 @@ class ChartOptions extends HookConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: CupertinoButton(
-                  child: const Text('Show code'),
-                  onPressed: () {
-                    // todo
-                  },
-                ),
-              ),
-              Expanded(
-                child: CupertinoButton.filled(
-                  child: Row(
-                    children: [
-                      Opacity(opacity: 0.8, child: SvgPicture.asset(Assets.svg.showcase, width: 50)),
-                      const SizedBox(width: 16),
-                      const Text('Showcase'),
-                    ],
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => ChartDemo()));
-                  },
-                ),
-              ),
-            ],
+          CupertinoButton.filled(
+            child: Row(
+              children: [
+                Opacity(opacity: 0.8, child: SvgPicture.asset(Assets.svg.showcase, width: 50)),
+                const SizedBox(width: 16),
+                const Text('Showcase'),
+              ],
+            ),
+            padding: EdgeInsets.all(24),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => ChartDemo()));
+            },
           ),
           const SizedBox(height: 24),
           const OptionsDataComponent(),

@@ -98,7 +98,7 @@ void main() {
   group('Decorations', () {
     test('Decorations can animate if they are the same type', () {
       final _firstState = ChartState<void>(
-          ChartData.fromList(
+          data: ChartData.fromList(
             [2, 4, 6, 3, 5, 1]
                 .map((e) => BarValue<void>(e.toDouble()))
                 .toList(),
@@ -111,7 +111,7 @@ void main() {
             ),
           ]);
       final _secondState = ChartState<void>(
-          ChartData.fromList(
+          data: ChartData.fromList(
             [2, 4, 6, 3, 5, 1]
                 .map((e) => BarValue<void>(e.toDouble()))
                 .toList(),
@@ -136,7 +136,7 @@ void main() {
 
     test('Decorations won\'t try to animate if they are not the same type', () {
       final _firstState = ChartState<void>(
-          ChartData.fromList(
+          data: ChartData.fromList(
             [2, 4, 6, 3, 5, 1]
                 .map((e) => BarValue<void>(e.toDouble()))
                 .toList(),
@@ -149,7 +149,7 @@ void main() {
             ),
           ]);
       final _secondState = ChartState<void>(
-          ChartData.fromList(
+          data: ChartData.fromList(
             [2, 4, 6, 3, 5, 1]
                 .map((e) => BarValue<void>(e.toDouble()))
                 .toList(),

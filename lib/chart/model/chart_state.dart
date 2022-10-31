@@ -15,13 +15,14 @@ part of charts_painter;
 
 class ChartState<T> {
   /// Chart state constructor
-  ChartState(
-    this.data, {
+  ChartState({
+    required this.data,
     required this.itemOptions,
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const <DecorationPainter>[],
     this.foregroundDecorations = const <DecorationPainter>[],
-  })  : assert(data.isNotEmpty, 'No items!'),
+  })
+      : assert(data.isNotEmpty, 'No items!'),
         defaultPadding = EdgeInsets.zero,
         defaultMargin = EdgeInsets.zero,
         dataRenderer = (itemOptions is WidgetItemOptions
@@ -32,15 +33,14 @@ class ChartState<T> {
   }
 
   /// Create line chart with foreground sparkline decoration and background grid decoration
-  factory ChartState.line(
-    ChartData<T> data, {
+  factory ChartState.line(ChartData<T> data, {
     required BubbleItemOptions itemOptions,
     ChartBehaviour behaviour = const ChartBehaviour(),
     List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
     List<DecorationPainter> foregroundDecorations = const <DecorationPainter>[],
   }) {
     return ChartState(
-      data,
+      data: data,
       itemOptions: itemOptions,
       behaviour: behaviour,
       backgroundDecorations: backgroundDecorations.isEmpty ? [GridDecoration()] : backgroundDecorations,
@@ -49,15 +49,14 @@ class ChartState<T> {
   }
 
   /// Create bar chart with background grid decoration
-  factory ChartState.bar(
-    ChartData<T> data, {
+  factory ChartState.bar(ChartData<T> data, {
     required BarItemOptions itemOptions,
     ChartBehaviour behaviour = const ChartBehaviour(),
     List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
     List<DecorationPainter> foregroundDecorations = const <DecorationPainter>[],
   }) {
     return ChartState(
-      data,
+      data: data,
       itemOptions: itemOptions,
       behaviour: behaviour,
       backgroundDecorations: backgroundDecorations.isEmpty ? [GridDecoration()] : backgroundDecorations,
@@ -65,8 +64,7 @@ class ChartState<T> {
     );
   }
 
-  ChartState._lerp(
-    this.data, {
+  ChartState._lerp(this.data, {
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const [],
     this.foregroundDecorations = const [],
@@ -182,18 +180,20 @@ class ChartState<T> {
           chartState,
           chartState.data.items
               .mapIndexed(
-                (lineKey, items) => items
-                    .mapIndexed((itemKey, item) => LeafChartItemRenderer(
-                          item,
-                          chartState.data,
-                          itemOptions,
-                          itemKey: itemKey,
-                          listKey: lineKey,
-                          drawDataItem:
-                              itemOptions.itemBuilder(ItemBuilderData<T?>(item, itemKey, lineKey)) as DrawDataItem,
-                        ))
+                (lineKey, items) =>
+                items
+                    .mapIndexed((itemKey, item) =>
+                    LeafChartItemRenderer(
+                      item,
+                      chartState.data,
+                      itemOptions,
+                      itemKey: itemKey,
+                      listKey: lineKey,
+                      drawDataItem:
+                      itemOptions.itemBuilder(ItemBuilderData<T?>(item, itemKey, lineKey)) as DrawDataItem,
+                    ))
                     .toList(),
-              )
+          )
               .expand((element) => element)
               .toList());
     };
@@ -202,25 +202,27 @@ class ChartState<T> {
   /// It can render chart items as widgets, and it only accepts [WidgetItemOptions] since it needs the
   /// [WidgetItemOptions.widgetItemBuilder] to build the chart item widgets.
   static ChartDataRendererFactory<T?> _widgetItemRenderer<T>(WidgetItemOptions itemOptions) {
-    return (chartState) => ChartLinearDataRenderer<T>(
-        chartState,
-        chartState.data.items
-            .mapIndexed(
-              (lineKey, items) {
+    return (chartState) =>
+        ChartLinearDataRenderer<T>(
+            chartState,
+            chartState.data.items
+                .mapIndexed(
+                  (lineKey, items) {
                 return items
                     .mapIndexed(
-                      (itemKey, e) => ChildChartItemRenderer<T?>(
+                      (itemKey, e) =>
+                      ChildChartItemRenderer<T?>(
                         e,
                         chartState.data,
                         itemOptions,
                         arrayKey: lineKey,
                         child: itemOptions.widgetItemBuilder(ItemBuilderData<T?>(e, itemKey, lineKey)),
                       ),
-                    )
+                )
                     .toList();
               },
             )
-            .expand((element) => element)
-            .toList());
+                .expand((element) => element)
+                .toList());
   }
 }

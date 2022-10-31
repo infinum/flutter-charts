@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 typedef DataToValue<T> = CandleValue<T> Function(T item);
 typedef DataToAxis<T> = String Function(int item);
 
+/// Short-hand to easier create several candle charts
 class CandleChart<T> extends StatelessWidget {
   CandleChart({
     required this.data,
@@ -37,7 +38,7 @@ class CandleChart<T> extends StatelessWidget {
       height: height,
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
-        ChartData(_mappedValues),
+        data: ChartData(_mappedValues),
         itemOptions: chartItemOptions,
         behaviour: chartBehaviour,
         foregroundDecorations: foregroundDecorations,

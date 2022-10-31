@@ -26,13 +26,13 @@ class MigrationChartScreen extends StatelessWidget {
                   _Header(title: 'Target line decoration'),
                   _buildChartWithDecoration(
                     decoration:
-                        WidgetDecoration(widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplayer) {
+                    WidgetDecoration(widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
                       return Stack(
                         children: [
                           Positioned(
                             left: 0,
                             right: 0,
-                            bottom: verticalMultiplayer * 3,
+                            bottom: verticalMultiplier * 3,
                             child: Container(color: Colors.red, height: 2),
                           ),
                         ],
@@ -42,19 +42,19 @@ class MigrationChartScreen extends StatelessWidget {
                   _Header(title: 'Target line text decoration'),
                   _buildChartWithDecoration(
                     decoration: WidgetDecoration(
-                        widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplayer) {
+                        widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
                           return Stack(
                             clipBehavior: Clip.none,
                             children: [
                               Positioned.fill(
                                 top: null,
-                                bottom: 2 * verticalMultiplayer,
+                                bottom: 2 * verticalMultiplier,
                                 child: const RotatedBox(quarterTurns: 3, child: Text('This is target line')),
                               ),
                               Positioned.fill(
                                 top: null,
                                 left: -40,
-                                bottom: 2 * verticalMultiplayer,
+                                bottom: 2 * verticalMultiplier,
                                 child: Container(color: Colors.red, width: double.infinity, height: 2),
                               ),
                             ],
@@ -65,16 +65,16 @@ class MigrationChartScreen extends StatelessWidget {
                   _Header(title: 'Target area decoration'),
                   _buildChartWithDecoration(
                     decoration: WidgetDecoration(
-                      widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplayer) {
+                      widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
                         return Padding(
-                          padding: EdgeInsets.only(top: 5 * verticalMultiplayer),
+                          padding: EdgeInsets.only(top: 5 * verticalMultiplier),
                           child: Container(
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.red, width: 2),
                               borderRadius: BorderRadius.circular(16),
                             ),
                             width: double.infinity,
-                            height: verticalMultiplayer * 2,
+                            height: verticalMultiplier * 2,
                           ),
                         );
                       },
@@ -83,16 +83,16 @@ class MigrationChartScreen extends StatelessWidget {
                   _Header(title: 'Border decoration'),
                   _buildChartWithDecoration(
                     decoration: WidgetDecoration(
-                      widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplayer) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.red, width: 3)
-                          ),
-                          width: double.infinity,
-                          height:  double.infinity,
-                        );
-                      },
-                      margin: EdgeInsets.all(3)
+                        widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
+                          return Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.red, width: 3)
+                            ),
+                            width: double.infinity,
+                            height: double.infinity,
+                          );
+                        },
+                        margin: EdgeInsets.all(3)
                     ),
                   ),
                 ],
@@ -107,21 +107,21 @@ class MigrationChartScreen extends StatelessWidget {
       width: 450,
       child: Chart(
           state: ChartState<void>(
-        ChartData([_data.map((e) => ChartItem<void>(e.toDouble())).toList()]),
-        itemOptions: BarItemOptions(
-          padding: const EdgeInsets.symmetric(horizontal: 2.0),
-          minBarWidth: 4.0,
-          barItemBuilder: (data) {
-            return BarItem(
-              radius: const BorderRadius.vertical(
-                top: Radius.circular(24.0),
-              ),
-              color: Colors.red.withOpacity(0.4),
-            );
-          },
-        ),
-        backgroundDecorations: [decoration],
-      )),
+            data: ChartData([_data.map((e) => ChartItem<void>(e.toDouble())).toList()]),
+            itemOptions: BarItemOptions(
+              padding: const EdgeInsets.symmetric(horizontal: 2.0),
+              minBarWidth: 4.0,
+              barItemBuilder: (data) {
+                return BarItem(
+                  radius: const BorderRadius.vertical(
+                    top: Radius.circular(24.0),
+                  ),
+                  color: Colors.red.withOpacity(0.4),
+                );
+              },
+            ),
+            backgroundDecorations: [decoration],
+          )),
     );
   }
 }
@@ -145,3 +145,14 @@ class _Header extends StatelessWidget {
     );
   }
 }
+
+// void a() {
+//   Chart(
+//     state: ChartState<void>(
+//       data: ChartData(
+//           [[3,5,7,9,4,3,6].map((e) => ChartItem(e)).toList()]
+//       ),
+//
+//     ),
+//   )
+// }

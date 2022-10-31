@@ -20,7 +20,7 @@ void main() {
             padding: EdgeInsets.zero,
             child: Chart<bool>(
               state: ChartState(
-                ChartData(
+                data: ChartData(
                   [
                     [
                       CandleValue<bool>.withValue(true, 3.5, 5.5),
@@ -75,7 +75,7 @@ void main() {
           padding: EdgeInsets.zero,
           child: Chart<void>(
             state: ChartState(
-              ChartData(
+              data: ChartData(
                 [
                   [
                     BarValue(4),
@@ -136,7 +136,7 @@ void main() {
           padding: EdgeInsets.zero,
           child: Chart<bool>(
             state: ChartState(
-              ChartData(
+              data: ChartData(
                 [
                   [
                     BarValue(23),
@@ -155,6 +155,7 @@ void main() {
                     BarValue(12),
                   ],
                 ],
+                dataStrategy: DefaultDataStrategy(stackMultipleValues: false),
                 axisMax: 4,
               ),
               itemOptions: BarItemOptions(
@@ -163,7 +164,6 @@ void main() {
                 },
                 multiValuePadding: const EdgeInsets.symmetric(horizontal: 4.0),
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                multiItemStack: false,
               ),
               backgroundDecorations: [
                 GridDecoration(
@@ -207,7 +207,7 @@ void main() {
             padding: EdgeInsets.zero,
             child: Chart<bool>(
               state: ChartState(
-                ChartData(
+                data: ChartData(
                   [
                     [
                       BubbleValue(9),
@@ -235,10 +235,10 @@ void main() {
                     ],
                   ],
                   axisMax: 30,
+                  dataStrategy: DefaultDataStrategy(stackMultipleValues: false)
                 ),
                 itemOptions: BubbleItemOptions(
                   maxBarWidth: 0.0,
-                  multiItemStack: false,
                 ),
                 backgroundDecorations: [
                   HorizontalAxisDecoration(
@@ -287,7 +287,7 @@ void main() {
           padding: EdgeInsets.zero,
           child: Chart<bool>(
             state: ChartState(
-              ChartData(
+              data: ChartData(
                 [
                   [
                     BubbleValue(10),
@@ -307,13 +307,13 @@ void main() {
                   ],
                 ],
                 axisMax: 35,
+                dataStrategy: DefaultDataStrategy(stackMultipleValues: false),
               ),
               itemOptions: BubbleItemOptions(
                 maxBarWidth: 2.0,
                 bubbleItemBuilder: (data) {
                   return BubbleItem(color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][data.listKey]);
                 },
-                multiItemStack: true,
               ),
               backgroundDecorations: [
                 GridDecoration(
@@ -358,7 +358,7 @@ void main() {
           padding: EdgeInsets.zero,
           child: Chart<bool>(
             state: ChartState(
-              ChartData(
+              data: ChartData(
                 [
                   [
                     BarValue(6),
@@ -400,7 +400,6 @@ void main() {
                     color: [Color(0xFF0139A4), Color(0xFF00B6E6)][data.listKey],
                   );
                 },
-                multiItemStack: true,
               ),
               backgroundDecorations: [
                 GridDecoration(

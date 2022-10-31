@@ -73,7 +73,7 @@ class _ShowcaseChartScreenState extends State<ShowcaseChartScreen> {
 
 final List<ChartState<bool>> _chartStates = [
   ChartState(
-    ChartData(
+    data: ChartData(
       [
         [
           CandleValue<bool>.withValue(true, 3.5, 5.5),
@@ -122,7 +122,7 @@ final List<ChartState<bool>> _chartStates = [
     foregroundDecorations: [],
   ),
   ChartState(
-    ChartData(
+    data: ChartData(
       [
         [
           BarValue<bool>.withValue(false, 4),
@@ -177,7 +177,7 @@ final List<ChartState<bool>> _chartStates = [
     foregroundDecorations: [],
   ),
   ChartState(
-    ChartData(
+    data: ChartData(
       [
         [
           BarValue<bool>.withValue(false, 23),
@@ -235,7 +235,7 @@ final List<ChartState<bool>> _chartStates = [
     ],
   ),
   ChartState(
-    ChartData(
+    data: ChartData(
       [
         [
           BubbleValue.withValue(false, 9),
@@ -309,7 +309,7 @@ final List<ChartState<bool>> _chartStates = [
     ],
   ),
   ChartState(
-    ChartData(
+    data: ChartData(
       [
         [
           BubbleValue.withValue(false, 10),
@@ -370,7 +370,7 @@ final List<ChartState<bool>> _chartStates = [
     ],
   ),
   ChartState(
-    ChartData(
+    data: ChartData(
       [
         [
           BarValue<bool>.withValue(false, 6),

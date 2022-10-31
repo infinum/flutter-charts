@@ -21,7 +21,7 @@ class ChartTest extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 128.0),
       child: Chart<void>(
         state: ChartState(
-          ChartData(
+          data: ChartData(
             [
               byCount.map((e) => ChartItem<void>(e.toDouble())).toList(),
               // byCount.map((e) => BarValue<void>(e.toDouble())).toList()

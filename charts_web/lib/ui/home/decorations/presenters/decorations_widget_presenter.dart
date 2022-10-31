@@ -25,13 +25,13 @@ class DecorationWidgetPresenter extends ChangeNotifier implements DecorationBuil
   @override
   WidgetDecoration buildDecoration() {
     if (type == 0) {
-      return WidgetDecoration(widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplayer) {
+      return WidgetDecoration(widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
         return Stack(
           children: [
             Positioned(
               left: 0,
               right: 0,
-              bottom: verticalMultiplayer * 3,
+              bottom: verticalMultiplier * 3,
               child: Container(color: Colors.blue, height: 2),
             ),
           ],
@@ -39,19 +39,19 @@ class DecorationWidgetPresenter extends ChangeNotifier implements DecorationBuil
       });
     } else if (type == 1) {
       return WidgetDecoration(
-          widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplayer) {
+          widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
             return Stack(
               clipBehavior: Clip.none,
               children: [
                 Positioned.fill(
                   top: null,
-                  bottom: 2 * verticalMultiplayer,
+                  bottom: 2 * verticalMultiplier,
                   child: const RotatedBox(quarterTurns: 3, child: Text('This is target line')),
                 ),
                 Positioned.fill(
                   top: null,
                   left: -40,
-                  bottom: 2 * verticalMultiplayer,
+                  bottom: 2 * verticalMultiplier,
                   child: Container(color: Colors.blue, width: double.infinity, height: 2),
                 ),
               ],
@@ -59,9 +59,9 @@ class DecorationWidgetPresenter extends ChangeNotifier implements DecorationBuil
           },
           margin: const EdgeInsets.only(left: 20));
     } else if (type == 2) {
-      return WidgetDecoration(widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplayer) {
+      return WidgetDecoration(widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
         return Padding(
-          padding: EdgeInsets.only(top: 5 * verticalMultiplayer),
+          padding: EdgeInsets.only(top: 5 * verticalMultiplier),
           child: Container(
             decoration: BoxDecoration(
               color: Colors.blue.withOpacity(0.1),
@@ -69,13 +69,13 @@ class DecorationWidgetPresenter extends ChangeNotifier implements DecorationBuil
               borderRadius: BorderRadius.circular(16),
             ),
             width: double.infinity,
-            height: verticalMultiplayer * 2,
+            height: verticalMultiplier * 2,
           ),
         );
       });
     } else if (type == 3) {
       return WidgetDecoration(
-          widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplayer) {
+          widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
             return Container(
               decoration: BoxDecoration(border: Border.all(color: Colors.blue, width: 3)),
               width: double.infinity,
@@ -91,7 +91,7 @@ class DecorationWidgetPresenter extends ChangeNotifier implements DecorationBuil
   @override
   String buildDecorationCode() {
     return '''    WidgetDecoration(
-          widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplayer) {
+          widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
             return Container(
               decoration: BoxDecoration(border: Border.all(color: Colors.blue, width: 3)),
               width: double.infinity,

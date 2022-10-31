@@ -23,7 +23,7 @@ void main() {
                   color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listKey].withOpacity(0.5));
             },
           ),
-          strategy: DefaultDataStrategy(),
+          strategy: DefaultDataStrategy(stackMultipleValues: true),
         ),
       )
       ..addScenario(
@@ -37,7 +37,6 @@ void main() {
               );
             },
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            multiItemStack: true,
           ),
           strategy: StackDataStrategy(),
         ),
@@ -46,6 +45,7 @@ void main() {
         'Side by side',
         getMultiValueChart(
           size: 4,
+          strategy: DefaultDataStrategy(stackMultipleValues: false),
           options: BarItemOptions(
             barItemBuilder: (data) {
               return BarItem(
@@ -53,7 +53,6 @@ void main() {
               );
             },
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            multiItemStack: false,
           ),
         ),
       )
@@ -100,6 +99,7 @@ void main() {
         'Multiple lines side by side',
         getMultiValueChart(
           size: 4,
+          strategy: DefaultDataStrategy(stackMultipleValues: false),
           foregroundDecorations: List.generate(
               4,
               (index) => SparkLineDecoration(
@@ -115,7 +115,6 @@ void main() {
             },
             multiValuePadding: const EdgeInsets.symmetric(horizontal: 1.0),
             padding: const EdgeInsets.symmetric(horizontal: 1.0),
-            multiItemStack: false,
           ),
         ),
       )
@@ -166,6 +165,7 @@ void main() {
         'Items and lines mixed',
         getMultiValueChart(
           size: 4,
+          strategy: DefaultDataStrategy(stackMultipleValues: false),
           foregroundDecorations: [
             SparkLineDecoration(
               lineKey: 0,
@@ -194,7 +194,6 @@ void main() {
                 ][data.listKey],
               );
             },
-            multiItemStack: false,
           ),
         ),
       )
@@ -202,6 +201,7 @@ void main() {
         'Multiple decorations',
         getMultiValueChart(
           size: 4,
+          strategy: DefaultDataStrategy(stackMultipleValues: false),
           foregroundDecorations: [
             SparkLineDecoration(
               lineKey: 0,
@@ -246,7 +246,6 @@ void main() {
                 ][data.listKey],
               );
             },
-            multiItemStack: false,
           ),
           behaviour: ChartBehaviour(),
         ),

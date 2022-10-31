@@ -19,7 +19,7 @@ class ComplexCharts extends StatelessWidget {
               child: AnimatedChart(
                 duration: Duration(milliseconds: 550),
                 state: ChartState<void>(
-                  ChartData(
+                  data: ChartData(
                     [
                       [10, 12, 13, 11, 16].map((e) => BarValue<void>(e.toDouble())).toList(),
                       [6, 8, 9, 7, 12].map((e) => BarValue<void>(e.toDouble())).toList(),
@@ -64,7 +64,7 @@ class ComplexCharts extends StatelessWidget {
               child: AnimatedChart(
                 duration: Duration(milliseconds: 550),
                 state: ChartState<void>(
-                  ChartData(
+                  data: ChartData(
                     [
                       [10, 12, 13, 11, 16].map((e) => BarValue<void>(e.toDouble())).toList(),
                       [6, 8, 9, 7, 12].map((e) => BarValue<void>(e.toDouble())).toList(),

@@ -20,7 +20,7 @@ class ChartTypes extends StatelessWidget {
               width: 100.0,
               child: Chart(
                 state: ChartState<void>(
-                  ChartData.fromList(
+                  data: ChartData.fromList(
                     [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => ChartItem<void>(e.toDouble())).toList(),
                     axisMax: 9,
                   ),
@@ -56,7 +56,7 @@ class ChartTypes extends StatelessWidget {
               width: 100.0,
               child: Chart(
                 state: ChartState<void>(
-                  ChartData.fromList(
+                  data: ChartData.fromList(
                     [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => ChartItem<void>(e.toDouble())).toList(),
                     axisMax: 9,
                   ),
@@ -90,7 +90,7 @@ class ChartTypes extends StatelessWidget {
               width: 100.0,
               child: Chart(
                 state: ChartState<void>(
-                  ChartData.fromList(
+                  data: ChartData.fromList(
                     [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => CandleValue<void>(e.toDouble() + 6, e.toDouble())).toList(),
                     axisMax: 15,
                   ),

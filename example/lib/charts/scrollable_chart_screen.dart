@@ -70,7 +70,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
     );
 
     final _chartState = ChartState(
-      ChartData.fromList(
+      data: ChartData.fromList(
         _values.map((e) => BarValue<void>(e)).toList(),
         axisMax: 20,
       ),

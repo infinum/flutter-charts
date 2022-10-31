@@ -20,7 +20,7 @@ void main() {
           padding: EdgeInsets.zero,
           child: Chart<void>(
             state: ChartState(
-              ChartData.fromList(
+              data: ChartData.fromList(
                 [5, 6, 8, 4, 3, 5, 2, 6, 7]
                     .map((e) => BarValue<void>(e.toDouble()))
                     .toList(),
@@ -53,7 +53,7 @@ void main() {
           padding: EdgeInsets.zero,
           child: Chart<void>(
             state: ChartState(
-              ChartData.fromList(
+              data: ChartData.fromList(
                 [5, 6, 8, 4, 3, 5, 2, 6, 7]
                     .map((e) => BarValue<void>(e.toDouble()))
                     .toList(),
@@ -105,7 +105,7 @@ void main() {
           padding: EdgeInsets.zero,
           child: Chart<void>(
             state: ChartState(
-              ChartData.fromList(
+              data: ChartData.fromList(
                 [5, 6, 8, 4, 3, 5, 2, 6, 7]
                     .mapIndexed((i, e) => CandleValue<void>(e.toDouble(),
                         e.toDouble() + (Random(i).nextDouble() * 10) - 5))
@@ -136,7 +136,7 @@ void main() {
           padding: EdgeInsets.zero,
           child: Chart<void>(
             state: ChartState(
-              ChartData.fromList(
+              data: ChartData.fromList(
                 [5, 6, 8, 4, 3, 5, 2, 6, 7]
                     .map((e) => BubbleValue<void>(e.toDouble()))
                     .toList(),

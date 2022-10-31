@@ -17,7 +17,7 @@ class IosCharts extends StatelessWidget {
               width: 100.0,
               child: Chart(
                 state: ChartState<void>(
-                  ChartData.fromList(
+                  data: ChartData.fromList(
                     [1, 3, 4, 2, 7, 7, 7, 7, 4, 5, 7, 8, 9, 4].map((e) => ChartItem<void>(e.toDouble())).toList(),
                     axisMax: 9,
                   ),

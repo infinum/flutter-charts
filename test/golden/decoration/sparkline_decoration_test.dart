@@ -136,7 +136,7 @@ void main() {
         'Multiline',
         Chart<void>(
           state: ChartState(
-              ChartData(
+              data: ChartData(
                 [
                   [5, 6, 8, 4, 3, 5, 2, 6, 7]
                       .map((e) => BarValue<void>(e.toDouble()))

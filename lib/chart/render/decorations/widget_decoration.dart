@@ -1,7 +1,7 @@
 part of charts_painter;
 
 typedef WidgetDecorationBuilder<T> = Widget Function(
-    BuildContext context, ChartState<T> chartState, double itemWidth, double verticalMultiplyer);
+    BuildContext context, ChartState<T> chartState, double itemWidth, double verticalMultiplier);
 
 /// Show widget as decoration on the chart
 ///

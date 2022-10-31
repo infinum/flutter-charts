@@ -63,7 +63,7 @@ class ChartStatePresenter extends ChangeNotifier {
   ChartBehaviour _behaviour = const ChartBehaviour();
 
   ChartState<void> get state => ChartState(
-        _defaultData,
+        data: _defaultData,
         itemOptions: _getItemOptions(),
         behaviour: _behaviour,
         foregroundDecorations: _decorationsPresenter.foregroundDecorations.values.toList(),
@@ -101,7 +101,6 @@ class ChartStatePresenter extends ChangeNotifier {
 
     _decorationsPresenter.removeDecorationsDependentOnData(listIndex);
 
-
     /// When deleting we still need data a little bit for lerp animation to finish
     scheduleMicrotask(() async {
       await Future.delayed(Duration(milliseconds: 30));
@@ -133,7 +132,6 @@ class ChartStatePresenter extends ChangeNotifier {
       print('Cannot change multi stack whne using StackDataStrategy');
     }
   }
-
 
   void updateChartBehaviour(ChartBehaviour behaviour) {
     _behaviour = behaviour;

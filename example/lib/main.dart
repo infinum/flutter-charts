@@ -93,7 +93,7 @@ class ShowList extends StatelessWidget {
               width: 100.0,
               child: Chart(
                 state: ChartState<void>(
-                  ChartData.fromList(
+                  data: ChartData.fromList(
                     [2, 7, 2, 4, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
                     axisMax: 9,
                   ),
@@ -130,7 +130,7 @@ class ShowList extends StatelessWidget {
               width: 100.0,
               child: Chart(
                 state: ChartState<void>(
-                    ChartData.fromList(
+                    data: ChartData.fromList(
                       [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
                       axisMax: 8,
                     ),
@@ -184,7 +184,7 @@ class ShowList extends StatelessWidget {
               width: 100.0,
               child: Chart(
                 state: ChartState<void>(
-                  ChartData.fromList(
+                  data: ChartData.fromList(
                     [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
                     axisMax: 8,
                   ),

@@ -13,7 +13,7 @@ Widget getDefaultChart({
     padding: EdgeInsets.zero,
     child: Chart<void>(
       state: ChartState(
-        ChartData.fromList(
+        data: ChartData.fromList(
           [5, 6, 8, 4, 3, 5, 2, 6, 7].map((e) => BarValue<void>(e.toDouble())).toList(),
           valueAxisMaxOver: 2,
         ),
@@ -34,13 +34,13 @@ Widget getMultiValueChart({
   List<DecorationPainter>? backgroundDecorations,
   ItemOptions? options,
   ChartBehaviour? behaviour,
-  DataStrategy strategy = const DefaultDataStrategy(),
+  DataStrategy strategy = const DefaultDataStrategy(stackMultipleValues: true),
 }) {
   return Padding(
     padding: EdgeInsets.zero,
     child: Chart<void>(
       state: ChartState(
-        ChartData(
+        data: ChartData(
           List.generate(
               size,
               (index) =>

@@ -17,7 +17,7 @@ class ShowcaseCharts extends StatelessWidget {
               width: 100.0,
               child: Chart<bool>(
                 state: ChartState(
-                  ChartData(
+                  data: ChartData(
                     [
                       [
                         BubbleValue(10),

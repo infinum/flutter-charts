@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 typedef DataToValue<T> = double Function(T item);
 typedef DataToAxis<T> = String Function(int item);
 
+/// Short-hand to easier create several bar charts
 class BarChart<T> extends StatelessWidget {
   BarChart({
     required List<T> data,
@@ -51,7 +52,7 @@ class BarChart<T> extends StatelessWidget {
       width: MediaQuery.of(context).size.width - 24.0,
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
-        _data,
+        data: _data,
         itemOptions: itemOptions,
         behaviour: chartBehaviour,
         foregroundDecorations: foregroundDecorations,

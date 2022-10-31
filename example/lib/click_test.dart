@@ -23,7 +23,7 @@ class _ChartAppState extends State<ChartApp> {
       color: Colors.grey.shade600,
       child: Chart(
         state: ChartState(
-            ChartData(
+            data: ChartData(
               [
                 [2, 4, 6, 3, 2, 5, 4, 3, 2]
                     .map((e) => ChartItem<void>(e.toDouble()))
