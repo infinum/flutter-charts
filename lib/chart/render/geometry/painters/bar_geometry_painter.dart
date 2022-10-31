@@ -1,11 +1,11 @@
 part of charts_painter;
 
-/// Paint bar value item. This is painter used for [BarValue] and [CandleValue]
+/// Paint bar value item.
 ///
 /// Bar value:
 ///    ┌───────────┐ --> Max value in set or from [ChartData.maxValue]
 ///    │           │
-///    │   ┌───┐   │ --> Bar value
+///    │   ┌───┐   │ --> ChartItem value
 ///    │   │   │   │
 ///    │   │   │   │
 ///    │   │   │   │
@@ -15,10 +15,10 @@ part of charts_painter;
 /// Candle value:
 ///    ┌───────────┐ --> Max value in set or [ChartData.maxValue]
 ///    │           │
-///    │   ┌───┐   │ --> Candle max value
+///    │   ┌───┐   │ --> ChartItem max value
 ///    │   │   │   │
 ///    │   │   │   │
-///    │   └───┘   │ --> Candle min value
+///    │   └───┘   │ --> ChartItem min value
 ///    │           │
 ///    └───────────┘ --> 0 or [ChartData.minValue]
 ///
@@ -81,7 +81,7 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
 
     final _border = drawDataItem.border;
 
-    if (_border != null && _border.style == BorderStyle.solid) {
+    if (_border.style == BorderStyle.solid) {
       final _borderPaint = Paint();
       _borderPaint.style = PaintingStyle.stroke;
       _borderPaint.color = _border.color;

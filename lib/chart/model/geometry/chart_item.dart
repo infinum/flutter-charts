@@ -33,7 +33,7 @@ class ChartItem<T> {
   }
 
   @override
-  int get hashCode => hashValues(min, max) ^ value.hashCode;
+  int get hashCode => Object.hash(min, max) ^ value.hashCode;
 
   @override
   bool operator ==(Object other) {

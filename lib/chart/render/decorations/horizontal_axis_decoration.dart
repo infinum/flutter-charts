@@ -59,7 +59,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     this.axisValue = defaultAxisValue,
     this.legendPosition = HorizontalLegendPosition.end,
     this.legendFontStyle = const TextStyle(fontSize: 12.0),
-    this.showLineForValue,
+    required this.showLineForValue,
     this.asFixedDecoration = false,
   }) : _endWithChart = endWithChart;
 
@@ -299,6 +299,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
             lerpDouble(textScale, endValue.textScale, t) ?? endValue.textScale,
         legendFontStyle:
             TextStyle.lerp(legendFontStyle, endValue.legendFontStyle, t),
+        showLineForValue: endValue.showLineForValue,
         horizontalAxisUnit:
             t > 0.5 ? endValue.horizontalAxisUnit : horizontalAxisUnit,
         legendPosition: t > 0.5 ? endValue.legendPosition : legendPosition,

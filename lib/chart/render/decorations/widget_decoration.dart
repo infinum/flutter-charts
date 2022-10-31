@@ -8,7 +8,7 @@ typedef WidgetDecorationBuilder<T> = Widget Function(
 /// If using this as item that will show values make sure you apply margin from [ChartState.defaultMargin]
 /// this will make sure you are in chart area when you draw your decoration.
 ///
-/// Example of drawing [TargetLineDecoration] with [WidgetDecoration]:
+/// Example of drawing TargetLineDecoration with [WidgetDecoration]:
 /// ```dart
 /// WidgetDecoration(
 ///  builder: (context, chartState, itemWidth, verticalMultiplier) {

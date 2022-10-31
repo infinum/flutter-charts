@@ -28,7 +28,7 @@ class SparkLineDecoration extends DecorationPainter {
     this.startPosition = 0.5,
     this.gradient,
     this.lineKey = 0,
-    this.dashArray,
+    required this.dashArray,
     double stretchLine = 0.0,
   })  : _smoothPoints = smoothPoints,
         _stretchLine = stretchLine;
@@ -210,6 +210,7 @@ class SparkLineDecoration extends DecorationPainter {
           lineColor: Color.lerp(lineColor, endValue.lineColor, t)!,
           gradient: Gradient.lerp(gradient, endValue.gradient, t),
           lineKey: endValue.lineKey,
+          dashArray: endValue.dashArray,
           stretchLine: lerpDouble(_stretchLine, endValue._stretchLine, t)!);
     }
 

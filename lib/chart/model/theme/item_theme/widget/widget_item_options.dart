@@ -21,7 +21,7 @@ typedef WidgetItemBuilder<T> = Widget Function(ItemBuilderData<T>);
 /// ),
 /// ```
 ///
-/// You can replace your [ValueDecoration] with [WidgetItemOptions] like this:
+/// You can replace your ValueDecoration with [WidgetItemOptions] like this:
 /// ```dart
 /// itemOptions: WidgetItemOptions(
 ///  chartItemBuilder: (item, itemKey, listKey) => Container(

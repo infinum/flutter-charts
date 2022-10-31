@@ -5,7 +5,7 @@ part of charts_painter;
 ///    ┌───────────┐ --> Max value in set or [ChartData.axisMax]
 ///    │           │
 ///    │           │
-///    │    /⎺⎺\   │ --> Bubble value
+///    │    /⎺⎺\   │ --> ChartItem max value
 ///    │    \__/   │
 ///    │           │
 ///    │           │
@@ -54,7 +54,7 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
     if (itemOptions is BubbleItemOptions) {
       final _border = drawDataItem.border;
 
-      if (_border != null && _border.style == BorderStyle.solid) {
+      if (_border.style == BorderStyle.solid) {
         final _borderPaint = Paint();
         _borderPaint.style = PaintingStyle.stroke;
 

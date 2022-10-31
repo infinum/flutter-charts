@@ -43,7 +43,7 @@ class ChartData<T> {
     );
   }
 
-  /// Generate a list of random [BarValue] items for the chart
+  /// Generate a list of random [ChartItem] items for the chart
   factory ChartData.randomBarValues({
     int items = 10,
     double maxValue = 20,
@@ -54,7 +54,7 @@ class ChartData<T> {
       [
         List.generate(
                 items,
-                (index) => BarValue<T>(
+                (index) => ChartItem<T>(
                     (Random().nextDouble() * (maxValue - minValue)) + minValue))
             .toList()
       ],
