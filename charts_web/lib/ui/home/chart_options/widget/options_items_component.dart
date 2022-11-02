@@ -71,6 +71,8 @@ class OptionsItemsComponent extends HookConsumerWidget {
         const SizedBox(height: 16),
         if (_provider.selectedPainter == SelectedPainter.widget)
           const Text('With WidgetItemOptions you can provide any kind of widget that you want! Here is one example'),
+        if (_provider.selectedPainter == SelectedPainter.none)
+          const Text('This is BarItemOptions with 0 width. Most common case for using this is with SparkLine decoration. Check decorations below.'),
         if (_provider.selectedPainter == SelectedPainter.bar || _provider.selectedPainter == SelectedPainter.bubble)
           Wrap(
             spacing: 16,
@@ -109,7 +111,7 @@ class OptionsItemsComponent extends HookConsumerWidget {
             ],
           ),
 
-        if (_provider.isMultiItem)
+        if (_provider.isMultiItem && _provider.selectedPainter != SelectedPainter.none)
           Wrap(
             spacing: 16,
             runSpacing: 16,

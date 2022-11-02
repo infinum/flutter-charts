@@ -46,7 +46,7 @@ class ShowcaseCharts extends StatelessWidget {
                           color: [
                         Color(0xFF5B6ACF),
                         Color(0xFFB6CADD)
-                      ][data.listKey]);
+                      ][data.listIndex]);
                     },
                   ),
                   backgroundDecorations: [
@@ -68,7 +68,7 @@ class ShowcaseCharts extends StatelessWidget {
                       endWithChart: true,
                     ),
                     SparkLineDecoration(
-                      lineKey: 1,
+                      listIndex: 1,
                       lineColor: Color(0xFFB6CADD),
                       lineWidth: 1.0,
                     ),

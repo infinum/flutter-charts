@@ -103,7 +103,7 @@ void main() {
                 barItemBuilder: (data) {
                   return BarItem(
                     radius: BorderRadius.all(Radius.circular(12.0)),
-                    color: [Color(0xFFE6E6FD), Color(0xFF4D4DA6)][data.listKey],
+                    color: [Color(0xFFE6E6FD), Color(0xFF4D4DA6)][data.listIndex],
                   );
                 },
               ),
@@ -160,7 +160,7 @@ void main() {
               ),
               itemOptions: BarItemOptions(
                 barItemBuilder: (data) {
-                  return BarItem(color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][data.listKey]);
+                  return BarItem(color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][data.listIndex]);
                 },
                 multiValuePadding: const EdgeInsets.symmetric(horizontal: 4.0),
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -265,7 +265,7 @@ void main() {
                   ),
                   SparkLineDecoration(
                     smoothPoints: true,
-                    lineKey: 1,
+                    listIndex: 1,
                     stretchLine: true,
                     lineWidth: 3.0,
                     gradient: LinearGradient(
@@ -312,7 +312,7 @@ void main() {
               itemOptions: BubbleItemOptions(
                 maxBarWidth: 2.0,
                 bubbleItemBuilder: (data) {
-                  return BubbleItem(color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][data.listKey]);
+                  return BubbleItem(color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][data.listIndex]);
                 },
               ),
               backgroundDecorations: [
@@ -339,7 +339,7 @@ void main() {
                   endWithChart: true,
                 ),
                 SparkLineDecoration(
-                  lineKey: 1,
+                  listIndex: 1,
                   lineColor: Color(0xFFB6CADD),
                   lineWidth: 4.0,
                 ),
@@ -397,7 +397,7 @@ void main() {
                 barItemBuilder: (data) {
                   return BarItem(
                     radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-                    color: [Color(0xFF0139A4), Color(0xFF00B6E6)][data.listKey],
+                    color: [Color(0xFF0139A4), Color(0xFF00B6E6)][data.listIndex],
                   );
                 },
               ),

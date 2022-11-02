@@ -108,25 +108,25 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
                         margin: const EdgeInsets.symmetric(horizontal: 3.0),
                         decoration: BoxDecoration(
                           borderRadius:
-                              BorderRadius.vertical(top: Radius.circular((!_stackItems || data.listKey == 0) ? 12 : 0)),
+                              BorderRadius.vertical(top: Radius.circular((!_stackItems || data.listIndex == 0) ? 12 : 0)),
                         ),
                         foregroundDecoration: BoxDecoration(
                           borderRadius:
-                              BorderRadius.vertical(top: Radius.circular((!_stackItems || data.listKey == 0) ? 12 : 0)),
-                          color: Colors.accents[data.listKey].withOpacity(0.2),
+                              BorderRadius.vertical(top: Radius.circular((!_stackItems || data.listIndex == 0) ? 12 : 0)),
+                          color: Colors.accents[data.listIndex].withOpacity(0.2),
                           border: Border.all(
                             width: 2,
-                            color: Colors.accents[data.listKey],
+                            color: Colors.accents[data.listIndex],
                           ),
                         ),
                         child: ClipRRect(
                           borderRadius:
-                              BorderRadius.vertical(top: Radius.circular((!_stackItems || data.listKey == 0) ? 12 : 0)),
+                              BorderRadius.vertical(top: Radius.circular((!_stackItems || data.listIndex == 0) ? 12 : 0)),
                           child: Stack(
                             children: [
                               Positioned.fill(
                                 child: Image.network(
-                                  _images[data.listKey],
+                                  _images[data.listIndex],
                                   fit: BoxFit.cover,
                                 ),
                               ),

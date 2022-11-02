@@ -120,7 +120,7 @@ void main() {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               maxBarWidth: 4.0,
               bubbleItemBuilder: (data) {
-                return BubbleItem(color: [Colors.red, Colors.blue][data.listKey]);
+                return BubbleItem(color: [Colors.red, Colors.blue][data.listIndex]);
               },
             ),
             backgroundDecorations: [
@@ -133,8 +133,8 @@ void main() {
               BorderDecoration(borderWidth: 5.0),
               SparkLineDecoration(
                 // Specify key that this [SparkLineDecoration] will follow
-                // Throws if `lineKey` does not exist in chart data
-                lineKey: 1,
+                // Throws if `listIndex` does not exist in chart data
+                listIndex: 1,
                 lineColor: Colors.blue,
               ),
               SparkLineDecoration(),

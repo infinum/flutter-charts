@@ -6,14 +6,14 @@ part of charts_painter;
 /// All customization for this list items can be done with [BarItemOptions] or [BubbleItemOptions]
 class LeafChartItemRenderer<T> extends LeafRenderObjectWidget {
   LeafChartItemRenderer(this.item, this.state, this.itemOptions,
-      {this.listKey = 0, this.itemKey = 0, required this.drawDataItem});
+      {this.listIndex = 0, this.itemIndex = 0, required this.drawDataItem});
 
   final ChartItem<T?> item;
   final ChartData<T?> state;
   final ItemOptions itemOptions;
   final DrawDataItem drawDataItem;
-  final int listKey;
-  final int itemKey;
+  final int listIndex;
+  final int itemIndex;
 
   @override
   RenderObject createRenderObject(BuildContext context) {
@@ -21,8 +21,8 @@ class LeafChartItemRenderer<T> extends LeafRenderObjectWidget {
       state,
       itemOptions,
       item,
-      listKey: listKey,
-      itemKey: itemKey,
+      listKey: listIndex,
+      itemKey: itemIndex,
       drawDataItem: drawDataItem,
     );
   }
@@ -32,8 +32,8 @@ class LeafChartItemRenderer<T> extends LeafRenderObjectWidget {
     renderObject
       ..state = state
       ..itemOptions = itemOptions
-      ..listKey = listKey
-      ..itemKey = itemKey
+      ..listKey = listIndex
+      ..itemKey = itemIndex
       ..drawDataItem = drawDataItem
       ..item = item;
 

@@ -77,7 +77,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 2.0),
                 minBarWidth: 4.0,
                 barItemBuilder: (data) {
-                  final colorForValue =  Colors.accents[data.itemKey % 15];
+                  final colorForValue =  Colors.accents[data.itemIndex % 15];
                   return BarItem(
                       radius: const BorderRadius.vertical(
                         top: Radius.circular(24.0),

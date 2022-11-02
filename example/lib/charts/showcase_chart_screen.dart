@@ -150,7 +150,7 @@ final List<ChartState<bool>> _chartStates = [
       barItemBuilder: (data) {
         return BarItem(
           radius: BorderRadius.all(Radius.circular(12.0)),
-          color: [Color(0xFFE6E6FD), Color(0xFF4D4DA6)][data.listKey],
+          color: [Color(0xFFE6E6FD), Color(0xFF4D4DA6)][data.listIndex],
         );
       },
     ),
@@ -202,7 +202,7 @@ final List<ChartState<bool>> _chartStates = [
     itemOptions: BarItemOptions(
       barItemBuilder: (data) {
         return BarItem(
-            color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][data.listKey]);
+            color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][data.listIndex]);
       },
       multiValuePadding: const EdgeInsets.symmetric(horizontal: 4.0),
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -296,7 +296,7 @@ final List<ChartState<bool>> _chartStates = [
       ),
       SparkLineDecoration(
         smoothPoints: true,
-        lineKey: 1,
+        listIndex: 1,
         stretchLine: true,
         lineWidth: 3.0,
         gradient: LinearGradient(
@@ -359,7 +359,7 @@ final List<ChartState<bool>> _chartStates = [
         endWithChart: true,
       ),
       SparkLineDecoration(
-        lineKey: 1,
+        listIndex: 1,
         lineColor: Color(0xFFB6CADD),
         lineWidth: 4.0,
       ),
@@ -409,7 +409,7 @@ final List<ChartState<bool>> _chartStates = [
       barItemBuilder: (data) {
         return BarItem(
           radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-          color: [Color(0xFF0139A4), Color(0xFF00B6E6)][data.listKey],
+          color: [Color(0xFF0139A4), Color(0xFF00B6E6)][data.listIndex],
         );
       },
       padding: const EdgeInsets.symmetric(horizontal: 12.0),

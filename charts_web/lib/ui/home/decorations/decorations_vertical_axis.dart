@@ -44,7 +44,7 @@ class DecorationsVerticalAxis extends HookConsumerWidget {
                 width: 200,
                 child: SwitchListTile(
                   value: _presenter.endWithChart,
-                  title: Text(_presenter.endWithChart ? 'End with chart' : 'Don\'nt end with chart'),
+                  title: Text(_presenter.endWithChart ? 'End with chart' : 'Don\'t end with chart'),
                   onChanged: _presenter.updateEndWithChart,
                 ),
               ),

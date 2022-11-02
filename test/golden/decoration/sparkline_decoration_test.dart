@@ -158,7 +158,7 @@ void main() {
                   lineWidth: 3.0,
                 ),
                 SparkLineDecoration(
-                  lineKey: 1,
+                  listIndex: 1,
                   stretchLine: true,
                   lineColor: Colors.red.withOpacity(0.2),
                   smoothPoints: true,

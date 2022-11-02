@@ -20,7 +20,7 @@ void main() {
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
             barItemBuilder: (data) {
               return BarItem(
-                  color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listKey].withOpacity(0.5));
+                  color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listIndex].withOpacity(0.5));
             },
           ),
           strategy: DefaultDataStrategy(stackMultipleValues: true),
@@ -33,7 +33,7 @@ void main() {
           options: BarItemOptions(
             barItemBuilder: (data) {
               return BarItem(
-                color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listKey].withOpacity(0.5),
+                color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listIndex].withOpacity(0.5),
               );
             },
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -49,7 +49,7 @@ void main() {
           options: BarItemOptions(
             barItemBuilder: (data) {
               return BarItem(
-                color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listKey].withOpacity(0.5),
+                color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listIndex].withOpacity(0.5),
               );
             },
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -63,7 +63,7 @@ void main() {
           foregroundDecorations: List.generate(
             4,
             (index) => SparkLineDecoration(
-              lineKey: index,
+              listIndex: index,
               lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
               lineWidth: 3.0,
               stretchLine: true,
@@ -82,7 +82,7 @@ void main() {
           foregroundDecorations: List.generate(
             4,
             (index) => SparkLineDecoration(
-              lineKey: index,
+              listIndex: index,
               lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
               lineWidth: 3.0,
               stretchLine: true,
@@ -103,7 +103,7 @@ void main() {
           foregroundDecorations: List.generate(
               4,
               (index) => SparkLineDecoration(
-                    lineKey: index,
+                    listIndex: index,
                     lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
                     lineWidth: 3.0,
                     startPosition: index / 4,
@@ -111,7 +111,7 @@ void main() {
           options: BarItemOptions(
             barItemBuilder: (data) {
               return BarItem(
-                  color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listKey].withOpacity(0.1));
+                  color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listIndex].withOpacity(0.1));
             },
             multiValuePadding: const EdgeInsets.symmetric(horizontal: 1.0),
             padding: const EdgeInsets.symmetric(horizontal: 1.0),
@@ -124,21 +124,21 @@ void main() {
           size: 4,
           foregroundDecorations: [
             SparkLineDecoration(
-              lineKey: 0,
+              listIndex: 0,
               fill: true,
               smoothPoints: true,
               lineColor: Colors.green.withOpacity(0.8),
               stretchLine: true,
             ),
             SparkLineDecoration(
-              lineKey: 1,
+              listIndex: 1,
               lineColor: Colors.blue,
               lineWidth: 2.0,
               dashArray: [10, 10],
               stretchLine: true,
             ),
             SparkLineDecoration(
-              lineKey: 2,
+              listIndex: 2,
               lineColor: Colors.red,
               lineWidth: 4.0,
               smoothPoints: true,
@@ -146,7 +146,7 @@ void main() {
               stretchLine: true,
             ),
             SparkLineDecoration(
-              lineKey: 3,
+              listIndex: 3,
               lineColor: Colors.yellow,
               lineWidth: 2.0,
               stretchLine: true,
@@ -155,7 +155,7 @@ void main() {
           options: BarItemOptions(
             barItemBuilder: (data) {
               return BarItem(
-                  color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listKey].withOpacity(0.1));
+                  color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listIndex].withOpacity(0.1));
             },
             padding: const EdgeInsets.symmetric(horizontal: 1.0),
           ),
@@ -168,14 +168,14 @@ void main() {
           strategy: DefaultDataStrategy(stackMultipleValues: false),
           foregroundDecorations: [
             SparkLineDecoration(
-              lineKey: 0,
+              listIndex: 0,
               fill: true,
               smoothPoints: true,
               lineColor: Colors.red.withOpacity(0.6),
               stretchLine: true,
             ),
             SparkLineDecoration(
-              lineKey: 1,
+              listIndex: 1,
               lineColor: Colors.blue,
               lineWidth: 2.0,
               dashArray: [15, 5],
@@ -191,7 +191,7 @@ void main() {
                   Colors.transparent,
                   Colors.yellow.withOpacity(0.8),
                   Colors.green.withOpacity(0.8),
-                ][data.listKey],
+                ][data.listIndex],
               );
             },
           ),
@@ -204,14 +204,14 @@ void main() {
           strategy: DefaultDataStrategy(stackMultipleValues: false),
           foregroundDecorations: [
             SparkLineDecoration(
-              lineKey: 0,
+              listIndex: 0,
               fill: true,
               smoothPoints: true,
               lineColor: Colors.redAccent.withOpacity(0.6),
               stretchLine: true,
             ),
             SparkLineDecoration(
-              lineKey: 1,
+              listIndex: 1,
               lineColor: Colors.red,
               lineWidth: 2.0,
               smoothPoints: true,
@@ -243,7 +243,7 @@ void main() {
                   Colors.transparent,
                   Colors.yellow.withOpacity(0.8),
                   Colors.green.withOpacity(0.8),
-                ][data.listKey],
+                ][data.listIndex],
               );
             },
           ),

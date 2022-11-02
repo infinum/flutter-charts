@@ -113,13 +113,13 @@ void main() {
                   lineWidth: 3.0,
                 ),
                 SparkLineDecoration(
-                  lineKey: 1,
+                  listIndex: 1,
                   stretchLine: true,
                   lineColor: Colors.yellow,
                   lineWidth: 3.0,
                 ),
                 SparkLineDecoration(
-                  lineKey: 2,
+                  listIndex: 2,
                   stretchLine: true,
                   lineColor: Colors.green,
                   lineWidth: 3.0,

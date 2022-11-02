@@ -37,7 +37,7 @@ class ComplexCharts extends StatelessWidget {
                               Theme.of(context).colorScheme.primary,
                               Theme.of(context).colorScheme.secondary,
                               Theme.of(context).colorScheme.primaryVariant,
-                            ][data.listKey]);
+                            ][data.listIndex]);
                       }),
                   backgroundDecorations: [
                     GridDecoration(
@@ -81,7 +81,7 @@ class ComplexCharts extends StatelessWidget {
                             Theme.of(context).colorScheme.primary,
                             Theme.of(context).colorScheme.secondary,
                             Theme.of(context).colorScheme.primaryVariant,
-                          ][data.listKey],
+                          ][data.listIndex],
                           radius: BorderRadius.vertical(top: Radius.circular(12.0)),
                         );
                       }),

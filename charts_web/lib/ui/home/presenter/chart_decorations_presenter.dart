@@ -67,7 +67,7 @@ class ChartDecorationsPresenter extends ChangeNotifier {
     _decorations.forEach((decorationIndex, element) {
       final decoration = element.decorationPainter;
       if (decoration is SparkLineDecoration) {
-        if (decoration.lineKey == lineIndex) {
+        if (decoration.listIndex == lineIndex) {
           decorationsIndexToRemove.add(decorationIndex);
           ref.read(decorationSparkLinePresenter(decorationIndex)).dispose();
         }

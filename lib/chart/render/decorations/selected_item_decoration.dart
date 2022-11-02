@@ -12,7 +12,7 @@ class SelectedItemDecoration extends DecorationPainter {
     this.animate = false,
     bool showText = true,
     this.showOnTop = true,
-    this.selectedLineKey = 0,
+    this.selectedListIndex = 0,
     this.child,
     this.topMargin = 0.0,
   }) : showText = showText && (child == null);
@@ -42,7 +42,7 @@ class SelectedItemDecoration extends DecorationPainter {
 
   /// Index of list whose data to show
   /// By default it will use first list to this value will be `0`
-  final int selectedLineKey;
+  final int selectedListIndex;
 
   @override
   Widget getRenderer(ChartState state) {
@@ -60,7 +60,7 @@ class SelectedItemDecoration extends DecorationPainter {
   @override
   void initDecoration(ChartState state) {
     super.initDecoration(state);
-    assert(state.data.stackSize > selectedLineKey,
+    assert(state.data.stackSize > selectedListIndex,
         'Selected key is not in the list!\nCheck the `selectedKey` you are passing.');
   }
 
@@ -81,8 +81,8 @@ class SelectedItemDecoration extends DecorationPainter {
 
     final selectedItem = this.selectedItem;
     if (selectedItem != null) {
-      final _selectedItemMax = state.data.items[selectedLineKey][selectedItem].max ?? 0.0;
-      final _selectedItemMin = state.data.items[selectedLineKey][selectedItem].min ?? 0.0;
+      final _selectedItemMax = state.data.items[selectedListIndex][selectedItem].max ?? 0.0;
+      final _selectedItemMin = state.data.items[selectedListIndex][selectedItem].min ?? 0.0;
 
       final _maxValue = state.data.maxValue - state.data.minValue;
       final _height = size.height - marginNeeded().vertical;
@@ -104,7 +104,7 @@ class SelectedItemDecoration extends DecorationPainter {
       return;
     }
     final width = size.width;
-    final _selectedItem = state.data.items[selectedLineKey][_item];
+    final _selectedItem = state.data.items[selectedListIndex][_item];
 
     final _maxValuePainter = ValueDecoration.makeTextPainter(
       _selectedItem.max?.toStringAsFixed(2) ?? '',
@@ -191,7 +191,7 @@ class SelectedItemDecoration extends DecorationPainter {
     if (_item == null) {
       return;
     }
-    final _selectedItem = state.data.items[selectedLineKey][_item];
+    final _selectedItem = state.data.items[selectedListIndex][_item];
 
     final _itemWidth = max(state.itemOptions.minBarWidth ?? 0.0,
         min(state.itemOptions.maxBarWidth ?? double.infinity, size.width - state.itemOptions.padding.horizontal));
@@ -272,7 +272,7 @@ class SelectedItemDecoration extends DecorationPainter {
         backgroundColor: Color.lerp(backgroundColor, endValue.backgroundColor, t) ?? endValue.backgroundColor,
         selectedStyle: TextStyle.lerp(selectedStyle, endValue.selectedStyle, t) ?? endValue.selectedStyle,
         animate: endValue.animate,
-        selectedLineKey: endValue.selectedLineKey,
+        selectedListIndex: endValue.selectedListIndex,
         showOnTop: t < 0.5 ? showOnTop : endValue.showOnTop,
         showText: t < 0.5 ? showText : endValue.showText,
         child: t < 0.5 ? child : endValue.child,

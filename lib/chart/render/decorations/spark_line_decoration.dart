@@ -13,7 +13,7 @@ class SparkLineDecoration extends DecorationPainter {
     this.lineColor = Colors.red,
     this.startPosition = 0.5,
     this.gradient,
-    this.lineKey = 0,
+    this.listIndex = 0,
     this.dashArray,
     bool stretchLine = false,
   })  : _smoothPoints = smoothPoints ? 1.0 : 0.0,
@@ -27,7 +27,7 @@ class SparkLineDecoration extends DecorationPainter {
     this.lineColor = Colors.red,
     this.startPosition = 0.5,
     this.gradient,
-    this.lineKey = 0,
+    this.listIndex = 0,
     required this.dashArray,
     double stretchLine = 0.0,
   })  : _smoothPoints = smoothPoints,
@@ -73,7 +73,7 @@ class SparkLineDecoration extends DecorationPainter {
   /// Index of list in items, this is used if there are multiple lists in the chart
   ///
   /// By default this will show first list and value will be 0
-  final int lineKey;
+  final int listIndex;
 
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
@@ -104,7 +104,7 @@ class SparkLineDecoration extends DecorationPainter {
 
     final _itemWidth = size.width / _listSize;
 
-    final _maxValueForKey = state.data.items[lineKey].fold(0.0,
+    final _maxValueForKey = state.data.items[listIndex].fold(0.0,
         (double previousValue, element) {
       if (previousValue < (element.max ?? element.min ?? 0)) {
         return (element.max ?? element.min ?? 0);
@@ -126,7 +126,7 @@ class SparkLineDecoration extends DecorationPainter {
       );
     }
 
-    state.data.items[lineKey].asMap().forEach((key, value) {
+    state.data.items[listIndex].asMap().forEach((key, value) {
       final _stretchPosition = _stretchLine * (key / (_listSize - 1));
       final _fixedPosition = (1 - _stretchLine) * startPosition;
 
@@ -139,7 +139,7 @@ class SparkLineDecoration extends DecorationPainter {
       _positions.add(Offset(_itemWidth * key + _position,
           size.height - ((value.max ?? 0.0) - state.data.minValue) * scale));
 
-      if (fill && state.data.items[lineKey].length - 1 == key) {
+      if (fill && state.data.items[listIndex].length - 1 == key) {
         _positions.add(Offset(_itemWidth * key + _position, 0.0));
       }
     });
@@ -209,7 +209,7 @@ class SparkLineDecoration extends DecorationPainter {
           startPosition: lerpDouble(startPosition, endValue.startPosition, t)!,
           lineColor: Color.lerp(lineColor, endValue.lineColor, t)!,
           gradient: Gradient.lerp(gradient, endValue.gradient, t),
-          lineKey: endValue.lineKey,
+          listIndex: endValue.listIndex,
           dashArray: endValue.dashArray,
           stretchLine: lerpDouble(_stretchLine, endValue._stretchLine, t)!);
     }
@@ -221,10 +221,10 @@ class SparkLineDecoration extends DecorationPainter {
   bool isSameType(DecorationPainter other) {
     if (other is SparkLineDecoration) {
       if (id != null && other.id != null) {
-        return id == other.id && lineKey == other.lineKey;
+        return id == other.id && listIndex == other.listIndex;
       }
 
-      return lineKey == other.lineKey;
+      return listIndex == other.listIndex;
     }
 
     return false;

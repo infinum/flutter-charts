@@ -106,7 +106,7 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                         Colors.blue,
                         Colors.red,
                         Colors.green,
-                      ][data.listKey],
+                      ][data.listIndex],
                       radius: const BorderRadius.vertical(
                         top: Radius.circular(24.0),
                       ),
@@ -137,13 +137,13 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                         .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(_stackItems ? 1.0 : 0.0)),
                   ),
                   ValueDecoration(
-                    lineKey: 1,
+                    listIndex: 1,
                     alignment: Alignment.bottomCenter,
                     textStyle: Theme.of(context).textTheme.button!.copyWith(
                         color: Theme.of(context).colorScheme.onSecondary.withOpacity(_stackItems ? 1.0 : 0.0)),
                   ),
                   ValueDecoration(
-                    lineKey: 2,
+                    listIndex: 2,
                     alignment: Alignment.bottomCenter,
                     textStyle: Theme.of(context)
                         .textTheme

@@ -203,9 +203,9 @@ class ChartStatePresenter extends ChangeNotifier {
         padding: chartItemPadding,
         bubbleItemBuilder: (data) {
           return BubbleItem(
-            color: _getColorForList(data.listKey),
-            gradient: gradient[data.listKey],
-            border: itemBorderSides[data.listKey],
+            color: _getColorForList(data.listIndex),
+            gradient: gradient[data.listIndex],
+            border: itemBorderSides[data.listIndex],
           );
         },
         maxBarWidth: maxBarWidth,
@@ -217,10 +217,10 @@ class ChartStatePresenter extends ChangeNotifier {
         padding: chartItemPadding,
         barItemBuilder: (data) {
           return BarItem(
-            color: _getColorForList(data.listKey),
-            gradient: gradient[data.listKey],
-            border: itemBorderSides[data.listKey],
-            radius: barBorderRadius[data.listKey],
+            color: _getColorForList(data.listIndex),
+            gradient: gradient[data.listIndex],
+            border: itemBorderSides[data.listIndex],
+            radius: barBorderRadius[data.listIndex],
           );
         },
         maxBarWidth: maxBarWidth,
@@ -238,7 +238,7 @@ class ChartStatePresenter extends ChangeNotifier {
     } else if (selectedPainter == SelectedPainter.widget) {
       return WidgetItemOptions(
         widgetItemBuilder: (data) {
-          return FuturamaBarWidget(stackItems: stackMultipleValues, listKey: data.listKey, item: data.item);
+          return FuturamaBarWidget(stackItems: stackMultipleValues, listKey: data.listIndex, item: data.item);
         },
       );
     } else {
