@@ -192,7 +192,7 @@ class ChartState<T> {
                           itemIndex: itemKey,
                           listIndex: listIndex,
                           drawDataItem:
-                              itemOptions.itemBuilder(ItemBuilderData<T?>(item, itemKey, lineKey)) as DrawDataItem,
+                              itemOptions.itemBuilder(ItemBuilderData<T?>(item, itemKey, listIndex)) as DrawDataItem,
                         ))
                     .toList(),
               )
