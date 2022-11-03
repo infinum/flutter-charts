@@ -9,7 +9,7 @@ class LeafChartItemRenderer<T> extends LeafRenderObjectWidget {
       {this.listKey = 0, this.itemKey = 0, required this.drawDataItem});
 
   final ChartItem<T?> item;
-  final ChartData<T?> state;
+  final ChartState<T?> state;
   final ItemOptions itemOptions;
   final DrawDataItem drawDataItem;
   final int listKey;
@@ -97,9 +97,9 @@ class _RenderLeafChartItem<T> extends RenderBox {
 
   ChartItem<T> get item => _item;
 
-  ChartData _state;
+  ChartState _state;
 
-  set state(ChartData state) {
+  set state(ChartState state) {
     if (state != _state) {
       _state = state;
       markNeedsPaint();
@@ -143,13 +143,46 @@ class _RenderLeafChartItem<T> extends RenderBox {
   }
 
   @override
+  bool hitTest(BoxHitTestResult result, {required Offset position}) {
+    final _onClick = _state.behaviour.onItemClicked;
+
+    // Leaf render objects should only be hit tested if they have a click handler, else return false.
+    if (_onClick == null) {
+      return false;
+    }
+
+    final _stack = 1 - _state.data.dataStrategy._stackMultipleValuesProgress;
+    final _stackSize = max(1, _state.data.stackSize * _stack);
+
+    final _multiPadding = _itemOptions.multiValuePadding.horizontal * _stackSize * _stack;
+    final _stackWidth = (size.width - _multiPadding - _itemOptions.padding.horizontal) / _stackSize;
+
+    final _translatedPosition = position.translate(
+        _itemOptions.multiValuePadding.left * _stack +
+            _itemOptions.padding.left +
+            _stackWidth * listKey * _stack +
+            ((_itemOptions.multiValuePadding.horizontal * listKey * _stack)),
+        0.0);
+
+    // Get exact items size for current configuration and check position.
+    if (Size(_stackWidth, size.height).contains(_translatedPosition)) {
+      // Add hit test entry and call onClick callback
+      result.add(BoxHitTestEntry(this, position));
+      _onClick(ItemBuilderData<T>(item, itemKey, listKey));
+      return true;
+    }
+
+    return false;
+  }
+
+  @override
   void paint(PaintingContext context, Offset offset) {
     final canvas = context.canvas;
     canvas.save();
     canvas.translate(offset.dx, offset.dy);
 
-    final _stack = 1 - _state.dataStrategy._stackMultipleValuesProgress;
-    final _stackSize = max(1, _state.stackSize * _stack);
+    final _stack = 1 - _state.data.dataStrategy._stackMultipleValuesProgress;
+    final _stackSize = max(1, _state.data.stackSize * _stack);
 
     final _multiPadding = _itemOptions.multiValuePadding.horizontal * _stackSize * _stack;
 
@@ -165,7 +198,7 @@ class _RenderLeafChartItem<T> extends RenderBox {
     // Use item painter from ItemOptions to draw the item on the chart
     final _itemPainter = _itemOptions.geometryPainter(
       item,
-      _state,
+      _state.data,
       _itemOptions,
       drawDataItem,
     );
