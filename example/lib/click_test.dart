@@ -36,7 +36,7 @@ class _ChartAppState extends State<ChartApp> {
             behaviour: ChartBehaviour(
               onItemClicked: (index) {
                 setState(() {
-                  _selectedIndex = index.itemKey;
+                  _selectedIndex = index.itemIndex;
                 });
               },
             ),

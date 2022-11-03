@@ -90,7 +90,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                 ),
                 chartBehaviour: ChartBehaviour(onItemClicked: (item) {
                   setState(() {
-                    _selected = item.itemKey;
+                    _selected = item.itemIndex;
                   });
                 }),
                 backgroundDecorations: [

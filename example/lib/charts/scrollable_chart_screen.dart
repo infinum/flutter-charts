@@ -93,7 +93,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
         isScrollable: _isScrollable,
         onItemClicked: (item) {
           setState(() {
-            _selected = item.itemKey;
+            _selected = item.itemIndex;
           });
         },
       ),
