@@ -119,7 +119,14 @@ The builder returns context, `chartState` where from you can read details like a
 
 ![](https://user-images.githubusercontent.com/11093480/198998268-698593c3-11d3-4d77-a1a1-6f998c6a64b3.png)
 
-It's possible that you want to draw in the margins of the chart. For this case you can use `Transform.translate` or negative value in `Positioned` that's placed in `Stack`.
+If you do add margins to the chart, your decoration widget will be positioned from start of the chart (not affected by the margins), so you can draw in the margins.
+You can add padding that equals the chart margins which will set you to the start of the first item so calculations including `itemWidth` or `verticalMultiplier` works correctly:
+
+```dart
+    widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplayer) {
+      return Padding(padding: chartState.defaultMargin, child: YourWidget());
+    },
+```
 
 ## Complete example
 
