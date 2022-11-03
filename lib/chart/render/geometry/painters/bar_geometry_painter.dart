@@ -1,11 +1,11 @@
 part of charts_painter;
 
-/// Paint bar value item. This is painter used for [BarValue] and [CandleValue]
+/// Paint bar value item.
 ///
 /// Bar value:
 ///    ┌───────────┐ --> Max value in set or from [ChartData.maxValue]
 ///    │           │
-///    │   ┌───┐   │ --> Bar value
+///    │   ┌───┐   │ --> ChartItem value
 ///    │   │   │   │
 ///    │   │   │   │
 ///    │   │   │   │
@@ -15,18 +15,20 @@ part of charts_painter;
 /// Candle value:
 ///    ┌───────────┐ --> Max value in set or [ChartData.maxValue]
 ///    │           │
-///    │   ┌───┐   │ --> Candle max value
+///    │   ┌───┐   │ --> ChartItem max value
 ///    │   │   │   │
 ///    │   │   │   │
-///    │   └───┘   │ --> Candle min value
+///    │   └───┘   │ --> ChartItem min value
 ///    │           │
 ///    └───────────┘ --> 0 or [ChartData.minValue]
 ///
 class BarGeometryPainter<T> extends GeometryPainter<T> {
   /// Constructor for Bar painter
   BarGeometryPainter(
-      ChartItem<T> item, ChartData<T?> data, ItemOptions itemOptions)
+      ChartItem<T> item, ChartData<T?> data, ItemOptions itemOptions, this.drawDataItem)
       : super(item, data, itemOptions);
+
+  final BarItem drawDataItem;
 
   @override
   void draw(Canvas canvas, Size size, Paint paint) {
@@ -34,9 +36,7 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
     final _verticalMultiplier = size.height / max(1, _maxValue);
     final _minValue = (data.minValue * _verticalMultiplier);
 
-    final _radius = itemOptions is BarItemOptions
-        ? ((itemOptions as BarItemOptions).radius ?? BorderRadius.zero)
-        : BorderRadius.zero;
+    final _radius = drawDataItem.radius ?? BorderRadius.zero;
 
     final _itemWidth = itemWidth(size);
 
@@ -79,11 +79,9 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
       paint,
     );
 
-    final _border = itemOptions is BarItemOptions
-        ? (itemOptions as BarItemOptions).border
-        : null;
+    final _border = drawDataItem.border;
 
-    if (_border != null && _border.style == BorderStyle.solid) {
+    if (_border.style == BorderStyle.solid) {
       final _borderPaint = Paint();
       _borderPaint.style = PaintingStyle.stroke;
       _borderPaint.color = _border.color;
@@ -93,13 +91,16 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
         RRect.fromRectAndCorners(
           Rect.fromPoints(
             Offset(
-              0.0,
-              max(data.minValue, item.min ?? 0.0) * _verticalMultiplier +
+              xStart,
+              _maxValue * _verticalMultiplier -
+                  max(data.minValue, item.min ?? 0.0) * _verticalMultiplier +
                   _minValue,
             ),
             Offset(
-              _itemWidth,
-              _itemMaxValue * _verticalMultiplier + _minValue,
+              xEnd,
+              _maxValue * _verticalMultiplier -
+                  _itemMaxValue * _verticalMultiplier +
+                  _minValue,
             ),
           ),
           bottomLeft:

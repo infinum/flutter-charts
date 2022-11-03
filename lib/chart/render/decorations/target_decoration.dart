@@ -44,6 +44,7 @@ Color _getColorForTarget(Color color, Color? colorOverTarget,
 ///
 /// In order to change the color of item when it didn't meet the target
 /// criteria, you will need to add [getTargetItemColor] to [ItemOptions.colorForValue]
+@Deprecated('You can make this decoration and much more using WidgetDecoration. Check migration guide for more info')
 class TargetLineDecoration extends DecorationPainter {
   /// Constructor for target line decoration
   ///
@@ -83,32 +84,24 @@ class TargetLineDecoration extends DecorationPainter {
   ///
   /// Pass this to [ItemOptions.colorForValue] and chart will update item colors
   /// based on target line
-  ColorForValue getTargetItemColor() =>
-      (Color defaultColor, double? max, [double? min]) => _getColorForTarget(
-          defaultColor,
-          colorOverTarget,
-          isTargetInclusive,
-          target,
-          null,
-          max,
-          min);
+  Color getTargetItemColor(Color defaultColor, ChartItem item) =>
+      _getColorForTarget(defaultColor, colorOverTarget, isTargetInclusive,
+          target, null, item.max, item.min);
 
   @override
   Offset applyPaintTransform(ChartState state, Size size) {
+    final _size =
+        (state.defaultPadding + state.defaultMargin).deflateSize(size);
     final _maxValue = state.data.maxValue - state.data.minValue;
-    final _height = size.height - lineWidth;
-    final scale = (_height -
-            state.defaultMargin.vertical -
-            state.defaultPadding.vertical) /
-        _maxValue;
+    final scale = _size.height / _maxValue;
     final _minValue = state.data.minValue * scale;
 
     return Offset(
-      state.defaultPadding.left + state.defaultMargin.left,
-      _height -
-          (state.defaultMargin.bottom + state.defaultPadding.bottom) -
-          (scale * (target ?? 0.0) + _minValue),
-    );
+        state.defaultMargin.left,
+        (_size.height - (lineWidth / 2)) -
+            scale * (target ?? 0) +
+            _minValue +
+            state.defaultMargin.top);
   }
 
   @override
@@ -219,15 +212,9 @@ class TargetAreaDecoration extends DecorationPainter {
   ///
   /// Pass this to [ItemOptions.colorForValue] and chart will update item colors
   /// based on target area
-  ColorForValue getTargetItemColor() =>
-      (Color defaultColor, double? max, [double? min]) => _getColorForTarget(
-          defaultColor,
-          colorOverTarget,
-          isTargetInclusive,
-          targetMin,
-          targetMax,
-          max,
-          min);
+  Color getTargetItemColor(Color defaultColor, ChartItem item) =>
+      _getColorForTarget(defaultColor, colorOverTarget, isTargetInclusive,
+          targetMin, targetMax, item.max, item.min);
 
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
@@ -239,19 +226,25 @@ class TargetAreaDecoration extends DecorationPainter {
 
     return Rect.fromPoints(
       Offset(0.0, -scale * targetMax + _minValue + areaPadding.vertical),
-      Offset(
-          constraints.maxWidth, -scale * targetMin + _minValue + lineWidth / 2),
+      Offset(constraints.maxWidth, -scale * targetMin + _minValue),
     ).size;
   }
 
   @override
   Offset applyPaintTransform(ChartState state, Size size) {
+    final _size =
+        (state.defaultPadding + state.defaultMargin).deflateSize(size);
     final _maxValue = state.data.maxValue - state.data.minValue;
-    final scale = size.height / _maxValue;
+    final scale = _size.height / _maxValue;
     final _minValue = state.data.minValue * scale;
 
     return Offset(
-        areaPadding.left, size.height - scale * targetMax + _minValue);
+        areaPadding.left,
+        _size.height -
+            scale * targetMax +
+            _minValue +
+            state.defaultMargin.top +
+            state.defaultPadding.top);
   }
 
   @override

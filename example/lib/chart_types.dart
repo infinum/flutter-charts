@@ -6,7 +6,7 @@ import 'charts/bubble_chart_screen.dart';
 import 'charts/candle_chart_screen.dart';
 
 class ChartTypes extends StatelessWidget {
-  const ChartTypes({Key key}) : super(key: key);
+  const ChartTypes({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +20,16 @@ class ChartTypes extends StatelessWidget {
               width: 100.0,
               child: Chart(
                 state: ChartState<void>(
-                  ChartData.fromList(
-                    [1, 3, 4, 2, 7, 6, 2, 5, 4]
-                        .map((e) => BarValue<void>(e.toDouble()))
-                        .toList(),
+                  data: ChartData.fromList(
+                    [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => ChartItem<void>(e.toDouble())).toList(),
                     axisMax: 9,
                   ),
                   itemOptions: BarItemOptions(
+                    barItemBuilder: (_) => BarItem(
+                      radius: BorderRadius.vertical(top: Radius.circular(12.0)),
+                      color: Theme.of(context).accentColor,
+                    ),
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-                    color: Theme.of(context).accentColor,
                     maxBarWidth: 8.0,
                   ),
                   backgroundDecorations: [
@@ -44,8 +44,7 @@ class ChartTypes extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.of(context).push<void>(
-                MaterialPageRoute(builder: (_) => BarChartScreen()));
+            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => BarChartScreen()));
           },
         ),
         Divider(),
@@ -57,14 +56,14 @@ class ChartTypes extends StatelessWidget {
               width: 100.0,
               child: Chart(
                 state: ChartState<void>(
-                  ChartData.fromList(
-                    [1, 3, 4, 2, 7, 6, 2, 5, 4]
-                        .map((e) => BubbleValue<void>(e.toDouble()))
-                        .toList(),
+                  data: ChartData.fromList(
+                    [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => ChartItem<void>(e.toDouble())).toList(),
                     axisMax: 9,
                   ),
                   itemOptions: BubbleItemOptions(
-                    color: Theme.of(context).accentColor,
+                    bubbleItemBuilder: (_) {
+                      return BubbleItem(color: Theme.of(context).accentColor);
+                    },
                     maxBarWidth: 8.0,
                   ),
                   backgroundDecorations: [
@@ -79,8 +78,7 @@ class ChartTypes extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.of(context).push<void>(
-                MaterialPageRoute(builder: (_) => BubbleChartScreen()));
+            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => BubbleChartScreen()));
           },
         ),
         Divider(),
@@ -92,17 +90,18 @@ class ChartTypes extends StatelessWidget {
               width: 100.0,
               child: Chart(
                 state: ChartState<void>(
-                  ChartData.fromList(
-                    [1, 3, 4, 2, 7, 6, 2, 5, 4]
-                        .map((e) =>
-                            CandleValue<void>(e.toDouble() + 6, e.toDouble()))
-                        .toList(),
+                  data: ChartData.fromList(
+                    [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => CandleValue<void>(e.toDouble() + 6, e.toDouble())).toList(),
                     axisMax: 15,
                   ),
                   itemOptions: BarItemOptions(
+                    barItemBuilder: (_) {
+                      return BarItem(
+                        radius: BorderRadius.all(Radius.circular(12.0)),
+                        color: Theme.of(context).accentColor,
+                      );
+                    },
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    radius: BorderRadius.all(Radius.circular(12.0)),
-                    color: Theme.of(context).accentColor,
                   ),
                   backgroundDecorations: [
                     GridDecoration(
@@ -116,8 +115,7 @@ class ChartTypes extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.of(context).push<void>(
-                MaterialPageRoute(builder: (_) => CandleChartScreen()));
+            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => CandleChartScreen()));
           },
         ),
         Divider(),

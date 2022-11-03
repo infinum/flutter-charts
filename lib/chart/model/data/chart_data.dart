@@ -10,7 +10,7 @@ class ChartData<T> {
   /// [valueAxisMaxOver] - How much should chart draw above max value in the chart
   ChartData(
     this._items, {
-    this.dataStrategy = const DefaultDataStrategy(),
+    this.dataStrategy = const DefaultDataStrategy(stackMultipleValues: true),
     this.axisMax,
     this.valueAxisMaxOver,
     this.axisMin,
@@ -43,7 +43,7 @@ class ChartData<T> {
     );
   }
 
-  /// Generate a list of random [BarValue] items for the chart
+  /// Generate a list of random [ChartItem] items for the chart
   factory ChartData.randomBarValues({
     int items = 10,
     double maxValue = 20,
@@ -54,7 +54,7 @@ class ChartData<T> {
       [
         List.generate(
                 items,
-                (index) => BarValue<T>(
+                (index) => ChartItem<T>(
                     (Random().nextDouble() * (maxValue - minValue)) + minValue))
             .toList()
       ],
@@ -64,7 +64,7 @@ class ChartData<T> {
 
   ChartData._lerp(
     this._items, {
-    this.dataStrategy = const DefaultDataStrategy(),
+    this.dataStrategy = const DefaultDataStrategy(stackMultipleValues: true),
     this.axisMax,
     this.axisMin,
     this.valueAxisMaxOver,
@@ -188,7 +188,7 @@ class ChartItemsLerp {
     final _listLength = lerpDouble(a.length, b.length, t) ?? b.length;
 
     /// Empty value for generated list.
-    final _emptyValue = ChartItem<T?>(null, 0.0, 0.0);
+    final _emptyValue = ChartItem<T?>( 0.0, value: null, min: 0.0);
 
     return List<ChartItem<T?>>.generate(_listLength.ceil(), (int index) {
       // If old list and new list have value at [index], then just animate from,

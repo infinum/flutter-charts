@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BubbleChartScreen extends StatefulWidget {
-  BubbleChartScreen({Key key}) : super(key: key);
+  BubbleChartScreen({Key? key}) : super(key: key);
 
   @override
   _BubbleChartScreenState createState() => _BubbleChartScreenState();
@@ -16,10 +16,10 @@ class BubbleChartScreen extends StatefulWidget {
 
 class _BubbleChartScreenState extends State<BubbleChartScreen> {
   List<BubbleValue> _values = <BubbleValue>[];
-  double targetMax;
-  double targetMin;
+  double targetMax = 0;
+  double targetMin = 0;
   bool _showValues = false;
-  int minItems = 6;
+  int minItems = 8;
 
   @override
   void initState() {
@@ -76,12 +76,16 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                   data: _values,
                   height: MediaQuery.of(context).size.height * 0.3,
                   itemOptions: BubbleItemOptions(
-                    color: Theme.of(context).colorScheme.primary,
-                    colorForValue: tad.getTargetItemColor(),
+                    maxBarWidth: 60,
+                    bubbleItemBuilder: (data) {
+                      return BubbleItem(
+                        color: tad.getTargetItemColor(Theme.of(context).colorScheme.primary, data.item)
+                      );
+                    },
                     padding: EdgeInsets.symmetric(
                         horizontal: (1 - (_values.length / 17)) * 8.0),
                   ),
-                  dataToValue: (BubbleValue value) => value.max,
+                  dataToValue: (BubbleValue value) => value.max ?? 0,
                   backgroundDecorations: [
                     GridDecoration(
                       showHorizontalValues: _showValues,
@@ -89,7 +93,7 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                       showVerticalGrid: true,
                       showVerticalValues: _showValues,
                       verticalValuesPadding: EdgeInsets.only(left: 8.0),
-                      verticalAxisStep: 2,
+                      verticalAxisStep: 4,
                       verticalTextAlign: TextAlign.start,
                       gridColor: Theme.of(context)
                           .colorScheme
@@ -97,7 +101,7 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                           .withOpacity(0.2),
                       textStyle: Theme.of(context)
                           .textTheme
-                          .caption
+                          .caption!
                           .copyWith(fontSize: 13.0),
                     ),
                     tad,

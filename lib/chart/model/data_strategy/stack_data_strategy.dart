@@ -15,9 +15,10 @@ part of charts_painter;
 ///   [4, 5, 3]
 /// ]
 class StackDataStrategy extends DataStrategy {
+  const StackDataStrategy() : super(stackMultipleValues: true);
+
   @override
-  List<List<ChartItem<T?>>> formatDataStrategy<T>(
-      List<List<ChartItem<T?>>> items) {
+  List<List<ChartItem<T?>>> formatDataStrategy<T>(List<List<ChartItem<T?>>> items) {
     final _incrementList = <ChartItem<T?>>[];
     return items.reversed
         .map((entry) {

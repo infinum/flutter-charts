@@ -11,73 +11,71 @@ part of charts_painter;
 /// connected directly to the chart but can show important info (Axis, target line...)
 ///
 /// More different decorations can be added by extending [DecorationPainter]
+///
+
 class ChartState<T> {
   /// Chart state constructor
-  ChartState(
-    this.data, {
-    this.itemOptions = const BarItemOptions(),
+  ChartState({
+    required this.data,
+    required this.itemOptions,
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const <DecorationPainter>[],
     this.foregroundDecorations = const <DecorationPainter>[],
-    ChartDataRendererFactory<T?>? dataRenderer,
   })  : assert(data.isNotEmpty, 'No items!'),
         defaultPadding = EdgeInsets.zero,
         defaultMargin = EdgeInsets.zero,
-        dataRenderer = dataRenderer ?? defaultItemRenderer<T>(itemOptions) {
+        dataRenderer = (itemOptions is WidgetItemOptions
+            ? _widgetItemRenderer(itemOptions)
+            : _defaultItemRenderer<T>(itemOptions)) {
     /// Set default padding and margin, decorations padding and margins will be added to this value
     _setUpDecorations();
   }
 
   /// Create line chart with foreground sparkline decoration and background grid decoration
+  @Deprecated('Use ChartState(foregroundDecorations: [SparkLineDecoration()])')
   factory ChartState.line(
     ChartData<T> data, {
-    ItemOptions itemOptions = const BubbleItemOptions(maxBarWidth: 2.0),
+    required BubbleItemOptions itemOptions,
     ChartBehaviour behaviour = const ChartBehaviour(),
     List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
     List<DecorationPainter> foregroundDecorations = const <DecorationPainter>[],
   }) {
     return ChartState(
-      data,
+      data: data,
       itemOptions: itemOptions,
       behaviour: behaviour,
-      backgroundDecorations: backgroundDecorations.isEmpty
-          ? [GridDecoration()]
-          : backgroundDecorations,
-      foregroundDecorations: foregroundDecorations.isEmpty
-          ? [SparkLineDecoration()]
-          : foregroundDecorations,
+      backgroundDecorations: backgroundDecorations.isEmpty ? [GridDecoration()] : backgroundDecorations,
+      foregroundDecorations: foregroundDecorations.isEmpty ? [SparkLineDecoration()] : foregroundDecorations,
     );
   }
 
   /// Create bar chart with background grid decoration
+  @Deprecated('Use ChartState(itemOptions: BarItemOptions())')
   factory ChartState.bar(
     ChartData<T> data, {
-    ItemOptions itemOptions =
-        const BarItemOptions(padding: EdgeInsets.symmetric(horizontal: 4.0)),
+    required BarItemOptions itemOptions,
     ChartBehaviour behaviour = const ChartBehaviour(),
     List<DecorationPainter> backgroundDecorations = const <DecorationPainter>[],
     List<DecorationPainter> foregroundDecorations = const <DecorationPainter>[],
   }) {
     return ChartState(
-      data,
+      data: data,
       itemOptions: itemOptions,
       behaviour: behaviour,
-      backgroundDecorations: backgroundDecorations.isEmpty
-          ? [GridDecoration()]
-          : backgroundDecorations,
+      backgroundDecorations: backgroundDecorations.isEmpty ? [GridDecoration()] : backgroundDecorations,
       foregroundDecorations: foregroundDecorations,
     );
   }
 
   ChartState._lerp(
     this.data, {
-    this.itemOptions = const BarItemOptions(),
     this.behaviour = const ChartBehaviour(),
     this.backgroundDecorations = const [],
     this.foregroundDecorations = const [],
     required this.dataRenderer,
     required this.defaultMargin,
     required this.defaultPadding,
+    required this.itemOptions,
   }) {
     _initDecorations();
   }
@@ -86,16 +84,17 @@ class ChartState<T> {
   /// [ChartData] data that chart will show
   final ChartData<T> data;
 
+  /// How is data rendered on the screen, by default it uses [ChartLinearDataRenderer]
   final ChartDataRendererFactory<T?> dataRenderer;
 
   // Geometry layer
-  /// [ItemOptions] define how each item is painted
+  /// [ItemOptions] define how to draw that data points into items on chart.
+  /// Subclasses you can use: [BarItemOptions] for bar-like items, [BubbleItemOptions] for bubble and dot items,
+  /// [WidgetItemOptions] for any kind widget that you provide.
   final ItemOptions itemOptions;
 
   /// [ChartBehaviour] define how chart behaves and how it should react
   final ChartBehaviour behaviour;
-
-  /// ------
 
   // Theme layer
   /// Decorations for chart background, the go below the items
@@ -104,17 +103,20 @@ class ChartState<T> {
   /// Decorations for chart foreground, they are drawn last, and the go above items
   final List<DecorationPainter> foregroundDecorations;
 
-  /// Margin of chart drawing area where items are drawn. This is so decorations
-  /// can be placed outside of the chart drawing area without actually scaling the chart.
+  /// Margin of chart drawing area where items are drawn.
+  ///
+  /// Whole chart and all items will move with margin
   EdgeInsets defaultMargin;
 
   /// Padding is used for decorations that want other decorations to be drawn on them.
-  /// Unlike [defaultMargin] decorations can draw inside the padding area.
+  /// Unlike [defaultMargin] some decorations don't need to respect padding.
+  /// Sometimes decorations paint over this padding.
+  ///
+  /// Whole chart and all items will move with margin
   EdgeInsets defaultPadding;
 
   /// Get all decorations. This will return list of [backgroundDecorations] and [foregroundDecorations] as one list.
-  List<DecorationPainter> get _allDecorations =>
-      [...foregroundDecorations, ...backgroundDecorations];
+  List<DecorationPainter> get _allDecorations => [...foregroundDecorations, ...backgroundDecorations];
 
   /// Set up decorations and calculate chart's [defaultPadding] and [defaultMargin]
   /// Decorations are a bit special, calling init on them with current state
@@ -135,28 +137,22 @@ class ChartState<T> {
 
   /// Init all decorations, pass current chart state so each decoration can access data it requires
   /// to set up it's padding and margin values
-  void _initDecorations() =>
-      _allDecorations.forEach((decoration) => decoration.initDecoration(this));
+  void _initDecorations() => _allDecorations.forEach((decoration) => decoration.initDecoration(this));
 
   /// Get total padding needed by all decorations
-  void _getDecorationsMargin() => _allDecorations
-      .forEach((element) => defaultMargin += element.marginNeeded());
+  void _getDecorationsMargin() => _allDecorations.forEach((element) => defaultMargin += element.marginNeeded());
 
   /// Get total margin needed by all decorations
-  void _getDecorationsPadding() => _allDecorations
-      .forEach((element) => defaultPadding += element.paddingNeeded());
+  void _getDecorationsPadding() => _allDecorations.forEach((element) => defaultPadding += element.paddingNeeded());
 
   /// For later in case charts will have to animate between states.
   static ChartState<T?> lerp<T>(ChartState<T?> a, ChartState<T?> b, double t) {
     return ChartState<T?>._lerp(
       ChartData.lerp(a.data, b.data, t),
       behaviour: ChartBehaviour.lerp(a.behaviour, b.behaviour, t),
-      itemOptions: a.itemOptions.animateTo(b.itemOptions, t),
       // Find background matches, if found, then animate to them, else just show them.
-      backgroundDecorations:
-          b.backgroundDecorations.map<DecorationPainter>((e) {
-        final _match = a.backgroundDecorations
-            .firstWhereOrNull((element) => element.isSameType(e));
+      backgroundDecorations: b.backgroundDecorations.map<DecorationPainter>((e) {
+        final _match = a.backgroundDecorations.firstWhereOrNull((element) => element.isSameType(e));
         if (_match != null) {
           return _match.animateTo(e, t);
         }
@@ -165,8 +161,7 @@ class ChartState<T> {
       }).toList(),
       // Find foreground matches, if found, then animate to them, else just show them.
       foregroundDecorations: b.foregroundDecorations.map((e) {
-        final _match = a.foregroundDecorations
-            .firstWhereOrNull((element) => element.isSameType(e));
+        final _match = a.foregroundDecorations.firstWhereOrNull((element) => element.isSameType(e));
         if (_match != null) {
           return _match.animateTo(e, t);
         }
@@ -174,24 +169,61 @@ class ChartState<T> {
         return e;
       }).toList(),
 
-      defaultMargin: EdgeInsets.lerp(a.defaultMargin, b.defaultMargin, t) ??
-          EdgeInsets.zero,
-      defaultPadding: EdgeInsets.lerp(a.defaultPadding, b.defaultPadding, t) ??
-          EdgeInsets.zero,
+      defaultMargin: EdgeInsets.lerp(a.defaultMargin, b.defaultMargin, t) ?? EdgeInsets.zero,
+      defaultPadding: EdgeInsets.lerp(a.defaultPadding, b.defaultPadding, t) ?? EdgeInsets.zero,
       dataRenderer: t > 0.5 ? b.dataRenderer : a.dataRenderer,
+      itemOptions: a.itemOptions.animateTo(b.itemOptions, t),
     );
   }
 
-  static ChartDataRendererFactory<T?> defaultItemRenderer<T>(
-      ItemOptions itemOptions) {
-    return (data) => ChartLinearDataRenderer<T?>(
-        data,
-        data.items
+  /// Default item renderer will use [LeafChartItemRenderer] to show items. Items are sized and customized with
+  /// [ItemOptions].
+  ///
+  /// If you need more customization of the individual chart items see [_widgetItemRenderer]
+  static ChartDataRendererFactory<T?> _defaultItemRenderer<T>(ItemOptions itemOptions) {
+    return (chartState) {
+      return ChartLinearDataRenderer<T?>(
+          chartState,
+          chartState.data.items
+              .mapIndexed(
+                (listIndex, items) => items
+                    .mapIndexed((itemIndex, item) => LeafChartItemRenderer(
+                          item,
+                          chartState,
+                          itemOptions,
+                          itemIndex: itemIndex,
+                          listIndex: listIndex,
+                          drawDataItem:
+                              itemOptions.itemBuilder(ItemBuilderData<T?>(item, itemIndex, listIndex)) as DrawDataItem,
+                        ))
+                    .toList(),
+              )
+              .expand((element) => element)
+              .toList());
+    };
+  }
+
+  /// It can render chart items as widgets, and it only accepts [WidgetItemOptions] since it needs the
+  /// [WidgetItemOptions.widgetItemBuilder] to build the chart item widgets.
+  static ChartDataRendererFactory<T?> _widgetItemRenderer<T>(WidgetItemOptions itemOptions) {
+    return (chartState) => ChartLinearDataRenderer<T>(
+        chartState,
+        chartState.data.items
             .mapIndexed(
-              (key, items) => items
-                  .map((e) => LeafChartItemRenderer(e, data, itemOptions,
-                      arrayKey: key))
-                  .toList(),
+              (listIndex, items) {
+                return items
+                    .mapIndexed(
+                      (itemIndex, e) => ChildChartItemRenderer<T?>(
+                        e,
+                        chartState,
+                        itemOptions,
+                        itemIndex: itemIndex,
+                        listIndex: listIndex,
+                        child: itemOptions.widgetItemBuilder(ItemBuilderData<T?>(e, itemIndex, listIndex)),
+                      ),
+                    )
+                    .toList();
+              },
             )
             .expand((element) => element)
             .toList());

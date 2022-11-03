@@ -2,9 +2,9 @@ part of charts_painter;
 
 /// Default `ChartItem`
 class ChartItem<T> {
-  /// Protected constructor for animations
-  @protected
-  ChartItem(this.value, this.min, this.max);
+
+  /// Constructor for regular items
+  ChartItem(this.max, {this.min, this.value});
 
   /// Minimum chart item value
   final double? min;
@@ -21,9 +21,9 @@ class ChartItem<T> {
   /// Animate to [endValue] with factor `t`
   ChartItem<T?> animateTo(ChartItem<T?> endValue, double t) {
     return ChartItem<T?>(
-      endValue.value,
-      lerpDouble(min, endValue.min, t),
       lerpDouble(max, endValue.max, t),
+      value: endValue.value,
+      min: lerpDouble(min, endValue.min, t),
     );
   }
 
@@ -33,7 +33,7 @@ class ChartItem<T> {
   }
 
   @override
-  int get hashCode => hashValues(min, max) ^ value.hashCode;
+  int get hashCode => Object.hash(min, max) ^ value.hashCode;
 
   @override
   bool operator ==(Object other) {
@@ -49,9 +49,9 @@ class ChartItem<T> {
   ChartItem<T?> operator +(Object other) {
     if (other is ChartItem<T?>) {
       return ChartItem<T?>(
-        other.value,
-        (other.min ?? 0.0) + (min ?? 0.0),
         (other.max ?? 0.0) + (max ?? 0.0),
+        value: other.value,
+        min: (other.min ?? 0.0) + (min ?? 0.0),
       );
     }
 
@@ -62,15 +62,15 @@ class ChartItem<T> {
   ChartItem<T?> operator *(Object? other) {
     if (other is ChartItem<T?>) {
       return ChartItem<T?>(
-        other.value,
-        (other.min ?? 0.0) * (min ?? 0.0),
         (other.max ?? 0.0) * (max ?? 0.0),
+        value: other.value,
+        min: (other.min ?? 0.0) * (min ?? 0.0),
       );
     } else if (other is num) {
       return ChartItem<T>(
-        value,
-        other.toDouble() * (min ?? 0.0),
         other.toDouble() * (max ?? 0.0),
+        value: value,
+        min: other.toDouble() * (min ?? 0.0),
       );
     }
 

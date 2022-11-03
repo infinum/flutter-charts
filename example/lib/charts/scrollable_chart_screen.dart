@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ScrollableChartScreen extends StatefulWidget {
-  ScrollableChartScreen({Key key}) : super(key: key);
+  ScrollableChartScreen({Key? key}) : super(key: key);
 
   @override
   _ScrollableChartScreenState createState() => _ScrollableChartScreenState();
@@ -16,14 +16,14 @@ class ScrollableChartScreen extends StatefulWidget {
 
 class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
   List<double> _values = <double>[];
-  double targetMax;
+  double targetMax = 0;
   bool _showValues = false;
   bool _smoothPoints = false;
   bool _showBars = true;
   bool _isScrollable = true;
   bool _fixedAxis = false;
   int minItems = 30;
-  int _selected;
+  int? _selected;
 
   final _controller = ScrollController();
 
@@ -70,28 +70,30 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
     );
 
     final _chartState = ChartState(
-      ChartData.fromList(
+      data: ChartData.fromList(
         _values.map((e) => BarValue<void>(e)).toList(),
         axisMax: 20,
       ),
       itemOptions: BarItemOptions(
         padding: EdgeInsets.symmetric(horizontal: _isScrollable ? 12.0 : 2.0),
         minBarWidth: _isScrollable ? 36.0 : 4.0,
-        // isTargetInclusive: true,
-        color: Theme.of(context)
-            .colorScheme
-            .primary
-            .withOpacity(_showBars ? 1.0 : 0.0),
-        radius: const BorderRadius.vertical(
-          top: Radius.circular(24.0),
-        ),
-        colorForValue: targetArea.getTargetItemColor(),
+        barItemBuilder: (data) {
+          return BarItem(
+            color: targetArea.getTargetItemColor(Theme.of(context)
+                .colorScheme
+                .primary
+                .withOpacity(_showBars ? 1.0 : 0.0), data.item),
+            radius: const BorderRadius.vertical(
+              top: Radius.circular(24.0),
+            ),
+          );
+        },
       ),
       behaviour: ChartBehaviour(
         isScrollable: _isScrollable,
         onItemClicked: (item) {
           setState(() {
-            _selected = item;
+            _selected = item.itemIndex;
           });
         },
       ),
@@ -111,7 +113,6 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
               Theme.of(context).colorScheme.primaryVariant.withOpacity(0.8),
         ),
         GridDecoration(
-          endWithChart: false,
           showVerticalGrid: true,
           showHorizontalValues: _fixedAxis ? false : _showValues,
           showVerticalValues: _fixedAxis ? true : _showValues,
@@ -134,7 +135,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
       foregroundDecorations: [
         ValueDecoration(
           alignment: _showBars ? Alignment.bottomCenter : Alignment(0.0, -1.0),
-          textStyle: Theme.of(context).textTheme.button.copyWith(
+          textStyle: Theme.of(context).textTheme.button!.copyWith(
               color: (_showBars
                       ? Theme.of(context).colorScheme.onPrimary
                       : Theme.of(context).colorScheme.primary)
@@ -155,6 +156,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
           _selected,
           animate: true,
           selectedColor: Theme.of(context).colorScheme.secondary,
+          topMargin: 40.0,
           child: Padding(
             padding: const EdgeInsets.only(bottom: 40.0),
             child: Container(
@@ -165,7 +167,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                 shape: BoxShape.circle,
               ),
               child: Text(
-                  '${_selected != null ? _values[_selected].toStringAsPrecision(2) : '...'}'),
+                  '${_selected != null ? _values[_selected!].toStringAsPrecision(2) : '...'}'),
             ),
           ),
           backgroundColor: Theme.of(context)
@@ -217,19 +219,22 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                           1.0
                         ]),
                   ),
-                  width: _fixedAxis ? 14.0 : 0.0,
+                  width: _fixedAxis ? 34.0 : 0.0,
                   height: MediaQuery.of(context).size.height * 0.4,
                   child: DecorationsRenderer(
                     _fixedAxis
                         ? [
                             HorizontalAxisDecoration(
+                              asFixedDecoration: true,
                               lineWidth: 1.0,
                               axisStep: 1,
                               showValues: true,
                               endWithChart: false,
+                              axisValue: (value) => '$value E',
                               legendFontStyle:
                                   Theme.of(context).textTheme.caption,
                               valuesAlign: TextAlign.center,
+                              valuesPadding: const EdgeInsets.only(right: 8.0),
                               lineColor: Theme.of(context)
                                   .colorScheme
                                   .primaryVariant

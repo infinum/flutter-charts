@@ -41,7 +41,7 @@ void main() {
         [2, 4, 6].map((e) => BarValue<void>(e.toDouble())).toList(),
         [8, 10, 12].map((e) => BarValue<void>(e.toDouble())).toList()
       ],
-      dataStrategy: DefaultDataStrategy(),
+      dataStrategy: DefaultDataStrategy(stackMultipleValues: true),
     );
 
     expect(_data.maxValue, 12);

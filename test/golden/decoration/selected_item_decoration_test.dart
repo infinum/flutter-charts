@@ -81,10 +81,10 @@ void main() {
         ]),
       )
       ..addScenario(
-        'Can be complex widget',
+        'Can be complex widget with margin',
         Chart<void>(
           state: ChartState(
-              ChartData(
+              data: ChartData(
                 [
                   [5, 6, 8, 4, 3, 5, 2, 6, 7]
                       .map((e) => BarValue<void>(e.toDouble()))
@@ -99,7 +99,7 @@ void main() {
                 valueAxisMaxOver: 2,
               ),
               itemOptions: BarItemOptions(
-                color: Colors.transparent,
+                barItemBuilder: (_) => BarItem(color: Colors.transparent),
               ),
               backgroundDecorations: [
                 GridDecoration(
@@ -113,18 +113,19 @@ void main() {
                   lineWidth: 3.0,
                 ),
                 SparkLineDecoration(
-                  lineArrayIndex: 1,
+                  listIndex: 1,
                   stretchLine: true,
                   lineColor: Colors.yellow,
                   lineWidth: 3.0,
                 ),
                 SparkLineDecoration(
-                  lineArrayIndex: 2,
+                  listIndex: 2,
                   stretchLine: true,
                   lineColor: Colors.green,
                   lineWidth: 3.0,
                 ),
                 SelectedItemDecoration(2,
+                    topMargin: 90.0,
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 40.0),
                       child: Container(

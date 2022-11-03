@@ -1,6 +1,6 @@
 name: charts_painter
 description: Highly customizable and extendable charts library for flutter made with custom painters
-version: 2.0.0+2
+version: 3.0.0
 homepage: https://github.com/infinum/flutter-charts
 repository: https://github.com/infinum/flutter-charts
 
@@ -11,14 +11,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  collection: ^1.15.0
+  equatable: ^2.0.5
+  collection: ^1.16.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   pedantic: ^1.11.1
   golden_toolkit: ^0.13.0
+  lints: ^2.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

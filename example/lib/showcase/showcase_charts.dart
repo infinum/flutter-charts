@@ -1,10 +1,9 @@
 import 'package:charts_painter/chart.dart';
-import 'package:example/charts/multi_bar_chart_screen.dart';
 import 'package:example/charts/showcase_chart_screen.dart';
 import 'package:flutter/material.dart';
 
 class ShowcaseCharts extends StatelessWidget {
-  const ShowcaseCharts({Key key}) : super(key: key);
+  const ShowcaseCharts({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +17,7 @@ class ShowcaseCharts extends StatelessWidget {
               width: 100.0,
               child: Chart<bool>(
                 state: ChartState(
-                  ChartData(
+                  data: ChartData(
                     [
                       [
                         BubbleValue(10),
@@ -38,13 +37,17 @@ class ShowcaseCharts extends StatelessWidget {
                       ],
                     ],
                     axisMax: 35,
+                    dataStrategy: DefaultDataStrategy(stackMultipleValues: true),
                   ),
                   itemOptions: BubbleItemOptions(
                     maxBarWidth: 2.0,
-                    colorForKey: (item, key) {
-                      return [Color(0xFF5B6ACF), Color(0xFFB6CADD)][key];
+                    bubbleItemBuilder: (data) {
+                      return BubbleItem(
+                          color: [
+                        Color(0xFF5B6ACF),
+                        Color(0xFFB6CADD)
+                      ][data.listIndex]);
                     },
-                    multiItemStack: true,
                   ),
                   backgroundDecorations: [
                     GridDecoration(
@@ -65,7 +68,7 @@ class ShowcaseCharts extends StatelessWidget {
                       endWithChart: true,
                     ),
                     SparkLineDecoration(
-                      lineArrayIndex: 1,
+                      listIndex: 1,
                       lineColor: Color(0xFFB6CADD),
                       lineWidth: 1.0,
                     ),

@@ -4,6 +4,7 @@ part of charts_painter;
 /// [TargetLineDecoration] or at max value of [TargetAreaDecoration].
 ///
 /// Text will be rotated 90 CCW
+@Deprecated('You can make this decoration and much more using WidgetDecoration. Check migration guide for more info')
 class TargetLineLegendDecoration extends DecorationPainter {
   /// Target line legend constructor
   ///

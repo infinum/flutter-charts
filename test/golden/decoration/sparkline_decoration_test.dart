@@ -136,7 +136,7 @@ void main() {
         'Multiline',
         Chart<void>(
           state: ChartState(
-              ChartData(
+              data: ChartData(
                 [
                   [5, 6, 8, 4, 3, 5, 2, 6, 7]
                       .map((e) => BarValue<void>(e.toDouble()))
@@ -148,7 +148,7 @@ void main() {
                 valueAxisMaxOver: 2,
               ),
               itemOptions: BarItemOptions(
-                color: Colors.transparent,
+                barItemBuilder: (_) => BarItem(color: Colors.transparent),
               ),
               foregroundDecorations: [
                 SparkLineDecoration(
@@ -158,7 +158,7 @@ void main() {
                   lineWidth: 3.0,
                 ),
                 SparkLineDecoration(
-                  lineArrayIndex: 1,
+                  listIndex: 1,
                   stretchLine: true,
                   lineColor: Colors.red.withOpacity(0.2),
                   smoothPoints: true,
