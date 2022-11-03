@@ -60,6 +60,11 @@ ChartData([
   ],);
 ```
 
+Chart Item requires `max` height parameter, but also has optional `min` and `T value` which can be any kind of value
+that you can attach to your items, if you have need for it.
+
+![](https://user-images.githubusercontent.com/11093480/199758353-998db45a-6184-430a-9818-b3f2e5f50b7c.png)
+
 When displaying multiple data lines, you might be interested in `dataStrategy` parameter. It controls how these multiple lines are drawn. For example, if you want to stack bars, one on top of another, you can use `StackDataStrategy`.
 
 Parameter `valueAxisMaxOver` will add that value to currently the highest value that functions like a some sort of top padding.
@@ -93,12 +98,12 @@ The `data` that’s passed into the builder can be used to build different kind 
 
 Besides builder, the other useful parameters in item options are `maxBarWidth` , `minBarWidth` , `startPosition` and `padding`.
 
-If you want to listen to `item taps` you can do it by setting `ChartBehaviour(onItemClicked)` - you can read more about ChartBehaviour below.
+If you want to listen to **item taps** you can do it by setting `ChartBehaviour(onItemClicked)` - you can read more about ChartBehaviour below.
 In case of a WidgetItemOptions, you could also provide GestureDetectors and Buttons and they will all work.
 
 ## Decorations
 
-Decorations enhance and complete the look of the chart. Everything that’s drawn on a chart, and it’s not a chart item is considered a decoration. So that means a lot of the chart will be a decoration. Just like with the items, you can use ********************************WidgetDecoration******************************** to draw any kind of the decoration, but the most common cases for decoration are already made on a canvas and ready to be used:
+Decorations enhance and complete the look of the chart. Everything that’s drawn on a chart, and it’s not a chart item is considered a decoration. So that means a lot of the chart will be a decoration. Just like with the items, you can use **WidgetDecoration** to draw any kind of the decoration, but the most common cases for decoration are already made on a canvas and ready to be used:
 
 |   |   |   |
 :------: | :------: | :------: 
