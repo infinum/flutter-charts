@@ -144,10 +144,8 @@ class _RenderLeafChartItem<T> extends RenderBox {
 
   @override
   bool hitTest(BoxHitTestResult result, {required Offset position}) {
-    final _onClick = _state.behaviour.onItemClicked;
-
     // Leaf render objects should only be hit tested if they have a click handler, else return false.
-    if (_onClick == null) {
+    if (_state.behaviour.onItemClicked == null) {
       return false;
     }
 
@@ -168,11 +166,17 @@ class _RenderLeafChartItem<T> extends RenderBox {
     if (Size(_stackWidth, size.height).contains(_translatedPosition)) {
       // Add hit test entry and call onClick callback
       result.add(BoxHitTestEntry(this, position));
-      _onClick(ItemBuilderData<T>(item, itemIndex, listIndex));
       return true;
     }
 
     return false;
+  }
+
+  @override
+  void handleEvent(PointerEvent event, BoxHitTestEntry entry) {
+    if (event is PointerDownEvent) {
+      _state.behaviour.onItemClicked?.call(ItemBuilderData<T>(item, itemIndex, listIndex));
+    }
   }
 
   @override

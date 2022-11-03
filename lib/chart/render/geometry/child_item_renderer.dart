@@ -130,17 +130,14 @@ class _RenderChildChartItem<T> extends RenderShiftedBox {
 
   @override
   bool hitTest(BoxHitTestResult result, {required Offset position}) {
-    final _onClick = _state.behaviour.onItemClicked;
+    return child?.hitTest(result, position: position) ?? false;
+  }
 
-    // Hit test will be added to [result] in [child.hitTest] if it is not null.
-    final _hitTest = child?.hitTest(result, position: position) ?? false;
-
-    if (_hitTest) {
-      // If we also have click handler in [ChartBehaviour] call it.
-      _onClick?.call(ItemBuilderData<T>(_item, itemIndex, listIndex));
+  @override
+  void handleEvent(PointerEvent event, BoxHitTestEntry entry) {
+    if (event is PointerDownEvent) {
+      _state.behaviour.onItemClicked?.call(ItemBuilderData<T>(item, itemIndex, listIndex));
     }
-
-    return _hitTest;
   }
 
   @override
