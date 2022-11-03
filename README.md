@@ -26,11 +26,12 @@ The Widget you can use is `Chart` or `AnimatedChart` if you want to show animati
 
 ## Chart State
 
-`ChartState` describes how the chart should look. The chart drawing is divided into three sections, so the `ChartState` has these parameters:
+`ChartState` describes how the chart should look. The chart drawing is divided into sections, so the `ChartState` has these parameters:
 
 - **Data**: What is the data that needs to be shown
 - **Item options**: How to draw that data points into items on chart
 - **Decorations**: Various additional objects that enhance and completes look of the chart. They are divided into backgroundDecorations (behind items) or in foregroundDecorations (in front of items).
+- **Chart behaviour**: Not used for drawing, but contain scrollable and item click logic
 
 Now we will explain each of these:
 
@@ -92,6 +93,9 @@ The `data` that’s passed into the builder can be used to build different kind 
 
 Besides builder, the other useful parameters in item options are `maxBarWidth` , `minBarWidth` , `startPosition` and `padding`.
 
+If you want to listen to `item taps` you can do it by setting `ChartBehaviour(onItemClicked)` - you can read more about ChartBehaviour below.
+In case of a WidgetItemOptions, you could also provide GestureDetectors and Buttons and they will all work.
+
 ## Decorations
 
 Decorations enhance and complete the look of the chart. Everything that’s drawn on a chart, and it’s not a chart item is considered a decoration. So that means a lot of the chart will be a decoration. Just like with the items, you can use ********************************WidgetDecoration******************************** to draw any kind of the decoration, but the most common cases for decoration are already made on a canvas and ready to be used:
@@ -127,6 +131,14 @@ You can add padding that equals the chart margins which will set you to the star
       return Padding(padding: chartState.defaultMargin, child: YourWidget());
     },
 ```
+
+## Chart behaviour
+
+Chart behaviour has just two parameters:
+
+- `isScrollable` - will render a chart that can support scrolling. You still need to wrap it with SingleChildScrollView.
+- `onItemClicked` - when set the tap events on items are registered and will invoke this method.
+If you're using WidgetItemOptions, you could set a gesture detector there, but this works with both BarItemOptions, BubbleItemOptions and WidgetItemOptions.
 
 ## Complete example
 
@@ -176,7 +188,7 @@ There’s a lot more things possible with this package, but to keep this README 
 
 ### Scrollable chart
 
-Charts can also be scrollable, to use scroll first you have to wrap chart your chart in `SingleChildScrollView` widget. Then in `ChartBehaviuor` make sure you set `isScrollable` to true.
+Charts can also be scrollable, to use scroll first you have to wrap chart your chart in `SingleChildScrollView` widget. Then in `ChartBehaviour` make sure you set `isScrollable` to true.
 
 ![https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/scrollable_chart.gif](https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/scrollable_chart.gif)
 

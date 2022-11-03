@@ -8,8 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final decorationWidgetPresenter = ChangeNotifierProvider.family<DecorationWidgetPresenter, int>(
-    (ref, a) => DecorationWidgetPresenter(a, ref));
+final decorationWidgetPresenter =
+    ChangeNotifierProvider.family<DecorationWidgetPresenter, int>((ref, a) => DecorationWidgetPresenter(a, ref));
 
 class DecorationWidgetPresenter extends ChangeNotifier implements DecorationBuilder {
   DecorationWidgetPresenter(this.index, Ref ref);
@@ -50,7 +50,7 @@ class DecorationWidgetPresenter extends ChangeNotifier implements DecorationBuil
                 ),
                 Positioned.fill(
                   top: null,
-                  left: -40,
+                  left: 0,
                   bottom: 2 * verticalMultiplier,
                   child: Container(color: Colors.blue, width: double.infinity, height: 2),
                 ),
@@ -82,7 +82,36 @@ class DecorationWidgetPresenter extends ChangeNotifier implements DecorationBuil
               height: double.infinity,
             );
           },
-          margin: EdgeInsets.all(3));
+          margin: const EdgeInsets.all(3));
+    } else if (type == 4) {
+      return WidgetDecoration(widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
+        return Padding(
+          padding: EdgeInsets.only(top: 5 * verticalMultiplier),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Material(
+              color: Colors.blue.withOpacity(0.1),
+              child: InkWell(
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text('Thanks for clicking'),
+                    duration: kThemeAnimationDuration,
+                  ));
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blue, width: 2),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: const Center(child: Text('Click me')),
+                  width: double.infinity,
+                  height: verticalMultiplier * 2,
+                ),
+              ),
+            ),
+          ),
+        );
+      });
     } else {
       throw 'Unknown type $type';
     }

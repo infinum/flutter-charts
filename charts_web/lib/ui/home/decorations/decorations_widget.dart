@@ -42,6 +42,10 @@ class DecorationsWidget extends HookConsumerWidget {
                 onPressed: () => _presenter.updateType(3),
                 child: Text('Border'),
               ),
+              TextButton(
+                onPressed: () => _presenter.updateType(4),
+                child: Text('Clickable widget'),
+              ),
             ],
           ),
         ],
