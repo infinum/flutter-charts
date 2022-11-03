@@ -88,7 +88,9 @@ class ChartState<T> {
   final ChartDataRendererFactory<T?> dataRenderer;
 
   // Geometry layer
-  // Todo: add comment
+  /// [ItemOptions] define how to draw that data points into items on chart.
+  /// Subclasses you can use: [BarItemOptions] for bar-like items, [BubbleItemOptions] for bubble and dot items,
+  /// [WidgetItemOptions] for any kind widget that you provide.
   final ItemOptions itemOptions;
 
   /// [ChartBehaviour] define how chart behaves and how it should react
