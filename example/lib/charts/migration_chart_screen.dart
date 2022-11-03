@@ -52,7 +52,7 @@ class MigrationChartScreen extends StatelessWidget {
                               ),
                               Positioned.fill(
                                 top: null,
-                                left: -40,
+                                left: 0,
                                 bottom: 2 * verticalMultiplier,
                                 child: Container(color: Colors.red, width: double.infinity, height: 2),
                               ),
