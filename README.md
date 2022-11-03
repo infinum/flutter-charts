@@ -89,7 +89,7 @@ barItemBuilder: (data) {
   },
 ```
 
-The `data` that’s passed into the builder can be used to build different kind of item based on the item value (`data.item.value`), his index in data (`data.itemKey`) or based on which data list it belongs to (`data.listKey`).
+The `data` that’s passed into the builder can be used to build different kind of item based on the item value (`data.item.value`), his index in data (`data.itemIndex`) or based on which data list it belongs to (`data.listIndex`).
 
 Besides builder, the other useful parameters in item options are `maxBarWidth` , `minBarWidth` , `startPosition` and `padding`.
 
@@ -172,7 +172,7 @@ Chart(
         ),
         itemOptions: BarItemOptions(barItemBuilder: (itemBuilderData) {
           // Setting the different color based if the item is from first or second list
-          return BarItem(color: itemBuilderData.listKey == 0 ? Colors.red : Colors.blue);
+          return BarItem(color: itemBuilderData.listIndex == 0 ? Colors.red : Colors.blue);
         }),
         backgroundDecorations: [
           HorizontalDecoration(axisStep: 2, showValues: true),

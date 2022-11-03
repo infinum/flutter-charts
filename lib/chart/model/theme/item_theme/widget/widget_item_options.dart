@@ -17,14 +17,14 @@ typedef WidgetItemBuilder<T> = Widget Function(ItemBuilderData<T>);
 /// To show basic chart you can just use:
 /// ```dart
 /// itemOptions: WidgetItemOptions(
-///   chartItemBuilder: (item, itemKey, listKey) => Container(color: Colors.red),
+///   chartItemBuilder: (data) => Container(color: Colors.red),
 /// ),
 /// ```
 ///
 /// You can replace your ValueDecoration with [WidgetItemOptions] like this:
 /// ```dart
 /// itemOptions: WidgetItemOptions(
-///  chartItemBuilder: (item, itemKey, listKey) => Container(
+///  chartItemBuilder: (data) => Container(
 ///   color: Colors.red,
 ///   child: Center(
 ///     child: Text(

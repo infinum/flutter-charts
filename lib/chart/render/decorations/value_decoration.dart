@@ -65,7 +65,7 @@ class ValueDecoration extends DecorationPainter {
   void initDecoration(ChartState state) {
     super.initDecoration(state);
     assert(
-        state.data.stackSize > listIndex, 'Value key is not in the list!\nCheck the `valueKey` you are passing.');
+        state.data.stackSize > listIndex, 'List index is not in the list!\nCheck the `listIndex` you are passing.');
   }
 
   void _paintText(Canvas canvas, Size size, ChartItem item, double width, double verticalMultiplier, double minValue) {

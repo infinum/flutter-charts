@@ -61,7 +61,7 @@ class SelectedItemDecoration extends DecorationPainter {
   void initDecoration(ChartState state) {
     super.initDecoration(state);
     assert(state.data.stackSize > selectedListIndex,
-        'Selected key is not in the list!\nCheck the `selectedKey` you are passing.');
+        'Selected list index is not in the list!\nCheck the `selectedListIndex` you are passing.');
   }
 
   @override

@@ -187,14 +187,14 @@ class ChartState<T> {
           chartState.data.items
               .mapIndexed(
                 (listIndex, items) => items
-                    .mapIndexed((itemKey, item) => LeafChartItemRenderer(
+                    .mapIndexed((itemIndex, item) => LeafChartItemRenderer(
                           item,
                           chartState,
                           itemOptions,
-                          itemIndex: itemKey,
+                          itemIndex: itemIndex,
                           listIndex: listIndex,
                           drawDataItem:
-                              itemOptions.itemBuilder(ItemBuilderData<T?>(item, itemKey, listIndex)) as DrawDataItem,
+                              itemOptions.itemBuilder(ItemBuilderData<T?>(item, itemIndex, listIndex)) as DrawDataItem,
                         ))
                     .toList(),
               )
@@ -213,13 +213,13 @@ class ChartState<T> {
               (listIndex, items) {
                 return items
                     .mapIndexed(
-                      (itemKey, e) => ChildChartItemRenderer<T?>(
+                      (itemIndex, e) => ChildChartItemRenderer<T?>(
                         e,
                         chartState,
                         itemOptions,
-                        itemKey: itemKey,
-                        listKey: listIndex,
-                        child: itemOptions.widgetItemBuilder(ItemBuilderData<T?>(e, itemKey, listIndex)),
+                        itemIndex: itemIndex,
+                        listIndex: listIndex,
+                        child: itemOptions.widgetItemBuilder(ItemBuilderData<T?>(e, itemIndex, listIndex)),
                       ),
                     )
                     .toList();

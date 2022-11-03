@@ -21,8 +21,8 @@ class LeafChartItemRenderer<T> extends LeafRenderObjectWidget {
       state,
       itemOptions,
       item,
-      listKey: listIndex,
-      itemKey: itemIndex,
+      listIndex: listIndex,
+      itemIndex: itemIndex,
       drawDataItem: drawDataItem,
     );
   }
@@ -32,8 +32,8 @@ class LeafChartItemRenderer<T> extends LeafRenderObjectWidget {
     renderObject
       ..state = state
       ..itemOptions = itemOptions
-      ..listKey = listIndex
-      ..itemKey = itemIndex
+      ..listIndex = listIndex
+      ..itemIndex = itemIndex
       ..drawDataItem = drawDataItem
       ..item = item;
 
@@ -46,22 +46,22 @@ class _RenderLeafChartItem<T> extends RenderBox {
     this._state,
     this._itemOptions,
     this._item, {
-    int? listKey,
-    required int itemKey,
+    int? listIndex,
+    required int itemIndex,
     required DrawDataItem drawDataItem,
-  })  : _listKey = listKey ?? 0,
+  })  : _listIndex = listIndex ?? 0,
         _drawDataItem = drawDataItem,
-        _itemKey = itemKey;
+        _itemIndex = itemIndex;
 
-  int _listKey;
+  int _listIndex;
 
-  int _itemKey;
+  int _itemIndex;
 
-  int get itemKey => _itemKey;
+  int get itemIndex => _itemIndex;
 
-  set itemKey(int key) {
-    if (key != _itemKey) {
-      _itemKey = key;
+  set itemIndex(int key) {
+    if (key != _itemIndex) {
+      _itemIndex = key;
       markNeedsPaint();
     }
   }
@@ -77,11 +77,11 @@ class _RenderLeafChartItem<T> extends RenderBox {
     }
   }
 
-  int get listKey => _listKey;
+  int get listIndex => _listIndex;
 
-  set listKey(int key) {
-    if (key != _listKey) {
-      _listKey = key;
+  set listIndex(int key) {
+    if (key != _listIndex) {
+      _listIndex = key;
       markNeedsPaint();
     }
   }
@@ -160,15 +160,15 @@ class _RenderLeafChartItem<T> extends RenderBox {
     final _translatedPosition = position.translate(
         _itemOptions.multiValuePadding.left * _stack +
             _itemOptions.padding.left +
-            _stackWidth * listKey * _stack +
-            ((_itemOptions.multiValuePadding.horizontal * listKey * _stack)),
+            _stackWidth * listIndex * _stack +
+            ((_itemOptions.multiValuePadding.horizontal * listIndex * _stack)),
         0.0);
 
     // Get exact items size for current configuration and check position.
     if (Size(_stackWidth, size.height).contains(_translatedPosition)) {
       // Add hit test entry and call onClick callback
       result.add(BoxHitTestEntry(this, position));
-      _onClick(ItemBuilderData<T>(item, itemKey, listKey));
+      _onClick(ItemBuilderData<T>(item, itemIndex, listIndex));
       return true;
     }
 
@@ -191,8 +191,8 @@ class _RenderLeafChartItem<T> extends RenderBox {
     canvas.translate(
         _itemOptions.multiValuePadding.left * _stack +
             _itemOptions.padding.left +
-            _stackWidth * listKey * _stack +
-            ((_itemOptions.multiValuePadding.horizontal * listKey * _stack)),
+            _stackWidth * listIndex * _stack +
+            ((_itemOptions.multiValuePadding.horizontal * listIndex * _stack)),
         0.0);
 
     // Use item painter from ItemOptions to draw the item on the chart

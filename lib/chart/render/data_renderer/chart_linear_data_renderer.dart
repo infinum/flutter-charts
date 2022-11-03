@@ -58,8 +58,8 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
       final childParentData = child.parentData! as ChartItemData;
 
       if (child is _RenderLeafChartItem<T>) {
-        final key = child.listKey;
-        final _currentValue = (childCount[key] ?? 0).toInt();
+        final listIndex = child.listIndex;
+        final _currentValue = (childCount[listIndex] ?? 0).toInt();
 
         _setLeafChildPosition(
           child: child,
@@ -71,10 +71,10 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
 
         assert(child.parentData == childParentData);
         child = childParentData.nextSibling;
-        childCount[key] = _currentValue + 1;
+        childCount[listIndex] = _currentValue + 1;
       } else if (child is _RenderChildChartItem<T>) {
-        final key = child.listKey;
-        final _currentValue = (childCount[key] ?? 0).toInt();
+        final listIndex = child.listIndex;
+        final _currentValue = (childCount[listIndex] ?? 0).toInt();
 
         _setWidgetChildPosition(
           child: child,
@@ -86,7 +86,7 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
 
         assert(child.parentData == childParentData);
         child = childParentData.nextSibling;
-        childCount[key] = _currentValue + 1;
+        childCount[listIndex] = _currentValue + 1;
       }
     }
 
@@ -173,8 +173,8 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
 
     // Handle stack data strategy.
     if (chartState.data.dataStrategy is StackDataStrategy) {
-      if (child.listKey + 1 < chartState.data.stackSize) {
-        bottomPaddingHeight = (chartState.data.items[child.listKey + 1][currentValue].max ?? 0.0) * (1 - _stack);
+      if (child.listIndex + 1 < chartState.data.stackSize) {
+        bottomPaddingHeight = (chartState.data.items[child.listIndex + 1][currentValue].max ?? 0.0) * (1 - _stack);
       }
     }
 
