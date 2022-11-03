@@ -16,11 +16,11 @@ class MultiBarWidgetChartScreen extends StatefulWidget {
 }
 
 class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
-  Map<int, List<BarValue<void>>> _values = <int, List<BarValue<void>>>{};
+  Map<int, List<ChartItem<void>>> _values = <int, List<ChartItem<void>>>{};
   double targetMax = 0;
   double targetMin = 0;
   bool _showValues = false;
-  int minItems = 2;
+  int minItems = 4;
   bool _legendOnEnd = true;
   bool _legendOnBottom = true;
   bool _stackItems = true;
@@ -35,11 +35,11 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
     final Random _rand = Random();
     final double _difference = _rand.nextDouble() * 10;
     targetMax = 5 + ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25)).roundToDouble();
-    _values.addAll(Map<int, List<BarValue<void>>>.fromEntries(List.generate(3, (key) {
+    _values.addAll(Map<int, List<ChartItem<void>>>.fromEntries(List.generate(3, (key) {
       return MapEntry(
           key,
           List.generate(minItems, (index) {
-            return BarValue<void>(targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
+            return ChartItem<void>(targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
           }));
     })));
     targetMin = targetMax - ((_rand.nextDouble() * 3) + (targetMax * 0.2));
@@ -59,25 +59,28 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
     }));
   }
 
-  List<List<BarValue<void>>> _getMap() {
+  List<List<ChartItem<void>>> _getMap() {
     return [
       _values[0]!
           .asMap()
-          .map<int, BarValue<void>>((index, e) {
-            return MapEntry(index, BarValue<void>(e.max ?? 0.0));
+          .map<int, ChartItem<void>>((index, e) {
+            return MapEntry(index, ChartItem<void>(e.max ?? 0.0));
           })
           .values
           .toList(),
       _values[1]!
           .asMap()
-          .map<int, BarValue<void>>((index, e) {
-            return MapEntry(index, BarValue<void>(e.max ?? 0.0));
+          .map<int, ChartItem<void>>((index, e) {
+            return MapEntry(index, ChartItem<void>(e.max ?? 0.0));
           })
           .values
           .toList(),
+
       _values[2]!.toList()
     ];
   }
+
+  final _images = ['assets/png/futurama1.jpeg', 'assets/png/futurama2.jpeg', 'assets/png/futurama4.jpeg'];
 
   @override
   Widget build(BuildContext context) {
@@ -92,79 +95,73 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
           Center(
             child: Padding(
               padding: const EdgeInsets.all(12.0),
-              child: BarChart.map(
-                _getMap(),
-                stack: _stackItems,
+              child: Chart(
                 height: MediaQuery.of(context).size.height * 0.4,
-                itemOptions: WidgetItemOptions(
-                    widgetItemBuilder: (data) {
-                      final _images = [
-                        'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.LxlHIr73N2FnqJ3t0TEn-gHaFr%26pid%3DApi&f=1&ipt=afa66b22e9421c69abbb25704c5e4bcb39e4799643ebbdedcabf90ab8af40a6f&ipo=images',
-                        'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages3.alphacoders.com%2F283%2F28305.jpg&f=1&nofb=1&ipt=901963091e95b05a0e8de0829ed79cfb7a310a1c45c155f3a7e5bb9d299b4a56&ipo=images',
-                        'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F66.media.tumblr.com%2F737584aa0cc9d02de5a24bb151f57b53%2Ftumblr_inline_o8xhyaVYPH1sss5ih_1280.png&f=1&nofb=1&ipt=d00e38cf1c3af3a8e42ba24f516da8d696495d9b989a77beedb04d7534c8fb9d&ipo=images',
-                      ];
-
-                      return Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 3.0),
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular((!_stackItems || data.listIndex == 0) ? 12 : 0)),
+                state: ChartState<void>(
+                  data: ChartData(_getMap(), dataStrategy: _stackItems ? StackDataStrategy() : DefaultDataStrategy(stackMultipleValues: false)),
+                  itemOptions: WidgetItemOptions(widgetItemBuilder: (data) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 3.0),
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular((!_stackItems || data.listIndex == 0) ? 12 : 0)),
+                      ),
+                      foregroundDecoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular((!_stackItems || data.listIndex == 0) ? 12 : 0)),
+                        color: Colors.accents[data.listIndex].withOpacity(0.2),
+                        border: Border.all(
+                          width: 2,
+                          color: Colors.accents[data.listIndex],
                         ),
-                        foregroundDecoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular((!_stackItems || data.listIndex == 0) ? 12 : 0)),
-                          color: Colors.accents[data.listIndex].withOpacity(0.2),
-                          border: Border.all(
-                            width: 2,
-                            color: Colors.accents[data.listIndex],
-                          ),
-                        ),
-                        child: ClipRRect(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular((!_stackItems || data.listIndex == 0) ? 12 : 0)),
-                          child: Stack(
-                            children: [
-                              Positioned.fill(
-                                child: Image.network(
-                                  _images[data.listIndex],
-                                  fit: BoxFit.cover,
-                                ),
+                      ),
+                      child: ClipRRect(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular((!_stackItems || data.listIndex == 0) ? 12 : 0)),
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              child: Image.asset(
+                                _images[data.listIndex],
+                                fit: BoxFit.cover,
                               ),
-                              Positioned(
-                                top: 8.0,
-                                left: 0.0,
-                                right: 0.0,
-                                child: Text(
-                                  '${data.item.max?.toStringAsFixed(2)}',
-                                  textAlign: TextAlign.center,
-                                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                                        color: Colors.black87,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                ),
+                            ),
+                            Positioned(
+                              top: 8.0,
+                              left: 0.0,
+                              right: 0.0,
+                              child: Text(
+                                '${data.item.max?.toStringAsFixed(2)}',
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      );
-                    }),
-                backgroundDecorations: [
-                  GridDecoration(
-                    showVerticalGrid: true,
-                    showHorizontalValues: _showValues,
-                    showVerticalValues: _showValues,
-                    showTopHorizontalValue: _legendOnBottom ? _showValues : false,
-                    horizontalLegendPosition:
-                        _legendOnEnd ? HorizontalLegendPosition.end : HorizontalLegendPosition.start,
-                    verticalLegendPosition:
-                        _legendOnBottom ? VerticalLegendPosition.bottom : VerticalLegendPosition.top,
-                    textStyle: Theme.of(context).textTheme.caption,
-                    gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
-                  ),
-                ],
-                foregroundDecorations: [
-                  BorderDecoration(),
-                ],
+                      ),
+                    );
+                  }),
+                  backgroundDecorations: [
+                    GridDecoration(
+                      showVerticalGrid: true,
+                      showHorizontalValues: _showValues,
+                      showVerticalValues: _showValues,
+                      showTopHorizontalValue: _legendOnBottom ? _showValues : false,
+                      horizontalLegendPosition:
+                          _legendOnEnd ? HorizontalLegendPosition.end : HorizontalLegendPosition.start,
+                      verticalLegendPosition:
+                          _legendOnBottom ? VerticalLegendPosition.bottom : VerticalLegendPosition.top,
+                      textStyle: Theme.of(context).textTheme.caption,
+                      gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+                    ),
+                  ],
+                  foregroundDecorations: [
+                    BorderDecoration(),
+                  ],
+                ),
               ),
             ),
           ),
