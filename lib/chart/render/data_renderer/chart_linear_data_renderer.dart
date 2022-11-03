@@ -3,8 +3,7 @@ part of charts_painter;
 /// Align chart data items in linear fashion. Meaning X axis cannot be changed. X axis becomes the index of current item
 /// height of the item is defined by item max or min value.
 class ChartLinearDataRenderer<T> extends ChartDataRenderer<T> {
-  ChartLinearDataRenderer(this.chartState, List<Widget> children, {Key? key})
-      : super(key: key, children: children);
+  ChartLinearDataRenderer(this.chartState, List<Widget> children, {Key? key}) : super(key: key, children: children);
 
   final ChartState<T?> chartState;
 
@@ -14,8 +13,7 @@ class ChartLinearDataRenderer<T> extends ChartDataRenderer<T> {
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, _ChartLinearItemRenderer<T?> renderObject) {
+  void updateRenderObject(BuildContext context, _ChartLinearItemRenderer<T?> renderObject) {
     renderObject.chartState = chartState;
     renderObject.markNeedsLayout();
   }
@@ -71,12 +69,11 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
           currentValue: _currentValue,
         );
 
-
         assert(child.parentData == childParentData);
         child = childParentData.nextSibling;
         childCount[key] = _currentValue + 1;
       } else if (child is _RenderChildChartItem<T>) {
-        final key = child.key;
+        final key = child.listKey;
         final _currentValue = (childCount[key] ?? 0).toInt();
 
         _setWidgetChildPosition(
@@ -94,6 +91,11 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     }
 
     size = _size;
+  }
+
+  @override
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
+    return defaultHitTestChildren(result, position: position);
   }
 
   @override
@@ -149,18 +151,15 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     final _verticalMultiplier = size.height / max(1, _maxValue);
     // In case we have multiple data and we have [WidgetItemOptions.multiValuePadding] set to true then
     // we need to add padding to the item, and change the starting offset.
-    final _multiValuePadding =
-        chartState.itemOptions.multiValuePadding;
+    final _multiValuePadding = chartState.itemOptions.multiValuePadding;
 
     // Animated multiValueStacked value (goes from 0.0 meaning no stack - to 1.0 stack)
-    final _stack =
-        1 - chartState.data.dataStrategy._stackMultipleValuesProgress;
+    final _stack = 1 - chartState.data.dataStrategy._stackMultipleValuesProgress;
     // How many items will we fit in the vertical space
     final _stackSize = max(1.0, (chartState.data.stackSize) * _stack);
 
     // Get available size for item. Subtracts set padding and divide by number of items we want to show
-    final _stackWidth =
-        (itemWidth - (_multiValuePadding.horizontal * _stack)) / _stackSize;
+    final _stackWidth = (itemWidth - (_multiValuePadding.horizontal * _stack)) / _stackSize;
 
     // For `StackDataStrategy` we will cut stacked items at the bottom, this will make sure there is no
     // Widget overlap for drawing, and make sure that centered widgets are in the center of visible item
@@ -168,22 +167,20 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
 
     childParentData.offset = offset + // Current chart offset
         // Item offset in the list
-        Offset(itemWidth * currentValue,
-            size.height - ((child.item.max ?? 0.0) * _verticalMultiplier)) +
+        Offset(itemWidth * currentValue, size.height - ((child.item.max ?? 0.0) * _verticalMultiplier)) +
         // MultiValuePadding offset
         Offset(_multiValuePadding.left * _stack, 0);
 
     // Handle stack data strategy.
     if (chartState.data.dataStrategy is StackDataStrategy) {
-      if (child.key + 1 < chartState.data.stackSize) {
-        bottomPaddingHeight = (chartState.data.items[child.key + 1][currentValue].max ?? 0.0) * (1 - _stack);
+      if (child.listKey + 1 < chartState.data.stackSize) {
+        bottomPaddingHeight = (chartState.data.items[child.listKey + 1][currentValue].max ?? 0.0) * (1 - _stack);
       }
     }
 
     final innerConstraints = BoxConstraints.tightFor(
       width: _stackWidth,
-      height: ((child.item.max ?? 0.0) * _verticalMultiplier) -
-          (bottomPaddingHeight * _verticalMultiplier),
+      height: ((child.item.max ?? 0.0) * _verticalMultiplier) - (bottomPaddingHeight * _verticalMultiplier),
     );
 
     child.layout(innerConstraints, parentUsesSize: true);

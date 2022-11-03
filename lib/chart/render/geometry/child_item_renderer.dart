@@ -6,17 +6,19 @@ part of charts_painter;
 ///
 /// This is a [ChildRenderObjectWidget], single child can be passed to it.
 class ChildChartItemRenderer<T> extends SingleChildRenderObjectWidget {
-  ChildChartItemRenderer(this.item, this.state, this.itemOptions, {Key? key, Widget? child, this.arrayKey = 0})
+  ChildChartItemRenderer(this.item, this.state, this.itemOptions,
+      {Key? key, Widget? child, this.itemKey = 0, this.listKey = 0})
       : super(key: key, child: child);
 
   final ChartItem<T> item;
-  final ChartData<T> state;
+  final ChartState<T> state;
   final ItemOptions itemOptions;
-  final int arrayKey;
+  final int listKey;
+  final int itemKey;
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return _RenderChildChartItem(state, itemOptions, item, key: arrayKey);
+    return _RenderChildChartItem(state, itemOptions, item, listKey: listKey, itemKey: itemKey);
   }
 
   @override
@@ -24,7 +26,8 @@ class ChildChartItemRenderer<T> extends SingleChildRenderObjectWidget {
     renderObject
       ..state = state
       ..itemOptions = itemOptions
-      ..key = arrayKey
+      ..listKey = listKey
+      ..itemKey = itemKey
       ..item = item;
 
     renderObject.markNeedsLayout();
@@ -32,17 +35,29 @@ class ChildChartItemRenderer<T> extends SingleChildRenderObjectWidget {
 }
 
 class _RenderChildChartItem<T> extends RenderShiftedBox {
-  _RenderChildChartItem(this._state, this._itemOptions, this._item, {int? key, RenderBox? child})
-      : _key = key ?? 0,
+  _RenderChildChartItem(this._state, this._itemOptions, this._item, {int? listKey, int? itemKey, RenderBox? child})
+      : _listKey = listKey ?? 0,
+        _itemKey = itemKey ?? 0,
         super(child);
 
-  int _key;
+  int _listKey;
 
-  int get key => _key;
+  int get listKey => _listKey;
 
-  set key(int key) {
-    if (key != _key) {
-      _key = key;
+  set listKey(int key) {
+    if (key != _listKey) {
+      _listKey = key;
+      markNeedsPaint();
+    }
+  }
+
+  int _itemKey;
+
+  int get itemKey => _itemKey;
+
+  set itemKey(int key) {
+    if (key != _itemKey) {
+      _itemKey = key;
       markNeedsPaint();
     }
   }
@@ -58,9 +73,9 @@ class _RenderChildChartItem<T> extends RenderShiftedBox {
 
   ChartItem<T> get item => _item;
 
-  ChartData<T> _state;
+  ChartState<T> _state;
 
-  set state(ChartData<T> state) {
+  set state(ChartState<T> state) {
     if (state != _state) {
       _state = state;
       markNeedsPaint();
@@ -114,6 +129,21 @@ class _RenderChildChartItem<T> extends RenderShiftedBox {
   }
 
   @override
+  bool hitTest(BoxHitTestResult result, {required Offset position}) {
+    final _onClick = _state.behaviour.onItemClicked;
+
+    // Hit test will be added to [result] in [child.hitTest] if it is not null.
+    final _hitTest = child?.hitTest(result, position: position) ?? false;
+
+    if (_hitTest) {
+      // If we also have click handler in [ChartBehaviour] call it.
+      _onClick?.call(ItemBuilderData<T>(_item, itemKey, listKey));
+    }
+
+    return _hitTest;
+  }
+
+  @override
   void performLayout() {
     size = _computeSize(
       constraints: constraints,
@@ -124,9 +154,9 @@ class _RenderChildChartItem<T> extends RenderShiftedBox {
     if (child != null) {
       final childParentData = child!.parentData! as BoxParentData;
 
-      final _stack = 1 - _state.dataStrategy._stackMultipleValuesProgress;
+      final _stack = 1 - _state.data.dataStrategy._stackMultipleValuesProgress;
 
-      final offset = Offset(size.width * key * _stack, 0.0);
+      final offset = Offset(size.width * listKey * _stack, 0.0);
       childParentData.offset = offset;
     }
   }
