@@ -53,6 +53,11 @@ class _ChartRenderObject<T> extends RenderBox
   }
 
   @override
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
+    return defaultHitTestChildren(result, position: position);
+  }
+
+  @override
   void performLayout() {
     var child = firstChild;
 
