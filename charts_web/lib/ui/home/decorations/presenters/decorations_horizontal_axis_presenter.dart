@@ -9,10 +9,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../presenter/chart_decorations_presenter.dart';
 
-final decorationHorizontalAxisPresenter = ChangeNotifierProvider.family<DecorationHorizontalAxisPresenter, int>(
+final decorationHorizontalAxisPresenter =
+    ChangeNotifierProvider.family<DecorationHorizontalAxisPresenter, int>(
         (ref, a) => DecorationHorizontalAxisPresenter(a, ref));
 
-class DecorationHorizontalAxisPresenter extends ChangeNotifier implements DecorationBuilder {
+class DecorationHorizontalAxisPresenter extends ChangeNotifier
+    implements DecorationBuilder {
   DecorationHorizontalAxisPresenter(this.index, Ref ref);
 
   int lineId = 0;
@@ -82,5 +84,4 @@ class DecorationHorizontalAxisPresenter extends ChangeNotifier implements Decora
     ),
     ''';
   }
-
 }

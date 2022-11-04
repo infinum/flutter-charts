@@ -82,7 +82,8 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                   minBarWidth: 4.0,
                   barItemBuilder: (data) {
                     return BarItem(
-                      color: _targetDecoration.getTargetItemColor(Theme.of(context).colorScheme.primary, data.item),
+                      color: _targetDecoration.getTargetItemColor(
+                          Theme.of(context).colorScheme.primary, data.item),
                       radius: const BorderRadius.vertical(
                         top: Radius.circular(24.0),
                       ),

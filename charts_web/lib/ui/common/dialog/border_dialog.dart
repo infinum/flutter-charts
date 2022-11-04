@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import '../widget/double_option_input.dart';
 
 class BorderSideDialog extends StatefulWidget {
-  const BorderSideDialog({Key? key, required this.borderSide, required this.color}) : super(key: key);
+  const BorderSideDialog(
+      {Key? key, required this.borderSide, required this.color})
+      : super(key: key);
 
-  static Future<BorderSide?> show(BuildContext context, BorderSide borderSide, Color? color) {
+  static Future<BorderSide?> show(
+      BuildContext context, BorderSide borderSide, Color? color) {
     return showDialog<BorderSide>(
         context: context,
         builder: (_) {
@@ -75,7 +78,10 @@ class _BorderSideDialogState extends State<BorderSideDialog> {
             width: 44,
             height: 44,
             enableShadesSelection: false,
-            pickersEnabled: {ColorPickerType.primary: true, ColorPickerType.accent: false},
+            pickersEnabled: {
+              ColorPickerType.primary: true,
+              ColorPickerType.accent: false
+            },
             borderRadius: 22,
             heading: Text(
               'Select color',
@@ -98,7 +104,8 @@ class _BorderSideDialogState extends State<BorderSideDialog> {
               const SizedBox(width: 16),
               ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pop(BorderSide(color: color, width: width));
+                    Navigator.of(context)
+                        .pop(BorderSide(color: color, width: width));
                   },
                   child: const Text('OK')),
             ],

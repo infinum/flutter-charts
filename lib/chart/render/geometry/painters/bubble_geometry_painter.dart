@@ -13,8 +13,8 @@ part of charts_painter;
 ///
 class BubbleGeometryPainter<T> extends GeometryPainter<T> {
   /// Constructor for bubble painter
-  BubbleGeometryPainter(
-      ChartItem<T> item, ChartData<T?> data, ItemOptions itemOptions, this.drawDataItem)
+  BubbleGeometryPainter(ChartItem<T> item, ChartData<T?> data,
+      ItemOptions itemOptions, this.drawDataItem)
       : super(item, data, itemOptions);
 
   final BubbleItem drawDataItem;

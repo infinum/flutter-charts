@@ -18,7 +18,8 @@ class StackDataStrategy extends DataStrategy {
   const StackDataStrategy() : super(stackMultipleValues: true);
 
   @override
-  List<List<ChartItem<T?>>> formatDataStrategy<T>(List<List<ChartItem<T?>>> items) {
+  List<List<ChartItem<T?>>> formatDataStrategy<T>(
+      List<List<ChartItem<T?>>> items) {
     final _incrementList = <ChartItem<T?>>[];
     return items.reversed
         .map((entry) {
@@ -37,5 +38,10 @@ class StackDataStrategy extends DataStrategy {
         .toList()
         .reversed
         .toList();
+  }
+
+  @override
+  DataStrategy animateTo(DataStrategy dataStrategy, double t) {
+    return dataStrategy;
   }
 }

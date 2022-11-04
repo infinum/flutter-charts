@@ -7,7 +7,8 @@ import '../../common/dialog/color_picker_dialog.dart';
 import '../../common/widget/double_option_input.dart';
 
 class DecorationsWidget extends HookConsumerWidget {
-  const DecorationsWidget({Key? key, required this.decorationIndex}) : super(key: key);
+  const DecorationsWidget({Key? key, required this.decorationIndex})
+      : super(key: key);
 
   final int decorationIndex;
 

@@ -15,7 +15,8 @@ void main() {
       ..addScenario(
         'Target line decoration',
         getDefaultChart(backgroundDecorations: [
-          WidgetDecoration(widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
+          WidgetDecoration(widgetDecorationBuilder:
+              (context, chartState, itemWidth, verticalMultiplier) {
             return Stack(
               children: [
                 Positioned(
@@ -33,20 +34,23 @@ void main() {
         'Target line text decoration',
         getDefaultChart(backgroundDecorations: [
           WidgetDecoration(
-              widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
+              widgetDecorationBuilder:
+                  (context, chartState, itemWidth, verticalMultiplier) {
                 return Stack(
                   clipBehavior: Clip.none,
                   children: [
                     Positioned.fill(
                       top: null,
                       bottom: 2 * verticalMultiplier,
-                      child: const RotatedBox(quarterTurns: 3, child: Text('This is target line')),
+                      child: const RotatedBox(
+                          quarterTurns: 3, child: Text('This is target line')),
                     ),
                     Positioned.fill(
                       top: null,
                       left: 0,
                       bottom: 2 * verticalMultiplier,
-                      child: Container(color: Colors.red, width: double.infinity, height: 2),
+                      child: Container(
+                          color: Colors.red, width: double.infinity, height: 2),
                     ),
                   ],
                 );
@@ -58,7 +62,8 @@ void main() {
         'Target area decoration',
         getDefaultChart(backgroundDecorations: [
           WidgetDecoration(
-            widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
+            widgetDecorationBuilder:
+                (context, chartState, itemWidth, verticalMultiplier) {
               return Padding(
                 padding: EdgeInsets.only(top: 5 * verticalMultiplier),
                 child: Container(
@@ -78,9 +83,11 @@ void main() {
         'Border decoration',
         getDefaultChart(backgroundDecorations: [
           WidgetDecoration(
-              widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
+              widgetDecorationBuilder:
+                  (context, chartState, itemWidth, verticalMultiplier) {
                 return Container(
-                  decoration: BoxDecoration(border: Border.all(color: Colors.red, width: 3)),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.red, width: 3)),
                   width: double.infinity,
                   height: double.infinity,
                 );
@@ -88,7 +95,8 @@ void main() {
               margin: EdgeInsets.all(3)),
         ]),
       );
-    await tester.pumpWidgetBuilder(builder.build(), surfaceSize: const Size(1400, 1020), textScaleSize: 1.4);
+    await tester.pumpWidgetBuilder(builder.build(),
+        surfaceSize: const Size(1400, 1020), textScaleSize: 1.4);
     await screenMatchesGolden(tester, 'widget_decoration_golden');
   });
 }

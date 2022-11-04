@@ -9,8 +9,12 @@ class BubbleItem extends DrawDataItem {
 
   BubbleItem lerp(BubbleItem endValue, double t) {
     return BubbleItem(
-      gradient: Gradient.lerp(gradient, endValue is BubbleItemOptions ? endValue.gradient : null, t),
-      border: BorderSide.lerp(border, endValue is BubbleItemOptions ? (endValue.border) : BorderSide.none, t),
+      gradient: Gradient.lerp(gradient,
+          endValue is BubbleItemOptions ? endValue.gradient : null, t),
+      border: BorderSide.lerp(
+          border,
+          endValue is BubbleItemOptions ? (endValue.border) : BorderSide.none,
+          t),
       color: Color.lerp(color, endValue.color, t),
     );
   }
@@ -20,7 +24,8 @@ class BubbleItem extends DrawDataItem {
 }
 
 class BubbleItemBuilderLerp {
-  static BubbleItemBuilder lerp(BubbleItemOptions a, BubbleItemOptions b, double t) {
+  static BubbleItemBuilder lerp(
+      BubbleItemOptions a, BubbleItemOptions b, double t) {
     return (ItemBuilderData data) {
       final _aItem = a.bubbleItemBuilder(data);
       final _bItem = b.bubbleItemBuilder(data);

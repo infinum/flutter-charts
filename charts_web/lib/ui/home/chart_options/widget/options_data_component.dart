@@ -14,7 +14,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-const _subtitle = '''Here you can input the data that defines your chart. Each data point is called an item.
+const _subtitle =
+    '''Here you can input the data that defines your chart. Each data point is called an item.
 ''';
 
 class OptionsDataComponent extends HookConsumerWidget {
@@ -29,11 +30,14 @@ class OptionsDataComponent extends HookConsumerWidget {
         const OptionsComponentHeader(title: 'Data', subtitle: _subtitle),
         if (_presenter.isMultiItem)
           SwitchWithImage(
-            value: _presenter.state.data.dataStrategy.runtimeType == DefaultDataStrategy,
+            value: _presenter.state.data.dataStrategy.runtimeType ==
+                DefaultDataStrategy,
             onChanged: (value) {
-              _presenter.updateDataStrategy(_presenter.state.data.dataStrategy.runtimeType == DefaultDataStrategy
-                  ? StackDataStrategy()
-                  : const DefaultDataStrategy(stackMultipleValues: true));
+              _presenter.updateDataStrategy(
+                  _presenter.state.data.dataStrategy.runtimeType ==
+                          DefaultDataStrategy
+                      ? StackDataStrategy()
+                      : const DefaultDataStrategy(stackMultipleValues: true));
             },
             title1: 'Default (one next to another)',
             title2: 'Stack (one on top of another)',
@@ -41,11 +45,15 @@ class OptionsDataComponent extends HookConsumerWidget {
             image2: Assets.svg.strategyStack,
             subtitle: 'Data Strategy - how to show multiple data values',
           ),
-        if (_presenter.isMultiItem && _presenter.state.data.dataStrategy.runtimeType == DefaultDataStrategy)
+        if (_presenter.isMultiItem &&
+            _presenter.state.data.dataStrategy.runtimeType ==
+                DefaultDataStrategy)
           Row(
             children: [
               Text('Stack Multiple Values'),
-              Switch(value: _presenter.stackMultipleValues, onChanged: _presenter.updateStackMultipleValues),
+              Switch(
+                  value: _presenter.stackMultipleValues,
+                  onChanged: _presenter.updateStackMultipleValues),
             ],
           ),
         const SizedBox(height: 12),
@@ -61,14 +69,17 @@ class OptionsDataComponent extends HookConsumerWidget {
             child: const Text('Add another list'),
             onPressed: () {
               final _lists = _presenter.data;
-              _presenter.addDataList(
-                  List.generate(_lists.first.length, (index) => BarValue<void>((Random().nextDouble() * 10))).toList());
+              _presenter.addDataList(List.generate(_lists.first.length,
+                      (index) => BarValue<void>((Random().nextDouble() * 10)))
+                  .toList());
             },
           ),
         if (_presenter.showMaxDataListMessage)
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 10.0),
-            child: Text("You can have more lists, but for demo let's stop at 5.", style: TextStyle(fontWeight: FontWeight.bold)),
+            child: Text(
+                "You can have more lists, but for demo let's stop at 5.",
+                style: TextStyle(fontWeight: FontWeight.bold)),
           ),
       ],
     );
@@ -87,7 +98,8 @@ class _DataTextField extends HookConsumerWidget {
 
     return Row(
       children: [
-        Container(width: 10, height: 40, color: _provider.listColors[listIndex]),
+        Container(
+            width: 10, height: 40, color: _provider.listColors[listIndex]),
         const SizedBox(width: 16),
         Expanded(
           child: TextField(
@@ -95,7 +107,10 @@ class _DataTextField extends HookConsumerWidget {
             onChanged: (value) {
               final _data = _provider.data;
 
-              final _barValues = value.split(',').map((e) => BarValue(double.tryParse(e.trim()) ?? 0)).toList();
+              final _barValues = value
+                  .split(',')
+                  .map((e) => BarValue(double.tryParse(e.trim()) ?? 0))
+                  .toList();
               _data[listIndex] = _barValues;
 
               _provider.updateData(_data);
@@ -109,7 +124,8 @@ class _DataTextField extends HookConsumerWidget {
           },
         ),
         IconButton(
-          icon: Icon(Icons.format_paint, color: _provider.listColors[listIndex]),
+          icon:
+              Icon(Icons.format_paint, color: _provider.listColors[listIndex]),
           onPressed: () async {
             final color = await ColorPickerDialog.show(
               context,

@@ -2,7 +2,6 @@ part of charts_painter;
 
 /// Default `ChartItem`
 class ChartItem<T> {
-
   /// Constructor for regular items
   ChartItem(this.max, {this.min, this.value});
 

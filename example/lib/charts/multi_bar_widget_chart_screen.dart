@@ -12,7 +12,8 @@ class MultiBarWidgetChartScreen extends StatefulWidget {
   MultiBarWidgetChartScreen({Key? key}) : super(key: key);
 
   @override
-  _MultiBarWidgetChartScreenState createState() => _MultiBarWidgetChartScreenState();
+  _MultiBarWidgetChartScreenState createState() =>
+      _MultiBarWidgetChartScreenState();
 }
 
 class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
@@ -34,12 +35,16 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
   void _updateValues() {
     final Random _rand = Random();
     final double _difference = _rand.nextDouble() * 10;
-    targetMax = 5 + ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25)).roundToDouble();
-    _values.addAll(Map<int, List<ChartItem<void>>>.fromEntries(List.generate(3, (key) {
+    targetMax = 5 +
+        ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25))
+            .roundToDouble();
+    _values.addAll(
+        Map<int, List<ChartItem<void>>>.fromEntries(List.generate(3, (key) {
       return MapEntry(
           key,
           List.generate(minItems, (index) {
-            return ChartItem<void>(targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
+            return ChartItem<void>(
+                targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
           }));
     })));
     targetMin = targetMax - ((_rand.nextDouble() * 3) + (targetMax * 0.2));
@@ -54,7 +59,8 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
               return _values[key]![index];
             }
 
-            return BarValue<void>(targetMax * 0.4 + Random().nextDouble() * targetMax * 0.9);
+            return BarValue<void>(
+                targetMax * 0.4 + Random().nextDouble() * targetMax * 0.9);
           }));
     }));
   }
@@ -75,12 +81,15 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
           })
           .values
           .toList(),
-
       _values[2]!.toList()
     ];
   }
 
-  final _images = ['assets/png/futurama1.jpeg', 'assets/png/futurama2.jpeg', 'assets/png/futurama4.jpeg'];
+  final _images = [
+    'assets/png/futurama1.jpeg',
+    'assets/png/futurama2.jpeg',
+    'assets/png/futurama4.jpeg'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -98,17 +107,26 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
               child: Chart(
                 height: MediaQuery.of(context).size.height * 0.4,
                 state: ChartState<void>(
-                  data: ChartData(_getMap(), dataStrategy: _stackItems ? StackDataStrategy() : DefaultDataStrategy(stackMultipleValues: false)),
+                  data: ChartData(_getMap(),
+                      dataStrategy: _stackItems
+                          ? StackDataStrategy()
+                          : DefaultDataStrategy(stackMultipleValues: false)),
                   itemOptions: WidgetItemOptions(widgetItemBuilder: (data) {
                     return Container(
                       margin: const EdgeInsets.symmetric(horizontal: 3.0),
                       decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular((!_stackItems || data.listIndex == 0) ? 12 : 0)),
+                        borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(
+                                (!_stackItems || data.listIndex == 0)
+                                    ? 12
+                                    : 0)),
                       ),
                       foregroundDecoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular((!_stackItems || data.listIndex == 0) ? 12 : 0)),
+                        borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(
+                                (!_stackItems || data.listIndex == 0)
+                                    ? 12
+                                    : 0)),
                         color: Colors.accents[data.listIndex].withOpacity(0.2),
                         border: Border.all(
                           width: 2,
@@ -116,8 +134,11 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
                         ),
                       ),
                       child: ClipRRect(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular((!_stackItems || data.listIndex == 0) ? 12 : 0)),
+                        borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(
+                                (!_stackItems || data.listIndex == 0)
+                                    ? 12
+                                    : 0)),
                         child: Stack(
                           children: [
                             Positioned.fill(
@@ -133,7 +154,10 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
                               child: Text(
                                 '${data.item.max?.toStringAsFixed(2)}',
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .copyWith(
                                       color: Colors.black87,
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -149,13 +173,19 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
                       showVerticalGrid: true,
                       showHorizontalValues: _showValues,
                       showVerticalValues: _showValues,
-                      showTopHorizontalValue: _legendOnBottom ? _showValues : false,
-                      horizontalLegendPosition:
-                          _legendOnEnd ? HorizontalLegendPosition.end : HorizontalLegendPosition.start,
-                      verticalLegendPosition:
-                          _legendOnBottom ? VerticalLegendPosition.bottom : VerticalLegendPosition.top,
+                      showTopHorizontalValue:
+                          _legendOnBottom ? _showValues : false,
+                      horizontalLegendPosition: _legendOnEnd
+                          ? HorizontalLegendPosition.end
+                          : HorizontalLegendPosition.start,
+                      verticalLegendPosition: _legendOnBottom
+                          ? VerticalLegendPosition.bottom
+                          : VerticalLegendPosition.top,
                       textStyle: Theme.of(context).textTheme.caption,
-                      gridColor: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+                      gridColor: Theme.of(context)
+                          .colorScheme
+                          .primaryVariant
+                          .withOpacity(0.2),
                     ),
                   ],
                   foregroundDecorations: [
@@ -184,7 +214,8 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
                   if (minItems > 2) {
                     minItems -= 2;
                     _values = _values.map((key, value) {
-                      return MapEntry(key, value..removeRange(value.length - 4, value.length));
+                      return MapEntry(key,
+                          value..removeRange(value.length - 4, value.length));
                     });
                   }
                 });

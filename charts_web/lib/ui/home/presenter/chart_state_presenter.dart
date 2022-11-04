@@ -36,7 +36,8 @@ class ChartStatePresenter extends ChangeNotifier {
   List<Color> listColors = [_presetColors[0]];
 
   // Items
-  EdgeInsets chartItemPadding = const EdgeInsets.only(left: 2, right: 2, top: 0, bottom: 0);
+  EdgeInsets chartItemPadding =
+      const EdgeInsets.only(left: 2, right: 2, top: 0, bottom: 0);
   SelectedPainter selectedPainter = SelectedPainter.bar;
   double? maxBarWidth;
   double? minBarWidth;
@@ -66,8 +67,10 @@ class ChartStatePresenter extends ChangeNotifier {
         data: _defaultData,
         itemOptions: _getItemOptions(),
         behaviour: _behaviour,
-        foregroundDecorations: _decorationsPresenter.foregroundDecorations.values.toList(),
-        backgroundDecorations: _decorationsPresenter.backgroundDecorations.values.toList(),
+        foregroundDecorations:
+            _decorationsPresenter.foregroundDecorations.values.toList(),
+        backgroundDecorations:
+            _decorationsPresenter.backgroundDecorations.values.toList(),
       );
 
   void updateData(List<List<ChartItem<void>>> data) {
@@ -171,7 +174,8 @@ class ChartStatePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateBarBorderRadius(BorderRadius newValue, int index, {bool forAll = false}) {
+  void updateBarBorderRadius(BorderRadius newValue, int index,
+      {bool forAll = false}) {
     barBorderRadius[index] = newValue;
 
     if (forAll) {
@@ -238,7 +242,10 @@ class ChartStatePresenter extends ChangeNotifier {
     } else if (selectedPainter == SelectedPainter.widget) {
       return WidgetItemOptions(
         widgetItemBuilder: (data) {
-          return FuturamaBarWidget(stackItems: stackMultipleValues, listKey: data.listIndex, item: data.item);
+          return FuturamaBarWidget(
+              stackItems: stackMultipleValues,
+              listKey: data.listIndex,
+              item: data.item);
         },
       );
     } else {

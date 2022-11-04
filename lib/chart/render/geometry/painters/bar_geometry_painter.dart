@@ -24,8 +24,8 @@ part of charts_painter;
 ///
 class BarGeometryPainter<T> extends GeometryPainter<T> {
   /// Constructor for Bar painter
-  BarGeometryPainter(
-      ChartItem<T> item, ChartData<T?> data, ItemOptions itemOptions, this.drawDataItem)
+  BarGeometryPainter(ChartItem<T> item, ChartData<T?> data,
+      ItemOptions itemOptions, this.drawDataItem)
       : super(item, data, itemOptions);
 
   final BarItem drawDataItem;
@@ -38,8 +38,6 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
 
     final _radius = drawDataItem.radius ?? BorderRadius.zero;
 
-    final _itemWidth = itemWidth(size);
-
     final _itemMaxValue = item.max ?? 0.0;
 
     // If item is empty, or it's max value is below chart's minValue then don't draw it.
@@ -48,20 +46,17 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
       return;
     }
 
-    final xStart = (size.width - _itemWidth) * itemOptions.startPosition;
-    final xEnd = xStart + _itemWidth;
-
     canvas.drawRRect(
       RRect.fromRectAndCorners(
         Rect.fromPoints(
           Offset(
-            xStart,
+            0.0,
             _maxValue * _verticalMultiplier -
                 max(data.minValue, item.min ?? 0.0) * _verticalMultiplier +
                 _minValue,
           ),
           Offset(
-            xEnd,
+            size.width,
             _maxValue * _verticalMultiplier -
                 _itemMaxValue * _verticalMultiplier +
                 _minValue,
@@ -91,13 +86,13 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
         RRect.fromRectAndCorners(
           Rect.fromPoints(
             Offset(
-              xStart,
+              0.0,
               _maxValue * _verticalMultiplier -
                   max(data.minValue, item.min ?? 0.0) * _verticalMultiplier +
                   _minValue,
             ),
             Offset(
-              xEnd,
+              size.width,
               _maxValue * _verticalMultiplier -
                   _itemMaxValue * _verticalMultiplier +
                   _minValue,

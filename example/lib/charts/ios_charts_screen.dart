@@ -87,7 +87,9 @@ class _IosChartScreenState extends State<IosChartScreen> {
               child: SizedBox(
                 height: 180,
                 child: BarChart(
-                  data: _batteryData.map((e) => BarValue<void>(e.toDouble())).toList(),
+                  data: _batteryData
+                      .map((e) => BarValue<void>(e.toDouble()))
+                      .toList(),
                   height: MediaQuery.of(context).size.height * 0.18,
                   dataToValue: (BarValue value) => value.max ?? 0.0,
                   itemOptions: BarItemOptions(
@@ -105,14 +107,17 @@ class _IosChartScreenState extends State<IosChartScreen> {
                   backgroundDecorations: [
                     WidgetDecoration(
                       margin: const EdgeInsets.only(bottom: 12),
-                      widgetDecorationBuilder: (context, state, squareWidth, squareHeight) {
+                      widgetDecorationBuilder:
+                          (context, state, squareWidth, squareHeight) {
                         return Container(
                           child: Stack(
                             clipBehavior: Clip.none,
                             children: [
                               Positioned.fill(
                                 child: Padding(
-                                  padding: (state.defaultMargin + state.defaultPadding).copyWith(bottom: 0),
+                                  padding: (state.defaultMargin +
+                                          state.defaultPadding)
+                                      .copyWith(bottom: 0),
                                   child: Stack(
                                     clipBehavior: Clip.none,
                                     children: [
@@ -123,7 +128,8 @@ class _IosChartScreenState extends State<IosChartScreen> {
                                         left: squareWidth * 2,
                                         width: squareWidth * 4,
                                         child: Container(
-                                          color: CupertinoColors.activeGreen.withOpacity(0.4),
+                                          color: CupertinoColors.activeGreen
+                                              .withOpacity(0.4),
                                         ),
                                       ),
                                       // Second (Bigger) green rectangle area
@@ -133,7 +139,8 @@ class _IosChartScreenState extends State<IosChartScreen> {
                                         left: squareWidth * 20,
                                         width: squareWidth * 20,
                                         child: Container(
-                                          color: CupertinoColors.activeGreen.withOpacity(0.4),
+                                          color: CupertinoColors.activeGreen
+                                              .withOpacity(0.4),
                                         ),
                                       ),
                                       // Bottom battery state indicator (green)
@@ -142,14 +149,16 @@ class _IosChartScreenState extends State<IosChartScreen> {
                                         height: 24.0,
                                         left: squareWidth * 2,
                                         child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
                                           children: [
                                             Container(
                                               height: 6.0,
                                               width: squareWidth * 4,
                                               decoration: ShapeDecoration(
                                                 shape: StadiumBorder(),
-                                                color: CupertinoColors.systemGreen,
+                                                color:
+                                                    CupertinoColors.systemGreen,
                                               ),
                                             ),
                                             // Indicator with pause icon
@@ -164,9 +173,12 @@ class _IosChartScreenState extends State<IosChartScreen> {
                                                     height: 6,
                                                     bottom: 0,
                                                     child: Container(
-                                                      decoration: ShapeDecoration(
+                                                      decoration:
+                                                          ShapeDecoration(
                                                         shape: StadiumBorder(),
-                                                        color: CupertinoColors.systemGreen.withOpacity(0.2),
+                                                        color: CupertinoColors
+                                                            .systemGreen
+                                                            .withOpacity(0.2),
                                                       ),
                                                     ),
                                                   ),
@@ -182,7 +194,8 @@ class _IosChartScreenState extends State<IosChartScreen> {
                                                         color: Colors.white,
                                                         child: Icon(
                                                           Icons.pause,
-                                                          color: CupertinoColors.systemGreen,
+                                                          color: CupertinoColors
+                                                              .systemGreen,
                                                           size: 20,
                                                         ),
                                                       ),
@@ -203,9 +216,11 @@ class _IosChartScreenState extends State<IosChartScreen> {
                                                     height: 6,
                                                     bottom: 0,
                                                     child: Container(
-                                                      decoration: ShapeDecoration(
+                                                      decoration:
+                                                          ShapeDecoration(
                                                         shape: StadiumBorder(),
-                                                        color: CupertinoColors.systemGreen,
+                                                        color: CupertinoColors
+                                                            .systemGreen,
                                                       ),
                                                     ),
                                                   ),
@@ -220,8 +235,10 @@ class _IosChartScreenState extends State<IosChartScreen> {
                                                         height: 18,
                                                         color: Colors.white,
                                                         child: Icon(
-                                                          Icons.electric_bolt_outlined,
-                                                          color: CupertinoColors.systemGreen,
+                                                          Icons
+                                                              .electric_bolt_outlined,
+                                                          color: CupertinoColors
+                                                              .systemGreen,
                                                           size: 20,
                                                         ),
                                                       ),
@@ -250,13 +267,16 @@ class _IosChartScreenState extends State<IosChartScreen> {
                       showHorizontalValues: true,
                       gridWidth: 1.0,
                       gridColor: Colors.grey.shade300,
-                      horizontalAxisValueFromValue: (index) => index % 2 == 0 ? '${index}%' : '',
-                      horizontalValuesPadding: const EdgeInsets.only(top: 8.0, left: 4.0),
+                      horizontalAxisValueFromValue: (index) =>
+                          index % 2 == 0 ? '${index}%' : '',
+                      horizontalValuesPadding:
+                          const EdgeInsets.only(top: 8.0, left: 4.0),
                       verticalAxisValueFromIndex: (index) =>
                           '${(((index / 4) + 9) % 12).toStringAsFixed(0).padLeft(2, '0').replaceAll('00', '12 A')}',
                       textStyle: TextStyle(color: Colors.grey),
                       verticalTextAlign: TextAlign.start,
-                      verticalValuesPadding: const EdgeInsets.only(left: 4, bottom: 18.0),
+                      verticalValuesPadding:
+                          const EdgeInsets.only(left: 4, bottom: 18.0),
                       showVerticalValues: true,
                     ),
                   ],

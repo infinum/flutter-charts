@@ -104,8 +104,8 @@ class SparkLineDecoration extends DecorationPainter {
 
     final _itemWidth = size.width / _listSize;
 
-    final _maxValueForKey = state.data.items[listIndex].fold(0.0,
-        (double previousValue, element) {
+    final _maxValueForKey =
+        state.data.items[listIndex].fold(0.0, (double previousValue, element) {
       if (previousValue < (element.max ?? element.min ?? 0)) {
         return (element.max ?? element.min ?? 0);
       }

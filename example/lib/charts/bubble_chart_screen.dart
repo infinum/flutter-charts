@@ -79,8 +79,9 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                     maxBarWidth: 60,
                     bubbleItemBuilder: (data) {
                       return BubbleItem(
-                        color: tad.getTargetItemColor(Theme.of(context).colorScheme.primary, data.item)
-                      );
+                          color: tad.getTargetItemColor(
+                              Theme.of(context).colorScheme.primary,
+                              data.item));
                     },
                     padding: EdgeInsets.symmetric(
                         horizontal: (1 - (_values.length / 17)) * 8.0),

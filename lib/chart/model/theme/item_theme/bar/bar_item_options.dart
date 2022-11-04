@@ -1,8 +1,8 @@
 part of charts_painter;
 
 /// Bar painter
-GeometryPainter<T> barPainter<T>(
-        ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions, DrawDataItem drawDataItem) =>
+GeometryPainter<T> barPainter<T>(ChartItem<T> item, ChartData<T> data,
+        ItemOptions itemOptions, DrawDataItem drawDataItem) =>
     BarGeometryPainter<T>(item, data, itemOptions, drawDataItem as BarItem);
 
 typedef BarItemBuilder<T> = BarItem Function(ItemBuilderData data);
@@ -55,11 +55,15 @@ class BarItemOptions extends ItemOptions {
     if (endValue is BarItemOptions) {
       return BarItemOptions._lerp(
         barItemBuilder: BarItemBuilderLerp.lerp(this, endValue, t),
-        padding: EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero,
-        multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero,
+        padding:
+            EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero,
+        multiValuePadding:
+            EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ??
+                EdgeInsets.zero,
         maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
         minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
-        startPosition: lerpDouble(startPosition, endValue.startPosition, t) ?? 0.5,
+        startPosition:
+            lerpDouble(startPosition, endValue.startPosition, t) ?? 0.5,
       );
     } else {
       return endValue;

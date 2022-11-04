@@ -9,7 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:collection/collection.dart';
 
-final chartDecorationsPresenter = ChangeNotifierProvider((ref) => ChartDecorationsPresenter(ref));
+final chartDecorationsPresenter =
+    ChangeNotifierProvider((ref) => ChartDecorationsPresenter(ref));
 
 class ChartDecorationsPresenter extends ChangeNotifier {
   ChartDecorationsPresenter(this.ref);
@@ -21,11 +22,14 @@ class ChartDecorationsPresenter extends ChangeNotifier {
 
   final Map<int, _DecorationData> _decorations = {};
 
-  Map<int, DecorationPainter> get foregroundDecorations => _decorationsByLayer(DecorationLayer.foreground);
+  Map<int, DecorationPainter> get foregroundDecorations =>
+      _decorationsByLayer(DecorationLayer.foreground);
 
-  Map<int, DecorationPainter> get backgroundDecorations => _decorationsByLayer(DecorationLayer.background);
+  Map<int, DecorationPainter> get backgroundDecorations =>
+      _decorationsByLayer(DecorationLayer.background);
 
-  void addDecoration(DecorationPainter decoration, {DecorationLayer layer = DecorationLayer.foreground}) {
+  void addDecoration(DecorationPainter decoration,
+      {DecorationLayer layer = DecorationLayer.foreground}) {
     final index = getNewAutoIncrementDecorationIndex();
 
     if (decoration is SparkLineDecoration) {
@@ -53,7 +57,8 @@ class ChartDecorationsPresenter extends ChangeNotifier {
   }
 
   void moveDecorationToLayer(int decorationIndex, DecorationLayer layer) {
-    _decorations[decorationIndex] = _DecorationData(_decorations[decorationIndex]!.decorationPainter, layer);
+    _decorations[decorationIndex] = _DecorationData(
+        _decorations[decorationIndex]!.decorationPainter, layer);
     notifyListeners();
   }
 
@@ -93,8 +98,11 @@ class ChartDecorationsPresenter extends ChangeNotifier {
   }
 
   void updateDecoration(int index, DecorationBuilder decorationBuilder) {
-    _decorations[index] = _DecorationData(decorationBuilder.buildDecoration(),
-        _decorations.containsKey(index) ? _decorations[index]!.layer : DecorationLayer.foreground);
+    _decorations[index] = _DecorationData(
+        decorationBuilder.buildDecoration(),
+        _decorations.containsKey(index)
+            ? _decorations[index]!.layer
+            : DecorationLayer.foreground);
     notifyListeners();
   }
 
