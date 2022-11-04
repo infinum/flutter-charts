@@ -30,7 +30,8 @@ class ChartBehaviour {
   static ChartBehaviour lerp(ChartBehaviour a, ChartBehaviour b, double t) {
     // This values should never return null, this is for null-safety
     // But if it somehow does occur, then revert to default values
-    final _scrollableLerp = lerpDouble(a._isScrollable, b._isScrollable, t) ?? 0.0;
+    final _scrollableLerp =
+        lerpDouble(a._isScrollable, b._isScrollable, t) ?? 0.0;
 
     return ChartBehaviour._lerp(
       _scrollableLerp,

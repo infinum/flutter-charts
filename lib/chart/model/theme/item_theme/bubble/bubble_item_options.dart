@@ -1,9 +1,10 @@
 part of charts_painter;
 
 /// Bubble painter
-GeometryPainter<T> bubblePainter<T>(
-        ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions, DrawDataItem drawDataItem) =>
-    BubbleGeometryPainter<T>(item, data, itemOptions, drawDataItem as BubbleItem);
+GeometryPainter<T> bubblePainter<T>(ChartItem<T> item, ChartData<T> data,
+        ItemOptions itemOptions, DrawDataItem drawDataItem) =>
+    BubbleGeometryPainter<T>(
+        item, data, itemOptions, drawDataItem as BubbleItem);
 
 typedef BubbleItemBuilder<T> = BubbleItem Function(ItemBuilderData<T>);
 
@@ -51,8 +52,11 @@ class BubbleItemOptions extends ItemOptions {
     if (endValue is BubbleItemOptions) {
       return BubbleItemOptions._lerp(
         bubbleItemBuilder: BubbleItemBuilderLerp.lerp(this, endValue, t),
-        padding: EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero,
-        multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero,
+        padding:
+            EdgeInsets.lerp(padding, endValue.padding, t) ?? EdgeInsets.zero,
+        multiValuePadding:
+            EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ??
+                EdgeInsets.zero,
         maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
         minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
       );

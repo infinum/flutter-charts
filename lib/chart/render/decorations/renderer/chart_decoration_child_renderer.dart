@@ -17,7 +17,8 @@ class ChartDecorationChildRenderer<T> extends SingleChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(BuildContext context, _RenderChartDecorationChildren renderObject) {
+  void updateRenderObject(
+      BuildContext context, _RenderChartDecorationChildren renderObject) {
     renderObject
       ..chartState = chartState
       ..decorationPainter = decorationPainter;
@@ -27,7 +28,9 @@ class ChartDecorationChildRenderer<T> extends SingleChildRenderObjectWidget {
 }
 
 class _RenderChartDecorationChildren<T> extends RenderShiftedBox {
-  _RenderChartDecorationChildren(this._chartState, this._decoration, [RenderBox? child]) : super(child);
+  _RenderChartDecorationChildren(this._chartState, this._decoration,
+      [RenderBox? child])
+      : super(child);
 
   DecorationPainter _decoration;
   set decorationPainter(DecorationPainter decoration) {
@@ -66,7 +69,9 @@ class _RenderChartDecorationChildren<T> extends RenderShiftedBox {
   @override
   bool get sizedByParent => false;
 
-  Size _computeSize({required BoxConstraints constraints, required ChildLayouter layoutChild}) {
+  Size _computeSize(
+      {required BoxConstraints constraints,
+      required ChildLayouter layoutChild}) {
     if (child != null) {
       final childSize = layoutChild(child!, constraints);
       final double width = max(childSize.width, _defaultSize);
@@ -97,8 +102,10 @@ class _RenderChartDecorationChildren<T> extends RenderShiftedBox {
 
     if (child != null) {
       final childParentData = child!.parentData! as BoxParentData;
-      final offset = _decoration.applyPaintTransform(_chartState, constraints.biggest);
-      childParentData.offset = Alignment.center.alongOffset(size - child!.size as Offset) + offset;
+      final offset =
+          _decoration.applyPaintTransform(_chartState, constraints.biggest);
+      childParentData.offset =
+          Alignment.center.alongOffset(size - child!.size as Offset) + offset;
     }
   }
 
@@ -111,7 +118,8 @@ class _RenderChartDecorationChildren<T> extends RenderShiftedBox {
 
     final _canvas = context.canvas;
 
-    final _position = _decoration.applyPaintTransform(_chartState, constraints.biggest);
+    final _position =
+        _decoration.applyPaintTransform(_chartState, constraints.biggest);
     _canvas.save();
     _canvas.translate(_position.dx, _position.dy);
     _decoration.draw(context.canvas, size, _chartState);

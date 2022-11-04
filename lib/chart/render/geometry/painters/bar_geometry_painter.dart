@@ -24,7 +24,8 @@ part of charts_painter;
 ///
 class BarGeometryPainter<T> extends GeometryPainter<T> {
   /// Constructor for Bar painter
-  BarGeometryPainter(ChartItem<T> item, ChartData<T?> data, ItemOptions itemOptions, this.drawDataItem)
+  BarGeometryPainter(ChartItem<T> item, ChartData<T?> data,
+      ItemOptions itemOptions, this.drawDataItem)
       : super(item, data, itemOptions);
 
   final BarItem drawDataItem;
@@ -50,17 +51,25 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
         Rect.fromPoints(
           Offset(
             0.0,
-            _maxValue * _verticalMultiplier - max(data.minValue, item.min ?? 0.0) * _verticalMultiplier + _minValue,
+            _maxValue * _verticalMultiplier -
+                max(data.minValue, item.min ?? 0.0) * _verticalMultiplier +
+                _minValue,
           ),
           Offset(
             size.width,
-            _maxValue * _verticalMultiplier - _itemMaxValue * _verticalMultiplier + _minValue,
+            _maxValue * _verticalMultiplier -
+                _itemMaxValue * _verticalMultiplier +
+                _minValue,
           ),
         ),
-        bottomLeft: _itemMaxValue.isNegative ? _radius.topLeft : _radius.bottomLeft,
-        bottomRight: _itemMaxValue.isNegative ? _radius.topRight : _radius.bottomRight,
-        topLeft: _itemMaxValue.isNegative ? _radius.bottomLeft : _radius.topLeft,
-        topRight: _itemMaxValue.isNegative ? _radius.bottomRight : _radius.topRight,
+        bottomLeft:
+            _itemMaxValue.isNegative ? _radius.topLeft : _radius.bottomLeft,
+        bottomRight:
+            _itemMaxValue.isNegative ? _radius.topRight : _radius.bottomRight,
+        topLeft:
+            _itemMaxValue.isNegative ? _radius.bottomLeft : _radius.topLeft,
+        topRight:
+            _itemMaxValue.isNegative ? _radius.bottomRight : _radius.topRight,
       ),
       paint,
     );
@@ -78,17 +87,25 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
           Rect.fromPoints(
             Offset(
               0.0,
-              _maxValue * _verticalMultiplier - max(data.minValue, item.min ?? 0.0) * _verticalMultiplier + _minValue,
+              _maxValue * _verticalMultiplier -
+                  max(data.minValue, item.min ?? 0.0) * _verticalMultiplier +
+                  _minValue,
             ),
             Offset(
               size.width,
-              _maxValue * _verticalMultiplier - _itemMaxValue * _verticalMultiplier + _minValue,
+              _maxValue * _verticalMultiplier -
+                  _itemMaxValue * _verticalMultiplier +
+                  _minValue,
             ),
           ),
-          bottomLeft: _itemMaxValue.isNegative ? _radius.topLeft : _radius.bottomLeft,
-          bottomRight: _itemMaxValue.isNegative ? _radius.topRight : _radius.bottomRight,
-          topLeft: _itemMaxValue.isNegative ? _radius.bottomLeft : _radius.topLeft,
-          topRight: _itemMaxValue.isNegative ? _radius.bottomRight : _radius.topRight,
+          bottomLeft:
+              _itemMaxValue.isNegative ? _radius.topLeft : _radius.bottomLeft,
+          bottomRight:
+              _itemMaxValue.isNegative ? _radius.topRight : _radius.bottomRight,
+          topLeft:
+              _itemMaxValue.isNegative ? _radius.bottomLeft : _radius.topLeft,
+          topRight:
+              _itemMaxValue.isNegative ? _radius.bottomRight : _radius.topRight,
         ),
         _borderPaint,
       );

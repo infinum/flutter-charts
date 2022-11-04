@@ -8,5 +8,6 @@ class BubbleValue<T> extends ChartItem<T?> {
   BubbleValue(double max) : super(max, min: max);
 
   /// Bubble value with item `T` and max value
-  BubbleValue.withValue(T value, double max) : super(max, value: value, min: max);
+  BubbleValue.withValue(T value, double max)
+      : super(max, value: value, min: max);
 }

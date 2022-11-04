@@ -14,9 +14,12 @@ class BarItem extends DrawDataItem {
 
   BarItem lerp(BarItem endValue, double t) {
     return BarItem(
-      radius: BorderRadius.lerp(radius, endValue is BarItemOptions ? endValue.radius : null, t),
-      gradient: Gradient.lerp(gradient, endValue is BarItemOptions ? endValue.gradient : null, t),
-      border: BorderSide.lerp(border, endValue is BarItemOptions ? (endValue.border) : BorderSide.none, t),
+      radius: BorderRadius.lerp(
+          radius, endValue is BarItemOptions ? endValue.radius : null, t),
+      gradient: Gradient.lerp(
+          gradient, endValue is BarItemOptions ? endValue.gradient : null, t),
+      border: BorderSide.lerp(border,
+          endValue is BarItemOptions ? (endValue.border) : BorderSide.none, t),
       color: Color.lerp(color, endValue.color, t),
     );
   }

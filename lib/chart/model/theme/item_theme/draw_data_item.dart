@@ -23,7 +23,8 @@ abstract class DrawDataItem extends Equatable {
 
     if (gradient != null) {
       // Compiler complains that gradient could be null. But unless if fails us that will never be null.
-      _paint.shader = gradient!.createShader(Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
+      _paint.shader = gradient!.createShader(
+          Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
     }
 
     return _paint;

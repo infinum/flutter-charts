@@ -28,7 +28,8 @@ class LeafChartItemRenderer<T> extends LeafRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(BuildContext context, _RenderLeafChartItem<T?> renderObject) {
+  void updateRenderObject(
+      BuildContext context, _RenderLeafChartItem<T?> renderObject) {
     renderObject
       ..state = state
       ..itemOptions = itemOptions
@@ -160,7 +161,8 @@ class _RenderLeafChartItem<T> extends RenderBox {
   @override
   void handleEvent(PointerEvent event, BoxHitTestEntry entry) {
     if (event is PointerDownEvent) {
-      _state.behaviour.onItemClicked?.call(ItemBuilderData<T>(item, itemIndex, listIndex));
+      _state.behaviour.onItemClicked
+          ?.call(ItemBuilderData<T>(item, itemIndex, listIndex));
     }
   }
 

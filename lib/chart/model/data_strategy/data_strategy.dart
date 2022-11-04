@@ -14,7 +14,8 @@ abstract class DataStrategy {
   /// Return true if multi item drawing is set to stack
   final bool stackMultipleValues;
 
-  List<List<ChartItem<T?>>> formatDataStrategy<T>(List<List<ChartItem<T?>>> items);
+  List<List<ChartItem<T?>>> formatDataStrategy<T>(
+      List<List<ChartItem<T?>>> items);
 
   DataStrategy animateTo(DataStrategy dataStrategy, double t);
 }

@@ -18,11 +18,13 @@ class ChildChartItemRenderer<T> extends SingleChildRenderObjectWidget {
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return _RenderChildChartItem(state, itemOptions, item, listIndex: listIndex, itemIndex: itemIndex);
+    return _RenderChildChartItem(state, itemOptions, item,
+        listIndex: listIndex, itemIndex: itemIndex);
   }
 
   @override
-  void updateRenderObject(BuildContext context, _RenderChildChartItem<T?> renderObject) {
+  void updateRenderObject(
+      BuildContext context, _RenderChildChartItem<T?> renderObject) {
     renderObject
       ..state = state
       ..itemOptions = itemOptions
@@ -35,7 +37,8 @@ class ChildChartItemRenderer<T> extends SingleChildRenderObjectWidget {
 }
 
 class _RenderChildChartItem<T> extends RenderShiftedBox {
-  _RenderChildChartItem(this._state, this._itemOptions, this._item, {int? listIndex, int? itemIndex, RenderBox? child})
+  _RenderChildChartItem(this._state, this._itemOptions, this._item,
+      {int? listIndex, int? itemIndex, RenderBox? child})
       : _listIndex = listIndex ?? 0,
         _itemIndex = itemIndex ?? 0,
         super(child);
@@ -108,7 +111,9 @@ class _RenderChildChartItem<T> extends RenderShiftedBox {
   @override
   bool get sizedByParent => false;
 
-  Size _computeSize({required BoxConstraints constraints, required ChildLayouter layoutChild}) {
+  Size _computeSize(
+      {required BoxConstraints constraints,
+      required ChildLayouter layoutChild}) {
     if (child != null) {
       final childSize = layoutChild(child!, constraints);
       return constraints.constrain(childSize);
@@ -136,7 +141,8 @@ class _RenderChildChartItem<T> extends RenderShiftedBox {
   @override
   void handleEvent(PointerEvent event, BoxHitTestEntry entry) {
     if (event is PointerDownEvent) {
-      _state.behaviour.onItemClicked?.call(ItemBuilderData<T>(item, itemIndex, listIndex));
+      _state.behaviour.onItemClicked
+          ?.call(ItemBuilderData<T>(item, itemIndex, listIndex));
     }
   }
 
