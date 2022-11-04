@@ -52,7 +52,7 @@ void main() {
                 color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listIndex].withOpacity(0.5),
               );
             },
-            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            multiValuePadding: const EdgeInsets.symmetric(horizontal: 4.0),
           ),
         ),
       )
@@ -157,7 +157,6 @@ void main() {
               return BarItem(
                   color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listIndex].withOpacity(0.1));
             },
-            padding: const EdgeInsets.symmetric(horizontal: 1.0),
           ),
         ),
       )
@@ -183,7 +182,6 @@ void main() {
             ),
           ],
           options: BarItemOptions(
-            padding: const EdgeInsets.symmetric(horizontal: 1.0),
             barItemBuilder: (data) {
               return BarItem(
                 color: [

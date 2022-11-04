@@ -38,4 +38,9 @@ class StackDataStrategy extends DataStrategy {
         .reversed
         .toList();
   }
+
+  @override
+  DataStrategy animateTo(DataStrategy dataStrategy, double t) {
+    return dataStrategy;
+  }
 }

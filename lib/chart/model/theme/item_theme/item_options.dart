@@ -45,9 +45,11 @@ abstract class ItemOptions {
 
   /// Multi value chart padding, this will `group` values with same index from different lists
   /// use to make space between index changes in multi value charts
+  /// Only used for multiple data lists when they are not stacked
   final EdgeInsets multiValuePadding;
 
   final ItemBuilder itemBuilder;
+
   /// Define color for value, this allows different colors for different values
 
   /// Max width of item in the chart
@@ -73,4 +75,3 @@ abstract class ItemOptions {
   /// with all available options, otherwise changes in options won't be animated
   ItemOptions animateTo(ItemOptions endValue, double t);
 }
-
