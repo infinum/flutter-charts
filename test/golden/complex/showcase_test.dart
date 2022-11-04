@@ -41,7 +41,9 @@ void main() {
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   barItemBuilder: (data) {
                     dynamic _value = data.item.value;
-                    final color = (_value is bool && _value) ? Color(0xFF567EF7) : Color(0xFF5ABEF9);
+                    final color = (_value is bool && _value)
+                        ? Color(0xFF567EF7)
+                        : Color(0xFF5ABEF9);
                     return BarItem(
                       color: color,
                       radius: BorderRadius.all(Radius.circular(12.0)),
@@ -57,10 +59,13 @@ void main() {
                     lineColor: Colors.white12,
                     dashArray: [8, 8],
                     lineWidth: 1.5,
-                    valuesPadding: const EdgeInsets.only(bottom: 6.0, right: 6.0, left: 6.0),
+                    valuesPadding: const EdgeInsets.only(
+                        bottom: 6.0, right: 6.0, left: 6.0),
                     axisValue: (value) => '${value}k',
-                    legendFontStyle:
-                        defaultTextStyle.copyWith(fontSize: 12.0, color: Colors.white12, fontWeight: FontWeight.w500),
+                    legendFontStyle: defaultTextStyle.copyWith(
+                        fontSize: 12.0,
+                        color: Colors.white12,
+                        fontWeight: FontWeight.w500),
                   ),
                 ],
                 foregroundDecorations: [],
@@ -103,7 +108,10 @@ void main() {
                 barItemBuilder: (data) {
                   return BarItem(
                     radius: BorderRadius.all(Radius.circular(12.0)),
-                    color: [Color(0xFFE6E6FD), Color(0xFF4D4DA6)][data.listIndex],
+                    color: [
+                      Color(0xFFE6E6FD),
+                      Color(0xFF4D4DA6)
+                    ][data.listIndex],
                   );
                 },
               ),
@@ -118,11 +126,14 @@ void main() {
                   horizontalLegendPosition: HorizontalLegendPosition.start,
                   gridColor: Colors.grey.shade200,
                   gridWidth: 1,
-                  horizontalValuesPadding: const EdgeInsets.only(bottom: -8.0, right: 8.0, left: 8.0),
+                  horizontalValuesPadding: const EdgeInsets.only(
+                      bottom: -8.0, right: 8.0, left: 8.0),
                   verticalValuesPadding: const EdgeInsets.only(top: 24.0),
                   horizontalAxisValueFromValue: (value) => '${value + 1}h',
-                  verticalAxisValueFromIndex: (value) => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][value],
-                  textStyle: defaultTextStyle.copyWith(fontSize: 12.0, color: Colors.black45),
+                  verticalAxisValueFromIndex: (value) =>
+                      ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][value],
+                  textStyle: defaultTextStyle.copyWith(
+                      fontSize: 12.0, color: Colors.black45),
                 ),
               ],
               foregroundDecorations: [],
@@ -160,7 +171,11 @@ void main() {
               ),
               itemOptions: BarItemOptions(
                 barItemBuilder: (data) {
-                  return BarItem(color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][data.listIndex]);
+                  return BarItem(
+                      color: [
+                    Color(0xFF5B6ACF),
+                    Color(0xFFB6CADD)
+                  ][data.listIndex]);
                 },
                 multiValuePadding: const EdgeInsets.symmetric(horizontal: 8.0),
                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -173,9 +188,11 @@ void main() {
                   gridColor: Colors.grey.shade400,
                   gridWidth: 1,
                   dashArray: [4, 4],
-                  verticalValuesPadding: const EdgeInsets.symmetric(vertical: 12.0),
+                  verticalValuesPadding:
+                      const EdgeInsets.symmetric(vertical: 12.0),
                   verticalAxisValueFromIndex: (value) => '0$value',
-                  textStyle: defaultTextStyle.copyWith(fontSize: 14.0, color: Colors.black45),
+                  textStyle: defaultTextStyle.copyWith(
+                      fontSize: 14.0, color: Colors.black45),
                 ),
               ],
               foregroundDecorations: [
@@ -232,7 +249,10 @@ void main() {
                     BubbleValue(10),
                     BubbleValue(11),
                   ],
-                ], axisMax: 30, dataStrategy: DefaultDataStrategy(stackMultipleValues: false)),
+                ],
+                    axisMax: 30,
+                    dataStrategy:
+                        DefaultDataStrategy(stackMultipleValues: false)),
                 itemOptions: BubbleItemOptions(
                   maxBarWidth: 0.0,
                 ),
@@ -308,7 +328,11 @@ void main() {
               itemOptions: BubbleItemOptions(
                 maxBarWidth: 2.0,
                 bubbleItemBuilder: (data) {
-                  return BubbleItem(color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][data.listIndex]);
+                  return BubbleItem(
+                      color: [
+                    Color(0xFF5B6ACF),
+                    Color(0xFFB6CADD)
+                  ][data.listIndex]);
                 },
               ),
               backgroundDecorations: [
@@ -319,9 +343,11 @@ void main() {
                   gridColor: Colors.grey.shade400,
                   gridWidth: 1,
                   dashArray: [4, 4],
-                  verticalValuesPadding: const EdgeInsets.symmetric(vertical: 12.0),
+                  verticalValuesPadding:
+                      const EdgeInsets.symmetric(vertical: 12.0),
                   verticalAxisValueFromIndex: (value) => '0${value + 1}',
-                  textStyle: defaultTextStyle.copyWith(fontSize: 14.0, color: Colors.black45),
+                  textStyle: defaultTextStyle.copyWith(
+                      fontSize: 14.0, color: Colors.black45),
                 ),
               ],
               foregroundDecorations: [
@@ -393,7 +419,10 @@ void main() {
                 barItemBuilder: (data) {
                   return BarItem(
                     radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-                    color: [Color(0xFF0139A4), Color(0xFF00B6E6)][data.listIndex],
+                    color: [
+                      Color(0xFF0139A4),
+                      Color(0xFF00B6E6)
+                    ][data.listIndex],
                   );
                 },
               ),
@@ -410,12 +439,16 @@ void main() {
           ),
         ),
       );
-    await tester.pumpWidgetBuilder(builder.build(), surfaceSize: const Size(1400, 660), textScaleSize: 1.4);
+    await tester.pumpWidgetBuilder(builder.build(),
+        surfaceSize: const Size(1400, 660), textScaleSize: 1.4);
     await screenMatchesGolden(tester, 'showcase_charts');
   });
 }
 
 List<double> translateMorse(String morse) {
-  final _s = morse.replaceAll(' ', '0,6,0').replaceAll('.', '2, 1,').replaceAll('-', '6, 1,');
+  final _s = morse
+      .replaceAll(' ', '0,6,0')
+      .replaceAll('.', '2, 1,')
+      .replaceAll('-', '6, 1,');
   return _s.split(',').map((e) => double.tryParse(e) ?? 0).toList()..add(12);
 }

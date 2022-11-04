@@ -59,8 +59,7 @@ void main() {
                     .toList(),
                 valueAxisMaxOver: 2,
               ),
-              itemOptions:
-                  WidgetItemOptions(widgetItemBuilder: (data) {
+              itemOptions: WidgetItemOptions(widgetItemBuilder: (data) {
                 return Container(
                   color: Colors.red,
                   margin: const EdgeInsets.symmetric(horizontal: 4.0),

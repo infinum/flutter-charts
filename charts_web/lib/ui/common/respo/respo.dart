@@ -18,12 +18,15 @@ class Respo extends StatefulWidget {
   final Widget child;
 
   static RespoWrapperData of(BuildContext context) {
-    final InheritedRespoWrapper? data = context.dependOnInheritedWidgetOfExactType<InheritedRespoWrapper>();
+    final InheritedRespoWrapper? data =
+        context.dependOnInheritedWidgetOfExactType<InheritedRespoWrapper>();
     if (data != null) return data.data;
     throw FlutterError.fromParts(
       <DiagnosticsNode>[
-        ErrorSummary('ResponsiveWrapper.of() called with a context that does not contain a ResponsiveWrapper.'),
-        ErrorDescription('No Responsive ancestor could be found starting from the context that was passed '
+        ErrorSummary(
+            'ResponsiveWrapper.of() called with a context that does not contain a ResponsiveWrapper.'),
+        ErrorDescription(
+            'No Responsive ancestor could be found starting from the context that was passed '
             'to ResponsiveWrapper.of(). Place a ResponsiveWrapper at the root of the app '
             'or supply a ResponsiveWrapper.builder.'),
         context.describeElement('The context used was')
@@ -180,10 +183,13 @@ class InheritedRespoWrapper extends InheritedWidget {
   /// Creates a widget that provides [ResponsiveWrapperData] to its descendants.
   ///
   /// The [data] and [child] arguments must not be null.
-  const InheritedRespoWrapper({Key? key, required this.data, required Widget child}) : super(key: key, child: child);
+  const InheritedRespoWrapper(
+      {Key? key, required this.data, required Widget child})
+      : super(key: key, child: child);
 
   @override
-  bool updateShouldNotify(InheritedRespoWrapper oldWidget) => data != oldWidget.data;
+  bool updateShouldNotify(InheritedRespoWrapper oldWidget) =>
+      data != oldWidget.data;
 }
 
 @immutable
@@ -220,8 +226,6 @@ class RespoWrapperData {
       screenWidth: state.windowWidth,
     );
   }
-
-
 }
 
 @freezed

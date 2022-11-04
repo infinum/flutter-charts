@@ -2,14 +2,18 @@ import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 
 class ColorPickerDialog extends StatelessWidget {
-  const ColorPickerDialog({Key? key, required this.startColor, this.additionalText}) : super(key: key);
+  const ColorPickerDialog(
+      {Key? key, required this.startColor, this.additionalText})
+      : super(key: key);
 
-  static Future<Color?> show(BuildContext context, Color startColor, {String? additionalText}) {
+  static Future<Color?> show(BuildContext context, Color startColor,
+      {String? additionalText}) {
     return showDialog<Color>(
         context: context,
         builder: (_) {
           return AlertDialog(
-            content: ColorPickerDialog(startColor: startColor, additionalText: additionalText),
+            content: ColorPickerDialog(
+                startColor: startColor, additionalText: additionalText),
           );
         });
   }
@@ -38,7 +42,10 @@ class ColorPickerDialog extends StatelessWidget {
               width: 44,
               height: 44,
               enableShadesSelection: false,
-              pickersEnabled: {ColorPickerType.primary: true, ColorPickerType.accent: false},
+              pickersEnabled: {
+                ColorPickerType.primary: true,
+                ColorPickerType.accent: false
+              },
               borderRadius: 22,
               heading: Text(
                 'Select color',

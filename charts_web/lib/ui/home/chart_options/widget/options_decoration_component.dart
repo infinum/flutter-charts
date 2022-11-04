@@ -25,7 +25,8 @@ class DecorationsComponent extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const OptionsComponentHeader(title: 'Decorations', subtitle: _subtitle),
-        const Text('Add a decoration:', style: TextStyle(fontWeight: FontWeight.bold)),
+        const Text('Add a decoration:',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 4),
         Wrap(
           spacing: 8,
@@ -58,7 +59,8 @@ class DecorationsComponent extends ConsumerWidget {
               onPressed: () {
                 _presenter.addDecoration(
                   WidgetDecoration(
-                    widgetDecorationBuilder: (context, state, itemHeight, verticalMultiplier) {
+                    widgetDecorationBuilder:
+                        (context, state, itemHeight, verticalMultiplier) {
                       return SizedBox.shrink();
                     },
                   ),
@@ -68,7 +70,8 @@ class DecorationsComponent extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 16),
-        const Text('Current decorations:', style: TextStyle(fontWeight: FontWeight.bold)),
+        const Text('Current decorations:',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         ...mapToWidgets(_presenter.foregroundDecorations),
         const Divider(),
@@ -101,7 +104,12 @@ class DecorationsComponent extends ConsumerWidget {
 }
 
 class _DecorationItem extends StatelessWidget {
-  const _DecorationItem({Key? key, required this.name, required this.image, required this.onPressed}) : super(key: key);
+  const _DecorationItem(
+      {Key? key,
+      required this.name,
+      required this.image,
+      required this.onPressed})
+      : super(key: key);
 
   final String name;
   final String image;
@@ -114,7 +122,11 @@ class _DecorationItem extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(image, width: 100, height: 100,),
+          Image.asset(
+            image,
+            width: 100,
+            height: 100,
+          ),
           Text(name),
         ],
       ),

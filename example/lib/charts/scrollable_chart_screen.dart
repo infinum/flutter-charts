@@ -79,10 +79,12 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
         minBarWidth: _isScrollable ? 36.0 : 4.0,
         barItemBuilder: (data) {
           return BarItem(
-            color: targetArea.getTargetItemColor(Theme.of(context)
-                .colorScheme
-                .primary
-                .withOpacity(_showBars ? 1.0 : 0.0), data.item),
+            color: targetArea.getTargetItemColor(
+                Theme.of(context)
+                    .colorScheme
+                    .primary
+                    .withOpacity(_showBars ? 1.0 : 0.0),
+                data.item),
             radius: const BorderRadius.vertical(
               top: Radius.circular(24.0),
             ),

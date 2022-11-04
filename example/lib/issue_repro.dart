@@ -63,7 +63,10 @@ class ChartTest extends StatelessWidget {
               showVerticalValues: true,
               verticalAxisValueFromIndex: (idx) => '${idx + 1}',
               gridWidth: 2,
-              textStyle: Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 8, fontWeight: FontWeight.bold),
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .subtitle2!
+                  .copyWith(fontSize: 8, fontWeight: FontWeight.bold),
               gridColor: Theme.of(context).dividerColor,
             ),
           ],

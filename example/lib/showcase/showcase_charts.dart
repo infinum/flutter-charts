@@ -37,7 +37,8 @@ class ShowcaseCharts extends StatelessWidget {
                       ],
                     ],
                     axisMax: 35,
-                    dataStrategy: DefaultDataStrategy(stackMultipleValues: true),
+                    dataStrategy:
+                        DefaultDataStrategy(stackMultipleValues: true),
                   ),
                   itemOptions: BubbleItemOptions(
                     maxBarWidth: 2.0,

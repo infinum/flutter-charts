@@ -29,7 +29,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(width: 600.0, child: SingleChildScrollView(child: ChartOptions())),
+            SizedBox(
+                width: 600.0,
+                child: SingleChildScrollView(child: ChartOptions())),
             const Expanded(child: _Chart()),
           ],
         );

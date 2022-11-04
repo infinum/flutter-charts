@@ -44,7 +44,9 @@ class BarChart<T> extends StatelessWidget {
     final _data = ChartData<T>(
       _mappedValues,
       valueAxisMaxOver: 1,
-      dataStrategy: stack ? StackDataStrategy() : DefaultDataStrategy(stackMultipleValues: false),
+      dataStrategy: stack
+          ? StackDataStrategy()
+          : DefaultDataStrategy(stackMultipleValues: false),
     );
 
     return AnimatedChart<T>(

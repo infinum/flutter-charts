@@ -30,7 +30,8 @@ class OptionsItemsComponent extends HookConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        const OptionsComponentHeader(title: 'Item Options', subtitle: _subtitle),
+        const OptionsComponentHeader(
+            title: 'Item Options', subtitle: _subtitle),
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -70,10 +71,13 @@ class OptionsItemsComponent extends HookConsumerWidget {
         ),
         const SizedBox(height: 16),
         if (_provider.selectedPainter == SelectedPainter.widget)
-          const Text('With WidgetItemOptions you can provide any kind of widget that you want! Here is one example'),
+          const Text(
+              'With WidgetItemOptions you can provide any kind of widget that you want! Here is one example'),
         if (_provider.selectedPainter == SelectedPainter.none)
-          const Text('This is BarItemOptions with 0 width. Most common case for using this is with SparkLine decoration. Check decorations below.'),
-        if (_provider.selectedPainter == SelectedPainter.bar || _provider.selectedPainter == SelectedPainter.bubble)
+          const Text(
+              'This is BarItemOptions with 0 width. Most common case for using this is with SparkLine decoration. Check decorations below.'),
+        if (_provider.selectedPainter == SelectedPainter.bar ||
+            _provider.selectedPainter == SelectedPainter.bubble)
           Wrap(
             spacing: 16,
             runSpacing: 16,
@@ -96,7 +100,8 @@ class OptionsItemsComponent extends HookConsumerWidget {
                 name: 'Padding Left',
                 value: _provider.chartItemPadding.left,
                 step: 2,
-                onChanged: (v) => _provider.updateChartItemPadding(_provider.chartItemPadding.copyWith(left: v)),
+                onChanged: (v) => _provider.updateChartItemPadding(
+                    _provider.chartItemPadding.copyWith(left: v)),
                 defaultValue: _provider.chartItemPadding.left,
                 noInputField: true,
               ),
@@ -104,14 +109,16 @@ class OptionsItemsComponent extends HookConsumerWidget {
                 name: 'Padding Right',
                 value: _provider.chartItemPadding.right,
                 step: 2,
-                onChanged: (v) => _provider.updateChartItemPadding(_provider.chartItemPadding.copyWith(right: v)),
+                onChanged: (v) => _provider.updateChartItemPadding(
+                    _provider.chartItemPadding.copyWith(right: v)),
                 defaultValue: _provider.chartItemPadding.right,
                 noInputField: true,
               ),
             ],
           ),
 
-        if (_provider.isMultiItem && _provider.selectedPainter != SelectedPainter.none)
+        if (_provider.isMultiItem &&
+            _provider.selectedPainter != SelectedPainter.none)
           Wrap(
             spacing: 16,
             runSpacing: 16,
@@ -120,7 +127,8 @@ class OptionsItemsComponent extends HookConsumerWidget {
               ElevatedButton(
                 child: const Text('Set border radius for all'),
                 onPressed: () async {
-                  final radius = await BorderRadiusDialog.show(context, _provider.barBorderRadius[0]);
+                  final radius = await BorderRadiusDialog.show(
+                      context, _provider.barBorderRadius[0]);
                   if (radius != null) {
                     _provider.updateBarBorderRadius(radius, 0, forAll: true);
                   }
@@ -130,13 +138,15 @@ class OptionsItemsComponent extends HookConsumerWidget {
           ),
         // final double? startPosition;
         const SizedBox(height: 16),
-        if ((_provider.selectedPainter == SelectedPainter.bar || _provider.selectedPainter == SelectedPainter.bubble) &&
+        if ((_provider.selectedPainter == SelectedPainter.bar ||
+                _provider.selectedPainter == SelectedPainter.bubble) &&
             _provider.isMultiItem)
           const Text(
             'Different options per line:',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-        if (_provider.selectedPainter == SelectedPainter.bar || _provider.selectedPainter == SelectedPainter.bubble)
+        if (_provider.selectedPainter == SelectedPainter.bar ||
+            _provider.selectedPainter == SelectedPainter.bubble)
           ..._provider.data.mapIndexed((index, list) {
             return _PerValueOptions(index: index);
           }).toList(),
@@ -169,7 +179,8 @@ class _MultiValueOptions extends ConsumerWidget {
               name: 'Padding Left',
               value: _provider.multiValuePadding.left,
               step: 2,
-              onChanged: (v) => _provider.updateMultiValuePadding(_provider.multiValuePadding.copyWith(left: v)),
+              onChanged: (v) => _provider.updateMultiValuePadding(
+                  _provider.multiValuePadding.copyWith(left: v)),
               defaultValue: _provider.multiValuePadding.left,
               noInputField: true,
             ),
@@ -178,7 +189,8 @@ class _MultiValueOptions extends ConsumerWidget {
               name: 'Padding Right',
               value: _provider.multiValuePadding.right,
               step: 2,
-              onChanged: (v) => _provider.updateMultiValuePadding(_provider.multiValuePadding.copyWith(right: v)),
+              onChanged: (v) => _provider.updateMultiValuePadding(
+                  _provider.multiValuePadding.copyWith(right: v)),
               defaultValue: _provider.multiValuePadding.right,
               noInputField: true,
             ),
@@ -209,10 +221,14 @@ class _PerValueOptions extends ConsumerWidget {
             children: [
               ElevatedButton(
                 child: const Text('Set border side'),
-                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(_provider.listColors[index])),
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(_provider.listColors[index])),
                 onPressed: () async {
                   final border = await BorderSideDialog.show(
-                      context, _provider.itemBorderSides[index], _provider.itemBorderSides[index].color);
+                      context,
+                      _provider.itemBorderSides[index],
+                      _provider.itemBorderSides[index].color);
                   if (border != null) {
                     _provider.updateItemBorderSide(border, index);
                   }
@@ -220,11 +236,15 @@ class _PerValueOptions extends ConsumerWidget {
               ),
               ElevatedButton(
                 child: const Text('Set gradient'),
-                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(_provider.listColors[index])),
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(_provider.listColors[index])),
                 onPressed: () async {
-                  final currentGradient =
-                      _provider.gradient[index] ?? LinearGradient(colors: [_provider.listColors[index], Colors.black]);
-                  final gradient = await LinearGradientPickerDialog.show(context, currentGradient, onResetGradient: () {
+                  final currentGradient = _provider.gradient[index] ??
+                      LinearGradient(
+                          colors: [_provider.listColors[index], Colors.black]);
+                  final gradient = await LinearGradientPickerDialog.show(
+                      context, currentGradient, onResetGradient: () {
                     _provider.updateGradient(null, index);
                   });
                   if (gradient != null) {
@@ -235,9 +255,12 @@ class _PerValueOptions extends ConsumerWidget {
               if (_provider.selectedPainter == SelectedPainter.bar)
                 ElevatedButton(
                   child: const Text('Set border radius'),
-                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(_provider.listColors[index])),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          _provider.listColors[index])),
                   onPressed: () async {
-                    final radius = await BorderRadiusDialog.show(context, _provider.barBorderRadius[index]);
+                    final radius = await BorderRadiusDialog.show(
+                        context, _provider.barBorderRadius[index]);
                     if (radius != null) {
                       _provider.updateBarBorderRadius(radius, index);
                     }
@@ -277,13 +300,19 @@ class _BarOptionButton extends StatelessWidget {
         width: 200,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(width: 3, color: selected ? Theme.of(context).primaryColor : Colors.grey)),
+            border: Border.all(
+                width: 3,
+                color:
+                    selected ? Theme.of(context).primaryColor : Colors.grey)),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (imageAsset == null) const SizedBox(width: 8),
             if (asset != null)
-              SvgPicture.asset(asset!, height: 30, color: selected ? Theme.of(context).primaryColor : Colors.grey),
+              SvgPicture.asset(asset!,
+                  height: 30,
+                  color:
+                      selected ? Theme.of(context).primaryColor : Colors.grey),
             if (imageAsset != null)
               ClipRRect(
                   borderRadius: BorderRadius.circular(16),
@@ -294,7 +323,10 @@ class _BarOptionButton extends StatelessWidget {
                     fit: BoxFit.cover,
                   )),
             if (asset != null || imageAsset != null) const SizedBox(width: 16),
-            Expanded(child: Text(name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
+            Expanded(
+                child: Text(name,
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
           ],
         ),
       ),

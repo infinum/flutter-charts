@@ -4,15 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LinearGradientPickerDialog extends ConsumerStatefulWidget {
-  const LinearGradientPickerDialog({Key? key, required this.startGradient, this.onResetGradient}) : super(key: key);
+  const LinearGradientPickerDialog(
+      {Key? key, required this.startGradient, this.onResetGradient})
+      : super(key: key);
 
-  static Future<LinearGradient?> show(BuildContext context, LinearGradient startGradient,
+  static Future<LinearGradient?> show(
+      BuildContext context, LinearGradient startGradient,
       {VoidCallback? onResetGradient}) {
     return showDialog<LinearGradient>(
         context: context,
         builder: (_) {
           return AlertDialog(
-            content: LinearGradientPickerDialog(startGradient: startGradient, onResetGradient: onResetGradient),
+            content: LinearGradientPickerDialog(
+                startGradient: startGradient, onResetGradient: onResetGradient),
           );
         });
   }
@@ -21,10 +25,12 @@ class LinearGradientPickerDialog extends ConsumerStatefulWidget {
   final VoidCallback? onResetGradient;
 
   @override
-  ConsumerState<LinearGradientPickerDialog> createState() => _LinearGradientPickerDialogState();
+  ConsumerState<LinearGradientPickerDialog> createState() =>
+      _LinearGradientPickerDialogState();
 }
 
-class _LinearGradientPickerDialogState extends ConsumerState<LinearGradientPickerDialog> {
+class _LinearGradientPickerDialogState
+    extends ConsumerState<LinearGradientPickerDialog> {
   late Color start;
   late Color end;
   late bool isAlignmentHorizontal = false;
@@ -60,7 +66,10 @@ class _LinearGradientPickerDialogState extends ConsumerState<LinearGradientPicke
               width: 44,
               height: 44,
               enableShadesSelection: false,
-              pickersEnabled: {ColorPickerType.primary: true, ColorPickerType.accent: false},
+              pickersEnabled: {
+                ColorPickerType.primary: true,
+                ColorPickerType.accent: false
+              },
             ),
             ColorPicker(
               color: widget.startGradient.colors[1],
@@ -73,13 +82,17 @@ class _LinearGradientPickerDialogState extends ConsumerState<LinearGradientPicke
               width: 44,
               height: 44,
               enableShadesSelection: false,
-              pickersEnabled: {ColorPickerType.primary: true, ColorPickerType.accent: false},
+              pickersEnabled: {
+                ColorPickerType.primary: true,
+                ColorPickerType.accent: false
+              },
             ),
             SizedBox(
               width: 400,
               child: SwitchListTile(
-                title:
-                    Text(isAlignmentHorizontal ? 'Horizontal alignment Left->Right' : 'Vertical alignment Bottom->Top'),
+                title: Text(isAlignmentHorizontal
+                    ? 'Horizontal alignment Left->Right'
+                    : 'Vertical alignment Bottom->Top'),
                 value: isAlignmentHorizontal,
                 onChanged: (v) {
                   setState(() {
@@ -93,7 +106,8 @@ class _LinearGradientPickerDialogState extends ConsumerState<LinearGradientPicke
               height: 80,
               width: 50,
               alignment: Alignment.center,
-              child: const Text('Example', style: TextStyle(fontSize: 10, color: Colors.white)),
+              child: const Text('Example',
+                  style: TextStyle(fontSize: 10, color: Colors.white)),
               decoration: BoxDecoration(
                 gradient: _getGradient(),
               ),
@@ -122,7 +136,11 @@ class _LinearGradientPickerDialogState extends ConsumerState<LinearGradientPicke
   LinearGradient _getGradient() {
     return LinearGradient(
         colors: [start, end],
-        begin: isAlignmentHorizontal ? Alignment.centerLeft : Alignment.bottomCenter,
-        end: isAlignmentHorizontal ? Alignment.centerRight : Alignment.topCenter);
+        begin: isAlignmentHorizontal
+            ? Alignment.centerLeft
+            : Alignment.bottomCenter,
+        end: isAlignmentHorizontal
+            ? Alignment.centerRight
+            : Alignment.topCenter);
   }
 }

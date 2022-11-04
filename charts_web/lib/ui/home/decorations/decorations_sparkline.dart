@@ -16,7 +16,8 @@ import '../../common/widget/double_option_input.dart';
 import '../chart_options/widget/options_items_component.dart';
 
 class DecorationsSparkline extends HookConsumerWidget {
-  const DecorationsSparkline({Key? key, required this.decorationIndex}) : super(key: key);
+  const DecorationsSparkline({Key? key, required this.decorationIndex})
+      : super(key: key);
 
   final int decorationIndex;
 
@@ -76,7 +77,10 @@ class DecorationsSparkline extends HookConsumerWidget {
                 children: [
                   ElevatedButton(
                     child: Row(
-                      children: [Icon(Icons.format_paint, color: _presenter.color), const Text('Set color')],
+                      children: [
+                        Icon(Icons.format_paint, color: _presenter.color),
+                        const Text('Set color')
+                      ],
                     ),
                     onPressed: () async {
                       final color = await ColorPickerDialog.show(
@@ -97,8 +101,12 @@ class DecorationsSparkline extends HookConsumerWidget {
                     ),
                     onPressed: () async {
                       final gradient = await LinearGradientPickerDialog.show(
-                          context, _presenter.gradient ?? LinearGradient(colors: [_presenter.color, Colors.black]),
-                          onResetGradient: () => _presenter.updateGradient(null));
+                          context,
+                          _presenter.gradient ??
+                              LinearGradient(
+                                  colors: [_presenter.color, Colors.black]),
+                          onResetGradient: () =>
+                              _presenter.updateGradient(null));
                       if (gradient != null) {
                         _presenter.updateGradient(gradient);
                       }

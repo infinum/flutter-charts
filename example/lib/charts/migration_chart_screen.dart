@@ -24,8 +24,8 @@ class MigrationChartScreen extends StatelessWidget {
                 children: [
                   _Header(title: 'Target line decoration'),
                   _buildChartWithDecoration(
-                    decoration:
-                        WidgetDecoration(widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
+                    decoration: WidgetDecoration(widgetDecorationBuilder:
+                        (context, chartState, itemWidth, verticalMultiplier) {
                       return Stack(
                         children: [
                           Positioned(
@@ -41,20 +41,26 @@ class MigrationChartScreen extends StatelessWidget {
                   _Header(title: 'Target line text decoration'),
                   _buildChartWithDecoration(
                     decoration: WidgetDecoration(
-                        widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
+                        widgetDecorationBuilder: (context, chartState,
+                            itemWidth, verticalMultiplier) {
                           return Stack(
                             clipBehavior: Clip.none,
                             children: [
                               Positioned.fill(
                                 top: null,
                                 bottom: 2 * verticalMultiplier,
-                                child: const RotatedBox(quarterTurns: 3, child: Text('This is target line')),
+                                child: const RotatedBox(
+                                    quarterTurns: 3,
+                                    child: Text('This is target line')),
                               ),
                               Positioned.fill(
                                 top: null,
                                 left: 0,
                                 bottom: 2 * verticalMultiplier,
-                                child: Container(color: Colors.red, width: double.infinity, height: 2),
+                                child: Container(
+                                    color: Colors.red,
+                                    width: double.infinity,
+                                    height: 2),
                               ),
                             ],
                           );
@@ -64,7 +70,8 @@ class MigrationChartScreen extends StatelessWidget {
                   _Header(title: 'Target area decoration'),
                   _buildChartWithDecoration(
                     decoration: WidgetDecoration(
-                      widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
+                      widgetDecorationBuilder:
+                          (context, chartState, itemWidth, verticalMultiplier) {
                         return Padding(
                           padding: EdgeInsets.only(top: 5 * verticalMultiplier),
                           child: Container(
@@ -82,9 +89,12 @@ class MigrationChartScreen extends StatelessWidget {
                   _Header(title: 'Border decoration'),
                   _buildChartWithDecoration(
                     decoration: WidgetDecoration(
-                        widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
+                        widgetDecorationBuilder: (context, chartState,
+                            itemWidth, verticalMultiplier) {
                           return Container(
-                            decoration: BoxDecoration(border: Border.all(color: Colors.red, width: 3)),
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.red, width: 3)),
                             width: double.infinity,
                             height: double.infinity,
                           );
@@ -103,7 +113,8 @@ class MigrationChartScreen extends StatelessWidget {
       width: 450,
       child: Chart(
           state: ChartState<void>(
-        data: ChartData([_data.map((e) => ChartItem<void>(e.toDouble())).toList()]),
+        data: ChartData(
+            [_data.map((e) => ChartItem<void>(e.toDouble())).toList()]),
         itemOptions: BarItemOptions(
           padding: const EdgeInsets.symmetric(horizontal: 2.0),
           minBarWidth: 4.0,
@@ -141,4 +152,3 @@ class _Header extends StatelessWidget {
     );
   }
 }
-

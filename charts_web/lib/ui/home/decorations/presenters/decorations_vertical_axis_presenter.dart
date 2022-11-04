@@ -9,10 +9,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../presenter/chart_decorations_presenter.dart';
 
-final decorationVerticalAxisPresenter = ChangeNotifierProvider.family<DecorationVerticalAxisPresenter, int>(
-    (ref, a) => DecorationVerticalAxisPresenter(a, ref));
+final decorationVerticalAxisPresenter =
+    ChangeNotifierProvider.family<DecorationVerticalAxisPresenter, int>(
+        (ref, a) => DecorationVerticalAxisPresenter(a, ref));
 
-class DecorationVerticalAxisPresenter extends ChangeNotifier implements DecorationBuilder {
+class DecorationVerticalAxisPresenter extends ChangeNotifier
+    implements DecorationBuilder {
   DecorationVerticalAxisPresenter(this.index, Ref ref);
 
   int lineId = 0;

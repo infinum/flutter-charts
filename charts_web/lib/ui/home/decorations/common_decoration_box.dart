@@ -8,7 +8,12 @@ import 'package:collection/collection.dart';
 import '../presenter/chart_state_presenter.dart';
 
 class CommonDecorationBox extends HookConsumerWidget {
-  const CommonDecorationBox({Key? key, this.onDataListSelected, required this.child, required this.decorationIndex, required this.name})
+  const CommonDecorationBox(
+      {Key? key,
+      this.onDataListSelected,
+      required this.child,
+      required this.decorationIndex,
+      required this.name})
       : super(key: key);
 
   final ValueChanged<int>? onDataListSelected;
@@ -21,7 +26,8 @@ class CommonDecorationBox extends HookConsumerWidget {
     final _chartStatePresenter = ref.watch(chartStatePresenter);
     final _chartDecorationsPresenter = ref.watch(chartDecorationsPresenter);
     final isInForeground =
-        _chartDecorationsPresenter.getLayerOfDecoration(decorationIndex) == DecorationLayer.foreground;
+        _chartDecorationsPresenter.getLayerOfDecoration(decorationIndex) ==
+            DecorationLayer.foreground;
 
     return Container(
       decoration: BoxDecoration(
@@ -43,7 +49,8 @@ class CommonDecorationBox extends HookConsumerWidget {
                   IconButton(
                     padding: EdgeInsets.zero,
                     onPressed: () {
-                      _chartDecorationsPresenter.moveDecorationToLayer(decorationIndex, DecorationLayer.foreground);
+                      _chartDecorationsPresenter.moveDecorationToLayer(
+                          decorationIndex, DecorationLayer.foreground);
                     },
                     icon: Opacity(
                       opacity: isInForeground ? 1.0 : 0.3,
@@ -59,7 +66,8 @@ class CommonDecorationBox extends HookConsumerWidget {
                   IconButton(
                     padding: EdgeInsets.zero,
                     onPressed: () {
-                      _chartDecorationsPresenter.moveDecorationToLayer(decorationIndex, DecorationLayer.background);
+                      _chartDecorationsPresenter.moveDecorationToLayer(
+                          decorationIndex, DecorationLayer.background);
                     },
                     icon: Opacity(
                       opacity: !isInForeground ? 1.0 : 0.3,
@@ -69,7 +77,8 @@ class CommonDecorationBox extends HookConsumerWidget {
                   const Text('Background', style: TextStyle(fontSize: 10)),
                 ],
               ),
-              if (onDataListSelected != null && _chartStatePresenter.isMultiItem) ...[
+              if (onDataListSelected != null &&
+                  _chartStatePresenter.isMultiItem) ...[
                 const SizedBox(width: 24),
                 const Text('Data list: '),
                 ..._chartStatePresenter.data.mapIndexed(
@@ -85,7 +94,9 @@ class CommonDecorationBox extends HookConsumerWidget {
               const Spacer(),
               IconButton(
                 onPressed: () {
-                  ref.read(chartDecorationsPresenter).removeDecoration(decorationIndex);
+                  ref
+                      .read(chartDecorationsPresenter)
+                      .removeDecoration(decorationIndex);
                 },
                 icon: const Icon(Icons.delete_forever, color: Colors.black54),
               ),

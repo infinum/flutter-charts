@@ -25,7 +25,9 @@ class _ChartAppState extends State<ChartApp> {
         state: ChartState(
             data: ChartData(
               [
-                [2, 4, 6, 3, 2, 5, 4, 3, 2].map((e) => ChartItem<void>(e.toDouble())).toList(),
+                [2, 4, 6, 3, 2, 5, 4, 3, 2]
+                    .map((e) => ChartItem<void>(e.toDouble()))
+                    .toList(),
               ],
               valueAxisMaxOver: 2,
             ),

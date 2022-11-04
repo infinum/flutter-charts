@@ -20,7 +20,13 @@ void main() {
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
             barItemBuilder: (data) {
               return BarItem(
-                  color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listIndex].withOpacity(0.5));
+                  color: [
+                Colors.red,
+                Colors.yellow,
+                Colors.green,
+                Colors.blue
+              ][data.listIndex]
+                      .withOpacity(0.5));
             },
           ),
           strategy: DefaultDataStrategy(stackMultipleValues: true),
@@ -33,7 +39,13 @@ void main() {
           options: BarItemOptions(
             barItemBuilder: (data) {
               return BarItem(
-                color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listIndex].withOpacity(0.5),
+                color: [
+                  Colors.red,
+                  Colors.yellow,
+                  Colors.green,
+                  Colors.blue
+                ][data.listIndex]
+                    .withOpacity(0.5),
               );
             },
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -49,7 +61,13 @@ void main() {
           options: BarItemOptions(
             barItemBuilder: (data) {
               return BarItem(
-                color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listIndex].withOpacity(0.5),
+                color: [
+                  Colors.red,
+                  Colors.yellow,
+                  Colors.green,
+                  Colors.blue
+                ][data.listIndex]
+                    .withOpacity(0.5),
               );
             },
             multiValuePadding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -64,14 +82,20 @@ void main() {
             4,
             (index) => SparkLineDecoration(
               listIndex: index,
-              lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
+              lineColor: [
+                Colors.red,
+                Colors.yellow,
+                Colors.green,
+                Colors.blue
+              ][index],
               lineWidth: 3.0,
               stretchLine: true,
             ),
           ),
           options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            barItemBuilder: (_) => BarItem(color: Colors.red.withOpacity(0.025)),
+            barItemBuilder: (_) =>
+                BarItem(color: Colors.red.withOpacity(0.025)),
           ),
         ),
       )
@@ -83,7 +107,12 @@ void main() {
             4,
             (index) => SparkLineDecoration(
               listIndex: index,
-              lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
+              lineColor: [
+                Colors.red,
+                Colors.yellow,
+                Colors.green,
+                Colors.blue
+              ][index],
               lineWidth: 3.0,
               stretchLine: true,
             ),
@@ -91,7 +120,8 @@ void main() {
           strategy: StackDataStrategy(),
           options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            barItemBuilder: (data) => BarItem(color: Colors.red.withOpacity(0.025)),
+            barItemBuilder: (data) =>
+                BarItem(color: Colors.red.withOpacity(0.025)),
           ),
         ),
       )
@@ -104,14 +134,25 @@ void main() {
               4,
               (index) => SparkLineDecoration(
                     listIndex: index,
-                    lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
+                    lineColor: [
+                      Colors.red,
+                      Colors.yellow,
+                      Colors.green,
+                      Colors.blue
+                    ][index],
                     lineWidth: 3.0,
                     startPosition: index / 4,
                   )),
           options: BarItemOptions(
             barItemBuilder: (data) {
               return BarItem(
-                  color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listIndex].withOpacity(0.1));
+                  color: [
+                Colors.red,
+                Colors.yellow,
+                Colors.green,
+                Colors.blue
+              ][data.listIndex]
+                      .withOpacity(0.1));
             },
             multiValuePadding: const EdgeInsets.symmetric(horizontal: 1.0),
             padding: const EdgeInsets.symmetric(horizontal: 1.0),
@@ -155,7 +196,13 @@ void main() {
           options: BarItemOptions(
             barItemBuilder: (data) {
               return BarItem(
-                  color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.listIndex].withOpacity(0.1));
+                  color: [
+                Colors.red,
+                Colors.yellow,
+                Colors.green,
+                Colors.blue
+              ][data.listIndex]
+                      .withOpacity(0.1));
             },
           ),
         ),
@@ -248,7 +295,8 @@ void main() {
           behaviour: ChartBehaviour(),
         ),
       );
-    await tester.pumpWidgetBuilder(builder.build(), surfaceSize: const Size(1400, 1000), textScaleSize: 1.4);
+    await tester.pumpWidgetBuilder(builder.build(),
+        surfaceSize: const Size(1400, 1000), textScaleSize: 1.4);
     await screenMatchesGolden(tester, 'complex_multi_charts');
   });
 }

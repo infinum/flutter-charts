@@ -9,9 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final decorationWidgetPresenter =
-    ChangeNotifierProvider.family<DecorationWidgetPresenter, int>((ref, a) => DecorationWidgetPresenter(a, ref));
+    ChangeNotifierProvider.family<DecorationWidgetPresenter, int>(
+        (ref, a) => DecorationWidgetPresenter(a, ref));
 
-class DecorationWidgetPresenter extends ChangeNotifier implements DecorationBuilder {
+class DecorationWidgetPresenter extends ChangeNotifier
+    implements DecorationBuilder {
   DecorationWidgetPresenter(this.index, Ref ref);
 
   final int index;
@@ -25,7 +27,8 @@ class DecorationWidgetPresenter extends ChangeNotifier implements DecorationBuil
   @override
   WidgetDecoration buildDecoration() {
     if (type == 0) {
-      return WidgetDecoration(widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
+      return WidgetDecoration(widgetDecorationBuilder:
+          (context, chartState, itemWidth, verticalMultiplier) {
         return Stack(
           children: [
             Positioned(
@@ -39,27 +42,31 @@ class DecorationWidgetPresenter extends ChangeNotifier implements DecorationBuil
       });
     } else if (type == 1) {
       return WidgetDecoration(
-          widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
+          widgetDecorationBuilder:
+              (context, chartState, itemWidth, verticalMultiplier) {
             return Stack(
               clipBehavior: Clip.none,
               children: [
                 Positioned.fill(
                   top: null,
                   bottom: 2 * verticalMultiplier,
-                  child: const RotatedBox(quarterTurns: 3, child: Text('This is target line')),
+                  child: const RotatedBox(
+                      quarterTurns: 3, child: Text('This is target line')),
                 ),
                 Positioned.fill(
                   top: null,
                   left: 0,
                   bottom: 2 * verticalMultiplier,
-                  child: Container(color: Colors.blue, width: double.infinity, height: 2),
+                  child: Container(
+                      color: Colors.blue, width: double.infinity, height: 2),
                 ),
               ],
             );
           },
           margin: const EdgeInsets.only(left: 20));
     } else if (type == 2) {
-      return WidgetDecoration(widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
+      return WidgetDecoration(widgetDecorationBuilder:
+          (context, chartState, itemWidth, verticalMultiplier) {
         return Padding(
           padding: EdgeInsets.only(top: 5 * verticalMultiplier),
           child: Container(
@@ -75,16 +82,19 @@ class DecorationWidgetPresenter extends ChangeNotifier implements DecorationBuil
       });
     } else if (type == 3) {
       return WidgetDecoration(
-          widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
+          widgetDecorationBuilder:
+              (context, chartState, itemWidth, verticalMultiplier) {
             return Container(
-              decoration: BoxDecoration(border: Border.all(color: Colors.blue, width: 3)),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.blue, width: 3)),
               width: double.infinity,
               height: double.infinity,
             );
           },
           margin: const EdgeInsets.all(3));
     } else if (type == 4) {
-      return WidgetDecoration(widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
+      return WidgetDecoration(widgetDecorationBuilder:
+          (context, chartState, itemWidth, verticalMultiplier) {
         return Padding(
           padding: EdgeInsets.only(top: 5 * verticalMultiplier),
           child: ClipRRect(
