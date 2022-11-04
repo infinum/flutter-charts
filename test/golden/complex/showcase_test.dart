@@ -162,8 +162,8 @@ void main() {
                 barItemBuilder: (data) {
                   return BarItem(color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][data.listIndex]);
                 },
-                multiValuePadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                multiValuePadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
               ),
               backgroundDecorations: [
                 GridDecoration(
@@ -207,36 +207,32 @@ void main() {
             padding: EdgeInsets.zero,
             child: Chart<bool>(
               state: ChartState(
-                data: ChartData(
+                data: ChartData([
                   [
-                    [
-                      BubbleValue(9),
-                      BubbleValue(12),
-                      BubbleValue(11),
-                      BubbleValue(12),
-                      BubbleValue(10),
-                      BubbleValue(22),
-                      BubbleValue(20),
-                      BubbleValue(18),
-                      BubbleValue(13),
-                      BubbleValue(14),
-                    ],
-                    [
-                      BubbleValue(14),
-                      BubbleValue(16),
-                      BubbleValue(14),
-                      BubbleValue(16),
-                      BubbleValue(12),
-                      BubbleValue(6),
-                      BubbleValue(13),
-                      BubbleValue(19),
-                      BubbleValue(10),
-                      BubbleValue(11),
-                    ],
+                    BubbleValue(9),
+                    BubbleValue(12),
+                    BubbleValue(11),
+                    BubbleValue(12),
+                    BubbleValue(10),
+                    BubbleValue(22),
+                    BubbleValue(20),
+                    BubbleValue(18),
+                    BubbleValue(13),
+                    BubbleValue(14),
                   ],
-                  axisMax: 30,
-                  dataStrategy: DefaultDataStrategy(stackMultipleValues: false)
-                ),
+                  [
+                    BubbleValue(14),
+                    BubbleValue(16),
+                    BubbleValue(14),
+                    BubbleValue(16),
+                    BubbleValue(12),
+                    BubbleValue(6),
+                    BubbleValue(13),
+                    BubbleValue(19),
+                    BubbleValue(10),
+                    BubbleValue(11),
+                  ],
+                ], axisMax: 30, dataStrategy: DefaultDataStrategy(stackMultipleValues: false)),
                 itemOptions: BubbleItemOptions(
                   maxBarWidth: 0.0,
                 ),

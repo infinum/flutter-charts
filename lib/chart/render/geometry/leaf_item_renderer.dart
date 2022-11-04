@@ -149,27 +149,12 @@ class _RenderLeafChartItem<T> extends RenderBox {
       return false;
     }
 
-    final _stack = 1 - _state.data.dataStrategy._stackMultipleValuesProgress;
-    final _stackSize = max(1, _state.data.stackSize * _stack);
-
-    final _multiPadding = _itemOptions.multiValuePadding.horizontal * _stackSize * _stack;
-    final _stackWidth = (size.width - _multiPadding - _itemOptions.padding.horizontal) / _stackSize;
-
-    final _translatedPosition = position.translate(
-        _itemOptions.multiValuePadding.left * _stack +
-            _itemOptions.padding.left +
-            _stackWidth * listIndex * _stack +
-            ((_itemOptions.multiValuePadding.horizontal * listIndex * _stack)),
-        0.0);
-
-    // Get exact items size for current configuration and check position.
-    if (Size(_stackWidth, size.height).contains(_translatedPosition)) {
-      // Add hit test entry and call onClick callback
+    if (size.contains(position)) {
       result.add(BoxHitTestEntry(this, position));
       return true;
     }
 
-    return false;
+    return super.hitTest(result, position: position);
   }
 
   @override
@@ -183,21 +168,11 @@ class _RenderLeafChartItem<T> extends RenderBox {
   void paint(PaintingContext context, Offset offset) {
     final canvas = context.canvas;
     canvas.save();
-    canvas.translate(offset.dx, offset.dy);
 
-    final _stack = 1 - _state.data.dataStrategy._stackMultipleValuesProgress;
-    final _stackSize = max(1, _state.data.stackSize * _stack);
-
-    final _multiPadding = _itemOptions.multiValuePadding.horizontal * _stackSize * _stack;
-
-    final _stackWidth = (size.width - _multiPadding - _itemOptions.padding.horizontal) / _stackSize;
-
-    canvas.translate(
-        _itemOptions.multiValuePadding.left * _stack +
-            _itemOptions.padding.left +
-            _stackWidth * listIndex * _stack +
-            ((_itemOptions.multiValuePadding.horizontal * listIndex * _stack)),
-        0.0);
+    final _itemOffset = offset +
+        Offset(_state.defaultMargin.left + _state.defaultPadding.left,
+            _state.defaultMargin.top + _state.defaultPadding.top);
+    canvas.translate(_itemOffset.dx, _itemOffset.dy);
 
     // Use item painter from ItemOptions to draw the item on the chart
     final _itemPainter = _itemOptions.geometryPainter(
@@ -208,7 +183,7 @@ class _RenderLeafChartItem<T> extends RenderBox {
     );
 
     // Draw the item on selected position
-    _itemPainter.draw(canvas, Size(_stackWidth, size.height), drawDataItem.getPaint(Size(_stackWidth, size.height)));
+    _itemPainter.draw(canvas, size, drawDataItem.getPaint(size));
 
     canvas.restore();
   }
