@@ -14,56 +14,76 @@ void main() {
     final builder = GoldenBuilder.grid(columns: 3, widthToHeightRatio: 1.4)
       ..addScenario(
         'Default',
-        getDefaultChart(backgroundDecorations: [
-          BorderDecoration(),
-        ]),
+        getDefaultChart(
+          backgroundDecorations: [
+            BorderDecoration(),
+          ],
+        ),
       )
       ..addScenario(
         'Increase width',
-        getDefaultChart(backgroundDecorations: [
-          BorderDecoration(
-            borderWidth: 6.0,
-          ),
-        ]),
+        getDefaultChart(
+          backgroundDecorations: [
+            BorderDecoration(
+              borderWidth: 6,
+            ),
+          ],
+        ),
       )
       ..addScenario(
         'End with chart',
-        getDefaultChart(backgroundDecorations: [
-          BorderDecoration(
-            endWithChart: true,
-          ),
-        ]),
+        getDefaultChart(
+          backgroundDecorations: [
+            BorderDecoration(
+              endWithChart: true,
+            ),
+          ],
+        ),
       )
       ..addScenario(
         'Just vertical',
-        getDefaultChart(backgroundDecorations: [
-          BorderDecoration(
-              sidesWidth: Border.symmetric(
-                  vertical: BorderSide(width: 1.0, color: Colors.black))),
-        ]),
+        getDefaultChart(
+          backgroundDecorations: [
+            BorderDecoration(
+              sidesWidth: const Border.symmetric(
+                vertical: BorderSide(),
+              ),
+            ),
+          ],
+        ),
       )
       ..addScenario(
         'Just horizontal',
-        getDefaultChart(backgroundDecorations: [
-          BorderDecoration(
-              sidesWidth: Border.symmetric(
-                  horizontal: BorderSide(width: 1.0, color: Colors.black))),
-        ]),
+        getDefaultChart(
+          backgroundDecorations: [
+            BorderDecoration(
+              sidesWidth: const Border.symmetric(
+                horizontal: BorderSide(),
+              ),
+            ),
+          ],
+        ),
       )
       ..addScenario(
         'All different',
-        getDefaultChart(backgroundDecorations: [
-          BorderDecoration(
-              sidesWidth: Border(
-            top: BorderSide(width: 2.0, color: Colors.red),
-            bottom: BorderSide(width: 4.0, color: Colors.yellow),
-            left: BorderSide(width: 2.0, color: Colors.green),
-            right: BorderSide(width: 4.0, color: Colors.black),
-          )),
-        ]),
+        getDefaultChart(
+          backgroundDecorations: [
+            BorderDecoration(
+              sidesWidth: const Border(
+                top: BorderSide(width: 2, color: Colors.red),
+                bottom: BorderSide(width: 4, color: Colors.yellow),
+                left: BorderSide(width: 2, color: Colors.green),
+                right: BorderSide(width: 4),
+              ),
+            ),
+          ],
+        ),
       );
-    await tester.pumpWidgetBuilder(builder.build(),
-        surfaceSize: const Size(1400, 660), textScaleSize: 1.4);
+    await tester.pumpWidgetBuilder(
+      builder.build(),
+      surfaceSize: const Size(1400, 660),
+      textScaleSize: 1.4,
+    );
     await screenMatchesGolden(tester, 'border_decoration_golden');
   });
 }

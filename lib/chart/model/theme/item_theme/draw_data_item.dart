@@ -18,13 +18,14 @@ abstract class DrawDataItem extends Equatable {
   final BorderSide border;
 
   Paint getPaint(Size size) {
-    var _paint = Paint();
+    final _paint = Paint();
     _paint.color = color;
 
     if (gradient != null) {
       // Compiler complains that gradient could be null. But unless if fails us that will never be null.
       _paint.shader = gradient!.createShader(
-          Rect.fromPoints(Offset.zero, Offset(size.width, size.height)));
+        Rect.fromPoints(Offset.zero, Offset(size.width, size.height)),
+      );
     }
 
     return _paint;

@@ -1,5 +1,4 @@
 import 'package:charts_painter/chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 final _data = [4, 6, 3, 6, 7, 9, 3, 2, 4, 6, 2];

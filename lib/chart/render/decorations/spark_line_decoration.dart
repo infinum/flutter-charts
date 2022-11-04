@@ -84,8 +84,10 @@ class SparkLineDecoration extends DecorationPainter {
 
   @override
   Offset applyPaintTransform(ChartState state, Size size) {
-    return Offset(state.defaultPadding.left + state.defaultMargin.left,
-        state.defaultPadding.top + state.defaultMargin.top);
+    return Offset(
+      state.defaultPadding.left + state.defaultMargin.left,
+      state.defaultPadding.top + state.defaultMargin.top,
+    );
   }
 
   @override
@@ -105,9 +107,9 @@ class SparkLineDecoration extends DecorationPainter {
     final _itemWidth = size.width / _listSize;
 
     final _maxValueForKey =
-        state.data.items[listIndex].fold(0.0, (double previousValue, element) {
+        state.data.items[listIndex].fold<double>(0, (previousValue, element) {
       if (previousValue < (element.max ?? element.min ?? 0)) {
-        return (element.max ?? element.min ?? 0);
+        return element.max ?? element.min ?? 0;
       }
 
       return previousValue;
@@ -117,7 +119,7 @@ class SparkLineDecoration extends DecorationPainter {
       // Compiler complains that gradient could be null. But unless if fails us that will never be null.
       _paint.shader = gradient!.createShader(
         Rect.fromLTWH(
-          0.0,
+          0,
           size.height - (_maxValueForKey * scale),
           size.width,
           _maxValueForKey * scale,
@@ -133,14 +135,18 @@ class SparkLineDecoration extends DecorationPainter {
       final _position = _itemWidth * (_stretchPosition + _fixedPosition);
 
       if (fill && key == 0) {
-        _positions.add(Offset(_itemWidth * key + _position, 0.0));
+        _positions.add(Offset(_itemWidth * key + _position, 0));
       }
 
-      _positions.add(Offset(_itemWidth * key + _position,
-          size.height - ((value.max ?? 0.0) - state.data.minValue) * scale));
+      _positions.add(
+        Offset(
+          _itemWidth * key + _position,
+          size.height - ((value.max ?? 0.0) - state.data.minValue) * scale,
+        ),
+      );
 
       if (fill && state.data.items[listIndex].length - 1 == key) {
-        _positions.add(Offset(_itemWidth * key + _position, 0.0));
+        _positions.add(Offset(_itemWidth * key + _position, 0));
       }
     });
 
@@ -179,8 +185,14 @@ class SparkLineDecoration extends DecorationPainter {
       final _secondLerpValue =
           lerpDouble(_mid.dy, _p2.dy, _smoothPoints) ?? size.height;
 
-      _path.cubicTo(controlPointX, _p1.dy, _firstLerpValue, _secondLerpValue,
-          _p2.dx, _p2.dy);
+      _path.cubicTo(
+        controlPointX,
+        _p1.dy,
+        _firstLerpValue,
+        _secondLerpValue,
+        _p2.dx,
+        _p2.dy,
+      );
 
       if (i == _points.length - 2) {
         _path.lineTo(_p2.dx, _p2.dy);
@@ -202,16 +214,17 @@ class SparkLineDecoration extends DecorationPainter {
           lerpDouble(lineWidth, endValue.lineWidth, t) ?? 0.0;
 
       return SparkLineDecoration._lerp(
-          fill: t > 0.5 ? endValue.fill : fill,
-          id: endValue.id,
-          smoothPoints: _smoothPointsLerp,
-          lineWidth: _lineWidthLerp,
-          startPosition: lerpDouble(startPosition, endValue.startPosition, t)!,
-          lineColor: Color.lerp(lineColor, endValue.lineColor, t)!,
-          gradient: Gradient.lerp(gradient, endValue.gradient, t),
-          listIndex: endValue.listIndex,
-          dashArray: endValue.dashArray,
-          stretchLine: lerpDouble(_stretchLine, endValue._stretchLine, t)!);
+        fill: t > 0.5 ? endValue.fill : fill,
+        id: endValue.id,
+        smoothPoints: _smoothPointsLerp,
+        lineWidth: _lineWidthLerp,
+        startPosition: lerpDouble(startPosition, endValue.startPosition, t)!,
+        lineColor: Color.lerp(lineColor, endValue.lineColor, t)!,
+        gradient: Gradient.lerp(gradient, endValue.gradient, t),
+        listIndex: endValue.listIndex,
+        dashArray: endValue.dashArray,
+        stretchLine: lerpDouble(_stretchLine, endValue._stretchLine, t)!,
+      );
     }
 
     return this;

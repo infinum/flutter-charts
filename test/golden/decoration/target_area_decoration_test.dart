@@ -54,7 +54,7 @@ void main() {
             TargetAreaDecoration(
               targetMax: 7,
               targetMin: 4,
-              targetAreaRadius: BorderRadius.circular(24.0),
+              targetAreaRadius: BorderRadius.circular(24),
             ),
           ],
         ),
@@ -66,7 +66,7 @@ void main() {
             TargetAreaDecoration(
               targetMax: 7,
               targetMin: 4,
-              lineWidth: 6.0,
+              lineWidth: 6,
             ),
           ],
         ),
@@ -78,16 +78,19 @@ void main() {
             TargetAreaDecoration(
               targetMax: 7,
               targetMin: 4,
-              targetAreaRadius: BorderRadius.circular(24.0),
-              lineWidth: 6.0,
+              targetAreaRadius: BorderRadius.circular(24),
+              lineWidth: 6,
               dashArray: [20, 10],
               targetAreaFillColor: Colors.red.withOpacity(0.5),
             ),
           ],
         ),
       );
-    await tester.pumpWidgetBuilder(builder.build(),
-        surfaceSize: const Size(1400, 660), textScaleSize: 1.4);
+    await tester.pumpWidgetBuilder(
+      builder.build(),
+      surfaceSize: const Size(1400, 660),
+      textScaleSize: 1.4,
+    );
     await screenMatchesGolden(tester, 'target_area_decoration_golden');
   });
 }

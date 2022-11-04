@@ -1,12 +1,8 @@
-import 'dart:ui';
-
-import 'package:charts_painter/chart.dart';
 import 'package:charts_web/ui/common/dialog/border_dialog.dart';
 import 'package:charts_web/ui/common/dialog/border_radius_dialog.dart';
 import 'package:charts_web/ui/common/dialog/gradient_dialog.dart';
 import 'package:charts_web/ui/home/presenter/chart_state_presenter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:collection/collection.dart';
@@ -170,7 +166,7 @@ class _MultiValueOptions extends ConsumerWidget {
         spacing: 16,
         runSpacing: 4,
         children: [
-          Text(
+          const Text(
             'Multi Item options:',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
@@ -325,8 +321,8 @@ class _BarOptionButton extends StatelessWidget {
             if (asset != null || imageAsset != null) const SizedBox(width: 16),
             Expanded(
                 child: Text(name,
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold))),
           ],
         ),
       ),

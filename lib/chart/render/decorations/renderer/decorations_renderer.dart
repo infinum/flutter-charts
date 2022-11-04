@@ -1,12 +1,15 @@
 part of charts_painter;
 
 class DecorationsRenderer<T> extends MultiChildRenderObjectWidget {
-  DecorationsRenderer(List<DecorationPainter> fixedDecoration, this.chartState,
-      {Key? key})
-      : super(
-            key: key,
-            children:
-                fixedDecoration.map((e) => e.getRenderer(chartState)).toList());
+  DecorationsRenderer(
+    List<DecorationPainter> fixedDecoration,
+    this.chartState, {
+    Key? key,
+  }) : super(
+          key: key,
+          children:
+              fixedDecoration.map((e) => e.getRenderer(chartState)).toList(),
+        );
 
   final ChartState<T?> chartState;
 
@@ -17,7 +20,9 @@ class DecorationsRenderer<T> extends MultiChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, _FixedDecorationRenderObject<T?> renderObject) {
+    BuildContext context,
+    _FixedDecorationRenderObject<T?> renderObject,
+  ) {
     renderObject.chartState = chartState;
     renderObject.markNeedsLayout();
   }

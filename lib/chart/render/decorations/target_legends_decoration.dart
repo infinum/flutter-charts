@@ -5,7 +5,8 @@ part of charts_painter;
 ///
 /// Text will be rotated 90 CCW
 @Deprecated(
-    'You can make this decoration and much more using WidgetDecoration. Check migration guide for more info')
+  'You can make this decoration and much more using WidgetDecoration. Check migration guide for more info',
+)
 class TargetLineLegendDecoration extends DecorationPainter {
   /// Target line legend constructor
   ///
@@ -15,8 +16,10 @@ class TargetLineLegendDecoration extends DecorationPainter {
     required this.legendStyle,
     this.legendTarget = 0,
     this.padding = EdgeInsets.zero,
-  }) : assert(legendStyle.fontSize != null,
-            'You must specify fontSize when using TargetLineLegendDecoration');
+  }) : assert(
+          legendStyle.fontSize != null,
+          'You must specify fontSize when using TargetLineLegendDecoration',
+        );
 
   /// Label to show at [legendTarget]
   final String legendDescription;
@@ -38,7 +41,9 @@ class TargetLineLegendDecoration extends DecorationPainter {
 
     canvas.save();
     canvas.translate(
-        state.defaultMargin.left, size.height + state.defaultMargin.top);
+      state.defaultMargin.left,
+      size.height + state.defaultMargin.top,
+    );
 
     size = state.defaultPadding.deflateSize(size);
 
@@ -47,15 +52,16 @@ class TargetLineLegendDecoration extends DecorationPainter {
         text: legendDescription,
         style: legendStyle,
       ),
-      textAlign: TextAlign.start,
       maxLines: 1,
       textDirection: TextDirection.ltr,
     )..layout(
         maxWidth: size.width,
       );
 
-    canvas.translate(-(legendStyle.fontSize ?? 0) * 1.5,
-        -scale * legendTarget + _minValue + _textPainter.width + padding.top);
+    canvas.translate(
+      -(legendStyle.fontSize ?? 0) * 1.5,
+      -scale * legendTarget + _minValue + _textPainter.width + padding.top,
+    );
     canvas.rotate(pi * 1.5);
 
     _textPainter.paint(

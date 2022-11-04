@@ -21,12 +21,15 @@ class _ChartWidget<T> extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         // What size does the item want to be?
-        final _wantedItemWidth = state.data.items.foldIndexed<double>(0.0,
+        final _wantedItemWidth = state.data.items.foldIndexed<double>(0,
             (index, double prevValue, _) {
           return max(
-              prevValue,
-              max(state.itemOptions.minBarWidth ?? 0.0,
-                  state.itemOptions.maxBarWidth ?? 0.0));
+            prevValue,
+            max(
+              state.itemOptions.minBarWidth ?? 0.0,
+              state.itemOptions.maxBarWidth ?? 0.0,
+            ),
+          );
         });
 
         final _width =
@@ -36,17 +39,17 @@ class _ChartWidget<T> extends StatelessWidget {
 
         final _listSize = state.data.listSize;
 
-        final _horizontalPadding = state.data.items.foldIndexed<double>(0.0,
+        final _horizontalPadding = state.data.items.foldIndexed<double>(0,
             (index, double prevValue, _) {
           return max(prevValue, state.itemOptions.padding.horizontal);
         });
 
         final _size = Size(
-            _width +
-                (((_wantedItemWidth + _horizontalPadding) * _listSize) -
-                        _width) *
-                    state.behaviour._isScrollable,
-            _height);
+          _width +
+              (((_wantedItemWidth + _horizontalPadding) * _listSize) - _width) *
+                  state.behaviour._isScrollable,
+          _height,
+        );
 
         return Container(
           constraints: BoxConstraints.tight(_size),

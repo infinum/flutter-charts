@@ -42,10 +42,10 @@ class _ChartState<T> extends AnimatedWidgetBaseState<AnimatedChart<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final _chartState = (_chartStateTween?.evaluate(animation));
+    final _chartState = _chartStateTween?.evaluate(animation);
 
     if (_chartState == null) {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
 
     return _ChartWidget<T?>(
@@ -58,29 +58,46 @@ class _ChartState<T> extends AnimatedWidgetBaseState<AnimatedChart<T>> {
   @override
   void forEachTween(visitor) {
     _chartStateTween = visitor(
-            _chartStateTween,
-            widget.state,
-            (dynamic value) =>
-                ChartStateTween<T>(begin: value as ChartState<T?>))
-        as ChartStateTween<T>?;
-    _heightTween = visitor(_heightTween, widget.height,
-            (dynamic value) => Tween<double>(begin: value as double?))
-        as Tween<double?>?;
-    _widthTween = visitor(_widthTween, widget.width,
-            (dynamic value) => Tween<double>(begin: value as double?))
-        as Tween<double?>?;
+      _chartStateTween,
+      widget.state,
+      (dynamic value) => ChartStateTween<T>(begin: value as ChartState<T?>),
+    ) as ChartStateTween<T>?;
+    _heightTween = visitor(
+      _heightTween,
+      widget.height,
+      (dynamic value) => Tween<double>(begin: value as double?),
+    ) as Tween<double?>?;
+    _widthTween = visitor(
+      _widthTween,
+      widget.width,
+      (dynamic value) => Tween<double>(begin: value as double?),
+    ) as Tween<double?>?;
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder description) {
     super.debugFillProperties(description);
-    description.add(DiagnosticsProperty<ChartStateTween>(
-        'state', _chartStateTween,
-        defaultValue: null));
-    description.add(DiagnosticsProperty<Tween<double?>>('height', _heightTween,
-        defaultValue: null));
-    description.add(DiagnosticsProperty<Tween<double?>>('width', _widthTween,
-        defaultValue: null));
+    description.add(
+      DiagnosticsProperty<ChartStateTween>(
+        'state',
+        _chartStateTween,
+        defaultValue: null,
+      ),
+    );
+    description.add(
+      DiagnosticsProperty<Tween<double?>>(
+        'height',
+        _heightTween,
+        defaultValue: null,
+      ),
+    );
+    description.add(
+      DiagnosticsProperty<Tween<double?>>(
+        'width',
+        _widthTween,
+        defaultValue: null,
+      ),
+    );
   }
 }
 

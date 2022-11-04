@@ -4,7 +4,7 @@ import 'package:charts_painter/chart.dart';
 import 'package:flutter/material.dart';
 
 TextStyle get defaultTextStyle =>
-    TextStyle(fontFamily: 'Roboto', color: Colors.black54, fontSize: 12.0);
+    const TextStyle(fontFamily: 'Roboto', color: Colors.black54, fontSize: 12);
 
 Widget getDefaultChart({
   List<DecorationPainter>? foregroundDecorations,
@@ -21,7 +21,7 @@ Widget getDefaultChart({
           valueAxisMaxOver: 2,
         ),
         itemOptions: BarItemOptions(
-          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          padding: const EdgeInsets.symmetric(horizontal: 4),
           barItemBuilder: (_) => BarItem(color: Colors.red.withOpacity(0.1)),
         ),
         backgroundDecorations: backgroundDecorations ?? [],
@@ -45,17 +45,19 @@ Widget getMultiValueChart({
       state: ChartState(
         data: ChartData(
           List.generate(
-              size,
-              (index) => List.generate(
-                  8,
-                  (i) => BarValue<void>(
-                      (Random(((index + 1) * (i + 1))).nextDouble() * 15) +
-                          5))),
+            size,
+            (index) => List.generate(
+              8,
+              (i) => BarValue<void>(
+                (Random((index + 1) * (i + 1)).nextDouble() * 15) + 5,
+              ),
+            ),
+          ),
           valueAxisMaxOver: 2,
           dataStrategy: strategy,
         ),
-        itemOptions: options ?? BarItemOptions(),
-        behaviour: behaviour ?? ChartBehaviour(),
+        itemOptions: options ?? const BarItemOptions(),
+        behaviour: behaviour ?? const ChartBehaviour(),
         backgroundDecorations: backgroundDecorations ?? [],
         foregroundDecorations: foregroundDecorations ?? [],
       ),

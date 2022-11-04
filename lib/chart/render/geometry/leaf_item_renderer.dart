@@ -5,8 +5,14 @@ part of charts_painter;
 /// This is a [LeafRenderObjectWidget] meaning it cannot have any children.
 /// All customization for this list items can be done with [BarItemOptions] or [BubbleItemOptions]
 class LeafChartItemRenderer<T> extends LeafRenderObjectWidget {
-  LeafChartItemRenderer(this.item, this.state, this.itemOptions,
-      {this.listIndex = 0, this.itemIndex = 0, required this.drawDataItem});
+  const LeafChartItemRenderer(
+    this.item,
+    this.state,
+    this.itemOptions, {
+    this.listIndex = 0,
+    this.itemIndex = 0,
+    required this.drawDataItem,
+  });
 
   final ChartItem<T?> item;
   final ChartState<T?> state;
@@ -29,7 +35,9 @@ class LeafChartItemRenderer<T> extends LeafRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, _RenderLeafChartItem<T?> renderObject) {
+    BuildContext context,
+    _RenderLeafChartItem<T?> renderObject,
+  ) {
     renderObject
       ..state = state
       ..itemOptions = itemOptions
@@ -172,8 +180,10 @@ class _RenderLeafChartItem<T> extends RenderBox {
     canvas.save();
 
     final _itemOffset = offset +
-        Offset(_state.defaultMargin.left + _state.defaultPadding.left,
-            _state.defaultMargin.top + _state.defaultPadding.top);
+        Offset(
+          _state.defaultMargin.left + _state.defaultPadding.left,
+          _state.defaultMargin.top + _state.defaultPadding.top,
+        );
     canvas.translate(_itemOffset.dx, _itemOffset.dy);
 
     // Use item painter from ItemOptions to draw the item on the chart

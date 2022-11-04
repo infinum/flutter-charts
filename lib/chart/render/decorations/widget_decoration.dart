@@ -1,7 +1,11 @@
 part of charts_painter;
 
-typedef WidgetDecorationBuilder<T> = Widget Function(BuildContext context,
-    ChartState<T> chartState, double itemWidth, double verticalMultiplier);
+typedef WidgetDecorationBuilder<T> = Widget Function(
+  BuildContext context,
+  ChartState<T> chartState,
+  double itemWidth,
+  double verticalMultiplier,
+);
 
 /// Show widget as decoration on the chart
 ///
@@ -68,7 +72,11 @@ class WidgetDecoration extends DecorationPainter {
           final _verticalMultiplier = _size.height / max(1, _maxValue);
 
           return widgetDecorationBuilder(
-              context, state, _itemWidth, _verticalMultiplier);
+            context,
+            state,
+            _itemWidth,
+            _verticalMultiplier,
+          );
         },
       ),
     );

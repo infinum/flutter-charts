@@ -13,9 +13,12 @@ part of charts_painter;
 ///
 class BubbleGeometryPainter<T> extends GeometryPainter<T> {
   /// Constructor for bubble painter
-  BubbleGeometryPainter(ChartItem<T> item, ChartData<T?> data,
-      ItemOptions itemOptions, this.drawDataItem)
-      : super(item, data, itemOptions);
+  BubbleGeometryPainter(
+    ChartItem<T> item,
+    ChartData<T?> data,
+    ItemOptions itemOptions,
+    this.drawDataItem,
+  ) : super(item, data, itemOptions);
 
   final BubbleItem drawDataItem;
 
@@ -26,13 +29,15 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
     final _minValue = data.minValue * _verticalMultiplier;
 
     final _itemWidth = max(
-        itemOptions.minBarWidth ?? 0.0,
-        min(
-            itemOptions.maxBarWidth ?? double.infinity,
-            size.width -
-                (itemOptions.padding.horizontal.isNegative
-                    ? 0.0
-                    : itemOptions.padding.horizontal)));
+      itemOptions.minBarWidth ?? 0.0,
+      min(
+        itemOptions.maxBarWidth ?? double.infinity,
+        size.width -
+            (itemOptions.padding.horizontal.isNegative
+                ? 0.0
+                : itemOptions.padding.horizontal),
+      ),
+    );
 
     final _itemMaxValue = item.max ?? 0.0;
     // If item is empty, or it's max value is below chart's minValue then don't draw it.
@@ -45,8 +50,10 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
     final _circleSize = _itemWidth / 2;
 
     canvas.drawCircle(
-      Offset(size.width * 0.5,
-          size.height - _itemMaxValue * _verticalMultiplier - _minValue),
+      Offset(
+        size.width * 0.5,
+        size.height - _itemMaxValue * _verticalMultiplier - _minValue,
+      ),
       _circleSize,
       paint,
     );
@@ -62,8 +69,10 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
         _borderPaint.strokeWidth = _border.width;
 
         canvas.drawCircle(
-          Offset(size.width * 0.5,
-              size.height - _itemMaxValue * _verticalMultiplier - _minValue),
+          Offset(
+            size.width * 0.5,
+            size.height - _itemMaxValue * _verticalMultiplier - _minValue,
+          ),
           _circleSize,
           _borderPaint,
         );

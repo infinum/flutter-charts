@@ -24,9 +24,9 @@ class ChartState<T> {
   })  : assert(data.isNotEmpty, 'No items!'),
         defaultPadding = EdgeInsets.zero,
         defaultMargin = EdgeInsets.zero,
-        dataRenderer = (itemOptions is WidgetItemOptions
+        dataRenderer = itemOptions is WidgetItemOptions
             ? _widgetItemRenderer(itemOptions)
-            : _defaultItemRenderer<T>(itemOptions)) {
+            : _defaultItemRenderer<T>(itemOptions) {
     /// Set default padding and margin, decorations padding and margins will be added to this value
     _setUpDecorations();
   }
@@ -196,55 +196,66 @@ class ChartState<T> {
   ///
   /// If you need more customization of the individual chart items see [_widgetItemRenderer]
   static ChartDataRendererFactory<T?> _defaultItemRenderer<T>(
-      ItemOptions itemOptions) {
+    ItemOptions itemOptions,
+  ) {
     return (chartState) {
       return ChartLinearDataRenderer<T?>(
-          chartState,
-          chartState.data.items
-              .mapIndexed(
-                (listIndex, items) => items
-                    .mapIndexed((itemIndex, item) => LeafChartItemRenderer(
+        chartState,
+        chartState.data.items
+            .mapIndexed(
+              (listIndex, items) => items
+                  .mapIndexed(
+                    (itemIndex, item) => LeafChartItemRenderer(
+                      item,
+                      chartState,
+                      itemOptions,
+                      itemIndex: itemIndex,
+                      listIndex: listIndex,
+                      drawDataItem: itemOptions.itemBuilder(
+                        ItemBuilderData<T?>(
                           item,
-                          chartState,
-                          itemOptions,
-                          itemIndex: itemIndex,
-                          listIndex: listIndex,
-                          drawDataItem: itemOptions.itemBuilder(
-                              ItemBuilderData<T?>(
-                                  item, itemIndex, listIndex)) as DrawDataItem,
-                        ))
-                    .toList(),
-              )
-              .expand((element) => element)
-              .toList());
+                          itemIndex,
+                          listIndex,
+                        ),
+                      ) as DrawDataItem,
+                    ),
+                  )
+                  .toList(),
+            )
+            .expand((element) => element)
+            .toList(),
+      );
     };
   }
 
   /// It can render chart items as widgets, and it only accepts [WidgetItemOptions] since it needs the
   /// [WidgetItemOptions.widgetItemBuilder] to build the chart item widgets.
   static ChartDataRendererFactory<T?> _widgetItemRenderer<T>(
-      WidgetItemOptions itemOptions) {
+    WidgetItemOptions itemOptions,
+  ) {
     return (chartState) => ChartLinearDataRenderer<T>(
-        chartState,
-        chartState.data.items
-            .mapIndexed(
-              (listIndex, items) {
-                return items
-                    .mapIndexed(
-                      (itemIndex, e) => ChildChartItemRenderer<T?>(
-                        e,
-                        chartState,
-                        itemOptions,
-                        itemIndex: itemIndex,
-                        listIndex: listIndex,
-                        child: itemOptions.widgetItemBuilder(
-                            ItemBuilderData<T?>(e, itemIndex, listIndex)),
-                      ),
-                    )
-                    .toList();
-              },
-            )
-            .expand((element) => element)
-            .toList());
+          chartState,
+          chartState.data.items
+              .mapIndexed(
+                (listIndex, items) {
+                  return items
+                      .mapIndexed(
+                        (itemIndex, e) => ChildChartItemRenderer<T?>(
+                          e,
+                          chartState,
+                          itemOptions,
+                          itemIndex: itemIndex,
+                          listIndex: listIndex,
+                          child: itemOptions.widgetItemBuilder(
+                            ItemBuilderData<T?>(e, itemIndex, listIndex),
+                          ),
+                        ),
+                      )
+                      .toList();
+                },
+              )
+              .expand((element) => element)
+              .toList(),
+        );
   }
 }

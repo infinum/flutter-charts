@@ -1,8 +1,12 @@
 part of charts_painter;
 
 /// Bar painter
-GeometryPainter<T> barPainter<T>(ChartItem<T> item, ChartData<T> data,
-        ItemOptions itemOptions, DrawDataItem drawDataItem) =>
+GeometryPainter<T> barPainter<T>(
+  ChartItem<T> item,
+  ChartData<T> data,
+  ItemOptions itemOptions,
+  DrawDataItem drawDataItem,
+) =>
     BarGeometryPainter<T>(item, data, itemOptions, drawDataItem as BarItem);
 
 typedef BarItemBuilder<T> = BarItem Function(ItemBuilderData data);
@@ -24,29 +28,31 @@ class BarItemOptions extends ItemOptions {
     double startPosition = 0.5,
     this.barItemBuilder = _defaultBarItem,
   }) : super(
-            padding: padding,
-            multiValuePadding: multiValuePadding,
-            maxBarWidth: maxBarWidth,
-            minBarWidth: minBarWidth,
-            startPosition: startPosition,
-            geometryPainter: barPainter,
-            itemBuilder: barItemBuilder);
+          padding: padding,
+          multiValuePadding: multiValuePadding,
+          maxBarWidth: maxBarWidth,
+          minBarWidth: minBarWidth,
+          startPosition: startPosition,
+          geometryPainter: barPainter,
+          itemBuilder: barItemBuilder,
+        );
 
-  BarItemOptions._lerp(
-      {EdgeInsets padding = EdgeInsets.zero,
-      EdgeInsets multiValuePadding = EdgeInsets.zero,
-      double? maxBarWidth,
-      double? minBarWidth,
-      double startPosition = 0.5,
-      required this.barItemBuilder})
-      : super._lerp(
-            padding: padding,
-            multiValuePadding: multiValuePadding,
-            maxBarWidth: maxBarWidth,
-            minBarWidth: minBarWidth,
-            startPosition: startPosition,
-            geometryPainter: barPainter,
-            itemBuilder: barItemBuilder);
+  BarItemOptions._lerp({
+    EdgeInsets padding = EdgeInsets.zero,
+    EdgeInsets multiValuePadding = EdgeInsets.zero,
+    double? maxBarWidth,
+    double? minBarWidth,
+    double startPosition = 0.5,
+    required this.barItemBuilder,
+  }) : super._lerp(
+          padding: padding,
+          multiValuePadding: multiValuePadding,
+          maxBarWidth: maxBarWidth,
+          minBarWidth: minBarWidth,
+          startPosition: startPosition,
+          geometryPainter: barPainter,
+          itemBuilder: barItemBuilder,
+        );
 
   final BarItemBuilder barItemBuilder;
 
@@ -72,5 +78,5 @@ class BarItemOptions extends ItemOptions {
 }
 
 BarItem _defaultBarItem(ItemBuilderData _) {
-  return BarItem();
+  return const BarItem();
 }

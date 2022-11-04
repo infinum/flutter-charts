@@ -8,7 +8,7 @@ void main() {
       Padding(
         padding: EdgeInsets.zero,
         child: Chart(
-          height: 600.0,
+          height: 600,
           state: ChartState.line(
             ChartData.fromList(
               <double>[1, 3, 4, 2, 7, 6, 2, 5, 4]
@@ -20,8 +20,10 @@ void main() {
         ),
       ),
     );
-    await expectLater(find.byType(Padding),
-        matchesGoldenFile('goldens/simple_line_chart.png'));
+    await expectLater(
+      find.byType(Padding),
+      matchesGoldenFile('goldens/simple_line_chart.png'),
+    );
   });
 
   testWidgets('Simple bar chart', (tester) async {
@@ -29,20 +31,22 @@ void main() {
       Padding(
         padding: EdgeInsets.zero,
         child: Chart(
-          height: 600.0,
+          height: 600,
           state: ChartState.bar(
             ChartData.fromList(
               <double>[1, 3, 4, 2, 7, 6, 2, 5, 4]
                   .map((e) => BarValue<void>(e))
                   .toList(),
             ),
-            itemOptions: BarItemOptions(),
+            itemOptions: const BarItemOptions(),
           ),
         ),
       ),
     );
-    await expectLater(find.byType(Padding),
-        matchesGoldenFile('goldens/simple_bar_chart.png'));
+    await expectLater(
+      find.byType(Padding),
+      matchesGoldenFile('goldens/simple_bar_chart.png'),
+    );
   });
 
   testWidgets('Bar chart', (tester) async {
@@ -50,36 +54,36 @@ void main() {
       Padding(
         padding: EdgeInsets.zero,
         child: Chart<void>(
-          height: 600.0,
+          height: 600,
           state: ChartState(
             data: ChartData.fromList(
-                [1, 3, 4, 2, 7, 6, 2, 5, 4]
-                    .map((e) => BarValue<void>(e.toDouble()))
-                    .toList(),
-                axisMax: 8.0),
+              [1, 3, 4, 2, 7, 6, 2, 5, 4]
+                  .map((e) => BarValue<void>(e.toDouble()))
+                  .toList(),
+              axisMax: 8,
+            ),
             itemOptions: BarItemOptions(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               barItemBuilder: (_) {
-                return BarItem(
-                  radius: BorderRadius.vertical(top: Radius.circular(42.0)),
+                return const BarItem(
+                  radius: BorderRadius.vertical(top: Radius.circular(42)),
                 );
               },
             ),
             backgroundDecorations: [
-              GridDecoration(
-                verticalAxisStep: 1,
-                horizontalAxisStep: 1,
-              ),
+              GridDecoration(),
             ],
             foregroundDecorations: [
-              BorderDecoration(borderWidth: 5.0),
+              BorderDecoration(borderWidth: 5),
             ],
           ),
         ),
       ),
     );
     await expectLater(
-        find.byType(Padding), matchesGoldenFile('goldens/bar_chart.png'));
+      find.byType(Padding),
+      matchesGoldenFile('goldens/bar_chart.png'),
+    );
   });
 
   testWidgets('Line chart', (tester) async {
@@ -87,25 +91,23 @@ void main() {
       Padding(
         padding: EdgeInsets.zero,
         child: Chart<void>(
-          height: 600.0,
+          height: 600,
           state: ChartState(
             data: ChartData.fromList(
-                [1, 3, 4, 2, 7, 6, 2, 5, 4]
-                    .map((e) => BubbleValue<void>(e.toDouble()))
-                    .toList(),
-                axisMax: 8.0),
+              [1, 3, 4, 2, 7, 6, 2, 5, 4]
+                  .map((e) => BubbleValue<void>(e.toDouble()))
+                  .toList(),
+              axisMax: 8,
+            ),
             itemOptions: BubbleItemOptions(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              maxBarWidth: 4.0,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              maxBarWidth: 4,
             ),
             backgroundDecorations: [
-              GridDecoration(
-                verticalAxisStep: 1,
-                horizontalAxisStep: 1,
-              ),
+              GridDecoration(),
             ],
             foregroundDecorations: [
-              BorderDecoration(borderWidth: 5.0),
+              BorderDecoration(borderWidth: 5),
               SparkLineDecoration(),
             ],
           ),
@@ -113,7 +115,9 @@ void main() {
       ),
     );
     await expectLater(
-        find.byType(Padding), matchesGoldenFile('goldens/line_chart.png'));
+      find.byType(Padding),
+      matchesGoldenFile('goldens/line_chart.png'),
+    );
   });
 
   testWidgets('Multi line chart', (tester) async {
@@ -121,7 +125,7 @@ void main() {
       Padding(
         padding: EdgeInsets.zero,
         child: Chart<void>(
-          height: 600.0,
+          height: 600,
           state: ChartState(
             data: ChartData(
               [
@@ -132,24 +136,22 @@ void main() {
                     .map((e) => BubbleValue<void>(e.toDouble()))
                     .toList(),
               ],
-              axisMax: 8.0,
+              axisMax: 8,
             ),
             itemOptions: BubbleItemOptions(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              maxBarWidth: 4.0,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              maxBarWidth: 4,
               bubbleItemBuilder: (data) {
                 return BubbleItem(
-                    color: [Colors.red, Colors.blue][data.listIndex]);
+                  color: [Colors.red, Colors.blue][data.listIndex],
+                );
               },
             ),
             backgroundDecorations: [
-              GridDecoration(
-                verticalAxisStep: 1,
-                horizontalAxisStep: 1,
-              ),
+              GridDecoration(),
             ],
             foregroundDecorations: [
-              BorderDecoration(borderWidth: 5.0),
+              BorderDecoration(borderWidth: 5),
               SparkLineDecoration(
                 // Specify key that this [SparkLineDecoration] will follow
                 // Throws if `listIndex` does not exist in chart data
@@ -162,7 +164,9 @@ void main() {
         ),
       ),
     );
-    await expectLater(find.byType(Padding),
-        matchesGoldenFile('goldens/multi_line_chart.png'));
+    await expectLater(
+      find.byType(Padding),
+      matchesGoldenFile('goldens/multi_line_chart.png'),
+    );
   });
 }

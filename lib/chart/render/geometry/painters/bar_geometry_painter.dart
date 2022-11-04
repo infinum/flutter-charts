@@ -24,9 +24,12 @@ part of charts_painter;
 ///
 class BarGeometryPainter<T> extends GeometryPainter<T> {
   /// Constructor for Bar painter
-  BarGeometryPainter(ChartItem<T> item, ChartData<T?> data,
-      ItemOptions itemOptions, this.drawDataItem)
-      : super(item, data, itemOptions);
+  BarGeometryPainter(
+    ChartItem<T> item,
+    ChartData<T?> data,
+    ItemOptions itemOptions,
+    this.drawDataItem,
+  ) : super(item, data, itemOptions);
 
   final BarItem drawDataItem;
 
@@ -34,7 +37,7 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
   void draw(Canvas canvas, Size size, Paint paint) {
     final _maxValue = data.maxValue - data.minValue;
     final _verticalMultiplier = size.height / max(1, _maxValue);
-    final _minValue = (data.minValue * _verticalMultiplier);
+    final _minValue = data.minValue * _verticalMultiplier;
 
     final _radius = drawDataItem.radius ?? BorderRadius.zero;
 
@@ -50,7 +53,7 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
       RRect.fromRectAndCorners(
         Rect.fromPoints(
           Offset(
-            0.0,
+            0,
             _maxValue * _verticalMultiplier -
                 max(data.minValue, item.min ?? 0.0) * _verticalMultiplier +
                 _minValue,
@@ -86,7 +89,7 @@ class BarGeometryPainter<T> extends GeometryPainter<T> {
         RRect.fromRectAndCorners(
           Rect.fromPoints(
             Offset(
-              0.0,
+              0,
               _maxValue * _verticalMultiplier -
                   max(data.minValue, item.min ?? 0.0) * _verticalMultiplier +
                   _minValue,

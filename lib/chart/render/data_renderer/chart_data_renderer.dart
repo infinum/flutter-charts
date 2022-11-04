@@ -1,7 +1,8 @@
 part of charts_painter;
 
 typedef ChartDataRendererFactory<T> = ChartDataRenderer<T> Function(
-    ChartState<T?> state);
+  ChartState<T?> state,
+);
 
 /// Renderer for whole chart data
 ///

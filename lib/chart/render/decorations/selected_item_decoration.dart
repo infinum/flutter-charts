@@ -2,14 +2,15 @@ part of charts_painter;
 
 /// Show selected item in Cupertino style (Health app)
 @Deprecated(
-    'You can make this decoration and much more using WidgetDecoration. Check migration guide for more info')
+  'You can make this decoration and much more using WidgetDecoration. Check migration guide for more info',
+)
 class SelectedItemDecoration extends DecorationPainter {
   /// Constructor for selected item decoration
   SelectedItemDecoration(
     this.selectedItem, {
     this.selectedColor = Colors.red,
     this.backgroundColor = Colors.grey,
-    this.selectedStyle = const TextStyle(fontSize: 13.0),
+    this.selectedStyle = const TextStyle(fontSize: 13),
     this.animate = false,
     bool showText = true,
     this.showOnTop = true,
@@ -61,8 +62,10 @@ class SelectedItemDecoration extends DecorationPainter {
   @override
   void initDecoration(ChartState state) {
     super.initDecoration(state);
-    assert(state.data.stackSize > selectedListIndex,
-        'Selected list index is not in the list!\nCheck the `selectedListIndex` you are passing.');
+    assert(
+      state.data.stackSize > selectedListIndex,
+      'Selected list index is not in the list!\nCheck the `selectedListIndex` you are passing.',
+    );
   }
 
   @override
@@ -94,20 +97,25 @@ class SelectedItemDecoration extends DecorationPainter {
       final scale = _height / _maxValue;
 
       return Offset(
-          state.defaultMargin.left + _width * selectedItem,
-          showOnTop
-              ? (state.defaultMargin - marginNeeded()).top
-              : size.height -
-                  ((_selectedItemMax -
-                          (min(_selectedItemMin, state.data.minValue))) *
-                      scale));
+        state.defaultMargin.left + _width * selectedItem,
+        showOnTop
+            ? (state.defaultMargin - marginNeeded()).top
+            : size.height -
+                ((_selectedItemMax -
+                        (min(_selectedItemMin, state.data.minValue))) *
+                    scale),
+      );
     }
 
     return Offset.zero;
   }
 
   void _drawText(
-      Canvas canvas, Size size, double totalWidth, ChartState state) {
+    Canvas canvas,
+    Size size,
+    double totalWidth,
+    ChartState state,
+  ) {
     final _item = selectedItem;
     if (_item == null) {
       return;
@@ -122,9 +130,12 @@ class SelectedItemDecoration extends DecorationPainter {
       hasMaxWidth: false,
     );
     final _itemWidth = max(
-        state.itemOptions.minBarWidth ?? 0.0,
-        min(state.itemOptions.maxBarWidth ?? double.infinity,
-            size.width - state.itemOptions.padding.horizontal));
+      state.itemOptions.minBarWidth ?? 0.0,
+      min(
+        state.itemOptions.maxBarWidth ?? double.infinity,
+        size.width - state.itemOptions.padding.horizontal,
+      ),
+    );
 
     const _size = 2.0;
     final _maxValue = state.data.maxValue - state.data.minValue;
@@ -144,7 +155,7 @@ class SelectedItemDecoration extends DecorationPainter {
         Rect.fromPoints(
           Offset(
             state.itemOptions.padding.left + _itemWidth / 2 - _size / 2,
-            0.0,
+            0,
           ),
           Offset(
             state.itemOptions.padding.left + _itemWidth / 2 + _size / 2,
@@ -160,35 +171,33 @@ class SelectedItemDecoration extends DecorationPainter {
     }
 
     canvas.drawRRect(
-        RRect.fromRectAndRadius(
-          Rect.fromPoints(
-              Offset(
-                width / 2 - _maxValuePainter.width / 2,
-                ((size.height -
-                            ((_itemMaxValue -
-                                    (min(_itemMinValue, state.data.minValue))) *
-                                scale) -
-                            (selectedStyle.fontSize ?? 0.0) * 1.4) *
-                        (showOnTop ? 0 : 1)) +
-                    ((showOnTop ? 1 : 0) *
-                        (selectedStyle.fontSize ?? 0.0) *
-                        1.4),
-              ),
-              Offset(
-                width / 2 + _maxValuePainter.width / 2,
-                ((size.height -
-                            ((_itemMaxValue -
-                                    (min(_itemMinValue, state.data.minValue))) *
-                                scale) -
-                            (selectedStyle.fontSize ?? 0.0) * 0.4) *
-                        (showOnTop ? 0 : 1)) +
-                    ((showOnTop ? 1 : 0) *
-                        (selectedStyle.fontSize ?? 0.0) *
-                        0.4),
-              )),
-          const Radius.circular(8.0),
-        ).inflate(4),
-        Paint()..color = selectedColor);
+      RRect.fromRectAndRadius(
+        Rect.fromPoints(
+          Offset(
+            width / 2 - _maxValuePainter.width / 2,
+            ((size.height -
+                        ((_itemMaxValue -
+                                (min(_itemMinValue, state.data.minValue))) *
+                            scale) -
+                        (selectedStyle.fontSize ?? 0.0) * 1.4) *
+                    (showOnTop ? 0 : 1)) +
+                ((showOnTop ? 1 : 0) * (selectedStyle.fontSize ?? 0.0) * 1.4),
+          ),
+          Offset(
+            width / 2 + _maxValuePainter.width / 2,
+            ((size.height -
+                        ((_itemMaxValue -
+                                (min(_itemMinValue, state.data.minValue))) *
+                            scale) -
+                        (selectedStyle.fontSize ?? 0.0) * 0.4) *
+                    (showOnTop ? 0 : 1)) +
+                ((showOnTop ? 1 : 0) * (selectedStyle.fontSize ?? 0.0) * 0.4),
+          ),
+        ),
+        const Radius.circular(8),
+      ).inflate(4),
+      Paint()..color = selectedColor,
+    );
 
     _maxValuePainter.paint(
       canvas,
@@ -213,9 +222,12 @@ class SelectedItemDecoration extends DecorationPainter {
     final _selectedItem = state.data.items[selectedListIndex][_item];
 
     final _itemWidth = max(
-        state.itemOptions.minBarWidth ?? 0.0,
-        min(state.itemOptions.maxBarWidth ?? double.infinity,
-            size.width - state.itemOptions.padding.horizontal));
+      state.itemOptions.minBarWidth ?? 0.0,
+      min(
+        state.itemOptions.maxBarWidth ?? double.infinity,
+        size.width - state.itemOptions.padding.horizontal,
+      ),
+    );
 
     const _size = 2.0;
     final _maxValue = state.data.maxValue - state.data.minValue;
@@ -266,7 +278,9 @@ class SelectedItemDecoration extends DecorationPainter {
   void _drawItem(Canvas canvas, Size size, ChartState state) {
     canvas.drawRect(
       Rect.fromPoints(
-          Offset(0.0, marginNeeded().top), Offset(size.width, size.height)),
+        Offset(0, marginNeeded().top),
+        Offset(size.width, size.height),
+      ),
       Paint()
         ..color = backgroundColor
         ..blendMode = BlendMode.overlay,
@@ -276,13 +290,14 @@ class SelectedItemDecoration extends DecorationPainter {
   @override
   EdgeInsets marginNeeded() {
     return EdgeInsets.only(
-        top: showOnTop
-            ? (showText
-                ? (selectedStyle.fontSize ?? 0) * 1.8
-                : child != null
-                    ? topMargin
-                    : 0.0)
-            : 0.0);
+      top: showOnTop
+          ? (showText
+              ? (selectedStyle.fontSize ?? 0) * 1.8
+              : child != null
+                  ? topMargin
+                  : 0.0)
+          : 0.0,
+    );
   }
 
   @override
@@ -290,8 +305,11 @@ class SelectedItemDecoration extends DecorationPainter {
     if (endValue is SelectedItemDecoration) {
       return SelectedItemDecoration(
         animate
-            ? (lerpDouble(selectedItem?.toDouble(),
-                        endValue.selectedItem?.toDouble(), t) ??
+            ? (lerpDouble(
+                      selectedItem?.toDouble(),
+                      endValue.selectedItem?.toDouble(),
+                      t,
+                    ) ??
                     0)
                 .round()
             : endValue.selectedItem,

@@ -35,11 +35,12 @@ class GridDecoration extends DecorationPainter {
     ShowLineForValue? showHorizontalLineForValue,
     TextStyle? textStyle,
   }) : assert(
-            textStyle != null ||
-                !(showHorizontalValues ||
-                    showTopHorizontalValue ||
-                    showVerticalValues),
-            'Need to provide text style for values to be visible!') {
+          textStyle != null ||
+              !(showHorizontalValues ||
+                  showTopHorizontalValue ||
+                  showVerticalValues),
+          'Need to provide text style for values to be visible!',
+        ) {
     _horizontalAxisDecoration = HorizontalAxisDecoration(
       showValues: showHorizontalValues,
       endWithChart: endWithChartHorizontal,
@@ -92,28 +93,30 @@ class GridDecoration extends DecorationPainter {
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
     return constraints
-        .deflate(state.defaultMargin +
-            state.defaultPadding.copyWith(
-              left: _horizontalAxisDecoration._endWithChart *
-                  state.defaultPadding.left,
-              right: _horizontalAxisDecoration._endWithChart *
-                  state.defaultPadding.right,
-              top: _verticalAxisDecoration._endWithChart *
-                  state.defaultPadding.top,
-              bottom: _verticalAxisDecoration._endWithChart *
-                  state.defaultPadding.bottom,
-            ))
+        .deflate(
+          state.defaultMargin +
+              state.defaultPadding.copyWith(
+                left: _horizontalAxisDecoration._endWithChart *
+                    state.defaultPadding.left,
+                right: _horizontalAxisDecoration._endWithChart *
+                    state.defaultPadding.right,
+                top: _verticalAxisDecoration._endWithChart *
+                    state.defaultPadding.top,
+                bottom: _verticalAxisDecoration._endWithChart *
+                    state.defaultPadding.bottom,
+              ),
+        )
         .biggest;
   }
 
   @override
   Offset applyPaintTransform(ChartState state, Size size) {
     return Offset(
-        state.defaultMargin.left +
-            (_horizontalAxisDecoration._endWithChart *
-                state.defaultPadding.left),
-        state.defaultMargin.top +
-            (_verticalAxisDecoration._endWithChart * state.defaultPadding.top));
+      state.defaultMargin.left +
+          (_horizontalAxisDecoration._endWithChart * state.defaultPadding.left),
+      state.defaultMargin.top +
+          (_verticalAxisDecoration._endWithChart * state.defaultPadding.top),
+    );
   }
 
   @override
@@ -139,9 +142,13 @@ class GridDecoration extends DecorationPainter {
     if (endValue is GridDecoration) {
       return GridDecoration._lerp(
         horizontalAxisDecoration: _horizontalAxisDecoration.animateTo(
-            endValue._horizontalAxisDecoration, t),
+          endValue._horizontalAxisDecoration,
+          t,
+        ),
         verticalAxisDecoration: _verticalAxisDecoration.animateTo(
-            endValue._verticalAxisDecoration, t),
+          endValue._verticalAxisDecoration,
+          t,
+        ),
       );
     }
 

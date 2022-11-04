@@ -6,8 +6,9 @@ void main() {
     test('Lerp items, min, max', () {
       final _firstState = ChartData.fromList([BarValue<void>(10)]);
       final _secondState = ChartData.fromList(
-          [BarValue<void>(10), BarValue<void>(20), BarValue<void>(15)],
-          axisMin: 10);
+        [BarValue<void>(10), BarValue<void>(20), BarValue<void>(15)],
+        axisMin: 10,
+      );
 
       expect(_firstState.items[0].length, 1);
       expect(_firstState.maxValue, 10);
@@ -26,12 +27,15 @@ void main() {
     test('Animation animates items', () {
       final _firstState = ChartData.fromList([BarValue<void>(10)]);
       final _secondState = ChartData.fromList(
-          [BarValue<void>(20), BarValue<void>(10), BarValue<void>(5)]);
+        [BarValue<void>(20), BarValue<void>(10), BarValue<void>(5)],
+      );
 
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
-      expect(_middleState.items[0],
-          [ChartItem<void>(15), ChartItem<void>(5, min: 0.0)]);
+      expect(
+        _middleState.items[0],
+        [ChartItem<void>(15), ChartItem<void>(5, min: 0)],
+      );
     });
 
     test('Bar -> Bubble animates different type items', () {
@@ -98,31 +102,27 @@ void main() {
   group('Decorations', () {
     test('Decorations can animate if they are the same type', () {
       final _firstState = ChartState<void>(
-          data: ChartData.fromList(
-            [2, 4, 6, 3, 5, 1]
-                .map((e) => BarValue<void>(e.toDouble()))
-                .toList(),
+        data: ChartData.fromList(
+          [2, 4, 6, 3, 5, 1].map((e) => BarValue<void>(e.toDouble())).toList(),
+        ),
+        itemOptions: const BarItemOptions(),
+        foregroundDecorations: [
+          HorizontalAxisDecoration(
+            lineWidth: 5,
           ),
-          itemOptions: BarItemOptions(),
-          foregroundDecorations: [
-            HorizontalAxisDecoration(
-              axisStep: 1,
-              lineWidth: 5.0,
-            ),
-          ]);
+        ],
+      );
       final _secondState = ChartState<void>(
-          data: ChartData.fromList(
-            [2, 4, 6, 3, 5, 1]
-                .map((e) => BarValue<void>(e.toDouble()))
-                .toList(),
+        data: ChartData.fromList(
+          [2, 4, 6, 3, 5, 1].map((e) => BarValue<void>(e.toDouble())).toList(),
+        ),
+        itemOptions: const BarItemOptions(),
+        foregroundDecorations: [
+          HorizontalAxisDecoration(
+            axisStep: 5,
           ),
-          itemOptions: BarItemOptions(),
-          foregroundDecorations: [
-            HorizontalAxisDecoration(
-              axisStep: 5,
-              lineWidth: 1.0,
-            ),
-          ]);
+        ],
+      );
 
       final _middleState = ChartState.lerp(_firstState, _secondState, 0.5);
 
@@ -134,33 +134,29 @@ void main() {
       expect(_middleDecoration.lineWidth, 3);
     });
 
-    test('Decorations won\'t try to animate if they are not the same type', () {
+    test("Decorations won't try to animate if they are not the same type", () {
       final _firstState = ChartState<void>(
-          data: ChartData.fromList(
-            [2, 4, 6, 3, 5, 1]
-                .map((e) => BarValue<void>(e.toDouble()))
-                .toList(),
+        data: ChartData.fromList(
+          [2, 4, 6, 3, 5, 1].map((e) => BarValue<void>(e.toDouble())).toList(),
+        ),
+        itemOptions: const BarItemOptions(),
+        foregroundDecorations: [
+          HorizontalAxisDecoration(
+            lineWidth: 5,
           ),
-          itemOptions: BarItemOptions(),
-          foregroundDecorations: [
-            HorizontalAxisDecoration(
-              axisStep: 1,
-              lineWidth: 5.0,
-            ),
-          ]);
+        ],
+      );
       final _secondState = ChartState<void>(
-          data: ChartData.fromList(
-            [2, 4, 6, 3, 5, 1]
-                .map((e) => BarValue<void>(e.toDouble()))
-                .toList(),
+        data: ChartData.fromList(
+          [2, 4, 6, 3, 5, 1].map((e) => BarValue<void>(e.toDouble())).toList(),
+        ),
+        itemOptions: const BarItemOptions(),
+        foregroundDecorations: [
+          VerticalAxisDecoration(
+            axisStep: 5,
           ),
-          itemOptions: BarItemOptions(),
-          foregroundDecorations: [
-            VerticalAxisDecoration(
-              axisStep: 5,
-              lineWidth: 1.0,
-            ),
-          ]);
+        ],
+      );
 
       final _middleState = ChartState.lerp(_firstState, _secondState, 0.5);
 

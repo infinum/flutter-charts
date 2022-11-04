@@ -10,8 +10,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 const _subtitle =
@@ -36,7 +34,7 @@ class OptionsDataComponent extends HookConsumerWidget {
               _presenter.updateDataStrategy(
                   _presenter.state.data.dataStrategy.runtimeType ==
                           DefaultDataStrategy
-                      ? StackDataStrategy()
+                      ? const StackDataStrategy()
                       : const DefaultDataStrategy(stackMultipleValues: true));
             },
             title1: 'Default (one next to another)',
@@ -50,7 +48,7 @@ class OptionsDataComponent extends HookConsumerWidget {
                 DefaultDataStrategy)
           Row(
             children: [
-              Text('Stack Multiple Values'),
+              const Text('Stack Multiple Values'),
               Switch(
                   value: _presenter.stackMultipleValues,
                   onChanged: _presenter.updateStackMultipleValues),
@@ -87,7 +85,7 @@ class OptionsDataComponent extends HookConsumerWidget {
 }
 
 class _DataTextField extends HookConsumerWidget {
-  _DataTextField(this.listIndex, {Key? key}) : super(key: key);
+  const _DataTextField(this.listIndex, {Key? key}) : super(key: key);
 
   final int listIndex;
 

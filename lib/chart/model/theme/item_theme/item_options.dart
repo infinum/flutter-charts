@@ -3,10 +3,11 @@ part of charts_painter;
 /// Item painter, use [barPainter] or [bubblePainter].
 /// Custom painter can also be added by extending [GeometryPainter]
 typedef ChartGeometryPainter<T> = GeometryPainter<T> Function(
-    ChartItem<T?> item,
-    ChartData data,
-    ItemOptions itemOptions,
-    DrawDataItem drawDataItem);
+  ChartItem<T?> item,
+  ChartData data,
+  ItemOptions itemOptions,
+  DrawDataItem drawDataItem,
+);
 
 /// Options for chart items. You can use this subclasses: [BarItemOptions], [BubbleItemOptions], [WidgetItemOptions]
 ///
@@ -38,7 +39,6 @@ abstract class ItemOptions {
     this.maxBarWidth,
     this.minBarWidth,
     this.startPosition = 0.5,
-    double multiItemStack = 1.0,
     required this.itemBuilder,
   });
 

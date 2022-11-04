@@ -1,5 +1,3 @@
-import 'package:charts_web/ui/home/chart_options/widget/options_items_component.dart';
-import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/double_option_input.dart';
@@ -41,9 +39,9 @@ class _BorderRadiusDialogState extends State<BorderRadiusDialog> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
+          const Text(
               'In this editor you can only change circular border. More advances properties (like non-circular border) can be accessed in code.'),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Row(
             children: [
               Column(

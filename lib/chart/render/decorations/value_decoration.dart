@@ -9,7 +9,8 @@ double defaultValueForItem(ChartItem item) => item.max ?? 0.0;
 /// Use this only as [ChartState.foregroundDecorations] in order to be visible at all locations
 /// Exact alignment can be set with [alignment]
 @Deprecated(
-    'Use [WidgetItemBuilder] instead if you want to decorate chart items with text')
+  'Use [WidgetItemBuilder] instead if you want to decorate chart items with text',
+)
 class ValueDecoration extends DecorationPainter {
   /// Constructor for values decoration
   ValueDecoration({
@@ -66,12 +67,20 @@ class ValueDecoration extends DecorationPainter {
   @override
   void initDecoration(ChartState state) {
     super.initDecoration(state);
-    assert(state.data.stackSize > listIndex,
-        'List index is not in the list!\nCheck the `listIndex` you are passing.');
+    assert(
+      state.data.stackSize > listIndex,
+      'List index is not in the list!\nCheck the `listIndex` you are passing.',
+    );
   }
 
-  void _paintText(Canvas canvas, Size size, ChartItem item, double width,
-      double verticalMultiplier, double minValue) {
+  void _paintText(
+    Canvas canvas,
+    Size size,
+    ChartItem item,
+    double width,
+    double verticalMultiplier,
+    double minValue,
+  ) {
     final _itemMaxValue = valueGenerator(item);
 
     final _maxValuePainter = ValueDecoration.makeTextPainter(
@@ -102,8 +111,10 @@ class ValueDecoration extends DecorationPainter {
 
   @override
   Offset applyPaintTransform(ChartState state, Size size) {
-    return Offset(state.defaultPadding.left + state.defaultMargin.left,
-        state.defaultPadding.top + state.defaultMargin.top);
+    return Offset(
+      state.defaultPadding.left + state.defaultMargin.left,
+      state.defaultPadding.top + state.defaultMargin.top,
+    );
   }
 
   @override
@@ -122,10 +133,16 @@ class ValueDecoration extends DecorationPainter {
       canvas.save();
       canvas.translate(
         index * _itemWidth,
-        0.0,
+        0,
       );
-      _paintText(canvas, Size(index * _itemWidth, size.height), value,
-          _itemWidth, _verticalMultiplier, state.data.minValue);
+      _paintText(
+        canvas,
+        Size(index * _itemWidth, size.height),
+        value,
+        _itemWidth,
+        _verticalMultiplier,
+        state.data.minValue,
+      );
       canvas.restore();
     });
   }
@@ -133,8 +150,11 @@ class ValueDecoration extends DecorationPainter {
   /// Get default text painter with set [value]
   /// Helper for [_paintText]
   static TextPainter makeTextPainter(
-      String value, double width, TextStyle? style,
-      {bool hasMaxWidth = true}) {
+    String value,
+    double width,
+    TextStyle? style, {
+    bool hasMaxWidth = true,
+  }) {
     final _painter = TextPainter(
       text: TextSpan(
         text: value,

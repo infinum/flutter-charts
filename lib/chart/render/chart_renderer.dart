@@ -8,11 +8,14 @@ part of charts_painter;
 /// Chart data can change their renderer by specifying new renderer in [ChartState.dataRenderer]
 class ChartRenderer<T> extends MultiChildRenderObjectWidget {
   ChartRenderer(this.chartState, {Key? key})
-      : super(key: key, children: [
-          DecorationsRenderer(chartState.backgroundDecorations, chartState),
-          chartState.dataRenderer.call(chartState),
-          DecorationsRenderer(chartState.foregroundDecorations, chartState),
-        ]);
+      : super(
+          key: key,
+          children: [
+            DecorationsRenderer(chartState.backgroundDecorations, chartState),
+            chartState.dataRenderer.call(chartState),
+            DecorationsRenderer(chartState.foregroundDecorations, chartState),
+          ],
+        );
 
   final ChartState<T?> chartState;
 
@@ -23,7 +26,9 @@ class ChartRenderer<T> extends MultiChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, _ChartRenderObject<T?> renderObject) {
+    BuildContext context,
+    _ChartRenderObject<T?> renderObject,
+  ) {
     renderObject.chartState = chartState;
     renderObject.markNeedsLayout();
   }
@@ -68,8 +73,9 @@ class _ChartRenderObject<T> extends RenderBox
             .deflate(_chartState.defaultPadding + _chartState.defaultMargin)
             .biggest;
         childParentData.offset = Offset(
-            _chartState.defaultPadding.left + _chartState.defaultMargin.left,
-            _chartState.defaultPadding.top + _chartState.defaultMargin.top);
+          _chartState.defaultPadding.left + _chartState.defaultMargin.left,
+          _chartState.defaultPadding.top + _chartState.defaultMargin.top,
+        );
 
         child.layout(BoxConstraints.tight(_size));
       } else {

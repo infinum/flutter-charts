@@ -55,7 +55,7 @@ class _Chart extends ConsumerWidget {
       ),
       padding: const EdgeInsets.all(20),
       child: AnimatedChart<void>(
-        duration: Duration(milliseconds: 450),
+        duration: const Duration(milliseconds: 450),
         state: _provider.state,
       ),
     );

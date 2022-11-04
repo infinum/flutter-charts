@@ -15,7 +15,8 @@ abstract class DataStrategy {
   final bool stackMultipleValues;
 
   List<List<ChartItem<T?>>> formatDataStrategy<T>(
-      List<List<ChartItem<T?>>> items);
+    List<List<ChartItem<T?>>> items,
+  );
 
   DataStrategy animateTo(DataStrategy dataStrategy, double t);
 }

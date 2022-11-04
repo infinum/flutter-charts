@@ -14,40 +14,49 @@ void main() {
     final builder = GoldenBuilder.grid(columns: 3, widthToHeightRatio: 1.4)
       ..addScenario(
         'Default',
-        getDefaultChart(backgroundDecorations: [
-          TargetLineDecoration(target: 4),
-          TargetLineLegendDecoration(
-            legendTarget: 4.0,
-            legendDescription: 'Target',
-            legendStyle: defaultTextStyle,
-          )
-        ]),
+        getDefaultChart(
+          backgroundDecorations: [
+            TargetLineDecoration(target: 4),
+            TargetLineLegendDecoration(
+              legendTarget: 4,
+              legendDescription: 'Target',
+              legendStyle: defaultTextStyle,
+            )
+          ],
+        ),
       )
       ..addScenario(
         'Big',
-        getDefaultChart(backgroundDecorations: [
-          TargetLineDecoration(target: 4),
-          TargetLineLegendDecoration(
-            legendTarget: 4.0,
-            legendDescription: 'Target',
-            legendStyle: defaultTextStyle.copyWith(fontSize: 36.0),
-          )
-        ]),
+        getDefaultChart(
+          backgroundDecorations: [
+            TargetLineDecoration(target: 4),
+            TargetLineLegendDecoration(
+              legendTarget: 4,
+              legendDescription: 'Target',
+              legendStyle: defaultTextStyle.copyWith(fontSize: 36),
+            )
+          ],
+        ),
       )
       ..addScenario(
         'with padding',
-        getDefaultChart(backgroundDecorations: [
-          TargetLineDecoration(target: 4),
-          TargetLineLegendDecoration(
-            legendTarget: 4.0,
-            padding: const EdgeInsets.symmetric(vertical: 12.0),
-            legendDescription: 'Target',
-            legendStyle: defaultTextStyle,
-          )
-        ]),
+        getDefaultChart(
+          backgroundDecorations: [
+            TargetLineDecoration(target: 4),
+            TargetLineLegendDecoration(
+              legendTarget: 4,
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              legendDescription: 'Target',
+              legendStyle: defaultTextStyle,
+            )
+          ],
+        ),
       );
-    await tester.pumpWidgetBuilder(builder.build(),
-        surfaceSize: const Size(1400, 330), textScaleSize: 1.4);
+    await tester.pumpWidgetBuilder(
+      builder.build(),
+      surfaceSize: const Size(1400, 330),
+      textScaleSize: 1.4,
+    );
     await screenMatchesGolden(tester, 'target_line_text_decoration_golden');
   });
 }

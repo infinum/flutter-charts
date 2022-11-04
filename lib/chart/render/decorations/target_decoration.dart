@@ -1,11 +1,13 @@
 part of charts_painter;
 
 /// Check iv item is inside the target
-bool _isInTarget(double? max,
-    {double? min,
-    double? targetMin,
-    double? targetMax,
-    bool inclusive = true}) {
+bool _isInTarget(
+  double? max, {
+  double? min,
+  double? targetMin,
+  double? targetMax,
+  bool inclusive = true,
+}) {
   if (targetMin == null && targetMax == null) {
     return true;
   }
@@ -25,14 +27,22 @@ bool _isInTarget(double? max,
   return true;
 }
 
-Color _getColorForTarget(Color color, Color? colorOverTarget,
-    bool isTargetInclusive, double? targetMin, double? targetMax, double? max,
-    [double? min]) {
-  return _isInTarget(max,
-          min: min,
-          targetMax: targetMax,
-          targetMin: targetMin,
-          inclusive: isTargetInclusive)
+Color _getColorForTarget(
+  Color color,
+  Color? colorOverTarget,
+  bool isTargetInclusive,
+  double? targetMin,
+  double? targetMax,
+  double? max, [
+  double? min,
+]) {
+  return _isInTarget(
+    max,
+    min: min,
+    targetMax: targetMax,
+    targetMin: targetMin,
+    inclusive: isTargetInclusive,
+  )
       ? color
       : (colorOverTarget ?? color);
 }
@@ -45,7 +55,8 @@ Color _getColorForTarget(Color color, Color? colorOverTarget,
 /// In order to change the color of item when it didn't meet the target
 /// criteria, you will need to add [getTargetItemColor] to [ItemOptions.colorForValue]
 @Deprecated(
-    'You can make this decoration and much more using WidgetDecoration. Check migration guide for more info')
+  'You can make this decoration and much more using WidgetDecoration. Check migration guide for more info',
+)
 class TargetLineDecoration extends DecorationPainter {
   /// Constructor for target line decoration
   ///
@@ -86,8 +97,15 @@ class TargetLineDecoration extends DecorationPainter {
   /// Pass this to [ItemOptions.colorForValue] and chart will update item colors
   /// based on target line
   Color getTargetItemColor(Color defaultColor, ChartItem item) =>
-      _getColorForTarget(defaultColor, colorOverTarget, isTargetInclusive,
-          target, null, item.max, item.min);
+      _getColorForTarget(
+        defaultColor,
+        colorOverTarget,
+        isTargetInclusive,
+        target,
+        null,
+        item.max,
+        item.min,
+      );
 
   @override
   Offset applyPaintTransform(ChartState state, Size size) {
@@ -98,19 +116,21 @@ class TargetLineDecoration extends DecorationPainter {
     final _minValue = state.data.minValue * scale;
 
     return Offset(
-        state.defaultMargin.left,
-        (_size.height - (lineWidth / 2)) -
-            scale * (target ?? 0) +
-            _minValue +
-            state.defaultMargin.top);
+      state.defaultMargin.left,
+      (_size.height - (lineWidth / 2)) -
+          scale * (target ?? 0) +
+          _minValue +
+          state.defaultMargin.top,
+    );
   }
 
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
     return Size(
-        (constraints.maxWidth -
-            (state.defaultPadding.horizontal + state.defaultMargin.horizontal)),
-        lineWidth);
+      constraints.maxWidth -
+          (state.defaultPadding.horizontal + state.defaultMargin.horizontal),
+      lineWidth,
+    );
   }
 
   @override
@@ -121,7 +141,7 @@ class TargetLineDecoration extends DecorationPainter {
       ..strokeWidth = lineWidth;
 
     final _path = Path()
-      ..moveTo(0.0, lineWidth / 2)
+      ..moveTo(0, lineWidth / 2)
       ..lineTo(size.width, lineWidth / 2);
 
     if (dashArray != null) {
@@ -174,8 +194,10 @@ class TargetAreaDecoration extends DecorationPainter {
     this.areaPadding = EdgeInsets.zero,
     this.targetAreaRadius,
     this.targetAreaFillColor,
-  }) : assert(areaPadding.vertical == 0,
-            'Vertical padding cannot be applied here!');
+  }) : assert(
+          areaPadding.vertical == 0,
+          'Vertical padding cannot be applied here!',
+        );
 
   /// Dash pattern for the line, if left empty line will be solid
   final List<double>? dashArray;
@@ -214,8 +236,15 @@ class TargetAreaDecoration extends DecorationPainter {
   /// Pass this to [ItemOptions.colorForValue] and chart will update item colors
   /// based on target area
   Color getTargetItemColor(Color defaultColor, ChartItem item) =>
-      _getColorForTarget(defaultColor, colorOverTarget, isTargetInclusive,
-          targetMin, targetMax, item.max, item.min);
+      _getColorForTarget(
+        defaultColor,
+        colorOverTarget,
+        isTargetInclusive,
+        targetMin,
+        targetMax,
+        item.max,
+        item.min,
+      );
 
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
@@ -226,7 +255,7 @@ class TargetAreaDecoration extends DecorationPainter {
     final _minValue = state.data.minValue * scale;
 
     return Rect.fromPoints(
-      Offset(0.0, -scale * targetMax + _minValue + areaPadding.vertical),
+      Offset(0, -scale * targetMax + _minValue + areaPadding.vertical),
       Offset(constraints.maxWidth, -scale * targetMin + _minValue),
     ).size;
   }
@@ -240,12 +269,13 @@ class TargetAreaDecoration extends DecorationPainter {
     final _minValue = state.data.minValue * scale;
 
     return Offset(
-        areaPadding.left,
-        _size.height -
-            scale * targetMax +
-            _minValue +
-            state.defaultMargin.top +
-            state.defaultPadding.top);
+      areaPadding.left,
+      _size.height -
+          scale * targetMax +
+          _minValue +
+          state.defaultMargin.top +
+          state.defaultPadding.top,
+    );
   }
 
   @override
@@ -268,16 +298,18 @@ class TargetAreaDecoration extends DecorationPainter {
     }
 
     final _rectPath = Path()
-      ..addRRect(RRect.fromRectAndCorners(
-        Rect.fromPoints(
-          Offset(lineWidth / 2, lineWidth / 2),
-          Offset(size.width - lineWidth / 2, size.height - lineWidth / 2),
+      ..addRRect(
+        RRect.fromRectAndCorners(
+          Rect.fromPoints(
+            Offset(lineWidth / 2, lineWidth / 2),
+            Offset(size.width - lineWidth / 2, size.height - lineWidth / 2),
+          ),
+          bottomLeft: targetAreaRadius?.bottomLeft ?? Radius.zero,
+          bottomRight: targetAreaRadius?.bottomRight ?? Radius.zero,
+          topLeft: targetAreaRadius?.topLeft ?? Radius.zero,
+          topRight: targetAreaRadius?.topRight ?? Radius.zero,
         ),
-        bottomLeft: targetAreaRadius?.bottomLeft ?? Radius.zero,
-        bottomRight: targetAreaRadius?.bottomRight ?? Radius.zero,
-        topLeft: targetAreaRadius?.topLeft ?? Radius.zero,
-        topRight: targetAreaRadius?.topRight ?? Radius.zero,
-      ));
+      );
 
     if (dashArray != null) {
       canvas.drawPath(

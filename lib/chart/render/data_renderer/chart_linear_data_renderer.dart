@@ -15,7 +15,9 @@ class ChartLinearDataRenderer<T> extends ChartDataRenderer<T> {
 
   @override
   void updateRenderObject(
-      BuildContext context, _ChartLinearItemRenderer<T?> renderObject) {
+    BuildContext context,
+    _ChartLinearItemRenderer<T?> renderObject,
+  ) {
     renderObject.chartState = chartState;
     renderObject.markNeedsLayout();
   }
@@ -46,7 +48,7 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
 
   @override
   void performLayout() {
-    var childCount = <int, int>{};
+    final childCount = <int, int>{};
     var child = firstChild;
     final _size = computeDryLayout(constraints);
     final _listSize = _chartState.data.listSize;
@@ -130,7 +132,7 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     final _stack =
         1 - chartState.data.dataStrategy._stackMultipleValuesProgress;
     // How many items will we fit in the vertical space
-    final _stackSize = max(1.0, (chartState.data.stackSize) * _stack);
+    final _stackSize = max(1, (chartState.data.stackSize) * _stack);
 
     // Get available size for item. Subtracts set padding and divide by number of items we want to show
     final _stackWidth = (itemWidth -
@@ -138,18 +140,18 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
             (chartState.itemOptions.padding.horizontal * _stackSize)) /
         _stackSize;
 
-    childParentData.offset =
-        Offset(_stackWidth * child.listIndex * _stack, 0.0) +
-            // Item offset in the list
-            Offset(
-                itemWidth * currentValue +
-                    (chartState.itemOptions.padding.horizontal *
-                        child.listIndex *
-                        _stack) +
-                    chartState.itemOptions.padding.left,
-                0) +
-            // MultiValuePadding offset
-            Offset(_multiValuePadding.left * _stack, 0.0);
+    childParentData.offset = Offset(_stackWidth * child.listIndex * _stack, 0) +
+        // Item offset in the list
+        Offset(
+          itemWidth * currentValue +
+              (chartState.itemOptions.padding.horizontal *
+                  child.listIndex *
+                  _stack) +
+              chartState.itemOptions.padding.left,
+          0,
+        ) +
+        // MultiValuePadding offset
+        Offset(_multiValuePadding.left * _stack, 0);
 
     final innerConstraints = BoxConstraints.tightFor(
       width: _stackWidth,
@@ -189,7 +191,7 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     final _stack =
         1 - chartState.data.dataStrategy._stackMultipleValuesProgress;
     // How many items will we fit in the vertical space
-    final _stackSize = max(1.0, (chartState.data.stackSize) * _stack);
+    final _stackSize = max(1, (chartState.data.stackSize) * _stack);
 
     // Get available size for item. Subtracts set padding and divide by number of items we want to show
     final _stackWidth =
@@ -201,8 +203,10 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
 
     childParentData.offset = offset + // Current chart offset
         // Item offset in the list
-        Offset(itemWidth * currentValue,
-            size.height - ((child.item.max ?? 0.0) * _verticalMultiplier)) +
+        Offset(
+          itemWidth * currentValue,
+          size.height - ((child.item.max ?? 0.0) * _verticalMultiplier),
+        ) +
         // MultiValuePadding offset
         Offset(_multiValuePadding.left * _stack, 0);
 

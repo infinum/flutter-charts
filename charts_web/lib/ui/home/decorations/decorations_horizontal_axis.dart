@@ -1,6 +1,5 @@
 import 'package:charts_web/ui/home/decorations/common_decoration_box.dart';
 import 'package:charts_web/ui/home/decorations/presenters/decorations_horizontal_axis_presenter.dart';
-import 'package:charts_web/ui/home/decorations/presenters/decorations_vertical_axis_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

@@ -1,10 +1,18 @@
 part of charts_painter;
 
 /// Bubble painter
-GeometryPainter<T> bubblePainter<T>(ChartItem<T> item, ChartData<T> data,
-        ItemOptions itemOptions, DrawDataItem drawDataItem) =>
+GeometryPainter<T> bubblePainter<T>(
+  ChartItem<T> item,
+  ChartData<T> data,
+  ItemOptions itemOptions,
+  DrawDataItem drawDataItem,
+) =>
     BubbleGeometryPainter<T>(
-        item, data, itemOptions, drawDataItem as BubbleItem);
+      item,
+      data,
+      itemOptions,
+      drawDataItem as BubbleItem,
+    );
 
 typedef BubbleItemBuilder<T> = BubbleItem Function(ItemBuilderData<T>);
 
@@ -23,12 +31,13 @@ class BubbleItemOptions extends ItemOptions {
     double? minBarWidth,
     this.bubbleItemBuilder = _defaultBubbleItem,
   }) : super(
-            padding: padding,
-            multiValuePadding: multiValuePadding,
-            minBarWidth: minBarWidth,
-            maxBarWidth: maxBarWidth,
-            geometryPainter: bubblePainter,
-            itemBuilder: bubbleItemBuilder);
+          padding: padding,
+          multiValuePadding: multiValuePadding,
+          minBarWidth: minBarWidth,
+          maxBarWidth: maxBarWidth,
+          geometryPainter: bubblePainter,
+          itemBuilder: bubbleItemBuilder,
+        );
 
   BubbleItemOptions._lerp({
     EdgeInsets padding = EdgeInsets.zero,
@@ -67,5 +76,5 @@ class BubbleItemOptions extends ItemOptions {
 }
 
 BubbleItem _defaultBubbleItem(ItemBuilderData _) {
-  return BubbleItem();
+  return const BubbleItem();
 }

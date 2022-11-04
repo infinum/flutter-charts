@@ -25,9 +25,10 @@ void main() {
         getDefaultChart(
           backgroundDecorations: [
             HorizontalAxisDecoration(
-                showValues: true,
-                legendFontStyle: defaultTextStyle,
-                valuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0)),
+              showValues: true,
+              legendFontStyle: defaultTextStyle,
+              valuesPadding: const EdgeInsets.only(right: 8, left: 4),
+            ),
           ],
         ),
       )
@@ -36,10 +37,11 @@ void main() {
         getDefaultChart(
           backgroundDecorations: [
             HorizontalAxisDecoration(
-                showValues: true,
-                legendPosition: HorizontalLegendPosition.start,
-                legendFontStyle: defaultTextStyle,
-                valuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0)),
+              showValues: true,
+              legendPosition: HorizontalLegendPosition.start,
+              legendFontStyle: defaultTextStyle,
+              valuesPadding: const EdgeInsets.only(right: 8, left: 4),
+            ),
           ],
         ),
       )
@@ -48,10 +50,11 @@ void main() {
         getDefaultChart(
           backgroundDecorations: [
             HorizontalAxisDecoration(
-                showValues: true,
-                axisStep: 2.0,
-                legendFontStyle: defaultTextStyle,
-                valuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0)),
+              showValues: true,
+              axisStep: 2,
+              legendFontStyle: defaultTextStyle,
+              valuesPadding: const EdgeInsets.only(right: 8, left: 4),
+            ),
           ],
         ),
       )
@@ -63,7 +66,7 @@ void main() {
               showValues: true,
               endWithChart: true,
               legendFontStyle: defaultTextStyle,
-              valuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0),
+              valuesPadding: const EdgeInsets.only(right: 8, left: 4),
             ),
           ],
         ),
@@ -77,7 +80,7 @@ void main() {
               endWithChart: true,
               showTopValue: true,
               legendFontStyle: defaultTextStyle,
-              valuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0),
+              valuesPadding: const EdgeInsets.only(right: 8, left: 4),
             ),
           ],
         ),
@@ -90,7 +93,7 @@ void main() {
               showValues: true,
               dashArray: [10, 10],
               legendFontStyle: defaultTextStyle,
-              valuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0),
+              valuesPadding: const EdgeInsets.only(right: 8, left: 4),
             ),
           ],
         ),
@@ -101,7 +104,7 @@ void main() {
           backgroundDecorations: [
             HorizontalAxisDecoration(
               showLineForValue: (value) => [6, 8, 7].contains(value),
-              lineWidth: 3.0,
+              lineWidth: 3,
             ),
           ],
         ),
@@ -117,8 +120,11 @@ void main() {
         ),
       );
 
-    await tester.pumpWidgetBuilder(builder.build(),
-        surfaceSize: const Size(1400, 1000), textScaleSize: 1.4);
+    await tester.pumpWidgetBuilder(
+      builder.build(),
+      surfaceSize: const Size(1400, 1000),
+      textScaleSize: 1.4,
+    );
     await screenMatchesGolden(tester, 'horizontal_decoration_golden');
   });
 }

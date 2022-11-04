@@ -30,7 +30,7 @@ class VerticalAxisDecoration extends DecorationPainter {
     this.axisStep = 1,
     this.textScale = 1.0,
     this.legendPosition = VerticalLegendPosition.bottom,
-    this.legendFontStyle = const TextStyle(fontSize: 12.0),
+    this.legendFontStyle = const TextStyle(fontSize: 12),
   })  : assert(axisStep > 0, 'axisStep must be greater than zero!'),
         _endWithChart = endWithChart ? 1.0 : 0.0;
 
@@ -47,7 +47,7 @@ class VerticalAxisDecoration extends DecorationPainter {
     this.axisStep = 1,
     this.textScale = 1.0,
     this.legendPosition = VerticalLegendPosition.bottom,
-    this.legendFontStyle = const TextStyle(fontSize: 12.0),
+    this.legendFontStyle = const TextStyle(fontSize: 12),
   }) : _endWithChart = endWithChart;
 
   /// This decoration can continue beyond padding set by [ChartState]
@@ -98,18 +98,22 @@ class VerticalAxisDecoration extends DecorationPainter {
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
     return constraints
-        .deflate(state.defaultMargin +
-            state.defaultPadding.copyWith(
-              top: _endWithChart * state.defaultPadding.top,
-              bottom: _endWithChart * state.defaultPadding.bottom,
-            ))
+        .deflate(
+          state.defaultMargin +
+              state.defaultPadding.copyWith(
+                top: _endWithChart * state.defaultPadding.top,
+                bottom: _endWithChart * state.defaultPadding.bottom,
+              ),
+        )
         .biggest;
   }
 
   @override
   Offset applyPaintTransform(ChartState state, Size size) {
-    return Offset(state.defaultMargin.left + state.defaultPadding.left,
-        state.defaultMargin.top + (_endWithChart * state.defaultPadding.top));
+    return Offset(
+      state.defaultMargin.left + state.defaultPadding.left,
+      state.defaultMargin.top + (_endWithChart * state.defaultPadding.top),
+    );
   }
 
   @override
@@ -136,11 +140,13 @@ class VerticalAxisDecoration extends DecorationPainter {
                 : 0.0);
 
         gridPath.moveTo(
-            -marginNeeded().left + lineWidth / 2 + _itemWidth * i * axisStep,
-            _showValuesBottom);
+          -marginNeeded().left + lineWidth / 2 + _itemWidth * i * axisStep,
+          _showValuesBottom,
+        );
         gridPath.lineTo(
-            -marginNeeded().left + lineWidth / 2 + _itemWidth * i * axisStep,
-            _showValuesTop);
+          -marginNeeded().left + lineWidth / 2 + _itemWidth * i * axisStep,
+          _showValuesTop,
+        );
       }
 
       if (!showValues || i == _listSize / axisStep) {
@@ -175,13 +181,14 @@ class VerticalAxisDecoration extends DecorationPainter {
       _textPainter.paint(
         canvas,
         Offset(
-            state.defaultPadding.left +
-                _itemWidth * i * axisStep +
-                (valuesPadding?.left ?? 0.0),
-            legendPosition == VerticalLegendPosition.top
-                ? (-(valuesPadding?.top ?? 0.0) - _textPainter.height)
-                : (((state.defaultMargin).inflateSize(size)).height -
-                    (valuesPadding?.vertical ?? 0.0))),
+          state.defaultPadding.left +
+              _itemWidth * i * axisStep +
+              (valuesPadding?.left ?? 0.0),
+          legendPosition == VerticalLegendPosition.top
+              ? (-(valuesPadding?.top ?? 0.0) - _textPainter.height)
+              : (((state.defaultMargin).inflateSize(size)).height -
+                  (valuesPadding?.vertical ?? 0.0)),
+        ),
       );
     }
 
@@ -211,11 +218,11 @@ class VerticalAxisDecoration extends DecorationPainter {
   /// Get width of longest text on axis
   double _textHeight(String? text, TextStyle? style) {
     final textPainter = TextPainter(
-        text: TextSpan(text: text, style: style),
-        maxLines: 1,
-        textScaleFactor: textScale,
-        textDirection: TextDirection.ltr)
-      ..layout();
+      text: TextSpan(text: text, style: style),
+      maxLines: 1,
+      textScaleFactor: textScale,
+      textDirection: TextDirection.ltr,
+    )..layout();
     return textPainter.size.height;
   }
 

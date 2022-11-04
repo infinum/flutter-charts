@@ -6,7 +6,7 @@ void main() {
     test('[Bar] Default min value is 0', () {
       final _state = ChartState<void>(
         data: ChartData.fromList([BarValue<void>(2)]),
-        itemOptions: BarItemOptions(),
+        itemOptions: const BarItemOptions(),
       );
       expect(_state.data.isEmpty, false);
       expect(_state.data.minValue, 0);
@@ -15,7 +15,7 @@ void main() {
     test('[Candle] Default min value is 0', () {
       final _state = ChartState<void>(
         data: ChartData.fromList([CandleValue<void>(5, 2)]),
-        itemOptions: BarItemOptions(),
+        itemOptions: const BarItemOptions(),
       );
       expect(_state.data.isEmpty, false);
       expect(_state.data.minValue, 0);
@@ -36,7 +36,7 @@ void main() {
       test('[Bar] Value min value is item', () {
         final _state = ChartState<void>(
           data: ChartData.fromList([BarValue<void>(2)], axisMin: 1),
-          itemOptions: BarItemOptions(),
+          itemOptions: const BarItemOptions(),
         );
         expect(_state.data.isEmpty, false);
         expect(_state.data.minValue, 1);
@@ -45,7 +45,7 @@ void main() {
       test('[Candle] Value min value is item', () {
         final _state = ChartState<void>(
           data: ChartData.fromList([CandleValue<void>(5, 2)], axisMin: 1),
-          itemOptions: BarItemOptions(),
+          itemOptions: const BarItemOptions(),
         );
         expect(_state.data.isEmpty, false);
         expect(_state.data.minValue, 1);
@@ -65,7 +65,7 @@ void main() {
       test('[Bar] Min value is min value', () {
         final _state = ChartState<void>(
           data: ChartData.fromList([BarValue<void>(2)], axisMin: 10),
-          itemOptions: BarItemOptions(),
+          itemOptions: const BarItemOptions(),
         );
         expect(_state.data.isEmpty, false);
         expect(_state.data.minValue, 2);
@@ -74,7 +74,7 @@ void main() {
       test('[Candle] Min value is min value', () {
         final _state = ChartState<void>(
           data: ChartData.fromList([CandleValue<void>(2, 5)], axisMin: 10),
-          itemOptions: BarItemOptions(),
+          itemOptions: const BarItemOptions(),
         );
         expect(_state.data.isEmpty, false);
         expect(_state.data.minValue, 2);
@@ -94,7 +94,7 @@ void main() {
       test('[Bar] Min can go negative', () {
         final _state = ChartState<void>(
           data: ChartData.fromList([BarValue<void>(-2)], axisMin: 10),
-          itemOptions: BarItemOptions(),
+          itemOptions: const BarItemOptions(),
         );
         expect(_state.data.isEmpty, false);
         expect(_state.data.minValue, -2);
@@ -103,7 +103,7 @@ void main() {
       test('[Candle] Min can go negative', () {
         final _state = ChartState<void>(
           data: ChartData.fromList([CandleValue<void>(-2, 5)], axisMin: 10),
-          itemOptions: BarItemOptions(),
+          itemOptions: const BarItemOptions(),
         );
         expect(_state.data.isEmpty, false);
         expect(_state.data.minValue, -2);
@@ -125,7 +125,7 @@ void main() {
       test('[Bar] Value max value is item', () {
         final _state = ChartState<void>(
           data: ChartData.fromList([BarValue<void>(2)], axisMax: 1),
-          itemOptions: BarItemOptions(),
+          itemOptions: const BarItemOptions(),
         );
         expect(_state.data.isEmpty, false);
         expect(_state.data.maxValue, 2);
@@ -134,7 +134,7 @@ void main() {
       test('[Candle] Value max value is item', () {
         final _state = ChartState<void>(
           data: ChartData.fromList([CandleValue<void>(2, 5)], axisMax: 1),
-          itemOptions: BarItemOptions(),
+          itemOptions: const BarItemOptions(),
         );
         expect(_state.data.isEmpty, false);
         expect(_state.data.maxValue, 5);
@@ -153,7 +153,7 @@ void main() {
       test('[Bar] Max value is max value', () {
         final _state = ChartState<void>(
           data: ChartData.fromList([BarValue<void>(2)], axisMax: 10),
-          itemOptions: BarItemOptions(),
+          itemOptions: const BarItemOptions(),
         );
         expect(_state.data.isEmpty, false);
         expect(_state.data.maxValue, 10);
@@ -162,7 +162,7 @@ void main() {
       test('[Candle] Max value is max value', () {
         final _state = ChartState<void>(
           data: ChartData.fromList([CandleValue<void>(2, 5)], axisMax: 10),
-          itemOptions: BarItemOptions(),
+          itemOptions: const BarItemOptions(),
         );
         expect(_state.data.isEmpty, false);
         expect(_state.data.maxValue, 10);

@@ -40,7 +40,7 @@ class SwitchWithImage extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: Color(0xffdedede),
+                color: const Color(0xffdedede),
               ),
               height: subtitle != null ? 60 : 45,
               width: subtitle != null ? 60 : 45,

@@ -29,7 +29,7 @@ class ChartTypes extends StatelessWidget {
                   itemOptions: BarItemOptions(
                     barItemBuilder: (_) => BarItem(
                       radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     maxBarWidth: 8.0,
@@ -67,7 +67,8 @@ class ChartTypes extends StatelessWidget {
                   ),
                   itemOptions: BubbleItemOptions(
                     bubbleItemBuilder: (_) {
-                      return BubbleItem(color: Theme.of(context).accentColor);
+                      return BubbleItem(
+                          color: Theme.of(context).colorScheme.secondary);
                     },
                     maxBarWidth: 8.0,
                   ),
@@ -107,7 +108,7 @@ class ChartTypes extends StatelessWidget {
                     barItemBuilder: (_) {
                       return BarItem(
                         radius: BorderRadius.all(Radius.circular(12.0)),
-                        color: Theme.of(context).accentColor,
+                        color: Theme.of(context).colorScheme.secondary,
                       );
                     },
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:charts_painter/chart.dart';
 import 'package:charts_web/ui/common/dialog/color_picker_dialog.dart';
 import 'package:charts_web/ui/home/presenter/chart_decorations_presenter.dart';
