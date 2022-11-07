@@ -1,3 +1,4 @@
+import 'package:alchemist/alchemist.dart';
 import 'package:charts_painter/chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,11 +11,11 @@ void main() {
     await loadAppFonts();
   });
 
-  testGoldens('Widget decoration examples', (tester) async {
-    final builder = GoldenBuilder.grid(columns: 2, widthToHeightRatio: 1.4)
-      ..addScenario(
-        'Target line decoration',
-        getDefaultChart(backgroundDecorations: [
+  goldenTest('Widget decoration examples', fileName: 'widget_decoration_golden', builder: () {
+    return GoldenTestGroup(children: [
+      GoldenTestScenario(name:
+      'Target line decoration',
+        child: getDefaultChart(backgroundDecorations: [
           WidgetDecoration(widgetDecorationBuilder:
               (context, chartState, itemWidth, verticalMultiplier) {
             return Stack(
@@ -29,10 +30,10 @@ void main() {
             );
           })
         ]),
-      )
-      ..addScenario(
-        'Target line text decoration',
-        getDefaultChart(backgroundDecorations: [
+      ),
+      GoldenTestScenario(name:
+      'Target line text decoration',
+        child: getDefaultChart(backgroundDecorations: [
           WidgetDecoration(
               widgetDecorationBuilder:
                   (context, chartState, itemWidth, verticalMultiplier) {
@@ -57,10 +58,10 @@ void main() {
               },
               margin: const EdgeInsets.only(left: 20)),
         ]),
-      )
-      ..addScenario(
-        'Target area decoration',
-        getDefaultChart(backgroundDecorations: [
+      ),
+      GoldenTestScenario(name:
+      'Target area decoration',
+        child: getDefaultChart(backgroundDecorations: [
           WidgetDecoration(
             widgetDecorationBuilder:
                 (context, chartState, itemWidth, verticalMultiplier) {
@@ -78,10 +79,10 @@ void main() {
             },
           ),
         ]),
-      )
-      ..addScenario(
-        'Border decoration',
-        getDefaultChart(backgroundDecorations: [
+      ),
+      GoldenTestScenario(name:
+      'Border decoration',
+        child: getDefaultChart(backgroundDecorations: [
           WidgetDecoration(
               widgetDecorationBuilder:
                   (context, chartState, itemWidth, verticalMultiplier) {
@@ -94,9 +95,7 @@ void main() {
               },
               margin: EdgeInsets.all(3)),
         ]),
-      );
-    await tester.pumpWidgetBuilder(builder.build(),
-        surfaceSize: const Size(1400, 1020), textScaleSize: 1.4);
-    await screenMatchesGolden(tester, 'widget_decoration_golden');
+      )
+    ]);
   });
 }
