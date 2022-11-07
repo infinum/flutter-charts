@@ -30,25 +30,25 @@ Any changes will be visible here as well.
 ![grid_decorations]
 
 ##### Border decoration golden
-![border_decorations]
+Deprecated
 
 ##### Value decoration golden
-![value_decorations]
+Deprecated
 
 ##### Target line decoration golden
-![target_line_decorations]
+Deprecated
 
 ##### Target line text decoration golden
-![target_line_text_decorations]
+Deprecated
 
 ##### Target area decoration golden
-![target_area_decorations]
+Deprecated
 
 ##### Sparkline decoration golden
 ![sparkline_decorations]
 
 ##### Selected item decoration golden
-![selected_item_decorations]
+Deprecated
 
 ## Complex
 
