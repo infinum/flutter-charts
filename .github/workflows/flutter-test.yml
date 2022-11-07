@@ -13,5 +13,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v1
-      - run: flutter analyze
+      - run: flutter analyze lib/
       - run: flutter test
