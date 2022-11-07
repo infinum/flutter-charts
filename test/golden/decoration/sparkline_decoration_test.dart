@@ -11,7 +11,8 @@ void main() {
     await loadAppFonts();
   });
 
-  goldenTest('sparkline_decoration', fileName: 'sparkline_decoration_golden', builder: () {
+  goldenTest('sparkline_decoration', fileName: 'sparkline_decoration_golden',
+      builder: () {
     return GoldenTestGroup(children: [
       GoldenTestScenario(
         name: 'Default',
@@ -142,8 +143,12 @@ void main() {
             state: ChartState(
                 data: ChartData(
                   [
-                    [5, 6, 8, 4, 3, 5, 2, 6, 7].map((e) => BarValue<void>(e.toDouble())).toList(),
-                    [3, 5, 2, 6, 7, 5, 6, 8, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
+                    [5, 6, 8, 4, 3, 5, 2, 6, 7]
+                        .map((e) => BarValue<void>(e.toDouble()))
+                        .toList(),
+                    [3, 5, 2, 6, 7, 5, 6, 8, 4]
+                        .map((e) => BarValue<void>(e.toDouble()))
+                        .toList(),
                   ],
                   valueAxisMaxOver: 2,
                 ),

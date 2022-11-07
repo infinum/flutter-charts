@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:charts_painter/chart.dart';
 import 'package:example/widgets/chart_options.dart';
 import 'package:example/widgets/toggle_item.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/bar_chart.dart';
@@ -101,7 +100,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                     textStyle: Theme.of(context).textTheme.caption,
                     gridColor: Theme.of(context)
                         .colorScheme
-                        .primaryVariant
+                        .primaryContainer
                         .withOpacity(0.2),
                   ),
                   _targetDecoration,
@@ -130,7 +129,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                         horizontal: BorderSide(width: 4.0)),
                     color: Theme.of(context)
                         .colorScheme
-                        .primaryVariant
+                        .primaryContainer
                         .withOpacity(0.4),
                   ),
                 ],

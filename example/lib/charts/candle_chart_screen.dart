@@ -4,7 +4,6 @@ import 'package:charts_painter/chart.dart';
 import 'package:example/widgets/candle_chart.dart';
 import 'package:example/widgets/chart_options.dart';
 import 'package:example/widgets/toggle_item.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CandleItem {
@@ -107,7 +106,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                     verticalTextAlign: TextAlign.start,
                     gridColor: Theme.of(context)
                         .colorScheme
-                        .primaryVariant
+                        .primaryContainer
                         .withOpacity(0.2),
                     textStyle: Theme.of(context)
                         .textTheme

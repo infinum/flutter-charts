@@ -11,7 +11,8 @@ void main() {
     await loadAppFonts();
   });
 
-  goldenTest('Vertical decoration', fileName: 'vertical_decoration_golden', builder: () {
+  goldenTest('Vertical decoration', fileName: 'vertical_decoration_golden',
+      builder: () {
     return GoldenTestGroup(children: [
       GoldenTestScenario(
         name: 'Default',

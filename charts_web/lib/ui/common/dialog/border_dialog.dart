@@ -1,5 +1,4 @@
 import 'package:flex_color_picker/flex_color_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/double_option_input.dart';
@@ -78,7 +77,7 @@ class _BorderSideDialogState extends State<BorderSideDialog> {
             width: 44,
             height: 44,
             enableShadesSelection: false,
-            pickersEnabled: {
+            pickersEnabled: const {
               ColorPickerType.primary: true,
               ColorPickerType.accent: false
             },

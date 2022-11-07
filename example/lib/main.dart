@@ -5,7 +5,6 @@ import 'package:example/charts/migration_chart_screen.dart';
 import 'package:example/complex/complex_charts.dart';
 import 'package:example/showcase/ios_charts.dart';
 import 'package:example/showcase/showcase_charts.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'charts/line_chart_screen.dart';
@@ -14,13 +13,15 @@ import 'charts/scrollable_chart_screen.dart';
 void main() {
   runApp(MaterialApp(
       theme: ThemeData.light().copyWith(
-        accentColor: Color(0xFFd8262C),
-        colorScheme: ThemeData.light().colorScheme.copyWith(
+        primaryColor: Colors.red,
+        colorScheme: ThemeData.light()
+            .colorScheme
+            .copyWith(
               primary: Color(0xFFd8262C),
               secondary: Color(0xFF353535),
               error: Colors.lightBlue,
-            ),
-        primaryColor: Colors.red,
+            )
+            .copyWith(secondary: Color(0xFFd8262C)),
       ),
       home: ChartDemo()));
 }
@@ -102,8 +103,8 @@ class ShowList extends StatelessWidget {
                   ),
                   itemOptions: BubbleItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    bubbleItemBuilder: (_) =>
-                        BubbleItem(color: Theme.of(context).accentColor),
+                    bubbleItemBuilder: (_) => BubbleItem(
+                        color: Theme.of(context).colorScheme.secondary),
                     maxBarWidth: 1.0,
                   ),
                   backgroundDecorations: [
@@ -143,8 +144,8 @@ class ShowList extends StatelessWidget {
                     ),
                     itemOptions: BarItemOptions(
                       padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                      barItemBuilder: (_) =>
-                          BarItem(color: Theme.of(context).accentColor),
+                      barItemBuilder: (_) => BarItem(
+                          color: Theme.of(context).colorScheme.secondary),
                       maxBarWidth: 4.0,
                     ),
                     backgroundDecorations: [
@@ -203,7 +204,7 @@ class ShowList extends StatelessWidget {
                   itemOptions: BarItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     barItemBuilder: (_) => BarItem(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                       radius: BorderRadius.vertical(top: Radius.circular(12.0)),
                     ),
                   ),
@@ -214,7 +215,7 @@ class ShowList extends StatelessWidget {
                       gridColor: Theme.of(context).dividerColor,
                     ),
                     SparkLineDecoration(
-                      lineColor: Theme.of(context).accentColor,
+                      lineColor: Theme.of(context).colorScheme.secondary,
                     ),
                   ],
                 ),

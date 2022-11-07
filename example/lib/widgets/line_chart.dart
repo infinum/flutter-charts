@@ -1,5 +1,4 @@
 import 'package:charts_painter/chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 typedef DataToValue<T> = double Function(T item);

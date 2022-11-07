@@ -32,7 +32,7 @@ class ColorPickerDialog extends StatelessWidget {
           children: [
             Text(
                 'In this editor you can select only colors from given pallete. Any color can be given in code.\n$additionalText'),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ColorPicker(
               color: startColor,
               // Update the screenPickerColor using the callback.
@@ -42,7 +42,7 @@ class ColorPickerDialog extends StatelessWidget {
               width: 44,
               height: 44,
               enableShadesSelection: false,
-              pickersEnabled: {
+              pickersEnabled: const {
                 ColorPickerType.primary: true,
                 ColorPickerType.accent: false
               },

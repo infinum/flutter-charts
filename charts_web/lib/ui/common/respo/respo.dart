@@ -211,7 +211,7 @@ class RespoWrapperData {
     }
   }
 
-  RespoWrapperData._({
+  const RespoWrapperData._({
     required this.screenWidth,
     required this.screenHeight,
     required this.scaledWidth,

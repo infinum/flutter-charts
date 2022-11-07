@@ -11,10 +11,11 @@ void main() {
     await loadAppFonts();
   });
 
-  goldenTest('Widget decoration examples', fileName: 'widget_decoration_golden', builder: () {
+  goldenTest('Widget decoration examples', fileName: 'widget_decoration_golden',
+      builder: () {
     return GoldenTestGroup(children: [
-      GoldenTestScenario(name:
-      'Target line decoration',
+      GoldenTestScenario(
+        name: 'Target line decoration',
         child: getDefaultChart(backgroundDecorations: [
           WidgetDecoration(widgetDecorationBuilder:
               (context, chartState, itemWidth, verticalMultiplier) {
@@ -31,8 +32,8 @@ void main() {
           })
         ]),
       ),
-      GoldenTestScenario(name:
-      'Target line text decoration',
+      GoldenTestScenario(
+        name: 'Target line text decoration',
         child: getDefaultChart(backgroundDecorations: [
           WidgetDecoration(
               widgetDecorationBuilder:
@@ -59,8 +60,8 @@ void main() {
               margin: const EdgeInsets.only(left: 20)),
         ]),
       ),
-      GoldenTestScenario(name:
-      'Target area decoration',
+      GoldenTestScenario(
+        name: 'Target area decoration',
         child: getDefaultChart(backgroundDecorations: [
           WidgetDecoration(
             widgetDecorationBuilder:
@@ -80,8 +81,8 @@ void main() {
           ),
         ]),
       ),
-      GoldenTestScenario(name:
-      'Border decoration',
+      GoldenTestScenario(
+        name: 'Border decoration',
         child: getDefaultChart(backgroundDecorations: [
           WidgetDecoration(
               widgetDecorationBuilder:
