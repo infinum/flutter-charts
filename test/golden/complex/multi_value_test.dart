@@ -1,7 +1,6 @@
 import 'package:alchemist/alchemist.dart';
 import 'package:charts_painter/chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 
 import '../util.dart';
 
