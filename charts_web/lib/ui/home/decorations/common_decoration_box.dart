@@ -39,7 +39,7 @@ class CommonDecorationBox extends HookConsumerWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
+          Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -102,7 +102,7 @@ class CommonDecorationBox extends HookConsumerWidget {
               ),
             ],
           ),
-          Divider(),
+          const Divider(),
           child,
         ],
       ),

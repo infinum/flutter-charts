@@ -21,7 +21,9 @@ void main() {
         child: Chart<void>(
           state: ChartState(
             data: ChartData.fromList(
-              [5, 6, 8, 4, 3, 5, 2, 6, 7].map((e) => BarValue<void>(e.toDouble())).toList(),
+              [5, 6, 8, 4, 3, 5, 2, 6, 7]
+                  .map((e) => BarValue<void>(e.toDouble()))
+                  .toList(),
               valueAxisMaxOver: 2,
             ),
             itemOptions: BarItemOptions(
@@ -46,7 +48,9 @@ void main() {
         child: Chart<void>(
           state: ChartState(
             data: ChartData.fromList(
-              [5, 6, 8, 4, 3, 5, 2, 6, 7].map((e) => BarValue<void>(e.toDouble())).toList(),
+              [5, 6, 8, 4, 3, 5, 2, 6, 7]
+                  .map((e) => BarValue<void>(e.toDouble()))
+                  .toList(),
               valueAxisMaxOver: 2,
             ),
             itemOptions: WidgetItemOptions(widgetItemBuilder: (data) {
@@ -92,7 +96,9 @@ void main() {
         child: Chart<void>(
           state: ChartState(
             data: ChartData.fromList(
-              [5, 6, 8, 4, 3, 5, 2, 6, 7].map((e) => BarValue<void>(e.toDouble())).toList(),
+              [5, 6, 8, 4, 3, 5, 2, 6, 7]
+                  .map((e) => BarValue<void>(e.toDouble()))
+                  .toList(),
               valueAxisMaxOver: 2,
             ),
             itemOptions: WidgetItemOptions(widgetItemBuilder: (data) {
@@ -138,8 +144,8 @@ void main() {
           state: ChartState(
             data: ChartData.fromList(
               [5, 6, 8, 4, 3, 5, 2, 6, 7]
-                  .mapIndexed(
-                      (i, e) => CandleValue<void>(e.toDouble(), e.toDouble() + (Random(i).nextDouble() * 10) - 5))
+                  .mapIndexed((i, e) => CandleValue<void>(e.toDouble(),
+                      e.toDouble() + (Random(i).nextDouble() * 10) - 5))
                   .toList(),
               valueAxisMaxOver: 2,
             ),
@@ -164,7 +170,9 @@ void main() {
         child: Chart<void>(
           state: ChartState(
             data: ChartData.fromList(
-              [5, 6, 8, 4, 3, 5, 2, 6, 7].map((e) => BubbleValue<void>(e.toDouble())).toList(),
+              [5, 6, 8, 4, 3, 5, 2, 6, 7]
+                  .map((e) => BubbleValue<void>(e.toDouble()))
+                  .toList(),
               valueAxisMaxOver: 2,
             ),
             itemOptions: BubbleItemOptions(

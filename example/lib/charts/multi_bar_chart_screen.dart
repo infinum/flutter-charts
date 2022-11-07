@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:charts_painter/chart.dart';
 import 'package:example/widgets/chart_options.dart';
 import 'package:example/widgets/toggle_item.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/bar_chart.dart';
@@ -135,7 +134,7 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                     textStyle: Theme.of(context).textTheme.caption,
                     gridColor: Theme.of(context)
                         .colorScheme
-                        .primaryVariant
+                        .primaryContainer
                         .withOpacity(0.2),
                   ),
                 ],

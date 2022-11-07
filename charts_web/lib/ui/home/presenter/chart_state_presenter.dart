@@ -3,9 +3,7 @@ import 'dart:async';
 import 'package:charts_painter/chart.dart';
 import 'package:charts_web/ui/home/chart_options/widget/futurama_bar_widget.dart';
 import 'package:charts_web/ui/home/presenter/chart_decorations_presenter.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final chartStatePresenter = ChangeNotifierProvider((ref) {
@@ -30,7 +28,7 @@ class ChartStatePresenter extends ChangeNotifier {
   List<List<ChartItem<void>>> _data = [
     [4, 6, 3, 6, 7, 9, 3, 2].map((e) => BarValue(e.toDouble())).toList(),
   ];
-  DataStrategy _strategy = StackDataStrategy();
+  DataStrategy _strategy = const StackDataStrategy();
   bool showMaxDataListMessage = false;
 
   List<Color> listColors = [_presetColors[0]];
@@ -106,7 +104,7 @@ class ChartStatePresenter extends ChangeNotifier {
 
     /// When deleting we still need data a little bit for lerp animation to finish
     scheduleMicrotask(() async {
-      await Future.delayed(Duration(milliseconds: 30));
+      await Future.delayed(const Duration(milliseconds: 30));
       listColors.removeAt(listIndex);
       barBorderRadius.removeAt(listIndex);
       itemBorderSides.removeAt(listIndex);

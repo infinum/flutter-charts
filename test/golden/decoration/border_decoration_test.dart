@@ -11,7 +11,8 @@ void main() {
     await loadAppFonts();
   });
 
-  goldenTest('Border decoration', fileName: 'border_decoration_golden', builder: () {
+  goldenTest('Border decoration', fileName: 'border_decoration_golden',
+      builder: () {
     return GoldenTestGroup(
       children: [
         GoldenTestScenario(
@@ -31,19 +32,25 @@ void main() {
         GoldenTestScenario(
           name: 'End with cahrt',
           child: getDefaultChart(backgroundDecorations: [
-            BorderDecoration(sidesWidth: Border.symmetric(vertical: BorderSide(width: 1.0, color: Colors.black))),
+            BorderDecoration(
+                sidesWidth: Border.symmetric(
+                    vertical: BorderSide(width: 1.0, color: Colors.black))),
           ]),
         ),
         GoldenTestScenario(
           name: 'Just vertical',
           child: getDefaultChart(backgroundDecorations: [
-            BorderDecoration(sidesWidth: Border.symmetric(vertical: BorderSide(width: 1.0, color: Colors.black))),
+            BorderDecoration(
+                sidesWidth: Border.symmetric(
+                    vertical: BorderSide(width: 1.0, color: Colors.black))),
           ]),
         ),
         GoldenTestScenario(
           name: 'Just horizontal',
           child: getDefaultChart(backgroundDecorations: [
-            BorderDecoration(sidesWidth: Border.symmetric(horizontal: BorderSide(width: 1.0, color: Colors.black))),
+            BorderDecoration(
+                sidesWidth: Border.symmetric(
+                    horizontal: BorderSide(width: 1.0, color: Colors.black))),
           ]),
         ),
         GoldenTestScenario(

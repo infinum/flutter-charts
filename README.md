@@ -147,7 +147,7 @@ If you're using WidgetItemOptions, you could set a gesture detector there, but t
 
 ## Complete example
 
-So, to wrap all of this up. The most minimal example of a bar chart with ******************************************data, barItemOptions****************************************** and no ************decorations************ would looks like:
+So, to wrap all of this up. The most minimal example of a bar chart with *data, barItemOptions** and no **decorations** would looks like:
 
 ```dart
 Chart(

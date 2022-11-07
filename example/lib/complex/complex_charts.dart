@@ -43,7 +43,7 @@ class ComplexCharts extends StatelessWidget {
                             color: [
                               Theme.of(context).colorScheme.primary,
                               Theme.of(context).colorScheme.secondary,
-                              Theme.of(context).colorScheme.primaryVariant,
+                              Theme.of(context).colorScheme.primaryContainer,
                             ][data.listIndex]);
                       }),
                   backgroundDecorations: [

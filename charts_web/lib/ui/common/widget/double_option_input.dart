@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -43,7 +41,8 @@ class DoubleOptionInput extends HookWidget {
                 SizedBox(
                   width: 50,
                   child: TextField(
-                    decoration: InputDecoration(filled: true, isDense: true),
+                    decoration:
+                        const InputDecoration(filled: true, isDense: true),
                     controller: textEditingController,
                     onChanged: (value) {
                       final newValue = double.parse(value);

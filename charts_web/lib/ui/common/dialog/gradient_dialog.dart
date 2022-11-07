@@ -1,4 +1,3 @@
-import 'package:charts_web/ui/home/presenter/chart_state_presenter.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -52,9 +51,9 @@ class _LinearGradientPickerDialogState
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+            const Text(
                 'In this editor you can select only simple two-stop linear gradient. You can add any kind of gradient in code.'),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ColorPicker(
               color: widget.startGradient.colors[0],
               onColorChanged: (Color color) {
@@ -66,7 +65,7 @@ class _LinearGradientPickerDialogState
               width: 44,
               height: 44,
               enableShadesSelection: false,
-              pickersEnabled: {
+              pickersEnabled: const {
                 ColorPickerType.primary: true,
                 ColorPickerType.accent: false
               },
@@ -82,7 +81,7 @@ class _LinearGradientPickerDialogState
               width: 44,
               height: 44,
               enableShadesSelection: false,
-              pickersEnabled: {
+              pickersEnabled: const {
                 ColorPickerType.primary: true,
                 ColorPickerType.accent: false
               },
@@ -119,12 +118,12 @@ class _LinearGradientPickerDialogState
                       widget.onResetGradient?.call();
                       Navigator.of(context).pop();
                     },
-                    child: Text('No gradient')),
+                    child: const Text('No gradient')),
                 ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pop(_getGradient());
                     },
-                    child: Text('OK')),
+                    child: const Text('OK')),
               ],
             )
           ],

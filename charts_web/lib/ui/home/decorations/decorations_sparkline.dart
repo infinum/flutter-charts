@@ -1,19 +1,13 @@
-import 'package:charts_painter/chart.dart';
 import 'package:charts_web/assets.gen.dart';
 import 'package:charts_web/ui/common/dialog/gradient_dialog.dart';
 import 'package:charts_web/ui/common/widget/switch_with_image.dart';
 import 'package:charts_web/ui/home/decorations/common_decoration_box.dart';
 import 'package:charts_web/ui/home/decorations/presenters/decorations_sparkline_presenter.dart';
-import 'package:charts_web/ui/home/presenter/chart_decorations_presenter.dart';
-import 'package:charts_web/ui/home/presenter/chart_state_presenter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:collection/collection.dart';
 
 import '../../common/dialog/color_picker_dialog.dart';
 import '../../common/widget/double_option_input.dart';
-import '../chart_options/widget/options_items_component.dart';
 
 class DecorationsSparkline extends HookConsumerWidget {
   const DecorationsSparkline({Key? key, required this.decorationIndex})
@@ -97,7 +91,7 @@ class DecorationsSparkline extends HookConsumerWidget {
                   const SizedBox(width: 20),
                   ElevatedButton(
                     child: Row(
-                      children: [const Text('Set gradient')],
+                      children: const [Text('Set gradient')],
                     ),
                     onPressed: () async {
                       final gradient = await LinearGradientPickerDialog.show(

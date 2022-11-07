@@ -1,10 +1,8 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:charts_painter/chart.dart';
 import 'package:example/widgets/chart_options.dart';
 import 'package:example/widgets/toggle_item.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ScrollableChartScreen extends StatefulWidget {
@@ -105,14 +103,14 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
           lineWidth: 2.0,
           axisStep: 2,
           lineColor:
-              Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+              Theme.of(context).colorScheme.primaryContainer.withOpacity(0.2),
         ),
         VerticalAxisDecoration(
           endWithChart: false,
           lineWidth: 2.0,
           axisStep: 7,
           lineColor:
-              Theme.of(context).colorScheme.primaryVariant.withOpacity(0.8),
+              Theme.of(context).colorScheme.primaryContainer.withOpacity(0.8),
         ),
         GridDecoration(
           showVerticalGrid: true,
@@ -123,7 +121,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
           horizontalAxisStep: 1,
           textStyle: Theme.of(context).textTheme.caption,
           gridColor:
-              Theme.of(context).colorScheme.primaryVariant.withOpacity(0.2),
+              Theme.of(context).colorScheme.primaryContainer.withOpacity(0.2),
         ),
         targetArea,
         SparkLineDecoration(
@@ -152,7 +150,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
         ),
         BorderDecoration(
           endWithChart: true,
-          color: Theme.of(context).colorScheme.primaryVariant,
+          color: Theme.of(context).colorScheme.primaryContainer,
         ),
         SelectedItemDecoration(
           _selected,
@@ -239,7 +237,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                               valuesPadding: const EdgeInsets.only(right: 8.0),
                               lineColor: Theme.of(context)
                                   .colorScheme
-                                  .primaryVariant
+                                  .primaryContainer
                                   .withOpacity(0.8),
                             )
                           ]

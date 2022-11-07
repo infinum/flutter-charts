@@ -4,7 +4,6 @@ import 'package:charts_painter/chart.dart';
 import 'package:example/widgets/chart_options.dart';
 import 'package:example/widgets/line_chart.dart';
 import 'package:example/widgets/toggle_item.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LineChartScreen extends StatefulWidget {
@@ -119,7 +118,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                         textStyle: Theme.of(context).textTheme.caption,
                         gridColor: Theme.of(context)
                             .colorScheme
-                            .primaryVariant
+                            .primaryContainer
                             .withOpacity(0.2),
                       ),
                       SparkLineDecoration(
@@ -158,8 +157,10 @@ class _LineChartScreenState extends State<LineChartScreen> {
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: Colors.accents),
-                        lineColor:
-                            Theme.of(context).accentColor.withOpacity(_fillLine
+                        lineColor: Theme.of(context)
+                            .colorScheme
+                            .secondary
+                            .withOpacity(_fillLine
                                 ? _stack
                                     ? 1.0
                                     : 0.2

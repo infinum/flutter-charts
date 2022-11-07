@@ -7,7 +7,6 @@ import 'package:charts_web/ui/home/decorations/decorations_widget.dart';
 import 'package:charts_web/ui/home/presenter/chart_decorations_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:collection/collection.dart';
 
 import 'options_component_header.dart';
 
@@ -61,7 +60,7 @@ class DecorationsComponent extends ConsumerWidget {
                   WidgetDecoration(
                     widgetDecorationBuilder:
                         (context, state, itemHeight, verticalMultiplier) {
-                      return SizedBox.shrink();
+                      return const SizedBox.shrink();
                     },
                   ),
                 );
