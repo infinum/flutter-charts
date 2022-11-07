@@ -18,20 +18,22 @@ class ChartOptions extends HookConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            'Welcome to charts_painter playground. Here we exposed some options to see what kind of charts you can build. Make sure to check showcase for more examples.',
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+          const SizedBox(height: 16),
           CupertinoButton.filled(
             child: Row(
               children: [
-                Opacity(
-                    opacity: 0.8,
-                    child: SvgPicture.asset(Assets.svg.showcase, width: 50)),
+                Opacity(opacity: 0.8, child: SvgPicture.asset(Assets.svg.showcase, width: 50)),
                 const SizedBox(width: 16),
                 const Text('Showcase'),
               ],
             ),
             padding: EdgeInsets.all(24),
             onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => ChartDemo()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => ChartDemo()));
             },
           ),
           const SizedBox(height: 24),
