@@ -107,8 +107,8 @@ Decorations enhance and complete the look of the chart. Everything that’s draw
 
 |   |   |   |
 :------: | :------: | :------: 
-[![horizontal_decoration] Horizontal decoration](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#horizontal-decoration-golden) | [![vertical_decoration] Vertical decoration](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#vertical-decoration-golden) | [![grid_decoration] Grid decoration](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#grid-decoration-golden) 
-[![sparkline_decoration] Sparkline decoration](https://github.com/infinum/flutter-charts/master/test/golden/GOLDENS.md#sparkline-decoration-golden) |
+[![horizontal_decoration] Horizontal decoration](https://github.com/infinum/flutter-charts/blob/master/test/golden/GOLDENS.md#horizontal-decoration-golden) | [![vertical_decoration] Vertical decoration](https://github.com/infinum/flutter-charts/blob/master/test/golden/GOLDENS.md#vertical-decoration-golden) | [![grid_decoration] Grid decoration](https://github.com/infinum/flutter-charts/blob/master/test/golden/GOLDENS.md#grid-decoration-golden) 
+[![sparkline_decoration] Sparkline decoration](https://github.com/infinum/flutter-charts/blob/master/test/golden/GOLDENS.md#sparkline-decoration-golden) |
 
 
 ### Widget decoration
@@ -220,16 +220,16 @@ Bar chart with area
 ![https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/bar_chart_animating.gif](https://raw.githubusercontent.com/infinum/flutter-charts/master/assets/bar_chart_animating.gif)
 
 
-[horizontal_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_horizontal_decoration_golden.png
-[vertical_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_vertical_decoration_golden.png
-[grid_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_grid_decoration_golden.png
-[border_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_border_decoration_golden.png
-[sparkline_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_sparkline_decoration_golden.png
-[target_line_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_target_line_decoration_golden.png
-[target_area_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_target_area_decoration_golden.png
-[target_line_legend_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_target_line_text_decoration_golden.png
-[selected_item_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_selected_item_decoration_golden.png
-[target_values_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/general/general_value_decoration_golden.png
+[horizontal_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/macos/general_horizontal_decoration_golden.png
+[vertical_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/macos/general_vertical_decoration_golden.png
+[grid_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/macos/general_grid_decoration_golden.png
+[border_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/macos/general_border_decoration_golden.png
+[sparkline_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/macos/general_sparkline_decoration_golden.png
+[target_line_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/macos/general_target_line_decoration_golden.png
+[target_area_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/macos/general_target_area_decoration_golden.png
+[target_line_legend_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/macos/general_target_line_text_decoration_golden.png
+[selected_item_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/macos/general_selected_item_decoration_golden.png
+[target_values_decoration]: https://raw.githubusercontent.com/infinum/flutter-charts/master/test/golden/decoration/goldens/macos/general_value_decoration_golden.png
 
 <p align="center">
   <a href='https://infinum.com'>
