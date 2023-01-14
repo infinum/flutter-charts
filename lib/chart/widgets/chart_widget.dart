@@ -16,34 +16,55 @@ class _ChartWidget<T> extends StatelessWidget {
   final double? width;
   final ChartState<T?> state;
 
+  double _horizontalPadding() {
+    return state.data.items.foldIndexed<double>(0.0,
+        (index, double prevValue, _) {
+      return max(prevValue, state.itemOptions.padding.horizontal);
+    });
+  }
+
+  double _wantedItemWidthNormal() {
+    return state.data.items.foldIndexed<double>(0.0,
+        (index, double prevValue, _) {
+      return max(
+        prevValue,
+        max(
+          state.itemOptions.minBarWidth ?? 0.0,
+          state.itemOptions.maxBarWidth ?? 0.0,
+        ),
+      );
+    });
+  }
+
+  double _wantedItemWidthForSetVisibleItems(double width) {
+    final visibleItems = state.behaviour._visibleItems;
+    if (visibleItems == null) {
+      return _wantedItemWidthNormal();
+    }
+
+    final wantedItemWidth = width / visibleItems - _horizontalPadding();
+    return max(_wantedItemWidthNormal(), wantedItemWidth);
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // What size does the item want to be?
-        final _wantedItemWidth = state.data.items.foldIndexed<double>(0.0,
-            (index, double prevValue, _) {
-          return max(
-              prevValue,
-              max(state.itemOptions.minBarWidth ?? 0.0,
-                  state.itemOptions.maxBarWidth ?? 0.0));
-        });
-
         final _width =
             constraints.maxWidth.isFinite ? constraints.maxWidth : width!;
         final _height =
             constraints.maxHeight.isFinite ? constraints.maxHeight : height!;
 
-        final _listSize = state.data.listSize;
+        // What size does the item want to be?
+        final _wantedItemWidth = state.behaviour.isScrollable
+            ? _wantedItemWidthForSetVisibleItems(_width)
+            : _wantedItemWidthNormal();
 
-        final _horizontalPadding = state.data.items.foldIndexed<double>(0.0,
-            (index, double prevValue, _) {
-          return max(prevValue, state.itemOptions.padding.horizontal);
-        });
+        final _listSize = state.data.listSize;
 
         final _size = Size(
             _width +
-                (((_wantedItemWidth + _horizontalPadding) * _listSize) -
+                (((_wantedItemWidth + _horizontalPadding()) * _listSize) -
                         _width) *
                     state.behaviour._isScrollable,
             _height);
