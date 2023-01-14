@@ -4,17 +4,19 @@ part of charts_painter;
 /// [isScrollable] - If chart is scrollable then width of canvas is ignored and
 /// chart will take any size it needs. Chart has to be wrapped with [SingleChildScrollView]
 /// or similar scrollable widget.
-/// [multiValueStack] - Defaults to true, Dictates how items in stack will be shown, if set to true items will stack on
-/// each other, on false they will be side by side.
 /// [onItemClicked] - Returns index of clicked item.
 class ChartBehaviour {
   /// Default constructor for ChartBehaviour
   /// If chart is scrollable then it will ignore width limit and it should be wrapped in [SingleChildScrollView]
   const ChartBehaviour({
     bool isScrollable = false,
-    int? visibleItems,
+    double? visibleItems,
     this.onItemClicked,
-  })  : _isScrollable = isScrollable ? 1.0 : 0.0,
+  })  : assert(visibleItems == null || isScrollable,
+            'visibleItems are only used when chart is scrollable'),
+        assert(visibleItems == null || visibleItems > 0,
+            'visibleItems must be greater than 0'),
+        _isScrollable = 1.0,
         _visibleItems = visibleItems;
 
   ChartBehaviour._lerp(
@@ -22,7 +24,7 @@ class ChartBehaviour {
 
   final double _isScrollable;
 
-  final int? _visibleItems;
+  final double? _visibleItems;
 
   /// Return index of item clicked. Since graph can be multi value, user
   /// will have to handle clicked index to show data they want to show
@@ -41,7 +43,7 @@ class ChartBehaviour {
 
     return ChartBehaviour._lerp(
       scrollableLerp,
-      visibleLerp?.toInt(),
+      visibleLerp,
       t > 0.5 ? b.onItemClicked : a.onItemClicked,
     );
   }
