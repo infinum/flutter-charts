@@ -16,7 +16,8 @@ class _ChartWidget<T> extends StatelessWidget {
   final double? width;
   final ChartState<T?> state;
 
-  double get _horizontalPadding => state.itemOptions.padding.horizontal;
+  EdgeInsets get _horizontalItemPadding =>
+      state.itemOptions.padding.copyWith(top: 0.0, bottom: 0.0);
 
   double? get _minBarWidth => state.itemOptions.minBarWidth;
 
@@ -32,8 +33,8 @@ class _ChartWidget<T> extends StatelessWidget {
       return _wantedItemWidthNonScrollable();
     }
 
-    final itemWidth = frameWidth / visibleItems - _horizontalPadding;
-    return state.itemOptions.widthCalculator(visibleItems, itemWidth);
+    return state.itemOptions
+        .widthCalculator(visibleItems, _horizontalItemPadding, frameWidth);
 
     // if (_maxBarWidth == null) {
     //   return max(_minBarWidth ?? 0.0, calculatedItemWidth);
@@ -57,13 +58,16 @@ class _ChartWidget<T> extends StatelessWidget {
           end: _wantedItemWidthForScrollable(frameWidth),
         );
 
+        final horizontalItemPadding = state.itemOptions.padding.horizontal;
+
         final wantedItemWidth =
             sizeTween.transform(state.behaviour._isScrollable);
 
         final listSize = state.data.listSize;
 
         final finalWidth = frameWidth +
-            (((wantedItemWidth + _horizontalPadding) * listSize) - frameWidth) *
+            (((wantedItemWidth + horizontalItemPadding) * listSize) -
+                    frameWidth) *
                 state.behaviour._isScrollable;
 
         final size = Size(finalWidth, frameHeight);
