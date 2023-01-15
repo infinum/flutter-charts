@@ -8,6 +8,10 @@ typedef ChartGeometryPainter<T> = GeometryPainter<T> Function(
     ItemOptions itemOptions,
     DrawDataItem drawDataItem);
 
+/// Item width calculator, used to get the width of the item.
+/// Called with current [visibleItems] value from [ChartBehaviour]
+/// and [calculatedWidth] which is value that the item should be in order to fit
+/// [visibleItems] number of items on the screen.
 typedef ItemWidthCalculator<T> = double Function(
     double visibleItems, double calculatedWidth);
 
