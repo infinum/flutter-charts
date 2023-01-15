@@ -96,7 +96,7 @@ barItemBuilder: (data) {
 
 The `data` that’s passed into the builder can be used to build different kind of item based on the item value (`data.item.value`), his index in data (`data.itemIndex`) or based on which data list it belongs to (`data.listIndex`).
 
-Besides builder, the other useful parameters in item options are `maxBarWidth` , `minBarWidth` , `startPosition` , `padding` and `widthCalculator`.
+Besides builder, the other useful parameters in item options are `maxBarWidth` , `minBarWidth` , `startPosition` , `padding` and `widthCalculator`.<br>
 `widthCalculator` is used in scrollable charts when `visibleItems` is not `null` and it provides a way to control the width of items.
 
 If you want to listen to **item taps** you can do it by setting `ChartBehaviour(onItemClicked)` - you can read more about ChartBehaviour below.
