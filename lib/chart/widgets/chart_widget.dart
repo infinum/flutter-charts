@@ -16,34 +16,41 @@ class _ChartWidget<T> extends StatelessWidget {
   final double? width;
   final ChartState<T?> state;
 
-  double _horizontalPadding() {
-    return state.data.items.foldIndexed<double>(0.0,
-        (index, double prevValue, _) {
+  double get _horizontalPadding {
+    return state.data.items.fold<double>(0.0, (double prevValue, _) {
       return max(prevValue, state.itemOptions.padding.horizontal);
     });
   }
 
-  double _wantedItemWidthNormal() {
-    return state.data.items.foldIndexed<double>(0.0,
-        (index, double prevValue, _) {
-      return max(
-        prevValue,
-        max(
-          state.itemOptions.minBarWidth ?? 0.0,
-          state.itemOptions.maxBarWidth ?? 0.0,
-        ),
-      );
+  double get _minBarWidth {
+    return state.data.items.fold<double>(0.0, (double prevValue, _) {
+      return max(prevValue, state.itemOptions.minBarWidth ?? 0.0);
     });
   }
 
-  double _wantedItemWidthForSetVisibleItems(double width) {
-    final visibleItems = state.behaviour._visibleItems;
+  double get _maxBarWidth {
+    return state.data.items.fold<double>(0.0, (double prevValue, _) {
+      return max(prevValue, state.itemOptions.maxBarWidth ?? 0.0);
+    });
+  }
+
+  double _wantedItemWidthNormal() {
+    return state.data.items.fold<double>(0.0, (double prevValue, _) {
+      return max(prevValue, max(_minBarWidth, _maxBarWidth));
+    });
+  }
+
+  double _wantedItemWidthForScrollable(double width) {
+    final visibleItems = state.behaviour.visibleItems;
     if (visibleItems == null) {
       return _wantedItemWidthNormal();
     }
 
-    final wantedItemWidth = width / visibleItems - _horizontalPadding();
-    return max(_wantedItemWidthNormal(), wantedItemWidth);
+    final itemWidth = width / visibleItems - _horizontalPadding;
+    final calculatedItemWidth =
+        state.itemOptions.widthCalculator(visibleItems, itemWidth);
+
+    return min(_maxBarWidth, max(_minBarWidth, calculatedItemWidth));
   }
 
   @override
@@ -57,7 +64,7 @@ class _ChartWidget<T> extends StatelessWidget {
 
         // What size does the item want to be?
         final _wantedItemWidth = state.behaviour.isScrollable
-            ? _wantedItemWidthForSetVisibleItems(_width)
+            ? _wantedItemWidthForScrollable(_width)
             : _wantedItemWidthNormal();
 
         final _listSize = state.data.listSize;

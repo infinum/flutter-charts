@@ -19,6 +19,7 @@ class BubbleItemOptions extends ItemOptions {
   BubbleItemOptions({
     EdgeInsets padding = EdgeInsets.zero,
     EdgeInsets multiValuePadding = EdgeInsets.zero,
+    ItemWidthCalculator? widthCalculator,
     double? maxBarWidth,
     double? minBarWidth,
     this.bubbleItemBuilder = _defaultBubbleItem,
@@ -28,6 +29,7 @@ class BubbleItemOptions extends ItemOptions {
             minBarWidth: minBarWidth,
             maxBarWidth: maxBarWidth,
             geometryPainter: bubblePainter,
+            widthCalculator: widthCalculator,
             itemBuilder: bubbleItemBuilder);
 
   BubbleItemOptions._lerp({
@@ -35,6 +37,7 @@ class BubbleItemOptions extends ItemOptions {
     EdgeInsets multiValuePadding = EdgeInsets.zero,
     double? maxBarWidth,
     double? minBarWidth,
+    ItemWidthCalculator? widthCalculator,
     required this.bubbleItemBuilder,
   }) : super._lerp(
           padding: padding,
@@ -43,6 +46,7 @@ class BubbleItemOptions extends ItemOptions {
           maxBarWidth: maxBarWidth,
           geometryPainter: bubblePainter,
           itemBuilder: bubbleItemBuilder,
+          widthCalculator: widthCalculator,
         );
 
   final BubbleItemBuilder bubbleItemBuilder;
@@ -59,6 +63,7 @@ class BubbleItemOptions extends ItemOptions {
                 EdgeInsets.zero,
         maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
         minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
+        widthCalculator: widthCalculator,
       );
     } else {
       return endValue;

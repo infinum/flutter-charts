@@ -10,21 +10,20 @@ class ChartBehaviour {
   /// If chart is scrollable then it will ignore width limit and it should be wrapped in [SingleChildScrollView]
   const ChartBehaviour({
     bool isScrollable = false,
-    double? visibleItems,
+    this.visibleItems,
     this.onItemClicked,
   })  : assert(visibleItems == null || isScrollable,
             'visibleItems are only used when chart is scrollable'),
         assert(visibleItems == null || visibleItems > 0,
             'visibleItems must be greater than 0'),
-        _isScrollable = 1.0,
-        _visibleItems = visibleItems;
+        _isScrollable = isScrollable ? 1.0 : 0.0;
 
   ChartBehaviour._lerp(
-      this._isScrollable, this._visibleItems, this.onItemClicked);
+      this._isScrollable, this.visibleItems, this.onItemClicked);
 
   final double _isScrollable;
 
-  final double? _visibleItems;
+  final double? visibleItems;
 
   /// Return index of item clicked. Since graph can be multi value, user
   /// will have to handle clicked index to show data they want to show
@@ -39,7 +38,7 @@ class ChartBehaviour {
     // But if it somehow does occur, then revert to default values
     final scrollableLerp =
         lerpDouble(a._isScrollable, b._isScrollable, t) ?? 0.0;
-    final visibleLerp = lerpDouble(a._visibleItems, b._visibleItems, t);
+    final visibleLerp = lerpDouble(a.visibleItems, b.visibleItems, t);
 
     return ChartBehaviour._lerp(
       scrollableLerp,
