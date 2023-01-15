@@ -16,68 +16,60 @@ class _ChartWidget<T> extends StatelessWidget {
   final double? width;
   final ChartState<T?> state;
 
-  double get _horizontalPadding {
-    return state.data.items.fold<double>(0.0, (double prevValue, _) {
-      return max(prevValue, state.itemOptions.padding.horizontal);
-    });
+  double get _horizontalPadding => state.itemOptions.padding.horizontal;
+
+  double? get _minBarWidth => state.itemOptions.minBarWidth;
+
+  double? get _maxBarWidth => state.itemOptions.maxBarWidth;
+
+  double _wantedItemWidthNonScrollable() {
+    return max(_minBarWidth ?? 0.0, _maxBarWidth ?? 0.0);
   }
 
-  double get _minBarWidth {
-    return state.data.items.fold<double>(0.0, (double prevValue, _) {
-      return max(prevValue, state.itemOptions.minBarWidth ?? 0.0);
-    });
-  }
-
-  double get _maxBarWidth {
-    return state.data.items.fold<double>(0.0, (double prevValue, _) {
-      return max(prevValue, state.itemOptions.maxBarWidth ?? 0.0);
-    });
-  }
-
-  double _wantedItemWidthNormal() {
-    return state.data.items.fold<double>(0.0, (double prevValue, _) {
-      return max(prevValue, max(_minBarWidth, _maxBarWidth));
-    });
-  }
-
-  double _wantedItemWidthForScrollable(double width) {
+  double _wantedItemWidthForScrollable(double frameWidth) {
     final visibleItems = state.behaviour.visibleItems;
     if (visibleItems == null) {
-      return _wantedItemWidthNormal();
+      return _wantedItemWidthNonScrollable();
     }
 
-    final itemWidth = width / visibleItems - _horizontalPadding;
-    final calculatedItemWidth =
-        state.itemOptions.widthCalculator(visibleItems, itemWidth);
+    final itemWidth = frameWidth / visibleItems - _horizontalPadding;
+    return state.itemOptions.widthCalculator(visibleItems, itemWidth);
 
-    return min(_maxBarWidth, max(_minBarWidth, calculatedItemWidth));
+    // if (_maxBarWidth == null) {
+    //   return max(_minBarWidth ?? 0.0, calculatedItemWidth);
+    // } else {
+    //   return min(_maxBarWidth!, max(_minBarWidth ?? 0.0, calculatedItemWidth));
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final _width =
+        final frameWidth =
             constraints.maxWidth.isFinite ? constraints.maxWidth : width!;
-        final _height =
+        final frameHeight =
             constraints.maxHeight.isFinite ? constraints.maxHeight : height!;
 
+        final sizeTween = Tween(
+          begin: _wantedItemWidthNonScrollable(),
+          end: _wantedItemWidthForScrollable(frameWidth),
+        );
+
         // What size does the item want to be?
-        final _wantedItemWidth = state.behaviour.isScrollable
-            ? _wantedItemWidthForScrollable(_width)
-            : _wantedItemWidthNormal();
+        final wantedItemWidth =
+            sizeTween.transform(state.behaviour._isScrollable);
 
-        final _listSize = state.data.listSize;
+        final listSize = state.data.listSize;
 
-        final _size = Size(
-            _width +
-                (((_wantedItemWidth + _horizontalPadding) * _listSize) -
-                        _width) *
-                    state.behaviour._isScrollable,
-            _height);
+        final finalWidth = frameWidth +
+            (((wantedItemWidth + _horizontalPadding) * listSize) - frameWidth) *
+                state.behaviour._isScrollable;
+
+        final size = Size(finalWidth, frameHeight);
 
         return Container(
-          constraints: BoxConstraints.tight(_size),
+          constraints: BoxConstraints.tight(size),
           child: ChartRenderer(state),
         );
       },

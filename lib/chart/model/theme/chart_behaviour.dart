@@ -12,9 +12,7 @@ class ChartBehaviour {
     bool isScrollable = false,
     this.visibleItems,
     this.onItemClicked,
-  })  : assert(visibleItems == null || isScrollable,
-            'visibleItems are only used when chart is scrollable'),
-        assert(visibleItems == null || visibleItems > 0,
+  })  : assert(visibleItems == null || visibleItems > 0,
             'visibleItems must be greater than 0'),
         _isScrollable = isScrollable ? 1.0 : 0.0;
 
@@ -23,6 +21,8 @@ class ChartBehaviour {
 
   final double _isScrollable;
 
+  /// Number of visible items on the screen.
+  /// Used when [isScrollable] is true
   final double? visibleItems;
 
   /// Return index of item clicked. Since graph can be multi value, user
