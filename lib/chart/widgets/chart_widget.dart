@@ -71,7 +71,7 @@ class _ChartWidget<T> extends StatelessWidget {
 
         final _size = Size(
             _width +
-                (((_wantedItemWidth + _horizontalPadding()) * _listSize) -
+                (((_wantedItemWidth + _horizontalPadding) * _listSize) -
                         _width) *
                     state.behaviour._isScrollable,
             _height);
