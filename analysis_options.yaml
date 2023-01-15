@@ -42,3 +42,4 @@ analyzer:
     - "bin/cache/**"
     - "lib/assets.dart"
 #    - "example/**"
+#    - "charts_web/**"
