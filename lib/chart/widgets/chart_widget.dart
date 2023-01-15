@@ -51,12 +51,12 @@ class _ChartWidget<T> extends StatelessWidget {
         final frameHeight =
             constraints.maxHeight.isFinite ? constraints.maxHeight : height!;
 
+        // Used for smooth transition between scrollable and non-scrollable chart
         final sizeTween = Tween(
           begin: _wantedItemWidthNonScrollable(),
           end: _wantedItemWidthForScrollable(frameWidth),
         );
 
-        // What size does the item want to be?
         final wantedItemWidth =
             sizeTween.transform(state.behaviour._isScrollable);
 
