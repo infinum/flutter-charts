@@ -96,7 +96,8 @@ barItemBuilder: (data) {
 
 The `data` that’s passed into the builder can be used to build different kind of item based on the item value (`data.item.value`), his index in data (`data.itemIndex`) or based on which data list it belongs to (`data.listIndex`).
 
-Besides builder, the other useful parameters in item options are `maxBarWidth` , `minBarWidth` , `startPosition` and `padding`.
+Besides builder, the other useful parameters in item options are `maxBarWidth` , `minBarWidth` , `startPosition` , `padding` and `widthCalculator`.
+`widthCalculator` is used in scrollable charts when `visibleItems` is not `null` and it provides a way to control the width of items.
 
 If you want to listen to **item taps** you can do it by setting `ChartBehaviour(onItemClicked)` - you can read more about ChartBehaviour below.
 In case of a WidgetItemOptions, you could also provide GestureDetectors and Buttons and they will all work.
@@ -106,8 +107,8 @@ In case of a WidgetItemOptions, you could also provide GestureDetectors and Butt
 Decorations enhance and complete the look of the chart. Everything that’s drawn on a chart, and it’s not a chart item is considered a decoration. So that means a lot of the chart will be a decoration. Just like with the items, you can use **WidgetDecoration** to draw any kind of the decoration, but the most common cases for decoration are already made on a canvas and ready to be used:
 
 |   |   |   |
-:------: | :------: | :------: 
-[![horizontal_decoration] Horizontal decoration](https://github.com/infinum/flutter-charts/blob/master/test/golden/GOLDENS.md#horizontal-decoration-golden) | [![vertical_decoration] Vertical decoration](https://github.com/infinum/flutter-charts/blob/master/test/golden/GOLDENS.md#vertical-decoration-golden) | [![grid_decoration] Grid decoration](https://github.com/infinum/flutter-charts/blob/master/test/golden/GOLDENS.md#grid-decoration-golden) 
+:------: | :------: | :------:
+[![horizontal_decoration] Horizontal decoration](https://github.com/infinum/flutter-charts/blob/master/test/golden/GOLDENS.md#horizontal-decoration-golden) | [![vertical_decoration] Vertical decoration](https://github.com/infinum/flutter-charts/blob/master/test/golden/GOLDENS.md#vertical-decoration-golden) | [![grid_decoration] Grid decoration](https://github.com/infinum/flutter-charts/blob/master/test/golden/GOLDENS.md#grid-decoration-golden)
 [![sparkline_decoration] Sparkline decoration](https://github.com/infinum/flutter-charts/blob/master/test/golden/GOLDENS.md#sparkline-decoration-golden) |
 
 
@@ -139,9 +140,10 @@ You can add padding that equals the chart margins which will set you to the star
 
 ## Chart behaviour
 
-Chart behaviour has just two parameters:
+Chart behaviour has just three parameters:
 
 - `isScrollable` - will render a chart that can support scrolling. You still need to wrap it with SingleChildScrollView.
+- `visibleItems` - used when `isScrollable` is set to `true`. Indicates how many items should visible on the screen
 - `onItemClicked` - when set the tap events on items are registered and will invoke this method.
 If you're using WidgetItemOptions, you could set a gesture detector there, but this works with both BarItemOptions, BubbleItemOptions and WidgetItemOptions.
 
