@@ -42,21 +42,25 @@ class WidgetItemOptions extends ItemOptions {
   /// Constructor for bar item options, has some extra options just for [BarGeometryPainter]
   const WidgetItemOptions({
     required this.widgetItemBuilder,
+    ItemWidthCalculator? widthCalculator,
     EdgeInsets multiValuePadding = EdgeInsets.zero,
   }) : super(
           padding: EdgeInsets.zero,
           multiValuePadding: multiValuePadding,
           geometryPainter: _emptyPainter,
+          widthCalculator: widthCalculator,
           itemBuilder: widgetItemBuilder,
         );
 
   const WidgetItemOptions._lerp({
     required this.widgetItemBuilder,
+    ItemWidthCalculator? widthCalculator,
     EdgeInsets multiValuePadding = EdgeInsets.zero,
   }) : super._lerp(
           multiValuePadding: multiValuePadding,
           geometryPainter: _emptyPainter,
           itemBuilder: widgetItemBuilder,
+          widthCalculator: widthCalculator,
         );
 
   final WidgetItemBuilder widgetItemBuilder;
@@ -64,11 +68,13 @@ class WidgetItemOptions extends ItemOptions {
   @override
   ItemOptions animateTo(ItemOptions endValue, double t) {
     return WidgetItemOptions._lerp(
-        widgetItemBuilder: endValue is WidgetItemOptions
-            ? endValue.widgetItemBuilder
-            : widgetItemBuilder,
-        multiValuePadding:
-            EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ??
-                EdgeInsets.zero);
+      widgetItemBuilder: endValue is WidgetItemOptions
+          ? endValue.widgetItemBuilder
+          : widgetItemBuilder,
+      multiValuePadding:
+          EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ??
+              EdgeInsets.zero,
+      widthCalculator: endValue.widthCalculator,
+    );
   }
 }

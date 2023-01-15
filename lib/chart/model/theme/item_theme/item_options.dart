@@ -8,6 +8,9 @@ typedef ChartGeometryPainter<T> = GeometryPainter<T> Function(
     ItemOptions itemOptions,
     DrawDataItem drawDataItem);
 
+typedef ItemWidthCalculator<T> = double Function(
+    double visibleItems, double calculatedWidth);
+
 /// Options for chart items. You can use this subclasses: [BarItemOptions], [BubbleItemOptions], [WidgetItemOptions]
 ///
 /// Required [itemBuilder] parameter is used to provide a data for each item on the chart.
@@ -28,8 +31,9 @@ abstract class ItemOptions {
     this.maxBarWidth,
     this.minBarWidth,
     this.startPosition = 0.5,
+    ItemWidthCalculator? widthCalculator,
     required this.itemBuilder,
-  });
+  }) : widthCalculator = widthCalculator ?? _defaultWidthCalculator;
 
   const ItemOptions._lerp({
     required this.geometryPainter,
@@ -40,7 +44,11 @@ abstract class ItemOptions {
     this.startPosition = 0.5,
     double multiItemStack = 1.0,
     required this.itemBuilder,
-  });
+    ItemWidthCalculator? widthCalculator,
+  })  : assert(maxBarWidth == null ||
+            minBarWidth == null ||
+            maxBarWidth >= minBarWidth),
+        widthCalculator = widthCalculator ?? _defaultWidthCalculator;
 
   /// Item padding, if [minBarWidth] and [padding] are more then available space
   /// [padding] will get ignored
@@ -53,7 +61,9 @@ abstract class ItemOptions {
 
   final ItemBuilder itemBuilder;
 
-  /// Define color for value, this allows different colors for different values
+  /// Called to specify the desired width of the item
+  /// in case [visibleItems] in [ChartBehaviour] is not null.
+  final ItemWidthCalculator widthCalculator;
 
   /// Max width of item in the chart
   final double? maxBarWidth;
@@ -77,4 +87,8 @@ abstract class ItemOptions {
   /// When making custom [ItemOptions] make sure to override this return custom painter
   /// with all available options, otherwise changes in options won't be animated
   ItemOptions animateTo(ItemOptions endValue, double t);
+}
+
+double _defaultWidthCalculator(double visibleItems, double calculatedWidth) {
+  return calculatedWidth;
 }
