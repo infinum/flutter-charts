@@ -9,11 +9,11 @@ typedef ChartGeometryPainter<T> = GeometryPainter<T> Function(
     DrawDataItem drawDataItem);
 
 /// Item width calculator, used to get the width of the item.
-/// Called with current [visibleItems] value from [ChartBehaviour]
-/// and [calculatedWidth] which is value that the item should be in order to fit
-/// [visibleItems] number of items on the screen.
+/// Called with current [visibleItems] value from [ChartBehaviour],
+/// [padding] only containing horizontal values of [padding] from [ItemOptions] and
+/// [frameWidth] which is the visible width of the chart.
 typedef ItemWidthCalculator<T> = double Function(
-    double visibleItems, double calculatedWidth);
+    double visibleItems, EdgeInsets padding, double frameWidth);
 
 /// Options for chart items. You can use this subclasses: [BarItemOptions], [BubbleItemOptions], [WidgetItemOptions]
 ///
@@ -93,6 +93,7 @@ abstract class ItemOptions {
   ItemOptions animateTo(ItemOptions endValue, double t);
 }
 
-double _defaultWidthCalculator(double visibleItems, double calculatedWidth) {
-  return calculatedWidth;
+double _defaultWidthCalculator(
+    double visibleItems, EdgeInsets padding, double frameWidth) {
+  return max(0, frameWidth / visibleItems - padding.horizontal);
 }
