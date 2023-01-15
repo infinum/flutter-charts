@@ -35,12 +35,6 @@ class _ChartWidget<T> extends StatelessWidget {
 
     return state.itemOptions
         .widthCalculator(visibleItems, _horizontalItemPadding, frameWidth);
-
-    // if (_maxBarWidth == null) {
-    //   return max(_minBarWidth ?? 0.0, calculatedItemWidth);
-    // } else {
-    //   return min(_maxBarWidth!, max(_minBarWidth ?? 0.0, calculatedItemWidth));
-    // }
   }
 
   @override
