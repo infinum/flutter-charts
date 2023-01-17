@@ -27,31 +27,7 @@ class ChartTest extends StatelessWidget {
               // byCount.map((e) => BarValue<void>(e.toDouble())).toList()
             ],
           ),
-          itemOptions: WidgetItemOptions(widgetItemBuilder: (data) {
-            return Container(
-              margin: const EdgeInsets.symmetric(horizontal: 4.0),
-              color: Colors.red,
-              child: LayoutBuilder(builder: (context, constraints) {
-                return RotatedBox(
-                  quarterTurns: 1,
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(
-                        'Widget',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              }),
-            );
-          }),
+          itemOptions: BarItemOptions(),
           // itemOptions: BarItemOptions(
           //   padding: const EdgeInsets.symmetric(horizontal: 2),
           //   color: Colors.blue,
@@ -61,12 +37,10 @@ class ChartTest extends StatelessWidget {
               showHorizontalGrid: false,
               showVerticalGrid: false,
               showVerticalValues: true,
+              verticalLegendPosition: VerticalLegendPosition.top,
               verticalAxisValueFromIndex: (idx) => '${idx + 1}',
               gridWidth: 2,
-              textStyle: Theme.of(context)
-                  .textTheme
-                  .subtitle2!
-                  .copyWith(fontSize: 8, fontWeight: FontWeight.bold),
+              textStyle: Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 8, fontWeight: FontWeight.bold),
               gridColor: Theme.of(context).dividerColor,
             ),
           ],
