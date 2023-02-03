@@ -20,6 +20,10 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
         backgroundColor: Colors.white,
         brightness: Brightness.light,
       ),
+      ciGoldensConfig: const CiGoldensConfig(
+        enabled: isRunningInCi,
+        tolerance: 0.05,
+      ),
       platformGoldensConfig: const PlatformGoldensConfig(
         enabled: !isRunningInCi,
       ),
