@@ -19,7 +19,6 @@ class BarItemOptions extends ItemOptions {
   const BarItemOptions({
     EdgeInsets padding = EdgeInsets.zero,
     EdgeInsets multiValuePadding = EdgeInsets.zero,
-    ItemWidthCalculator? widthCalculator,
     double? maxBarWidth,
     double? minBarWidth,
     double startPosition = 0.5,
@@ -30,7 +29,6 @@ class BarItemOptions extends ItemOptions {
             maxBarWidth: maxBarWidth,
             minBarWidth: minBarWidth,
             startPosition: startPosition,
-            widthCalculator: widthCalculator,
             geometryPainter: barPainter,
             itemBuilder: barItemBuilder);
 
@@ -40,14 +38,12 @@ class BarItemOptions extends ItemOptions {
       double? maxBarWidth,
       double? minBarWidth,
       double startPosition = 0.5,
-      ItemWidthCalculator? widthCalculator,
       required this.barItemBuilder})
       : super._lerp(
             padding: padding,
             multiValuePadding: multiValuePadding,
             maxBarWidth: maxBarWidth,
             minBarWidth: minBarWidth,
-            widthCalculator: widthCalculator,
             startPosition: startPosition,
             geometryPainter: barPainter,
             itemBuilder: barItemBuilder);
@@ -68,7 +64,6 @@ class BarItemOptions extends ItemOptions {
         minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
         startPosition:
             lerpDouble(startPosition, endValue.startPosition, t) ?? 0.5,
-        widthCalculator: super.widthCalculator,
       );
     } else {
       return endValue;
