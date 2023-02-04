@@ -103,8 +103,9 @@ class _ScrollableVisibleItemsChartScreenState
                     },
                   ),
                   chartBehaviour: ChartBehaviour(
-                    isScrollable: _isScrollable,
-                    visibleItems: _visibleItems.toDouble(),
+                    scrollSettings: _isScrollable
+                        ? ScrollSettings(visibleItems: _visibleItems.toDouble())
+                        : ScrollSettings.none(),
                     onItemClicked: (item) {
                       setState(() {
                         _selected = item.itemIndex;

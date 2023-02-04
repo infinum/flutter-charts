@@ -28,7 +28,7 @@ class _ChartWidget<T> extends StatelessWidget {
   }
 
   double _wantedItemWidthForScrollable(double frameWidth) {
-    final visibleItems = state.behaviour.visibleItems;
+    final visibleItems = state.behaviour.scrollSettings.visibleItems;
     if (visibleItems == null) {
       return _wantedItemWidthNonScrollable();
     }
@@ -58,14 +58,15 @@ class _ChartWidget<T> extends StatelessWidget {
         final horizontalItemPadding = state.itemOptions.padding.horizontal;
 
         final wantedItemWidth =
-            sizeTween.transform(state.behaviour._isScrollable);
+            sizeTween.transform(state.behaviour.scrollSettings._isScrollable);
 
         final listSize = state.data.listSize;
         final totalItemWidth = wantedItemWidth + horizontalItemPadding;
         final listWidth = totalItemWidth * listSize;
 
         final chartWidth = frameWidth +
-            (listWidth - frameWidth) * state.behaviour._isScrollable;
+            (listWidth - frameWidth) *
+                state.behaviour.scrollSettings._isScrollable;
         final finalWidth = chartWidth + state.defaultPadding.horizontal;
 
         final size = Size(finalWidth, frameHeight);

@@ -90,7 +90,8 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
         },
       ),
       behaviour: ChartBehaviour(
-        isScrollable: _isScrollable,
+        scrollSettings:
+            _isScrollable ? ScrollSettings() : ScrollSettings.none(),
         onItemClicked: (item) {
           setState(() {
             _selected = item.itemIndex;
