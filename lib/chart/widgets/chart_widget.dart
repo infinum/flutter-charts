@@ -16,28 +16,62 @@ class _ChartWidget<T> extends StatelessWidget {
   final double? width;
   final ChartState<T?> state;
 
-  EdgeInsets get _horizontalItemPadding =>
-      state.itemOptions.padding.copyWith(top: 0.0, bottom: 0.0);
+  double get _horizontalItemPadding => state.itemOptions.padding.horizontal;
 
-  double? get _minBarWidth => state.itemOptions.minBarWidth;
+  double _clampWidth(double width) {
+    final minBarWidth = state.itemOptions.minBarWidth;
+    final maxBarWidth = state.itemOptions.maxBarWidth;
 
-  double? get _maxBarWidth => state.itemOptions.maxBarWidth;
-
-  double _wantedItemWidthNonScrollable() {
-    return max(_minBarWidth ?? 0.0, _maxBarWidth ?? 0.0);
-  }
-
-  double _wantedItemWidthForScrollable(double frameWidth) {
-    final visibleItems = state.behaviour.scrollSettings.visibleItems;
-    if (visibleItems == null) {
-      return _wantedItemWidthNonScrollable();
+    if (minBarWidth != null) {
+      return max(minBarWidth, width);
     }
 
-    final width =
-        (frameWidth - state.defaultPadding.horizontal) / visibleItems -
-            _horizontalItemPadding.horizontal;
+    if (maxBarWidth != null) {
+      return min(maxBarWidth, width);
+    }
 
-    return max(0, width);
+    return width;
+  }
+
+  double _calcItemWidthNonScrollable() {
+    return max(
+      state.itemOptions.minBarWidth ?? 0.0,
+      state.itemOptions.maxBarWidth ?? 0.0,
+    );
+  }
+
+  double _calcItemWidthForScrollable(double frameWidth) {
+    final visibleItems = state.behaviour.scrollSettings.visibleItems;
+    if (visibleItems == null) {
+      return _calcItemWidthNonScrollable();
+    }
+
+    final availableWidth = frameWidth - state.defaultPadding.horizontal;
+    final width = availableWidth / visibleItems - _horizontalItemPadding;
+
+    return _clampWidth(max(0, width));
+  }
+
+  double _calcItemWidth(double frameWidth) {
+    // Used for smooth transition between scrollable and non-scrollable chart
+    final sizeTween = Tween(
+      begin: _calcItemWidthNonScrollable(),
+      end: _calcItemWidthForScrollable(frameWidth),
+    );
+
+    return sizeTween.transform(state.behaviour.scrollSettings._isScrollable);
+  }
+
+  Size _calcChartSize(double itemWidth, double frameWidth, double frameHeight) {
+    final listSize = state.data.listSize;
+    final totalItemWidth = itemWidth + _horizontalItemPadding;
+    final listWidth = totalItemWidth * listSize;
+
+    final chartWidth = frameWidth +
+        (listWidth - frameWidth) * state.behaviour.scrollSettings._isScrollable;
+    final finalWidth = chartWidth + state.defaultPadding.horizontal;
+
+    return Size(finalWidth, frameHeight);
   }
 
   @override
@@ -49,27 +83,8 @@ class _ChartWidget<T> extends StatelessWidget {
         final frameHeight =
             constraints.maxHeight.isFinite ? constraints.maxHeight : height!;
 
-        // Used for smooth transition between scrollable and non-scrollable chart
-        final sizeTween = Tween(
-          begin: _wantedItemWidthNonScrollable(),
-          end: _wantedItemWidthForScrollable(frameWidth),
-        );
-
-        final horizontalItemPadding = state.itemOptions.padding.horizontal;
-
-        final wantedItemWidth =
-            sizeTween.transform(state.behaviour.scrollSettings._isScrollable);
-
-        final listSize = state.data.listSize;
-        final totalItemWidth = wantedItemWidth + horizontalItemPadding;
-        final listWidth = totalItemWidth * listSize;
-
-        final chartWidth = frameWidth +
-            (listWidth - frameWidth) *
-                state.behaviour.scrollSettings._isScrollable;
-        final finalWidth = chartWidth + state.defaultPadding.horizontal;
-
-        final size = Size(finalWidth, frameHeight);
+        final itemWidth = _calcItemWidth(frameWidth);
+        final size = _calcChartSize(itemWidth, frameWidth, frameHeight);
 
         return Container(
           constraints: BoxConstraints.tight(size),
