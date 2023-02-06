@@ -13,9 +13,16 @@ class ChartBehaviour {
   const ChartBehaviour({
     bool isScrollable = false,
     this.onItemClicked,
+    this.onItemHoverEnter,
+    this.onItemHoverExit,
   }) : _isScrollable = isScrollable ? 1.0 : 0.0;
 
-  ChartBehaviour._lerp(this._isScrollable, this.onItemClicked);
+  ChartBehaviour._lerp(
+    this._isScrollable,
+    this.onItemClicked,
+    this.onItemHoverEnter,
+    this.onItemHoverExit,
+  );
 
   final double _isScrollable;
 
@@ -25,6 +32,14 @@ class ChartBehaviour {
 
   /// Return true if chart is currently scrollable
   bool get isScrollable => _isScrollable > 0.5;
+
+  /// Return index of item clicked. Since graph can be multi value, user
+  /// will have to handle clicked index to show data they want to show
+  final ValueChanged<ItemBuilderData>? onItemHoverEnter;
+
+  /// Return index of item clicked. Since graph can be multi value, user
+  /// will have to handle clicked index to show data they want to show
+  final ValueChanged<ItemBuilderData>? onItemHoverExit;
 
   /// Animate Behaviour from one state to other
   static ChartBehaviour lerp(ChartBehaviour a, ChartBehaviour b, double t) {
@@ -36,6 +51,8 @@ class ChartBehaviour {
     return ChartBehaviour._lerp(
       _scrollableLerp,
       t > 0.5 ? b.onItemClicked : a.onItemClicked,
+      t > 0.5 ? b.onItemHoverEnter : a.onItemHoverEnter,
+      t > 0.5 ? b.onItemHoverExit : a.onItemHoverExit,
     );
   }
 }
