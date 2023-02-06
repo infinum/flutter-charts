@@ -22,7 +22,7 @@ class ChartBehaviour {
   final ValueChanged<ItemBuilderData>? onItemClicked;
 
   /// Return true if chart is currently scrollable
-  bool get isScrollable => scrollSettings._isScrollable > 0.0;
+  bool get isScrollable => scrollSettings._isScrollable > 0.5;
 
   /// Animate Behaviour from one state to other
   static ChartBehaviour lerp(ChartBehaviour a, ChartBehaviour b, double t) {
