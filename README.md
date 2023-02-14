@@ -96,8 +96,7 @@ barItemBuilder: (data) {
 
 The `data` that’s passed into the builder can be used to build different kind of item based on the item value (`data.item.value`), his index in data (`data.itemIndex`) or based on which data list it belongs to (`data.listIndex`).
 
-Besides builder, the other useful parameters in item options are `maxBarWidth` , `minBarWidth` , `startPosition` , `padding` and `widthCalculator`.<br>
-`widthCalculator` is used in scrollable charts when `visibleItems` is not `null` and it provides a way to control the width of items.
+Besides builder, the other useful parameters in item options are `maxBarWidth` , `minBarWidth` , `startPosition` , `padding`.<br>
 
 If you want to listen to **item taps** you can do it by setting `ChartBehaviour(onItemClicked)` - you can read more about ChartBehaviour below.
 In case of a WidgetItemOptions, you could also provide GestureDetectors and Buttons and they will all work.
@@ -140,10 +139,9 @@ You can add padding that equals the chart margins which will set you to the star
 
 ## Chart behaviour
 
-Chart behaviour has just three parameters:
+Chart behaviour has just two parameters:
 
-- `isScrollable` - will render a chart that can support scrolling. You still need to wrap it with SingleChildScrollView.
-- `visibleItems` - used when `isScrollable` is set to `true`. Indicates how many items should visible on the screen
+- `scrollSettings` - used to config the chart to be scrollable or not. You still need to wrap it with SingleChildScrollView.
 - `onItemClicked` - when set the tap events on items are registered and will invoke this method.
 If you're using WidgetItemOptions, you could set a gesture detector there, but this works with both BarItemOptions, BubbleItemOptions and WidgetItemOptions.
 
