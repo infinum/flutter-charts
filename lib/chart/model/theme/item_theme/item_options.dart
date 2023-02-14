@@ -29,7 +29,9 @@ abstract class ItemOptions {
     this.minBarWidth,
     this.startPosition = 0.5,
     required this.itemBuilder,
-  });
+  }) : assert(maxBarWidth == null ||
+            minBarWidth == null ||
+            maxBarWidth >= minBarWidth);
 
   const ItemOptions._lerp({
     required this.geometryPainter,
@@ -40,9 +42,7 @@ abstract class ItemOptions {
     this.startPosition = 0.5,
     double multiItemStack = 1.0,
     required this.itemBuilder,
-  }) : assert(maxBarWidth == null ||
-            minBarWidth == null ||
-            maxBarWidth >= minBarWidth);
+  });
 
   /// Item padding, if [minBarWidth] and [padding] are more then available space
   /// [padding] will get ignored
