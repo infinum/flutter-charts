@@ -1,8 +1,8 @@
 part of charts_painter;
 
 // Hidden because it's only used if chart item is a widget.
-GeometryPainter<T> _emptyPainter<T>(ChartItem<T> item, ChartData<T> data,
-        ItemOptions itemOptions, DrawDataItem drawDataItem) =>
+GeometryPainter<T> _emptyPainter<T>(
+        ChartItem<T> item, ChartData<T> data, ItemOptions itemOptions, DrawDataItem drawDataItem) =>
     _EmptyGeometryPainter<T>(item, data, itemOptions);
 
 typedef WidgetItemBuilder<T> = Widget Function(ItemBuilderData<T>);
@@ -43,11 +43,15 @@ class WidgetItemOptions extends ItemOptions {
   const WidgetItemOptions({
     required this.widgetItemBuilder,
     EdgeInsets multiValuePadding = EdgeInsets.zero,
+    double? maxBarWidth,
+    double? minBarWidth,
   }) : super(
           padding: EdgeInsets.zero,
           multiValuePadding: multiValuePadding,
           geometryPainter: _emptyPainter,
           itemBuilder: widgetItemBuilder,
+          maxBarWidth: maxBarWidth,
+          minBarWidth: minBarWidth,
         );
 
   const WidgetItemOptions._lerp({
@@ -64,12 +68,8 @@ class WidgetItemOptions extends ItemOptions {
   @override
   ItemOptions animateTo(ItemOptions endValue, double t) {
     return WidgetItemOptions._lerp(
-      widgetItemBuilder: endValue is WidgetItemOptions
-          ? endValue.widgetItemBuilder
-          : widgetItemBuilder,
-      multiValuePadding:
-          EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ??
-              EdgeInsets.zero,
+        widgetItemBuilder: endValue is WidgetItemOptions ? endValue.widgetItemBuilder : widgetItemBuilder,
+        multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero,
     );
   }
 }
