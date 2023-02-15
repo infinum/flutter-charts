@@ -29,7 +29,9 @@ abstract class ItemOptions {
     this.minBarWidth,
     this.startPosition = 0.5,
     required this.itemBuilder,
-  });
+  }) : assert(maxBarWidth == null ||
+            minBarWidth == null ||
+            maxBarWidth >= minBarWidth);
 
   const ItemOptions._lerp({
     required this.geometryPainter,
@@ -52,8 +54,6 @@ abstract class ItemOptions {
   final EdgeInsets multiValuePadding;
 
   final ItemBuilder itemBuilder;
-
-  /// Define color for value, this allows different colors for different values
 
   /// Max width of item in the chart
   final double? maxBarWidth;

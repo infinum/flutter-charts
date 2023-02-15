@@ -11,6 +11,7 @@ class CandleChart<T> extends StatelessWidget {
     required this.data,
     required this.dataToValue,
     this.height = 240.0,
+    this.width,
     this.backgroundDecorations = const [],
     this.chartBehaviour = const ChartBehaviour(),
     this.chartItemOptions = const BarItemOptions(),
@@ -24,6 +25,7 @@ class CandleChart<T> extends StatelessWidget {
   final DataToValue<T> dataToValue;
 
   final double height;
+  final double? width;
   final List<DecorationPainter> backgroundDecorations;
   final List<DecorationPainter> foregroundDecorations;
   final ChartBehaviour chartBehaviour;
@@ -36,6 +38,7 @@ class CandleChart<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedChart<T>(
       height: height,
+      width: width,
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
         data: ChartData(_mappedValues),
