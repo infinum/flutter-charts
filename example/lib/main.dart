@@ -2,6 +2,7 @@ import 'package:charts_painter/chart.dart';
 import 'package:example/chart_types.dart';
 import 'package:example/charts/bar_target_chart_screen.dart';
 import 'package:example/charts/migration_chart_screen.dart';
+import 'package:example/charts/scrollable_visible_items_chart_screen.dart';
 import 'package:example/complex/complex_charts.dart';
 import 'package:example/showcase/ios_charts.dart';
 import 'package:example/showcase/showcase_charts.dart';
@@ -225,6 +226,47 @@ class ShowList extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push<void>(
                 MaterialPageRoute(builder: (_) => ScrollableChartScreen()));
+          },
+        ),
+        Divider(),
+        ListTile(
+          title: Text('Scrollable with visible items'),
+          trailing: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Container(
+              width: 100.0,
+              child: Chart(
+                state: ChartState<void>(
+                  data: ChartData.fromList(
+                    [1, 3, 4, 2, 7, 6, 2, 5, 4, 2, 9, 10, 2, 4, 8, 7, 7, 6, 1]
+                        .map((e) =>
+                            CandleValue<void>(e.toDouble() + 6, e.toDouble()))
+                        .toList(),
+                    axisMax: 15,
+                  ),
+                  itemOptions: BarItemOptions(
+                    barItemBuilder: (_) {
+                      return BarItem(
+                        radius: BorderRadius.all(Radius.circular(12.0)),
+                        color: Theme.of(context).colorScheme.secondary,
+                      );
+                    },
+                    padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                  ),
+                  backgroundDecorations: [
+                    GridDecoration(
+                      verticalAxisStep: 1,
+                      horizontalAxisStep: 3,
+                      gridColor: Theme.of(context).dividerColor,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          onTap: () {
+            Navigator.of(context).push<void>(MaterialPageRoute(
+                builder: (_) => ScrollableVisibleItemsChartScreen()));
           },
         ),
         Divider(),
