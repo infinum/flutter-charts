@@ -144,6 +144,16 @@ class _RenderChildChartItem<T> extends RenderShiftedBox {
       _state.behaviour.onItemClicked
           ?.call(ItemBuilderData<T>(item, itemIndex, listIndex));
     }
+
+    if (event is PointerHoverEvent) {
+      _state.behaviour.onItemHoverEnter
+          ?.call(ItemBuilderData<T>(item, itemIndex, listIndex));
+    }
+
+    if (event is PointerHoverEvent) {
+      _state.behaviour.onItemHoverExit
+          ?.call(ItemBuilderData<T>(item, itemIndex, listIndex));
+    }
   }
 
   @override

@@ -81,12 +81,18 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
         },
       ),
       behaviour: ChartBehaviour(
-        scrollSettings:
-            _isScrollable ? ScrollSettings() : ScrollSettings.none(),
+        scrollSettings: _isScrollable ? ScrollSettings() : ScrollSettings.none(),
         onItemClicked: (item) {
+          print('Clciked');
           setState(() {
             _selected = item.itemIndex;
           });
+        },
+        onItemHoverEnter: (_) {
+          print('Hover Enter');
+        },
+        onItemHoverExit: (_) {
+          print('Hover Enter');
         },
       ),
       backgroundDecorations: [
