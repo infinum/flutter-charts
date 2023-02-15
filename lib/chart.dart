@@ -27,6 +27,7 @@ part 'chart/model/geometry/chart_item.dart';
 
 /// Theme
 part 'chart/model/theme/chart_behaviour.dart';
+part 'chart/model/theme/scroll_settings.dart';
 part 'chart/model/theme/item_theme/bar/bar_item_options.dart';
 part 'chart/model/theme/item_theme/item_options.dart';
 part 'chart/model/theme/item_theme/bar/bar_item.dart';

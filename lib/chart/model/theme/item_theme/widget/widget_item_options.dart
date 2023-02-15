@@ -69,6 +69,7 @@ class WidgetItemOptions extends ItemOptions {
   ItemOptions animateTo(ItemOptions endValue, double t) {
     return WidgetItemOptions._lerp(
         widgetItemBuilder: endValue is WidgetItemOptions ? endValue.widgetItemBuilder : widgetItemBuilder,
-        multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero);
+        multiValuePadding: EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ?? EdgeInsets.zero,
+    );
   }
 }
