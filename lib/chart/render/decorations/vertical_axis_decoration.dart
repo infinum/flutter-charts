@@ -130,9 +130,7 @@ class VerticalAxisDecoration extends DecorationPainter {
             ? -((state.defaultMargin - marginNeeded()).top * (1 - _endWithChart))
             : 0.0;
         final _showValuesBottom = size.height +
-            (legendPosition == VerticalLegendPosition.bottom
-                ? ((state.defaultMargin).bottom * (1 - _endWithChart))
-                : 0.0);
+            (legendPosition == VerticalLegendPosition.bottom ? ((marginNeeded()).bottom * (1 - _endWithChart)) : 0.0);
 
         gridPath.moveTo(-marginNeeded().left + lineWidth / 2 + _itemWidth * i * axisStep, _showValuesBottom);
         gridPath.lineTo(-marginNeeded().left + lineWidth / 2 + _itemWidth * i * axisStep, _showValuesTop);
@@ -173,7 +171,7 @@ class VerticalAxisDecoration extends DecorationPainter {
             state.defaultPadding.left + _itemWidth * i * axisStep + (valuesPadding?.left ?? 0.0),
             legendPosition == VerticalLegendPosition.top
                 ? (-(valuesPadding?.bottom ?? 0.0) - _textPainter.height)
-                : (((state.defaultMargin).inflateSize(size)).height -
+                : ((marginNeeded().inflateSize(size)).height -
                     ((valuesPadding?.bottom ?? 0.0) + _textPainter.size.height))),
       );
     }
