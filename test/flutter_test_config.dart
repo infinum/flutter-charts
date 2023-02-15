@@ -12,8 +12,17 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
   return AlchemistConfig.runWithConfig(
     config: AlchemistConfig(
       theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.red,
+          brightness: Brightness.light,
+          background: Colors.white,
+        ),
         backgroundColor: Colors.white,
         brightness: Brightness.light,
+      ),
+      ciGoldensConfig: const CiGoldensConfig(
+        enabled: isRunningInCi,
+        tolerance: 0.05,
       ),
       platformGoldensConfig: const PlatformGoldensConfig(
         enabled: !isRunningInCi,
