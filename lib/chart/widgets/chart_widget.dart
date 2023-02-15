@@ -16,40 +16,78 @@ class _ChartWidget<T> extends StatelessWidget {
   final double? width;
   final ChartState<T?> state;
 
+  double get _horizontalItemPadding => state.itemOptions.padding.horizontal;
+
+  double _clampItemWidth(double width) {
+    final minBarWidth = state.itemOptions.minBarWidth;
+    final maxBarWidth = state.itemOptions.maxBarWidth;
+
+    if (minBarWidth != null) {
+      return max(minBarWidth, width);
+    }
+
+    if (maxBarWidth != null) {
+      return min(maxBarWidth, width);
+    }
+
+    return width;
+  }
+
+  double _calcItemWidthNonScrollable() {
+    return max(
+      state.itemOptions.minBarWidth ?? 0.0,
+      state.itemOptions.maxBarWidth ?? 0.0,
+    );
+  }
+
+  double _calcItemWidthForScrollable(double frameWidth) {
+    final visibleItems = state.behaviour.scrollSettings.visibleItems;
+    if (visibleItems == null) {
+      return _calcItemWidthNonScrollable();
+    }
+
+    final availableWidth = frameWidth - state.defaultPadding.horizontal;
+    final width = availableWidth / visibleItems - _horizontalItemPadding;
+
+    return _clampItemWidth(max(0, width));
+  }
+
+  double _calcItemWidth(double frameWidth) {
+    // Used for smooth transition between scrollable and non-scrollable chart
+    final sizeTween = Tween(
+      begin: _calcItemWidthNonScrollable(),
+      end: _calcItemWidthForScrollable(frameWidth),
+    );
+
+    return sizeTween.transform(state.behaviour.scrollSettings._isScrollable);
+  }
+
+  Size _calcChartSize(double itemWidth, double frameWidth, double frameHeight) {
+    final listSize = state.data.listSize;
+    final totalItemWidth = itemWidth + _horizontalItemPadding;
+    final listWidth = totalItemWidth * listSize;
+
+    final chartWidth = frameWidth +
+        (listWidth - frameWidth) * state.behaviour.scrollSettings._isScrollable;
+    final finalWidth = chartWidth + state.defaultPadding.horizontal;
+
+    return Size(finalWidth, frameHeight);
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // What size does the item want to be?
-        final _wantedItemWidth = state.data.items.foldIndexed<double>(0.0,
-            (index, double prevValue, _) {
-          return max(
-              prevValue,
-              max(state.itemOptions.minBarWidth ?? 0.0,
-                  state.itemOptions.maxBarWidth ?? 0.0));
-        });
-
-        final _width =
+        final frameWidth =
             constraints.maxWidth.isFinite ? constraints.maxWidth : width!;
-        final _height =
+        final frameHeight =
             constraints.maxHeight.isFinite ? constraints.maxHeight : height!;
 
-        final _listSize = state.data.listSize;
-
-        final _horizontalPadding = state.data.items.foldIndexed<double>(0.0,
-            (index, double prevValue, _) {
-          return max(prevValue, state.itemOptions.padding.horizontal);
-        });
-
-        final _size = Size(
-            _width +
-                (((_wantedItemWidth + _horizontalPadding) * _listSize) -
-                        _width) *
-                    state.behaviour._isScrollable,
-            _height);
+        final itemWidth = _calcItemWidth(frameWidth);
+        final size = _calcChartSize(itemWidth, frameWidth, frameHeight);
 
         return Container(
-          constraints: BoxConstraints.tight(_size),
+          constraints: BoxConstraints.tight(size),
           child: ChartRenderer(state),
         );
       },
