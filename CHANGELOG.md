@@ -1,3 +1,12 @@
+## [3.1.0] - 15.02.2023
+* Added a screenshot
+* Fixed VerticalAxisDecoration padding
+* Fixed item width for WidgetItemOptions
+* Add onHover states to ChartBehavior
+* Add ScrollSettings to ChartBehavior to control number of visible items when in scroll mode
+
+
+
 ## [3.0.0] - 02.11.2022
 * Introduction of WidgetItemOptions and WidgetDecoration
 * ChartState: data and itemOptions are now required named parameters
