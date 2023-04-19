@@ -146,7 +146,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     final _maxValue = state.data.maxValue - state.data.minValue;
 
     for (var i = 0; i * axisStep <= _maxValue; i++) {
-      final _defaultValue = (axisStep * i + state.data.minValue).toInt();
+      final _defaultValue = axisStep * i + state.data.minValue;
       final _value = axisValue.call(_defaultValue);
       if ((_longestText?.length ?? 0) < _value.length) {
         _longestText = _value;
