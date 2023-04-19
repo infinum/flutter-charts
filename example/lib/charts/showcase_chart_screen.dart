@@ -1,9 +1,8 @@
 import 'package:charts_painter/chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ShowcaseChartScreen extends StatefulWidget {
-  ShowcaseChartScreen({Key key}) : super(key: key);
+  ShowcaseChartScreen({Key? key}) : super(key: key);
 
   @override
   _ShowcaseChartScreenState createState() => _ShowcaseChartScreenState();
@@ -73,7 +72,7 @@ class _ShowcaseChartScreenState extends State<ShowcaseChartScreen> {
 
 final List<ChartState<bool>> _chartStates = [
   ChartState(
-    ChartData(
+    data: ChartData(
       [
         [
           CandleValue<bool>.withValue(true, 3.5, 5.5),
@@ -92,18 +91,21 @@ final List<ChartState<bool>> _chartStates = [
     ),
     itemOptions: BarItemOptions(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      radius: BorderRadius.all(Radius.circular(12.0)),
-      colorForKey: (item, key) {
-        final _value = item.value as bool;
-        return (_value is bool && _value)
-            ? Color(0xFF567EF7)
-            : Color(0xFF5ABEF9);
+      barItemBuilder: (data) {
+        dynamic _value = data.item.value;
+        final color =
+            (_value is bool && _value) ? Color(0xFF567EF7) : Color(0xFF5ABEF9);
+        return BarItem(
+          color: color,
+          radius: BorderRadius.all(Radius.circular(12.0)),
+        );
       },
     ),
     backgroundDecorations: [
       GridDecoration(
         horizontalAxisStep: 2,
-        endWithChart: true,
+        endWithChartVertical: true,
+        endWithChartHorizontal: true,
         showHorizontalValues: true,
         horizontalLegendPosition: HorizontalLegendPosition.start,
         gridColor: Colors.black26,
@@ -119,7 +121,7 @@ final List<ChartState<bool>> _chartStates = [
     foregroundDecorations: [],
   ),
   ChartState(
-    ChartData(
+    data: ChartData(
       [
         [
           BarValue<bool>.withValue(false, 4),
@@ -144,14 +146,17 @@ final List<ChartState<bool>> _chartStates = [
     ),
     itemOptions: BarItemOptions(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
-      radius: BorderRadius.all(Radius.circular(12.0)),
-      colorForKey: (item, key) {
-        return [Color(0xFFE6E6FD), Color(0xFF4D4DA6)][key];
+      barItemBuilder: (data) {
+        return BarItem(
+          radius: BorderRadius.all(Radius.circular(12.0)),
+          color: [Color(0xFFE6E6FD), Color(0xFF4D4DA6)][data.listIndex],
+        );
       },
     ),
     backgroundDecorations: [
       GridDecoration(
-        endWithChart: true,
+        endWithChartVertical: true,
+        endWithChartHorizontal: true,
         showHorizontalValues: true,
         showVerticalGrid: false,
         showVerticalValues: true,
@@ -171,7 +176,7 @@ final List<ChartState<bool>> _chartStates = [
     foregroundDecorations: [],
   ),
   ChartState(
-    ChartData(
+    data: ChartData(
       [
         [
           BarValue<bool>.withValue(false, 23),
@@ -191,20 +196,22 @@ final List<ChartState<bool>> _chartStates = [
         ],
       ],
       axisMax: 4,
+      dataStrategy: DefaultDataStrategy(stackMultipleValues: false),
     ),
     itemOptions: BarItemOptions(
+      barItemBuilder: (data) {
+        return BarItem(
+            color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][data.listIndex]);
+      },
       multiValuePadding: const EdgeInsets.symmetric(horizontal: 4.0),
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      colorForKey: (item, key) {
-        return [Color(0xFF5B6ACF), Color(0xFFB6CADD)][key];
-      },
-      multiItemStack: false,
     ),
     backgroundDecorations: [
       GridDecoration(
         horizontalAxisStep: 10.0,
         showVerticalGrid: false,
-        endWithChart: true,
+        endWithChartVertical: true,
+        endWithChartHorizontal: true,
         showVerticalValues: true,
         gridColor: Colors.grey.shade400,
         gridWidth: 1,
@@ -227,7 +234,7 @@ final List<ChartState<bool>> _chartStates = [
     ],
   ),
   ChartState(
-    ChartData(
+    data: ChartData(
       [
         [
           BubbleValue.withValue(false, 9),
@@ -255,10 +262,12 @@ final List<ChartState<bool>> _chartStates = [
         ],
       ],
       axisMax: 30,
+      dataStrategy: DefaultDataStrategy(stackMultipleValues: false),
     ),
     itemOptions: BarItemOptions(
-      color: Colors.transparent,
-      multiItemStack: false,
+      barItemBuilder: (_) {
+        return BarItem(color: Colors.transparent);
+      },
     ),
     backgroundDecorations: [
       GridDecoration(
@@ -286,7 +295,7 @@ final List<ChartState<bool>> _chartStates = [
       ),
       SparkLineDecoration(
         smoothPoints: true,
-        lineArrayIndex: 1,
+        listIndex: 1,
         stretchLine: true,
         lineWidth: 3.0,
         gradient: LinearGradient(
@@ -299,7 +308,7 @@ final List<ChartState<bool>> _chartStates = [
     ],
   ),
   ChartState(
-    ChartData(
+    data: ChartData(
       [
         [
           BubbleValue.withValue(false, 10),
@@ -321,7 +330,9 @@ final List<ChartState<bool>> _chartStates = [
       axisMax: 35,
     ),
     itemOptions: BarItemOptions(
-      color: Colors.transparent,
+      barItemBuilder: (_) {
+        return BarItem(color: Colors.transparent);
+      },
     ),
     backgroundDecorations: [
       GridDecoration(
@@ -347,7 +358,7 @@ final List<ChartState<bool>> _chartStates = [
         endWithChart: true,
       ),
       SparkLineDecoration(
-        lineArrayIndex: 1,
+        listIndex: 1,
         lineColor: Color(0xFFB6CADD),
         lineWidth: 4.0,
       ),
@@ -358,7 +369,7 @@ final List<ChartState<bool>> _chartStates = [
     ],
   ),
   ChartState(
-    ChartData(
+    data: ChartData(
       [
         [
           BarValue<bool>.withValue(false, 6),
@@ -391,14 +402,16 @@ final List<ChartState<bool>> _chartStates = [
       ],
       axisMax: 14,
       axisMin: -14,
+      dataStrategy: StackDataStrategy(),
     ),
     itemOptions: BarItemOptions(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-      colorForKey: (item, key) {
-        return [Color(0xFF0139A4), Color(0xFF00B6E6)][key];
+      barItemBuilder: (data) {
+        return BarItem(
+          radius: BorderRadius.vertical(top: Radius.circular(12.0)),
+          color: [Color(0xFF0139A4), Color(0xFF00B6E6)][data.listIndex],
+        );
       },
-      multiItemStack: true,
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
     ),
     backgroundDecorations: [
       GridDecoration(

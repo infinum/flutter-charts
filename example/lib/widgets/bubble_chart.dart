@@ -5,15 +5,16 @@ import 'package:flutter/material.dart';
 typedef DataToValue<T> = double Function(T item);
 typedef DataToAxis<T> = String Function(int item);
 
+/// Short-hand to easier create several bubble charts
 class BubbleChart<T> extends StatelessWidget {
   BubbleChart({
-    @required this.data,
-    @required this.dataToValue,
+    required this.data,
+    required this.dataToValue,
     this.height = 240.0,
-    this.itemOptions,
-    this.backgroundDecorations,
-    this.foregroundDecorations,
-    Key key,
+    this.itemOptions = const BarItemOptions(),
+    this.backgroundDecorations = const [],
+    this.foregroundDecorations = const [],
+    Key? key,
   })  : _mappedValues = [
           data.map((e) => BubbleValue<T>(dataToValue(e))).toList()
         ],
@@ -21,7 +22,7 @@ class BubbleChart<T> extends StatelessWidget {
 
   final List<T> data;
   final DataToValue<T> dataToValue;
-  final List<List<ChartItem<T>>> _mappedValues;
+  final List<List<BubbleValue<T>>> _mappedValues;
 
   final double height;
   final ItemOptions itemOptions;
@@ -31,19 +32,15 @@ class BubbleChart<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _foregroundDecorations = <DecorationPainter>[];
-    final _backgroundDecorations =
-        backgroundDecorations ?? <DecorationPainter>[];
-
     return AnimatedChart<T>(
       height: height,
       duration: const Duration(milliseconds: 450),
       state: ChartState<T>(
-        ChartData(_mappedValues, valueAxisMaxOver: 5.0),
+        data: ChartData(_mappedValues, valueAxisMaxOver: 5.0),
         itemOptions: itemOptions,
-        foregroundDecorations: _foregroundDecorations,
+        foregroundDecorations: foregroundDecorations,
         backgroundDecorations: [
-          ..._backgroundDecorations,
+          ...backgroundDecorations,
         ],
       ),
     );

@@ -1,3 +1,22 @@
+## [3.1.0] - 15.02.2023
+* Added a screenshot
+* Fixed VerticalAxisDecoration padding
+* Fixed item width for WidgetItemOptions
+* Add onHover states to ChartBehavior
+* Add ScrollSettings to ChartBehavior to control number of visible items when in scroll mode
+
+
+
+## [3.0.0] - 02.11.2022
+* Introduction of WidgetItemOptions and WidgetDecoration
+* ChartState: data and itemOptions are now required named parameters
+* New item options builder parameter
+* Deprecated: BarValue, BubbleValue,TargetLineDecoration, TargetLineTextDecoration,
+TargetAreaDecoration, BorderDecoration, SelectedItemDecoration, ValueDecoration
+* multiItemStack moved to DefaultDataStrategy stackMultipleValues
+* Fix: Add alignment to chart items when max item size is set
+* Migration guide: https://github.com/infinum/flutter-charts/wiki/Migration-guide-to-3.0
+
 ## [2.0.0+2] - 05.04.2022.
 * Reduce final .apk app size when using this lib
 * Fixed `ValueDecoration` when all items were 0

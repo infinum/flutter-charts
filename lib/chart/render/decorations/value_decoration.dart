@@ -8,12 +8,14 @@ double defaultValueForItem(ChartItem item) => item.max ?? 0.0;
 /// Draw value of the items on them.
 /// Use this only as [ChartState.foregroundDecorations] in order to be visible at all locations
 /// Exact alignment can be set with [alignment]
+@Deprecated(
+    'Use [WidgetItemBuilder] instead if you want to decorate chart items with text')
 class ValueDecoration extends DecorationPainter {
   /// Constructor for values decoration
   ValueDecoration({
     this.textStyle,
     this.alignment = Alignment.topCenter,
-    this.valueArrayIndex = 0,
+    this.listIndex = 0,
     this.valueGenerator = defaultValueForItem,
     this.hideZeroValues = false,
     this.labelGenerator,
@@ -35,7 +37,7 @@ class ValueDecoration extends DecorationPainter {
   /// Index of list in items, this is used if there are multiple lists in the chart
   ///
   /// By default this will show first list and value will be 0
-  final int valueArrayIndex;
+  final int listIndex;
   final bool hideZeroValues;
 
   @override
@@ -45,7 +47,7 @@ class ValueDecoration extends DecorationPainter {
         textStyle: TextStyle.lerp(textStyle, endValue.textStyle, t),
         alignment: Alignment.lerp(alignment, endValue.alignment, t) ??
             endValue.alignment,
-        valueArrayIndex: endValue.valueArrayIndex,
+        listIndex: endValue.listIndex,
         valueGenerator: endValue.valueGenerator,
       );
     }
@@ -64,8 +66,8 @@ class ValueDecoration extends DecorationPainter {
   @override
   void initDecoration(ChartState state) {
     super.initDecoration(state);
-    assert(state.data.stackSize > valueArrayIndex,
-        'Value key is not in the list!\nCheck the `valueKey` you are passing.');
+    assert(state.data.stackSize > listIndex,
+        'List index is not in the list!\nCheck the `listIndex` you are passing.');
   }
 
   void _paintText(Canvas canvas, Size size, ChartItem item, double width,
@@ -112,7 +114,7 @@ class ValueDecoration extends DecorationPainter {
     final _listSize = state.data.listSize;
     final _itemWidth = size.width / _listSize;
 
-    state.data.items[valueArrayIndex].asMap().forEach((index, value) {
+    state.data.items[listIndex].asMap().forEach((index, value) {
       if (hideZeroValues && (value.max ?? 0) == 0 && (value.min ?? 0) == 0) {
         return;
       }

@@ -1,0 +1,71 @@
+name: charts_web
+description: A new Flutter project.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.16.0-126.0.dev <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  charts_painter:
+    path: ../../flutter-charts
+  example:
+    path: ../example
+
+  flutter_riverpod: ^1.0.3
+  riverpod: ^1.0.3
+  flutter_hooks: ^0.18.2+1
+  hooks_riverpod: ^1.0.2
+  cupertino_icons: ^1.0.4
+  freezed_annotation: ^2.1.0
+  flex_color_picker: ^2.6.1
+  flutter_svg: ^1.1.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^2.1.8
+  freezed: ^2.1.0+1
+  flutter_lints: ^1.0.4
+  flutter_gen_runner: ^4.1.6
+
+flutter_gen:
+  output: lib/
+  line_length: 120
+
+# The following section is specific to Flutter.
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/svg/
+    - assets/png/
+
+  fonts:
+    - family: InterTight
+      fonts:
+        - asset: assets/font/InterTight-Regular.ttf
+        - asset: assets/font/InterTight-Light.ttf
+          weight: 400
+        - asset: assets/font/InterTight-Medium.ttf
+          weight: 600
+        - asset: assets/font/InterTight-SemiBold.ttf
+          weight: 700
+

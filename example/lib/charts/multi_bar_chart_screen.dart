@@ -3,13 +3,12 @@ import 'dart:math';
 import 'package:charts_painter/chart.dart';
 import 'package:example/widgets/chart_options.dart';
 import 'package:example/widgets/toggle_item.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/bar_chart.dart';
 
 class MultiBarChartScreen extends StatefulWidget {
-  MultiBarChartScreen({Key key}) : super(key: key);
+  MultiBarChartScreen({Key? key}) : super(key: key);
 
   @override
   _MultiBarChartScreenState createState() => _MultiBarChartScreenState();
@@ -17,8 +16,8 @@ class MultiBarChartScreen extends StatefulWidget {
 
 class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
   Map<int, List<BarValue<void>>> _values = <int, List<BarValue<void>>>{};
-  double targetMax;
-  double targetMin;
+  double targetMax = 0;
+  double targetMin = 0;
   bool _showValues = false;
   int minItems = 6;
   bool _legendOnEnd = true;
@@ -54,8 +53,8 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
       return MapEntry(
           key,
           List.generate(minItems, (index) {
-            if (_values[key].length > index) {
-              return _values[key][index];
+            if (_values[key]!.length > index) {
+              return _values[key]![index];
             }
 
             return BarValue<void>(
@@ -66,21 +65,21 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
 
   List<List<BarValue<void>>> _getMap() {
     return [
-      _values[0]
+      _values[0]!
           .asMap()
           .map<int, BarValue<void>>((index, e) {
-            return MapEntry(index, BarValue<void>(e.max));
+            return MapEntry(index, BarValue<void>(e.max ?? 0.0));
           })
           .values
           .toList(),
-      _values[1]
+      _values[1]!
           .asMap()
           .map<int, BarValue<void>>((index, e) {
-            return MapEntry(index, BarValue<void>(e.max));
+            return MapEntry(index, BarValue<void>(e.max ?? 0.0));
           })
           .values
           .toList(),
-      _values[2].toList()
+      _values[2]!.toList()
     ];
   }
 
@@ -106,19 +105,18 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                   minBarWidth: 4.0,
                   multiValuePadding:
                       const EdgeInsets.symmetric(horizontal: 1.0),
-                  // isTargetInclusive: true,
-                  color: Theme.of(context).colorScheme.primary,
-                  radius: const BorderRadius.vertical(
-                    top: Radius.circular(24.0),
-                  ),
-                  colorForKey: (_, index) {
-                    return [
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(context).colorScheme.primaryVariant,
-                      Theme.of(context).colorScheme.secondary
-                    ][index];
+                  barItemBuilder: (data) {
+                    return BarItem(
+                      color: [
+                        Colors.blue,
+                        Colors.red,
+                        Colors.green,
+                      ][data.listIndex],
+                      radius: const BorderRadius.vertical(
+                        top: Radius.circular(24.0),
+                      ),
+                    );
                   },
-                  multiItemStack: _stackItems,
                 ),
                 backgroundDecorations: [
                   GridDecoration(
@@ -136,7 +134,7 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                     textStyle: Theme.of(context).textTheme.caption,
                     gridColor: Theme.of(context)
                         .colorScheme
-                        .primaryVariant
+                        .primaryContainer
                         .withOpacity(0.2),
                   ),
                 ],
@@ -144,25 +142,25 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                   BorderDecoration(),
                   ValueDecoration(
                     alignment: Alignment.bottomCenter,
-                    textStyle: Theme.of(context).textTheme.button.copyWith(
+                    textStyle: Theme.of(context).textTheme.button!.copyWith(
                         color: Theme.of(context)
                             .colorScheme
                             .onPrimary
                             .withOpacity(_stackItems ? 1.0 : 0.0)),
                   ),
                   ValueDecoration(
-                    valueArrayIndex: 1,
+                    listIndex: 1,
                     alignment: Alignment.bottomCenter,
-                    textStyle: Theme.of(context).textTheme.button.copyWith(
+                    textStyle: Theme.of(context).textTheme.button!.copyWith(
                         color: Theme.of(context)
                             .colorScheme
                             .onSecondary
                             .withOpacity(_stackItems ? 1.0 : 0.0)),
                   ),
                   ValueDecoration(
-                    valueArrayIndex: 2,
+                    listIndex: 2,
                     alignment: Alignment.bottomCenter,
-                    textStyle: Theme.of(context).textTheme.button.copyWith(
+                    textStyle: Theme.of(context).textTheme.button!.copyWith(
                         color: Theme.of(context)
                             .colorScheme
                             .onPrimary

@@ -1,32 +1,34 @@
+import 'package:alchemist/alchemist.dart';
 import 'package:charts_painter/chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('Simple line chart', (tester) async {
-    await tester.pumpWidget(
-      Padding(
-        padding: EdgeInsets.zero,
+  goldenTest('Simple line chart', fileName: 'simple_line_chart', builder: () {
+    return Padding(
+      padding: EdgeInsets.zero,
+      child: SizedBox(
+        height: 300,
+        width: 450,
         child: Chart(
-          height: 600.0,
           state: ChartState.line(
             ChartData.fromList(
               <double>[1, 3, 4, 2, 7, 6, 2, 5, 4]
                   .map((e) => BubbleValue<void>(e))
                   .toList(),
             ),
+            itemOptions: BubbleItemOptions(),
           ),
         ),
       ),
     );
-    await expectLater(find.byType(Padding),
-        matchesGoldenFile('goldens/simple_line_chart.png'));
   });
 
-  testWidgets('Simple bar chart', (tester) async {
-    await tester.pumpWidget(
-      Padding(
-        padding: EdgeInsets.zero,
+  goldenTest('Simple bar chart', fileName: 'simple_bar_chart', builder: () {
+    return Padding(
+      padding: EdgeInsets.zero,
+      child: SizedBox(
+        height: 300,
+        width: 450,
         child: Chart(
           height: 600.0,
           state: ChartState.bar(
@@ -35,104 +37,32 @@ void main() {
                   .map((e) => BarValue<void>(e))
                   .toList(),
             ),
+            itemOptions: BarItemOptions(),
           ),
         ),
       ),
     );
-    await expectLater(find.byType(Padding),
-        matchesGoldenFile('goldens/simple_bar_chart.png'));
   });
 
-  testWidgets('Bar chart', (tester) async {
-    await tester.pumpWidget(
-      Padding(
-        padding: EdgeInsets.zero,
+  goldenTest('Bar chart', fileName: 'bar_chart', builder: () {
+    return Padding(
+      padding: EdgeInsets.zero,
+      child: SizedBox(
+        height: 300,
+        width: 450,
         child: Chart<void>(
-          height: 600.0,
           state: ChartState(
-            ChartData.fromList(
+            data: ChartData.fromList(
                 [1, 3, 4, 2, 7, 6, 2, 5, 4]
                     .map((e) => BarValue<void>(e.toDouble()))
                     .toList(),
                 axisMax: 8.0),
             itemOptions: BarItemOptions(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              radius: BorderRadius.vertical(top: Radius.circular(42.0)),
-            ),
-            backgroundDecorations: [
-              GridDecoration(
-                verticalAxisStep: 1,
-                horizontalAxisStep: 1,
-              ),
-            ],
-            foregroundDecorations: [
-              BorderDecoration(borderWidth: 5.0),
-            ],
-          ),
-        ),
-      ),
-    );
-    await expectLater(
-        find.byType(Padding), matchesGoldenFile('goldens/bar_chart.png'));
-  });
-
-  testWidgets('Line chart', (tester) async {
-    await tester.pumpWidget(
-      Padding(
-        padding: EdgeInsets.zero,
-        child: Chart<void>(
-          height: 600.0,
-          state: ChartState(
-            ChartData.fromList(
-                [1, 3, 4, 2, 7, 6, 2, 5, 4]
-                    .map((e) => BubbleValue<void>(e.toDouble()))
-                    .toList(),
-                axisMax: 8.0),
-            itemOptions: BubbleItemOptions(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              maxBarWidth: 4.0,
-            ),
-            backgroundDecorations: [
-              GridDecoration(
-                verticalAxisStep: 1,
-                horizontalAxisStep: 1,
-              ),
-            ],
-            foregroundDecorations: [
-              BorderDecoration(borderWidth: 5.0),
-              SparkLineDecoration(),
-            ],
-          ),
-        ),
-      ),
-    );
-    await expectLater(
-        find.byType(Padding), matchesGoldenFile('goldens/line_chart.png'));
-  });
-
-  testWidgets('Multi line chart', (tester) async {
-    await tester.pumpWidget(
-      Padding(
-        padding: EdgeInsets.zero,
-        child: Chart<void>(
-          height: 600.0,
-          state: ChartState(
-            ChartData(
-              [
-                [1, 3, 4, 2, 7, 6, 2, 5, 4]
-                    .map((e) => BubbleValue<void>(e.toDouble()))
-                    .toList(),
-                [4, 6, 3, 3, 2, 1, 4, 7, 5]
-                    .map((e) => BubbleValue<void>(e.toDouble()))
-                    .toList(),
-              ],
-              axisMax: 8.0,
-            ),
-            itemOptions: BubbleItemOptions(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              maxBarWidth: 4.0,
-              colorForKey: (item, index) {
-                return [Colors.red, Colors.blue][index];
+              barItemBuilder: (_) {
+                return BarItem(
+                  radius: BorderRadius.vertical(top: Radius.circular(42.0)),
+                );
               },
             ),
             backgroundDecorations: [
@@ -143,19 +73,88 @@ void main() {
             ],
             foregroundDecorations: [
               BorderDecoration(borderWidth: 5.0),
-              SparkLineDecoration(
-                // Specify key that this [SparkLineDecoration] will follow
-                // Throws if `lineKey` does not exist in chart data
-                lineArrayIndex: 1,
-                lineColor: Colors.blue,
-              ),
-              SparkLineDecoration(),
             ],
           ),
         ),
       ),
     );
-    await expectLater(find.byType(Padding),
-        matchesGoldenFile('goldens/multi_line_chart.png'));
+  });
+
+  goldenTest('Line chart', fileName: 'line_chart', builder: () {
+    return Container(
+      height: 300,
+      width: 450,
+      padding: EdgeInsets.zero,
+      child: Chart<void>(
+        state: ChartState(
+          data: ChartData.fromList(
+              [1, 3, 4, 2, 7, 6, 2, 5, 4]
+                  .map((e) => BubbleValue<void>(e.toDouble()))
+                  .toList(),
+              axisMax: 8.0),
+          itemOptions: BubbleItemOptions(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            maxBarWidth: 4.0,
+          ),
+          backgroundDecorations: [
+            GridDecoration(
+              verticalAxisStep: 1,
+              horizontalAxisStep: 1,
+            ),
+          ],
+          foregroundDecorations: [
+            BorderDecoration(borderWidth: 5.0),
+            SparkLineDecoration(),
+          ],
+        ),
+      ),
+    );
+  });
+
+  goldenTest('Multi line chart', fileName: 'multi_line_chart', builder: () {
+    return Container(
+      height: 300,
+      width: 450,
+      padding: EdgeInsets.zero,
+      child: Chart<void>(
+        state: ChartState(
+          data: ChartData(
+            [
+              [1, 3, 4, 2, 7, 6, 2, 5, 4]
+                  .map((e) => BubbleValue<void>(e.toDouble()))
+                  .toList(),
+              [4, 6, 3, 3, 2, 1, 4, 7, 5]
+                  .map((e) => BubbleValue<void>(e.toDouble()))
+                  .toList(),
+            ],
+            axisMax: 8.0,
+          ),
+          itemOptions: BubbleItemOptions(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            maxBarWidth: 4.0,
+            bubbleItemBuilder: (data) {
+              return BubbleItem(
+                  color: [Colors.red, Colors.blue][data.listIndex]);
+            },
+          ),
+          backgroundDecorations: [
+            GridDecoration(
+              verticalAxisStep: 1,
+              horizontalAxisStep: 1,
+            ),
+          ],
+          foregroundDecorations: [
+            BorderDecoration(borderWidth: 5.0),
+            SparkLineDecoration(
+              // Specify key that this [SparkLineDecoration] will follow
+              // Throws if `listIndex` does not exist in chart data
+              listIndex: 1,
+              lineColor: Colors.blue,
+            ),
+            SparkLineDecoration(),
+          ],
+        ),
+      ),
+    );
   });
 }

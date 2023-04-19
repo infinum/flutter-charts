@@ -1,3 +1,4 @@
+import 'package:alchemist/alchemist.dart';
 import 'package:charts_painter/chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,9 +11,11 @@ void main() {
     await loadAppFonts();
   });
 
-  testWidgets('Horizontal decoration', (tester) async {
-    await tester.pumpWidget(
-      Container(
+  goldenTest('Horizontal deooration',
+      fileName: 'general_horizontal_decoration_golden', builder: () {
+    return GoldenTestScenario(
+      name: 'Horizontal decoration',
+      child: Container(
         height: 500,
         width: 800,
         child: getDefaultChart(backgroundDecorations: [
@@ -22,33 +25,28 @@ void main() {
         ]),
       ),
     );
-    await expectLater(
-        find.byType(Padding),
-        matchesGoldenFile(
-            'goldens/general/general_horizontal_decoration_golden.png'));
   });
 
-  testWidgets('Vertical decoration', (tester) async {
-    await tester.pumpWidget(
-      Container(
-        height: 500,
-        width: 800,
-        child: getDefaultChart(backgroundDecorations: [
-          VerticalAxisDecoration(
-            lineWidth: 4.0,
-          ),
-        ]),
-      ),
-    );
-    await expectLater(
-        find.byType(Padding),
-        matchesGoldenFile(
-            'goldens/general/general_vertical_decoration_golden.png'));
+  goldenTest('Vertical decoration',
+      fileName: 'general_vertical_decoration_golden', builder: () {
+    return GoldenTestScenario(
+        name: 'Vertical decoration',
+        child: Container(
+          height: 500,
+          width: 800,
+          child: getDefaultChart(backgroundDecorations: [
+            VerticalAxisDecoration(
+              lineWidth: 4.0,
+            ),
+          ]),
+        ));
   });
 
-  testWidgets('Grid decoration', (tester) async {
-    await tester.pumpWidget(
-      Container(
+  goldenTest('Grid decoration', fileName: 'general_grid_decoration_golden',
+      builder: () {
+    return GoldenTestScenario(
+      name: 'Grid decoration',
+      child: Container(
         height: 500,
         width: 800,
         child: getDefaultChart(backgroundDecorations: [
@@ -58,57 +56,27 @@ void main() {
         ]),
       ),
     );
-    await expectLater(
-        find.byType(Padding),
-        matchesGoldenFile(
-            'goldens/general/general_grid_decoration_golden.png'));
   });
 
-  testWidgets('Border decoration', (tester) async {
-    await tester.pumpWidget(
-      Container(
+  goldenTest('Border decoration', fileName: 'general_border_decoration_golden',
+      builder: () {
+    return GoldenTestScenario(
+      name: 'Border decoration',
+      child: Container(
         height: 500,
         width: 800,
         child: getDefaultChart(backgroundDecorations: [
-          BorderDecoration(
-            borderWidth: 8.0,
-            color: Colors.red,
-          ),
+          BorderDecoration(borderWidth: 4),
         ]),
       ),
     );
-    await expectLater(
-        find.byType(Padding),
-        matchesGoldenFile(
-            'goldens/general/general_border_decoration_golden.png'));
   });
 
-  testWidgets('Value decoration', (tester) async {
-    await tester.pumpWidget(
-      Container(
-        height: 500,
-        width: 800,
-        child: getDefaultChart(backgroundDecorations: [
-          ValueDecoration(
-            alignment: Alignment(0.0, 0.5),
-            textStyle: defaultTextStyle.copyWith(
-              fontSize: 32.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.white70,
-            ),
-          ),
-        ]),
-      ),
-    );
-    await expectLater(
-        find.byType(Padding),
-        matchesGoldenFile(
-            'goldens/general/general_value_decoration_golden.png'));
-  });
-
-  testWidgets('Selected item decoration', (tester) async {
-    await tester.pumpWidget(
-      Container(
+  goldenTest('Selected item decoration',
+      fileName: 'general_selected_item_decoration_golden', builder: () {
+    return GoldenTestScenario(
+      name: 'Selected item decoration',
+      child: Container(
         height: 500,
         width: 800,
         child: getDefaultChart(backgroundDecorations: [
@@ -120,15 +88,13 @@ void main() {
         ]),
       ),
     );
-    await expectLater(
-        find.byType(Padding),
-        matchesGoldenFile(
-            'goldens/general/general_selected_item_decoration_golden.png'));
   });
 
-  testWidgets('Target line decoration', (tester) async {
-    await tester.pumpWidget(
-      Container(
+  goldenTest('Target line decoration',
+      fileName: 'general_target_line_decoration_golden', builder: () {
+    return GoldenTestScenario(
+      name: 'Target line decoration',
+      child: Container(
         height: 500,
         width: 800,
         child: getDefaultChart(foregroundDecorations: [
@@ -136,15 +102,13 @@ void main() {
         ]),
       ),
     );
-    await expectLater(
-        find.byType(Padding),
-        matchesGoldenFile(
-            'goldens/general/general_target_line_decoration_golden.png'));
   });
 
-  testWidgets('Target line text decoration', (tester) async {
-    await tester.pumpWidget(
-      Container(
+  goldenTest('Target line text decoration',
+      fileName: 'general_target_line_text_decoration_golden', builder: () {
+    return GoldenTestScenario(
+      name: 'Target line text decoration',
+      child: Container(
         height: 500,
         width: 800,
         child: getDefaultChart(
@@ -165,15 +129,13 @@ void main() {
         ),
       ),
     );
-    await expectLater(
-        find.byType(Padding),
-        matchesGoldenFile(
-            'goldens/general/general_target_line_text_decoration_golden.png'));
   });
 
-  testWidgets('Target area decoration', (tester) async {
-    await tester.pumpWidget(
-      Container(
+  goldenTest('Target area decoration',
+      fileName: 'general_target_area_decoration_golden', builder: () {
+    return GoldenTestScenario(
+      name: 'Target area decoration',
+      child: Container(
         height: 500,
         width: 800,
         child: getDefaultChart(
@@ -183,15 +145,13 @@ void main() {
         ),
       ),
     );
-    await expectLater(
-        find.byType(Padding),
-        matchesGoldenFile(
-            'goldens/general/general_target_area_decoration_golden.png'));
   });
 
-  testWidgets('Sparkline text decoration', (tester) async {
-    await tester.pumpWidget(
-      Container(
+  goldenTest('Sparkline text decoration',
+      fileName: 'general_sparkline_decoration_golden', builder: () {
+    return GoldenTestScenario(
+      name: 'Sparkline text decoration',
+      child: Container(
         height: 500,
         width: 800,
         child: getDefaultChart(foregroundDecorations: [
@@ -201,9 +161,5 @@ void main() {
         ]),
       ),
     );
-    await expectLater(
-        find.byType(Padding),
-        matchesGoldenFile(
-            'goldens/general/general_sparkline_decoration_golden.png'));
   });
 }

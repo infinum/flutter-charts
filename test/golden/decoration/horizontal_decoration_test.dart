@@ -1,3 +1,4 @@
+import 'package:alchemist/alchemist.dart';
 import 'package:charts_painter/chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,19 +11,20 @@ void main() {
     await loadAppFonts();
   });
 
-  testGoldens('Horizontal decoration', (tester) async {
-    final builder = GoldenBuilder.grid(columns: 3, widthToHeightRatio: 1.4)
-      ..addScenario(
-        'Default',
-        getDefaultChart(
+  goldenTest('horizontal_decoartion', fileName: 'horizontal_decoration_golden',
+      builder: () {
+    return GoldenTestGroup(children: [
+      GoldenTestScenario(
+        name: 'Default',
+        child: getDefaultChart(
           backgroundDecorations: [
             HorizontalAxisDecoration(),
           ],
         ),
-      )
-      ..addScenario(
-        'Show values on right',
-        getDefaultChart(
+      ),
+      GoldenTestScenario(
+        name: 'Show values on right',
+        child: getDefaultChart(
           backgroundDecorations: [
             HorizontalAxisDecoration(
                 showValues: true,
@@ -30,10 +32,10 @@ void main() {
                 valuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0)),
           ],
         ),
-      )
-      ..addScenario(
-        'Show values on left',
-        getDefaultChart(
+      ),
+      GoldenTestScenario(
+        name: 'Show values on left',
+        child: getDefaultChart(
           backgroundDecorations: [
             HorizontalAxisDecoration(
                 showValues: true,
@@ -42,10 +44,10 @@ void main() {
                 valuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0)),
           ],
         ),
-      )
-      ..addScenario(
-        'Increase steps',
-        getDefaultChart(
+      ),
+      GoldenTestScenario(
+        name: 'Increase steps',
+        child: getDefaultChart(
           backgroundDecorations: [
             HorizontalAxisDecoration(
                 showValues: true,
@@ -54,23 +56,22 @@ void main() {
                 valuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0)),
           ],
         ),
-      )
-      ..addScenario(
-        'End lines with chart',
-        getDefaultChart(
+      ),
+      GoldenTestScenario(
+        name: 'End lines with chart',
+        child: getDefaultChart(
           backgroundDecorations: [
             HorizontalAxisDecoration(
-              showValues: true,
-              endWithChart: true,
-              legendFontStyle: defaultTextStyle,
-              valuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0),
-            ),
+                showValues: true,
+                endWithChart: true,
+                legendFontStyle: defaultTextStyle,
+                valuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0)),
           ],
         ),
-      )
-      ..addScenario(
-        'Show top value',
-        getDefaultChart(
+      ),
+      GoldenTestScenario(
+        name: 'Show top value',
+        child: getDefaultChart(
           backgroundDecorations: [
             HorizontalAxisDecoration(
               showValues: true,
@@ -81,10 +82,10 @@ void main() {
             ),
           ],
         ),
-      )
-      ..addScenario(
-        'Show dashed lines',
-        getDefaultChart(
+      ),
+      GoldenTestScenario(
+        name: 'Show dashed lines',
+        child: getDefaultChart(
           backgroundDecorations: [
             HorizontalAxisDecoration(
               showValues: true,
@@ -94,10 +95,10 @@ void main() {
             ),
           ],
         ),
-      )
-      ..addScenario(
-        'Lines only on top 3 values',
-        getDefaultChart(
+      ),
+      GoldenTestScenario(
+        name: 'Lines only on top 3 values',
+        child: getDefaultChart(
           backgroundDecorations: [
             HorizontalAxisDecoration(
               showLineForValue: (value) => [6, 8, 7].contains(value),
@@ -105,20 +106,17 @@ void main() {
             ),
           ],
         ),
-      )
-      ..addScenario(
-        'Change color',
-        getDefaultChart(
+      ),
+      GoldenTestScenario(
+        name: 'Change color',
+        child: getDefaultChart(
           backgroundDecorations: [
             HorizontalAxisDecoration(
               lineColor: Colors.red,
             ),
           ],
         ),
-      );
-
-    await tester.pumpWidgetBuilder(builder.build(),
-        surfaceSize: const Size(1400, 1000), textScaleSize: 1.4);
-    await screenMatchesGolden(tester, 'horizontal_decoration_golden');
+      ),
+    ]);
   });
 }

@@ -2,9 +2,11 @@ part of charts_painter;
 
 class ChartDecorationChildRenderer<T> extends SingleChildRenderObjectWidget {
   ChartDecorationChildRenderer(
-      this.chartState, this.decorationPainter, Widget child,
-      {Key? key})
-      : super(key: key, child: child);
+    this.chartState,
+    this.decorationPainter,
+    Widget child, {
+    Key? key,
+  }) : super(key: key, child: child);
 
   final ChartState<T?> chartState;
   final DecorationPainter decorationPainter;
@@ -19,7 +21,7 @@ class ChartDecorationChildRenderer<T> extends SingleChildRenderObjectWidget {
       BuildContext context, _RenderChartDecorationChildren renderObject) {
     renderObject
       ..chartState = chartState
-      ..item = decorationPainter;
+      ..decorationPainter = decorationPainter;
 
     renderObject.markNeedsLayout();
   }
@@ -31,14 +33,14 @@ class _RenderChartDecorationChildren<T> extends RenderShiftedBox {
       : super(child);
 
   DecorationPainter _decoration;
-  set item(DecorationPainter decoration) {
+  set decorationPainter(DecorationPainter decoration) {
     if (decoration != _decoration) {
       _decoration = decoration;
       markNeedsPaint();
     }
   }
 
-  DecorationPainter get item => _decoration;
+  DecorationPainter get decorationPainter => _decoration;
 
   ChartState<T?> _chartState;
   set chartState(ChartState<T?> chartState) {
@@ -100,15 +102,8 @@ class _RenderChartDecorationChildren<T> extends RenderShiftedBox {
 
     if (child != null) {
       final childParentData = child!.parentData! as BoxParentData;
-      final _difference = Offset(
-          ((constraints.biggest.width - _chartState.defaultMargin.horizontal) /
-                  _chartState.data.listSize) -
-              size.width,
-          0.0);
-
       final offset =
-          _decoration.applyPaintTransform(_chartState, constraints.biggest) +
-              (_difference / 2);
+          _decoration.applyPaintTransform(_chartState, constraints.biggest);
       childParentData.offset =
           Alignment.center.alongOffset(size - child!.size as Offset) + offset;
     }
