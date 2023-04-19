@@ -169,7 +169,7 @@ final List<ChartState<bool>> _chartStates = [
         verticalValuesPadding: const EdgeInsets.only(top: 24.0),
         horizontalAxisValueFromValue: (value) => '${value + 1}h',
         verticalAxisValueFromIndex: (value) =>
-            ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][value],
+            ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][value.toInt()],
         textStyle: TextStyle(fontSize: 14.0, color: Colors.black45),
       ),
     ],

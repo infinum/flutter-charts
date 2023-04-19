@@ -135,8 +135,15 @@ void main() {
                       bottom: -8.0, right: 8.0, left: 8.0),
                   verticalValuesPadding: const EdgeInsets.only(top: 24.0),
                   horizontalAxisValueFromValue: (value) => '${value + 1}h',
-                  verticalAxisValueFromIndex: (value) =>
-                      ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][value],
+                  verticalAxisValueFromIndex: (value) => [
+                    'Mon',
+                    'Tue',
+                    'Wed',
+                    'Thu',
+                    'Fri',
+                    'Sat',
+                    'Sun'
+                  ][value.toInt()],
                   textStyle: defaultTextStyle.copyWith(
                       fontSize: 12.0, color: Colors.black45),
                 ),
