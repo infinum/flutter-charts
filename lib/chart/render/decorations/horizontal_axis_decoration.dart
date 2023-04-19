@@ -9,12 +9,12 @@ enum HorizontalLegendPosition {
   end,
 }
 
-typedef AxisValueFromValue = String Function(int value);
+typedef AxisValueFromValue = String Function(num value);
 
 /// Default axis generator, it will just take current index, convert it to string and return it.
-String defaultAxisValue(int index) => '$index';
+String defaultAxisValue(num index) => '$index';
 
-typedef ShowLineForValue = bool Function(int value);
+typedef ShowLineForValue = bool Function(num value);
 
 /// Decoration for drawing horizontal lines on the chart, decoration can add horizontal axis legend
 ///
@@ -124,7 +124,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
   void initDecoration(ChartState state) {
     super.initDecoration(state);
     if (showValues) {
-      _longestText = axisValue.call(state.data.maxValue.toInt()).toString();
+      _longestText = axisValue.call(state.data.maxValue).toString();
 
       if ((_longestText?.length ?? 0) < (horizontalAxisUnit?.length ?? 0.0)) {
         _longestText = '0' * (horizontalAxisUnit?.length ?? 0);
@@ -156,7 +156,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     final gridPath = Path();
 
     for (var i = 0; i * scale * axisStep <= scale * _maxValue; i++) {
-      final _defaultValue = (axisStep * i + state.data.minValue).toInt();
+      final _defaultValue = (axisStep * i + state.data.minValue);
 
       final _isPositionStart = legendPosition == HorizontalLegendPosition.start;
       final _startLine = _isPositionStart ? -(marginNeeded().horizontal * (1 - _endWithChart)) : 0.0;
