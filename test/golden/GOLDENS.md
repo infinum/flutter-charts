@@ -30,25 +30,25 @@ Any changes will be visible here as well.
 ![grid_decorations]
 
 ##### Border decoration golden
-![border_decorations]
+Deprecated
 
 ##### Value decoration golden
-![value_decorations]
+Deprecated
 
 ##### Target line decoration golden
-![target_line_decorations]
+Deprecated
 
 ##### Target line text decoration golden
-![target_line_text_decorations]
+Deprecated
 
 ##### Target area decoration golden
-![target_area_decorations]
+Deprecated
 
 ##### Sparkline decoration golden
 ![sparkline_decorations]
 
 ##### Selected item decoration golden
-![selected_item_decorations]
+Deprecated
 
 ## Complex
 
@@ -58,15 +58,15 @@ Any changes will be visible here as well.
 ##### Showcase charts
 ![showcase]
 
-[vertical_decorations]: decoration/goldens/vertical_decoration_golden.png
-[horizontal_decorations]: decoration/goldens/horizontal_decoration_golden.png
-[grid_decorations]: decoration/goldens/grid_decoration_golden.png
-[border_decorations]: decoration/goldens/border_decoration_golden.png
-[value_decorations]: decoration/goldens/value_decoration_golden.png
-[target_line_decorations]: decoration/goldens/target_line_decoration_golden.png
-[target_line_text_decorations]: decoration/goldens/target_line_text_decoration_golden.png
-[target_area_decorations]: decoration/goldens/target_area_decoration_golden.png
-[sparkline_decorations]: decoration/goldens/sparkline_decoration_golden.png
-[selected_item_decorations]: decoration/goldens/selected_item_decoration_golden.png
-[complex_multi_value]: complex/goldens/complex_multi_charts.png
-[showcase]: complex/goldens/showcase_charts.png
+[vertical_decorations]: decoration/goldens/macos/vertical_decoration_golden.png
+[horizontal_decorations]: decoration/goldens/macos/horizontal_decoration_golden.png
+[grid_decorations]: decoration/goldens/macos/grid_decoration_golden.png
+[border_decorations]: decoration/goldens/macos/border_decoration_golden.png
+[value_decorations]: decoration/goldens/macos/value_decoration_golden.png
+[target_line_decorations]: decoration/goldens/macos/target_line_decoration_golden.png
+[target_line_text_decorations]: decoration/goldens/macos/target_line_text_decoration_golden.png
+[target_area_decorations]: decoration/goldens/macos/target_area_decoration_golden.png
+[sparkline_decorations]: decoration/goldens/macos/sparkline_decoration_golden.png
+[selected_item_decorations]: decoration/goldens/macos/selected_item_decoration_golden.png
+[complex_multi_value]: complex/goldens/macos/complex_multi_charts.png
+[showcase]: complex/goldens/macos/showcase_charts.png

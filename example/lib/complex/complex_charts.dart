@@ -1,9 +1,10 @@
 import 'package:charts_painter/chart.dart';
 import 'package:example/charts/multi_bar_chart_screen.dart';
+import 'package:example/charts/multi_bar_widget_chart_screen.dart';
 import 'package:flutter/material.dart';
 
 class ComplexCharts extends StatelessWidget {
-  const ComplexCharts({Key key}) : super(key: key);
+  const ComplexCharts({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class ComplexCharts extends StatelessWidget {
               child: AnimatedChart(
                 duration: Duration(milliseconds: 550),
                 state: ChartState<void>(
-                  ChartData(
+                  data: ChartData(
                     [
                       [10, 12, 13, 11, 16]
                           .map((e) => BarValue<void>(e.toDouble()))
@@ -34,15 +35,16 @@ class ComplexCharts extends StatelessWidget {
                   ),
                   itemOptions: BarItemOptions(
                       padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                      radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-                      color: Theme.of(context).accentColor,
                       maxBarWidth: 12.0,
-                      colorForKey: (_, key) {
-                        return [
-                          Theme.of(context).colorScheme.primary,
-                          Theme.of(context).colorScheme.secondary,
-                          Theme.of(context).colorScheme.primaryVariant,
-                        ][key];
+                      barItemBuilder: (data) {
+                        return BarItem(
+                            radius: BorderRadius.vertical(
+                                top: Radius.circular(12.0)),
+                            color: [
+                              Theme.of(context).colorScheme.primary,
+                              Theme.of(context).colorScheme.secondary,
+                              Theme.of(context).colorScheme.primaryContainer,
+                            ][data.listIndex]);
                       }),
                   backgroundDecorations: [
                     GridDecoration(
@@ -58,6 +60,30 @@ class ComplexCharts extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push<void>(
                 MaterialPageRoute(builder: (_) => MultiBarChartScreen()));
+          },
+        ),
+        Divider(),
+        ListTile(
+          title: Text('Multi bar widget chart'),
+          trailing: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Container(
+              width: 50.0,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.red, width: 2),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+              ),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8)),
+                  child: Image.asset('assets/png/futurama_small.png')),
+            ),
+          ),
+          onTap: () {
+            Navigator.of(context).push<void>(
+                MaterialPageRoute(builder: (_) => MultiBarWidgetChartScreen()));
           },
         ),
         Divider(),

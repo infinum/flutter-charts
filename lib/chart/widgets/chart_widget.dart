@@ -16,61 +16,81 @@ class _ChartWidget<T> extends StatelessWidget {
   final double? width;
   final ChartState<T?> state;
 
+  double get _horizontalItemPadding => state.itemOptions.padding.horizontal;
+
+  double _clampItemWidth(double width) {
+    final minBarWidth = state.itemOptions.minBarWidth;
+    final maxBarWidth = state.itemOptions.maxBarWidth;
+
+    if (minBarWidth != null) {
+      return max(minBarWidth, width);
+    }
+
+    if (maxBarWidth != null) {
+      return min(maxBarWidth, width);
+    }
+
+    return width;
+  }
+
+  double _calcItemWidthNonScrollable() {
+    return max(
+      state.itemOptions.minBarWidth ?? 0.0,
+      state.itemOptions.maxBarWidth ?? 0.0,
+    );
+  }
+
+  double _calcItemWidthForScrollable(double frameWidth) {
+    final visibleItems = state.behaviour.scrollSettings.visibleItems;
+    if (visibleItems == null) {
+      return _calcItemWidthNonScrollable();
+    }
+
+    final availableWidth = frameWidth - state.defaultPadding.horizontal;
+    final width = availableWidth / visibleItems - _horizontalItemPadding;
+
+    return _clampItemWidth(max(0, width));
+  }
+
+  double _calcItemWidth(double frameWidth) {
+    // Used for smooth transition between scrollable and non-scrollable chart
+    final sizeTween = Tween(
+      begin: _calcItemWidthNonScrollable(),
+      end: _calcItemWidthForScrollable(frameWidth),
+    );
+
+    return sizeTween.transform(state.behaviour.scrollSettings._isScrollable);
+  }
+
+  Size _calcChartSize(double itemWidth, double frameWidth, double frameHeight) {
+    final listSize = state.data.listSize;
+    final totalItemWidth = itemWidth + _horizontalItemPadding;
+    final listWidth = totalItemWidth * listSize;
+
+    final chartWidth = frameWidth +
+        (listWidth - frameWidth) * state.behaviour.scrollSettings._isScrollable;
+    final finalWidth = chartWidth + state.defaultPadding.horizontal;
+
+    return Size(finalWidth, frameHeight);
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // What size does the item want to be?
-        final _wantedItemWidth = max(state.itemOptions.minBarWidth ?? 0.0,
-            state.itemOptions.maxBarWidth ?? 0.0);
-
-        final _width =
+        final frameWidth =
             constraints.maxWidth.isFinite ? constraints.maxWidth : width!;
-        final _height =
+        final frameHeight =
             constraints.maxHeight.isFinite ? constraints.maxHeight : height!;
 
-        final _listSize = state.data.listSize;
+        final itemWidth = _calcItemWidth(frameWidth);
+        final size = _calcChartSize(itemWidth, frameWidth, frameHeight);
 
-        final _size = Size(
-            _width +
-                (((_wantedItemWidth + state.itemOptions.padding.horizontal) *
-                            _listSize) -
-                        _width) *
-                    state.behaviour._isScrollable,
-            _height);
-
-        final _chart = Container(
-          constraints: BoxConstraints.tight(_size),
+        return Container(
+          constraints: BoxConstraints.tight(size),
           child: ChartRenderer(state),
         );
-
-        // If chart is clickable, then wrap it with [GestureDetector]
-        // for detecting clicks, and sending item index to [onChartItemClicked]
-        if (state.behaviour.onItemClicked != null) {
-          final size = state.defaultPadding.deflateSize(_size);
-
-          final _constraintSize = constraints.biggest;
-          final _constraint = state.defaultPadding.deflateSize(_constraintSize);
-          final _itemWidth =
-              (size.width.isFinite ? size.width : _constraint.width) /
-                  _listSize;
-
-          return GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTapDown: (tapDetails) => state.behaviour._onChartItemClicked(
-                _getClickLocation(_itemWidth, tapDetails.localPosition)),
-            onPanUpdate: (panUpdate) => state.behaviour._onChartItemClicked(
-                _getClickLocation(_itemWidth, panUpdate.localPosition)),
-            child: _chart,
-          );
-        }
-
-        return _chart;
       },
     );
-  }
-
-  int _getClickLocation(double _itemWidth, Offset offset) {
-    return (offset.dx / _itemWidth).floor();
   }
 }

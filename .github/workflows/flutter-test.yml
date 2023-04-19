@@ -1,0 +1,18 @@
+name: flutter-test
+
+on:
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "*" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v1
+      - run: flutter doctor
+      - run: flutter analyze lib/
+      - run: flutter test --dart-define=CI=true

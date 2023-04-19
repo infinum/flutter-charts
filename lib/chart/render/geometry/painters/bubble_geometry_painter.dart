@@ -5,7 +5,7 @@ part of charts_painter;
 ///    ┌───────────┐ --> Max value in set or [ChartData.axisMax]
 ///    │           │
 ///    │           │
-///    │    /⎺⎺\   │ --> Bubble value
+///    │    /⎺⎺\   │ --> ChartItem max value
 ///    │    \__/   │
 ///    │           │
 ///    │           │
@@ -13,9 +13,11 @@ part of charts_painter;
 ///
 class BubbleGeometryPainter<T> extends GeometryPainter<T> {
   /// Constructor for bubble painter
-  BubbleGeometryPainter(
-      ChartItem<T> item, ChartData<T?> data, ItemOptions itemOptions)
+  BubbleGeometryPainter(ChartItem<T> item, ChartData<T?> data,
+      ItemOptions itemOptions, this.drawDataItem)
       : super(item, data, itemOptions);
+
+  final BubbleItem drawDataItem;
 
   @override
   void draw(Canvas canvas, Size size, Paint paint) {
@@ -50,9 +52,9 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
     );
 
     if (itemOptions is BubbleItemOptions) {
-      final _border = (itemOptions as BubbleItemOptions).border;
+      final _border = drawDataItem.border;
 
-      if (_border != null && _border.style == BorderStyle.solid) {
+      if (_border.style == BorderStyle.solid) {
         final _borderPaint = Paint();
         _borderPaint.style = PaintingStyle.stroke;
 
@@ -61,7 +63,7 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
 
         canvas.drawCircle(
           Offset(size.width * 0.5,
-              _itemMaxValue * _verticalMultiplier - _minValue),
+              size.height - _itemMaxValue * _verticalMultiplier - _minValue),
           _circleSize,
           _borderPaint,
         );

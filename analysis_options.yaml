@@ -1,4 +1,4 @@
-include: package:pedantic/analysis_options.yaml
+include: package:lints/recommended.yaml
 
 # Specify analysis options.
 #
@@ -25,6 +25,9 @@ analyzer:
     implicit-casts: false
     implicit-dynamic: false
   errors:
+    avoid_function_literals_in_foreach_calls: ignore
+    no_leading_underscores_for_local_identifiers: ignore
+    library_private_types_in_public_api: ignore
     # treat missing required parameters as a warning (not a hint)
     missing_required_param: warning
     # treat missing returns as a warning (not a hint)
@@ -38,4 +41,5 @@ analyzer:
   exclude:
     - "bin/cache/**"
     - "lib/assets.dart"
-    - "example/**"
+#    - "example/**"
+#    - "charts_web/**"

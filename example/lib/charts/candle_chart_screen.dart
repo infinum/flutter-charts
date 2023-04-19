@@ -4,7 +4,6 @@ import 'package:charts_painter/chart.dart';
 import 'package:example/widgets/candle_chart.dart';
 import 'package:example/widgets/chart_options.dart';
 import 'package:example/widgets/toggle_item.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CandleItem {
@@ -15,7 +14,7 @@ class CandleItem {
 }
 
 class CandleChartScreen extends StatefulWidget {
-  CandleChartScreen({Key key}) : super(key: key);
+  CandleChartScreen({Key? key}) : super(key: key);
 
   @override
   _CandleChartScreenState createState() => _CandleChartScreenState();
@@ -23,12 +22,12 @@ class CandleChartScreen extends StatefulWidget {
 
 class _CandleChartScreenState extends State<CandleChartScreen> {
   List<CandleItem> _values = <CandleItem>[];
-  double targetMax;
-  double targetMin;
+  double targetMax = 0;
+  double targetMin = 0;
 
   bool _showValues = false;
-  int minItems = 12;
-  int _selected;
+  int minItems = 25;
+  int? _selected;
 
   @override
   void initState() {
@@ -80,14 +79,21 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                 chartItemOptions: BarItemOptions(
                   minBarWidth: 4.0,
                   padding: EdgeInsets.symmetric(horizontal: 2.0),
-                  color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
-                  radius: BorderRadius.all(
-                    Radius.circular(100.0),
-                  ),
+                  barItemBuilder: (_) {
+                    return BarItem(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(1.0),
+                      radius: BorderRadius.all(
+                        Radius.circular(100.0),
+                      ),
+                    );
+                  },
                 ),
                 chartBehaviour: ChartBehaviour(onItemClicked: (item) {
                   setState(() {
-                    _selected = item;
+                    _selected = item.itemIndex;
                   });
                 }),
                 backgroundDecorations: [
@@ -100,11 +106,11 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                     verticalTextAlign: TextAlign.start,
                     gridColor: Theme.of(context)
                         .colorScheme
-                        .primaryVariant
+                        .primaryContainer
                         .withOpacity(0.2),
                     textStyle: Theme.of(context)
                         .textTheme
-                        .caption
+                        .caption!
                         .copyWith(fontSize: 13.0),
                   ),
                 ],

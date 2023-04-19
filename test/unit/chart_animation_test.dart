@@ -31,7 +31,7 @@ void main() {
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
       expect(_middleState.items[0],
-          [ChartItem<void>(null, null, 15), ChartItem<void>(null, 0.0, 5)]);
+          [ChartItem<void>(15), ChartItem<void>(5, min: 0.0)]);
     });
 
     test('Bar -> Bubble animates different type items', () {
@@ -41,7 +41,7 @@ void main() {
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items[0], [ChartItem<void>(null, 10, 15)]);
+      expect(_middleState.items[0], [ChartItem<void>(15, min: 10)]);
     });
 
     test('Bubble -> Bar animates different type items', () {
@@ -51,7 +51,7 @@ void main() {
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items[0], [ChartItem<void>(null, 5, 15)]);
+      expect(_middleState.items[0], [ChartItem<void>(15, min: 5)]);
     });
 
     test('Bar -> Candle animates different type items', () {
@@ -71,7 +71,7 @@ void main() {
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items[0], [ChartItem<void>(null, 5, 15)]);
+      expect(_middleState.items[0], [ChartItem<void>(15, min: 5)]);
     });
 
     test('Bubble -> Candle animates different type items', () {
@@ -91,18 +91,19 @@ void main() {
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items[0], [ChartItem<void>(null, 10, 15)]);
+      expect(_middleState.items[0], [ChartItem<void>(15, min: 10)]);
     });
   });
 
   group('Decorations', () {
     test('Decorations can animate if they are the same type', () {
       final _firstState = ChartState<void>(
-          ChartData.fromList(
+          data: ChartData.fromList(
             [2, 4, 6, 3, 5, 1]
                 .map((e) => BarValue<void>(e.toDouble()))
                 .toList(),
           ),
+          itemOptions: BarItemOptions(),
           foregroundDecorations: [
             HorizontalAxisDecoration(
               axisStep: 1,
@@ -110,11 +111,12 @@ void main() {
             ),
           ]);
       final _secondState = ChartState<void>(
-          ChartData.fromList(
+          data: ChartData.fromList(
             [2, 4, 6, 3, 5, 1]
                 .map((e) => BarValue<void>(e.toDouble()))
                 .toList(),
           ),
+          itemOptions: BarItemOptions(),
           foregroundDecorations: [
             HorizontalAxisDecoration(
               axisStep: 5,
@@ -134,11 +136,12 @@ void main() {
 
     test('Decorations won\'t try to animate if they are not the same type', () {
       final _firstState = ChartState<void>(
-          ChartData.fromList(
+          data: ChartData.fromList(
             [2, 4, 6, 3, 5, 1]
                 .map((e) => BarValue<void>(e.toDouble()))
                 .toList(),
           ),
+          itemOptions: BarItemOptions(),
           foregroundDecorations: [
             HorizontalAxisDecoration(
               axisStep: 1,
@@ -146,11 +149,12 @@ void main() {
             ),
           ]);
       final _secondState = ChartState<void>(
-          ChartData.fromList(
+          data: ChartData.fromList(
             [2, 4, 6, 3, 5, 1]
                 .map((e) => BarValue<void>(e.toDouble()))
                 .toList(),
           ),
+          itemOptions: BarItemOptions(),
           foregroundDecorations: [
             VerticalAxisDecoration(
               axisStep: 5,
