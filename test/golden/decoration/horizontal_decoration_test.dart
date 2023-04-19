@@ -117,6 +117,18 @@ void main() {
           ],
         ),
       ),
+      GoldenTestScenario(
+        name: 'Decimal Lines',
+        child: getDefaultChart(
+          backgroundDecorations: [
+            HorizontalAxisDecoration(
+              showLineForValue: (value) => true,
+              lineWidth: 3.0,
+              axisStep: 4.5,
+            ),
+          ],
+        ),
+      ),
     ]);
   });
 }
