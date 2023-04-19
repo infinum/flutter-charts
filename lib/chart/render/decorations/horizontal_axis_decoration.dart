@@ -168,7 +168,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
     final gridPath = Path();
 
     for (var i = 0; i * scale * axisStep <= scale * _maxValue; i++) {
-      final _defaultValue = (axisStep * i + state.data.minValue);
+      final _defaultValue = axisStep * i + state.data.minValue;
 
       final _isPositionStart = legendPosition == HorizontalLegendPosition.start;
       final _startLine = _isPositionStart
@@ -209,18 +209,12 @@ class HorizontalAxisDecoration extends DecorationPainter {
       final _positionStart = -((valuesPadding?.right ?? 0.0) +
           _getTextPainter(_longestText).width);
 
-      final _alignEndOffset = valuesAlign != TextAlign.end
-          ? 0.0
-          : (_textWidth(_longestText, legendFontStyle).width -
-              _textPainter.width);
-
       _textPainter.paint(
           canvas,
           Offset(
-              (legendPosition == HorizontalLegendPosition.end
-                      ? _positionEnd
-                      : _positionStart) +
-                  _alignEndOffset,
+              legendPosition == HorizontalLegendPosition.end
+                  ? _positionEnd
+                  : _positionStart,
               _height -
                   axisStep * i * scale -
                   (_textPainter.height + (valuesPadding?.bottom ?? 0.0)) +
