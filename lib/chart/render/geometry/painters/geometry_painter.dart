@@ -4,7 +4,6 @@ part of charts_painter;
 /// Chart will slice the canvas and each item is painted has constraints (width / [itemWidth]) * height
 abstract class GeometryPainter<T> {
   /// Default constructor for [GeometryPainter]
-  @mustCallSuper
   GeometryPainter(this.item, this.data, this.itemOptions);
 
   /// Current data of the chart
@@ -24,7 +23,6 @@ abstract class GeometryPainter<T> {
 
   /// Calculate item width based on current [Size] and [ChartState]
   double itemWidth(Size size) {
-    return max(itemOptions.minBarWidth ?? 0.0,
-        min(itemOptions.maxBarWidth ?? double.infinity, size.width));
+    return max(itemOptions.minBarWidth ?? 0.0, min(itemOptions.maxBarWidth ?? double.infinity, size.width));
   }
 }
