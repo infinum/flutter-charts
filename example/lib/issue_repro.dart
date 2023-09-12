@@ -17,7 +17,13 @@ class LineChart extends StatelessWidget {
   LineChart({Key? key, this.useAxis = true}) : super(key: key);
 
   final List<List<ChartItem<double>>> _mappedValues = [
-    [ChartItem(2.0), ChartItem(5.0), ChartItem(8.0), ChartItem(3.0), ChartItem(6.0)]
+    [
+      ChartItem(2.0),
+      ChartItem(5.0),
+      ChartItem(8.0),
+      ChartItem(3.0),
+      ChartItem(6.0)
+    ]
   ];
 
   @override
@@ -43,7 +49,8 @@ class LineChart extends StatelessWidget {
                       axisValue: (value) => '$value',
                       legendFontStyle: Theme.of(context).textTheme.bodyMedium,
                       valuesAlign: TextAlign.center,
-                      valuesPadding: const EdgeInsets.only(left: -axisWidth, bottom: -10),
+                      valuesPadding:
+                          const EdgeInsets.only(left: -axisWidth, bottom: -10),
                       showLines: false,
                       showTopValue: true,
                     )
@@ -53,7 +60,8 @@ class LineChart extends StatelessWidget {
                       _mappedValues,
                       axisMin: useAxis ? 2 : null,
                       axisMax: useAxis ? 8 : null,
-                      dataStrategy: const DefaultDataStrategy(stackMultipleValues: true),
+                      dataStrategy:
+                          const DefaultDataStrategy(stackMultipleValues: true),
                     ),
                     itemOptions: WidgetItemOptions(widgetItemBuilder: (data) {
                       return const SizedBox();
@@ -83,7 +91,8 @@ class LineChart extends StatelessWidget {
                       _mappedValues,
                       axisMin: useAxis ? 2 : null,
                       axisMax: useAxis ? 8 : null,
-                      dataStrategy: const DefaultDataStrategy(stackMultipleValues: true),
+                      dataStrategy:
+                          const DefaultDataStrategy(stackMultipleValues: true),
                     ),
                     itemOptions: WidgetItemOptions(widgetItemBuilder: (data) {
                       return Stack(
@@ -96,7 +105,11 @@ class LineChart extends StatelessWidget {
                             right: 0,
                             child: Column(
                               children: [
-                                Center(child: Text(_mappedValues[data.listIndex][data.itemIndex].max.toString()))
+                                Center(
+                                    child: Text(_mappedValues[data.listIndex]
+                                            [data.itemIndex]
+                                        .max
+                                        .toString()))
                               ],
                             ),
                           ),
@@ -111,9 +124,16 @@ class LineChart extends StatelessWidget {
                                     width: 10,
                                     height: 10,
                                     decoration: BoxDecoration(
-                                        color: Theme.of(context).colorScheme.primary,
-                                        borderRadius: const BorderRadius.all(Radius.circular(8)),
-                                        border: Border.all(width: 1.4, color: Theme.of(context).colorScheme.surface)),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(8)),
+                                        border: Border.all(
+                                            width: 1.4,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .surface)),
                                   ),
                                 )
                               ],
@@ -131,13 +151,17 @@ class LineChart extends StatelessWidget {
                         verticalLegendPosition: VerticalLegendPosition.bottom,
                         verticalValuesPadding: const EdgeInsets.only(top: 8.0),
                         verticalAxisStep: 1,
-                        gridColor: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                        gridColor: Theme.of(context)
+                            .colorScheme
+                            .outline
+                            .withOpacity(0.3),
                         dashArray: [8, 8],
                         gridWidth: 1,
                         textStyle: Theme.of(context).textTheme.labelSmall,
                       ),
                       WidgetDecoration(
-                        widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
+                        widgetDecorationBuilder: (context, chartState,
+                            itemWidth, verticalMultiplier) {
                           return Padding(
                             padding: chartState.defaultMargin,
                             child: Stack(
@@ -146,7 +170,8 @@ class LineChart extends StatelessWidget {
                                   right: 0,
                                   left: 0,
                                   bottom: verticalMultiplier * 3.6,
-                                  child: CustomPaint(painter: DashedLinePainter()),
+                                  child:
+                                      CustomPaint(painter: DashedLinePainter()),
                                 ),
                               ],
                             ),
@@ -154,7 +179,10 @@ class LineChart extends StatelessWidget {
                         },
                       ),
                       TargetAreaDecoration(
-                        targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.6),
+                        targetAreaFillColor: Theme.of(context)
+                            .colorScheme
+                            .error
+                            .withOpacity(0.6),
                         targetLineColor: Colors.transparent,
                         lineWidth: 0,
                         targetMax: 2,

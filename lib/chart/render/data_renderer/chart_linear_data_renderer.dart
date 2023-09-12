@@ -3,7 +3,8 @@ part of charts_painter;
 /// Align chart data items in linear fashion. Meaning X axis cannot be changed. X axis becomes the index of current item
 /// height of the item is defined by item max or min value.
 class ChartLinearDataRenderer<T> extends ChartDataRenderer<T> {
-  ChartLinearDataRenderer(this.chartState, List<Widget> children, {Key? key}) : super(key: key, children: children);
+  ChartLinearDataRenderer(this.chartState, List<Widget> children, {Key? key})
+      : super(key: key, children: children);
 
   final ChartState<T?> chartState;
 
@@ -13,7 +14,8 @@ class ChartLinearDataRenderer<T> extends ChartDataRenderer<T> {
   }
 
   @override
-  void updateRenderObject(BuildContext context, _ChartLinearItemRenderer<T?> renderObject) {
+  void updateRenderObject(
+      BuildContext context, _ChartLinearItemRenderer<T?> renderObject) {
     renderObject.chartState = chartState;
     renderObject.markNeedsLayout();
   }
@@ -125,7 +127,8 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     final _multiValuePadding = chartState.itemOptions.multiValuePadding;
 
     // Animated multiValueStacked value (goes from 0.0 meaning no stack - to 1.0 stack)
-    final _stack = 1 - chartState.data.dataStrategy._stackMultipleValuesProgress;
+    final _stack =
+        1 - chartState.data.dataStrategy._stackMultipleValuesProgress;
     // How many items will we fit in the vertical space
     final _stackSize = max(1.0, (chartState.data.stackSize) * _stack);
 
@@ -135,15 +138,18 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
             (chartState.itemOptions.padding.horizontal * _stackSize)) /
         _stackSize;
 
-    childParentData.offset = Offset(_stackWidth * child.listIndex * _stack, 0.0) +
-        // Item offset in the list
-        Offset(
-            itemWidth * currentValue +
-                (chartState.itemOptions.padding.horizontal * child.listIndex * _stack) +
-                chartState.itemOptions.padding.left,
-            0) +
-        // MultiValuePadding offset
-        Offset(_multiValuePadding.left * _stack, 0.0);
+    childParentData.offset =
+        Offset(_stackWidth * child.listIndex * _stack, 0.0) +
+            // Item offset in the list
+            Offset(
+                itemWidth * currentValue +
+                    (chartState.itemOptions.padding.horizontal *
+                        child.listIndex *
+                        _stack) +
+                    chartState.itemOptions.padding.left,
+                0) +
+            // MultiValuePadding offset
+            Offset(_multiValuePadding.left * _stack, 0.0);
 
     final innerConstraints = BoxConstraints.tightFor(
       width: _stackWidth,
@@ -180,12 +186,14 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     final _multiValuePadding = chartState.itemOptions.multiValuePadding;
 
     // Animated multiValueStacked value (goes from 0.0 meaning no stack - to 1.0 stack)
-    final _stack = 1 - chartState.data.dataStrategy._stackMultipleValuesProgress;
+    final _stack =
+        1 - chartState.data.dataStrategy._stackMultipleValuesProgress;
     // How many items will we fit in the vertical space
     final _stackSize = max(1.0, (chartState.data.stackSize) * _stack);
 
     // Get available size for item. Subtracts set padding and divide by number of items we want to show
-    final _stackWidth = (itemWidth - (_multiValuePadding.horizontal * _stack)) / _stackSize;
+    final _stackWidth =
+        (itemWidth - (_multiValuePadding.horizontal * _stack)) / _stackSize;
 
     // For `StackDataStrategy` we will cut stacked items at the bottom, this will make sure there is no
     // Widget overlap for drawing, and make sure that centered widgets are in the center of visible item
@@ -204,7 +212,10 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     // Handle stack data strategy.
     if (chartState.data.dataStrategy is StackDataStrategy) {
       if (child.listIndex + 1 < chartState.data.stackSize) {
-        bottomPaddingHeight = (chartState.data.items[child.listIndex + 1][currentValue].max ?? 0.0) * (1 - _stack);
+        bottomPaddingHeight =
+            (chartState.data.items[child.listIndex + 1][currentValue].max ??
+                    0.0) *
+                (1 - _stack);
       }
     }
 

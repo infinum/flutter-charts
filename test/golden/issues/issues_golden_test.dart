@@ -9,9 +9,16 @@ void main() {
     await loadAppFonts();
   });
 
-  goldenTest('WidgetDecoration with axisMin', fileName: 'issue_94', builder: () {
+  goldenTest('WidgetDecoration with axisMin', fileName: 'issue_94',
+      builder: () {
     final List<List<ChartItem<double>>> _mappedValues = [
-      [ChartItem(2.0), ChartItem(5.0), ChartItem(8.0), ChartItem(3.0), ChartItem(6.0)]
+      [
+        ChartItem(2.0),
+        ChartItem(5.0),
+        ChartItem(8.0),
+        ChartItem(3.0),
+        ChartItem(6.0)
+      ]
     ];
 
     return Container(
@@ -38,7 +45,8 @@ void main() {
                         endWithChart: false,
                         axisValue: (value) => '$value',
                         valuesAlign: TextAlign.center,
-                        valuesPadding: const EdgeInsets.only(left: -80, bottom: -10),
+                        valuesPadding:
+                            const EdgeInsets.only(left: -80, bottom: -10),
                         showLines: false,
                         showTopValue: true,
                         legendFontStyle: TextStyle(
@@ -52,7 +60,8 @@ void main() {
                         _mappedValues,
                         axisMin: 2,
                         axisMax: 8,
-                        dataStrategy: const DefaultDataStrategy(stackMultipleValues: true),
+                        dataStrategy: const DefaultDataStrategy(
+                            stackMultipleValues: true),
                       ),
                       itemOptions: WidgetItemOptions(widgetItemBuilder: (data) {
                         return const SizedBox();
@@ -61,7 +70,8 @@ void main() {
                         GridDecoration(
                           showVerticalValues: true,
                           verticalLegendPosition: VerticalLegendPosition.bottom,
-                          verticalValuesPadding: const EdgeInsets.only(top: 8.0),
+                          verticalValuesPadding:
+                              const EdgeInsets.only(top: 8.0),
                           verticalAxisStep: 2,
                           gridWidth: 1,
                           textStyle: TextStyle(
@@ -85,7 +95,8 @@ void main() {
                         _mappedValues,
                         axisMin: 2,
                         axisMax: 8,
-                        dataStrategy: const DefaultDataStrategy(stackMultipleValues: true),
+                        dataStrategy: const DefaultDataStrategy(
+                            stackMultipleValues: true),
                       ),
                       itemOptions: WidgetItemOptions(widgetItemBuilder: (data) {
                         return Stack(
@@ -98,7 +109,11 @@ void main() {
                               right: 0,
                               child: Column(
                                 children: [
-                                  Center(child: Text(_mappedValues[data.listIndex][data.itemIndex].max.toString()))
+                                  Center(
+                                      child: Text(_mappedValues[data.listIndex]
+                                              [data.itemIndex]
+                                          .max
+                                          .toString()))
                                 ],
                               ),
                             ),
@@ -130,7 +145,8 @@ void main() {
                           showVerticalGrid: false,
                           showVerticalValues: true,
                           verticalLegendPosition: VerticalLegendPosition.bottom,
-                          verticalValuesPadding: const EdgeInsets.only(top: 8.0),
+                          verticalValuesPadding:
+                              const EdgeInsets.only(top: 8.0),
                           verticalAxisStep: 1,
                           dashArray: [8, 8],
                           gridWidth: 1,
@@ -140,16 +156,19 @@ void main() {
                           ),
                         ),
                         WidgetDecoration(
-                          widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
+                          widgetDecorationBuilder: (context, chartState,
+                              itemWidth, verticalMultiplier) {
                             return Padding(
-                              padding: (chartState.defaultMargin + chartState.defaultPadding),
+                              padding: (chartState.defaultMargin +
+                                  chartState.defaultPadding),
                               child: Stack(
                                 children: [
                                   Positioned(
                                     right: 0,
                                     left: 0,
                                     bottom: verticalMultiplier * (3.6 - 2),
-                                    child: CustomPaint(painter: DashedLinePainter()),
+                                    child: CustomPaint(
+                                        painter: DashedLinePainter()),
                                   ),
                                 ],
                               ),
@@ -180,9 +199,16 @@ void main() {
       ),
     );
   });
-  goldenTest('WidgetDecoration no axisMin', fileName: 'issue_94_1', builder: () {
+  goldenTest('WidgetDecoration no axisMin', fileName: 'issue_94_1',
+      builder: () {
     final List<List<ChartItem<double>>> _mappedValues = [
-      [ChartItem(2.0), ChartItem(5.0), ChartItem(8.0), ChartItem(3.0), ChartItem(6.0)]
+      [
+        ChartItem(2.0),
+        ChartItem(5.0),
+        ChartItem(8.0),
+        ChartItem(3.0),
+        ChartItem(6.0)
+      ]
     ];
 
     return Container(
@@ -209,7 +235,8 @@ void main() {
                         endWithChart: false,
                         axisValue: (value) => '$value',
                         valuesAlign: TextAlign.center,
-                        valuesPadding: const EdgeInsets.only(left: -80, bottom: -10),
+                        valuesPadding:
+                            const EdgeInsets.only(left: -80, bottom: -10),
                         showLines: false,
                         showTopValue: true,
                         legendFontStyle: TextStyle(
@@ -221,7 +248,8 @@ void main() {
                     ChartState<double>(
                       data: ChartData(
                         _mappedValues,
-                        dataStrategy: const DefaultDataStrategy(stackMultipleValues: true),
+                        dataStrategy: const DefaultDataStrategy(
+                            stackMultipleValues: true),
                       ),
                       itemOptions: WidgetItemOptions(widgetItemBuilder: (data) {
                         return const SizedBox();
@@ -230,7 +258,8 @@ void main() {
                         GridDecoration(
                           showVerticalValues: true,
                           verticalLegendPosition: VerticalLegendPosition.bottom,
-                          verticalValuesPadding: const EdgeInsets.only(top: 8.0),
+                          verticalValuesPadding:
+                              const EdgeInsets.only(top: 8.0),
                           verticalAxisStep: 2,
                           gridWidth: 1,
                           textStyle: TextStyle(
@@ -252,7 +281,8 @@ void main() {
                     state: ChartState<double>(
                       data: ChartData(
                         _mappedValues,
-                        dataStrategy: const DefaultDataStrategy(stackMultipleValues: true),
+                        dataStrategy: const DefaultDataStrategy(
+                            stackMultipleValues: true),
                       ),
                       itemOptions: WidgetItemOptions(widgetItemBuilder: (data) {
                         return Stack(
@@ -265,7 +295,11 @@ void main() {
                               right: 0,
                               child: Column(
                                 children: [
-                                  Center(child: Text(_mappedValues[data.listIndex][data.itemIndex].max.toString()))
+                                  Center(
+                                      child: Text(_mappedValues[data.listIndex]
+                                              [data.itemIndex]
+                                          .max
+                                          .toString()))
                                 ],
                               ),
                             ),
@@ -297,7 +331,8 @@ void main() {
                           showVerticalGrid: false,
                           showVerticalValues: true,
                           verticalLegendPosition: VerticalLegendPosition.bottom,
-                          verticalValuesPadding: const EdgeInsets.only(top: 8.0),
+                          verticalValuesPadding:
+                              const EdgeInsets.only(top: 8.0),
                           verticalAxisStep: 1,
                           dashArray: [8, 8],
                           gridWidth: 1,
@@ -307,16 +342,19 @@ void main() {
                           ),
                         ),
                         WidgetDecoration(
-                          widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
+                          widgetDecorationBuilder: (context, chartState,
+                              itemWidth, verticalMultiplier) {
                             return Padding(
-                              padding: (chartState.defaultMargin + chartState.defaultPadding),
+                              padding: (chartState.defaultMargin +
+                                  chartState.defaultPadding),
                               child: Stack(
                                 children: [
                                   Positioned(
                                     right: 0,
                                     left: 0,
                                     bottom: verticalMultiplier * 3.6,
-                                    child: CustomPaint(painter: DashedLinePainter()),
+                                    child: CustomPaint(
+                                        painter: DashedLinePainter()),
                                   ),
                                 ],
                               ),
