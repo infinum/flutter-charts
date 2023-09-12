@@ -1,7 +1,7 @@
 part of charts_painter;
 
-typedef WidgetDecorationBuilder<T> = Widget Function(BuildContext context,
-    ChartState<T> chartState, double itemWidth, double verticalMultiplier);
+typedef WidgetDecorationBuilder<T> = Widget Function(
+    BuildContext context, ChartState<T> chartState, double itemWidth, double verticalMultiplier);
 
 /// Show widget as decoration on the chart
 ///
@@ -59,16 +59,14 @@ class WidgetDecoration extends DecorationPainter {
         builder: (context, constraints) {
           // Get all the data we need to draw the decoration and pass to the builder
           // This will ensure that we have right data in the builder and that we can show decoration to scale.
-          final _size = (state.defaultMargin + state.defaultPadding)
-              .deflateSize(constraints.biggest);
+          final _size = (state.defaultMargin + state.defaultPadding).deflateSize(constraints.biggest);
           final _listSize = state.data.listSize;
           final _itemWidth = _size.width / _listSize;
 
           final _maxValue = state.data.maxValue - state.data.minValue;
           final _verticalMultiplier = _size.height / max(1, _maxValue);
 
-          return widgetDecorationBuilder(
-              context, state, _itemWidth, _verticalMultiplier);
+          return widgetDecorationBuilder(context, state, _itemWidth, _verticalMultiplier);
         },
       ),
     );
@@ -78,9 +76,7 @@ class WidgetDecoration extends DecorationPainter {
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
     if (endValue is WidgetDecoration) {
       return WidgetDecoration(
-        widgetDecorationBuilder: t > 0.5
-            ? endValue.widgetDecorationBuilder
-            : widgetDecorationBuilder,
+        widgetDecorationBuilder: t > 0.5 ? endValue.widgetDecorationBuilder : widgetDecorationBuilder,
         margin: EdgeInsets.lerp(margin, endValue.margin, t) ?? endValue.margin,
       );
     }
