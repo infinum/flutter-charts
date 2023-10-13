@@ -1,54 +1,224 @@
 import 'package:charts_painter/chart.dart';
 import 'package:flutter/material.dart';
 
+const double axisWidth = 80.0;
+
 void main() {
   runApp(MaterialApp(
     home: Scaffold(
-      backgroundColor: Colors.white,
-      body: ChartTest(),
+      body: LineChart(),
     ),
   ));
 }
 
-class ChartTest extends StatelessWidget {
-  ChartTest({Key? key}) : super(key: key);
+class LineChart extends StatelessWidget {
+  final bool useAxis;
+
+  LineChart({Key? key, this.useAxis = true}) : super(key: key);
+
+  final List<List<ChartItem<double>>> _mappedValues = [
+    [
+      ChartItem(32.0),
+      ChartItem(35.0),
+      ChartItem(38.0),
+      ChartItem(33.0),
+      ChartItem(36.0)
+    ]
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final byCount = [5, 6, 4, 8, 6, 4, 1, 2, 3, 7, 9, 4, 2];
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 128.0),
-      child: Chart<void>(
-        state: ChartState(
-          data: ChartData(
-            [
-              byCount.map((e) => ChartItem<void>(e.toDouble())).toList(),
-              // byCount.map((e) => BarValue<void>(e.toDouble())).toList()
-            ],
-          ),
-          itemOptions: BarItemOptions(),
-          // itemOptions: BarItemOptions(
-          //   padding: const EdgeInsets.symmetric(horizontal: 2),
-          //   color: Colors.blue,
-          // ),
-          backgroundDecorations: [
-            GridDecoration(
-              showHorizontalGrid: false,
-              showVerticalGrid: false,
-              showVerticalValues: true,
-              verticalLegendPosition: VerticalLegendPosition.top,
-              verticalAxisValueFromIndex: (idx) => '${idx + 1}',
-              gridWidth: 2,
-              textStyle: Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 8, fontWeight: FontWeight.bold),
-              gridColor: Theme.of(context).dividerColor,
+    return SizedBox(
+      height: MediaQuery.of(context).size.height / 2,
+      child: SafeArea(
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 32),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 350),
+                width: axisWidth,
+                child: DecorationsRenderer(
+                  [
+                    HorizontalAxisDecoration(
+                      asFixedDecoration: true,
+                      lineWidth: 0,
+                      axisStep: 2,
+                      showValues: true,
+                      endWithChart: false,
+                      axisValue: (value) => '$value',
+                      legendFontStyle: Theme.of(context).textTheme.bodyMedium,
+                      valuesAlign: TextAlign.center,
+                      valuesPadding:
+                          const EdgeInsets.only(left: -axisWidth, bottom: -10),
+                      showLines: false,
+                      showTopValue: true,
+                    )
+                  ],
+                  ChartState<double>(
+                    data: ChartData(
+                      _mappedValues,
+                      axisMin: useAxis ? 32 : null,
+                      axisMax: useAxis ? 38 : null,
+                      dataStrategy:
+                          const DefaultDataStrategy(stackMultipleValues: true),
+                    ),
+                    itemOptions: WidgetItemOptions(widgetItemBuilder: (data) {
+                      return const SizedBox();
+                    }),
+                    backgroundDecorations: [
+                      GridDecoration(
+                        showVerticalValues: true,
+                        verticalLegendPosition: VerticalLegendPosition.bottom,
+                        verticalValuesPadding: const EdgeInsets.only(top: 8.0),
+                        verticalAxisStep: 2,
+                        gridWidth: 1,
+                        textStyle: Theme.of(context).textTheme.labelSmall,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 32),
+                child: AnimatedChart<double>(
+                  width: MediaQuery.of(context).size.width - axisWidth - 8,
+                  duration: const Duration(milliseconds: 450),
+                  state: ChartState<double>(
+                    data: ChartData(
+                      _mappedValues,
+                      axisMin: useAxis ? 32 : null,
+                      axisMax: useAxis ? 38 : null,
+                      dataStrategy:
+                          const DefaultDataStrategy(stackMultipleValues: true),
+                    ),
+                    itemOptions: WidgetItemOptions(widgetItemBuilder: (data) {
+                      return Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Container(color: Colors.blue.withOpacity(0.2)),
+                          Positioned(
+                            top: -24,
+                            left: 0,
+                            right: 0,
+                            child: Column(
+                              children: [
+                                Center(
+                                    child: Text(_mappedValues[data.listIndex]
+                                            [data.itemIndex]
+                                        .max
+                                        .toString()))
+                              ],
+                            ),
+                          ),
+                          Positioned(
+                            top: -5,
+                            left: 0,
+                            right: 0,
+                            child: Column(
+                              children: [
+                                Center(
+                                  child: Container(
+                                    width: 10,
+                                    height: 10,
+                                    decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(8)),
+                                        border: Border.all(
+                                            width: 1.4,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .surface)),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    }),
+                    foregroundDecorations: [],
+                    backgroundDecorations: [
+                      GridDecoration(
+                        horizontalAxisStep: 2,
+                        showVerticalGrid: false,
+                        showVerticalValues: true,
+                        verticalLegendPosition: VerticalLegendPosition.bottom,
+                        verticalValuesPadding: const EdgeInsets.only(top: 8.0),
+                        verticalAxisStep: 1,
+                        gridColor: Theme.of(context)
+                            .colorScheme
+                            .outline
+                            .withOpacity(0.3),
+                        dashArray: [8, 8],
+                        gridWidth: 1,
+                        textStyle: Theme.of(context).textTheme.labelSmall,
+                      ),
+                      WidgetDecoration(
+                        widgetDecorationBuilder: (context, chartState,
+                            itemWidth, verticalMultiplier) {
+                          return Padding(
+                            padding: chartState.defaultMargin,
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                  right: 0,
+                                  left: 0,
+                                  bottom: verticalMultiplier * 3.6,
+                                  child:
+                                      CustomPaint(painter: DashedLinePainter()),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                      TargetAreaDecoration(
+                        targetAreaFillColor: Theme.of(context)
+                            .colorScheme
+                            .error
+                            .withOpacity(0.6),
+                        targetLineColor: Colors.transparent,
+                        lineWidth: 0,
+                        targetMax: 34,
+                        targetMin: 0,
+                      ),
+                      SparkLineDecoration(
+                        lineWidth: 2,
+                        lineColor: Theme.of(context).colorScheme.primary,
+                        smoothPoints: true,
+                        listIndex: 0,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
           ],
-          // foregroundDecorations: [
-          //   HorizontalAxisDecoration(lineColor: Colors.brown),
-          // ],
         ),
       ),
     );
   }
+}
+
+class DashedLinePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    double dashWidth = 8, dashSpace = 8, startX = 0;
+    final paint = Paint()
+      ..color = Colors.blue
+      ..strokeWidth = 1;
+    while (startX < size.width) {
+      canvas.drawLine(Offset(startX, 0), Offset(startX + dashWidth, 0), paint);
+      startX += dashWidth + dashSpace;
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }

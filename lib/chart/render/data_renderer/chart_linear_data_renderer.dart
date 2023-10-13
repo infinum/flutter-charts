@@ -201,8 +201,11 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
 
     childParentData.offset = offset + // Current chart offset
         // Item offset in the list
-        Offset(itemWidth * currentValue,
-            size.height - ((child.item.max ?? 0.0) * _verticalMultiplier)) +
+        Offset(
+            itemWidth * currentValue,
+            size.height -
+                ((child.item.max ?? 0.0) * _verticalMultiplier) +
+                (chartState.data.minValue * _verticalMultiplier)) +
         // MultiValuePadding offset
         Offset(_multiValuePadding.left * _stack, 0);
 
@@ -217,10 +220,10 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     }
 
     final innerConstraints = BoxConstraints.tightFor(
-      width: _stackWidth,
-      height: ((child.item.max ?? 0.0) * _verticalMultiplier) -
-          (bottomPaddingHeight * _verticalMultiplier),
-    );
+        width: _stackWidth,
+        height: ((child.item.max ?? 0.0) * _verticalMultiplier) -
+            (bottomPaddingHeight * _verticalMultiplier) -
+            (chartState.data.minValue * _verticalMultiplier));
 
     child.layout(innerConstraints, parentUsesSize: true);
   }

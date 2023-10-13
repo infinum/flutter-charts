@@ -4,7 +4,6 @@ part of charts_painter;
 /// Chart will slice the canvas and each item is painted has constraints (width / [itemWidth]) * height
 abstract class GeometryPainter<T> {
   /// Default constructor for [GeometryPainter]
-  @mustCallSuper
   GeometryPainter(this.item, this.data, this.itemOptions);
 
   /// Current data of the chart

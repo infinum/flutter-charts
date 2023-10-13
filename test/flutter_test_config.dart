@@ -17,7 +17,6 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
           brightness: Brightness.light,
           background: Colors.white,
         ),
-        backgroundColor: Colors.white,
         brightness: Brightness.light,
       ),
       ciGoldensConfig: const CiGoldensConfig(
