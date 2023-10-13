@@ -225,15 +225,20 @@ class TargetAreaDecoration extends DecorationPainter {
     final scale = _size.height / _maxValue;
     final _minValue = state.data.minValue * scale;
 
-    return Rect.fromPoints(
+    final rect = Rect.fromPoints(
       Offset(
-          0.0,
-          -scale * targetMax +
+          constraints.maxWidth,
+          -scale * (max(state.data.minValue, targetMin)) +
               _minValue +
-              areaPadding.vertical +
-              (state.data.minValue * scale)),
-      Offset(constraints.maxWidth, -scale * targetMin + _minValue),
-    ).size;
+              areaPadding.vertical),
+      Offset(0.0, -scale * targetMax + _minValue + areaPadding.vertical),
+    );
+
+    return Size(
+      constraints.maxWidth -
+          (state.defaultPadding.horizontal + state.defaultMargin.horizontal),
+      min(rect.size.height, constraints.maxHeight),
+    );
   }
 
   @override

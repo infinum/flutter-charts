@@ -18,11 +18,11 @@ class LineChart extends StatelessWidget {
 
   final List<List<ChartItem<double>>> _mappedValues = [
     [
-      ChartItem(2.0),
-      ChartItem(5.0),
-      ChartItem(8.0),
-      ChartItem(3.0),
-      ChartItem(6.0)
+      ChartItem(32.0),
+      ChartItem(35.0),
+      ChartItem(38.0),
+      ChartItem(33.0),
+      ChartItem(36.0)
     ]
   ];
 
@@ -58,8 +58,8 @@ class LineChart extends StatelessWidget {
                   ChartState<double>(
                     data: ChartData(
                       _mappedValues,
-                      axisMin: useAxis ? 2 : null,
-                      axisMax: useAxis ? 8 : null,
+                      axisMin: useAxis ? 32 : null,
+                      axisMax: useAxis ? 38 : null,
                       dataStrategy:
                           const DefaultDataStrategy(stackMultipleValues: true),
                     ),
@@ -89,8 +89,8 @@ class LineChart extends StatelessWidget {
                   state: ChartState<double>(
                     data: ChartData(
                       _mappedValues,
-                      axisMin: useAxis ? 2 : null,
-                      axisMax: useAxis ? 8 : null,
+                      axisMin: useAxis ? 32 : null,
+                      axisMax: useAxis ? 38 : null,
                       dataStrategy:
                           const DefaultDataStrategy(stackMultipleValues: true),
                     ),
@@ -185,7 +185,7 @@ class LineChart extends StatelessWidget {
                             .withOpacity(0.6),
                         targetLineColor: Colors.transparent,
                         lineWidth: 0,
-                        targetMax: 2,
+                        targetMax: 34,
                         targetMin: 0,
                       ),
                       SparkLineDecoration(

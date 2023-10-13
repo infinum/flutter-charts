@@ -82,10 +82,14 @@ class _RenderChartDecoration<T> extends RenderBox {
   void paint(PaintingContext context, Offset offset) {
     final canvas = context.canvas;
     canvas.save();
-    canvas.translate(offset.dx, offset.dy);
 
-    _decoration.draw(canvas, size, _chartState);
+    // Clip out of bounds decorations
+    if (size.contains(offset)) {
+      canvas.translate(offset.dx, offset.dy);
 
-    canvas.restore();
+      _decoration.draw(canvas, size, _chartState);
+
+      canvas.restore();
+    }
   }
 }
