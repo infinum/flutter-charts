@@ -1,8 +1,7 @@
 part of charts_painter;
 
 class ChartDecorationRenderer<T> extends LeafRenderObjectWidget {
-  ChartDecorationRenderer(this.chartState, this.decorationPainter, {Key? key})
-      : super(key: key);
+  ChartDecorationRenderer(this.chartState, this.decorationPainter, {Key? key}) : super(key: key);
 
   final ChartState<T?> chartState;
   final DecorationPainter decorationPainter;
@@ -13,8 +12,7 @@ class ChartDecorationRenderer<T> extends LeafRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, _RenderChartDecoration renderObject) {
+  void updateRenderObject(BuildContext context, _RenderChartDecoration renderObject) {
     renderObject
       ..chartState = chartState
       ..item = decorationPainter;
@@ -84,12 +82,10 @@ class _RenderChartDecoration<T> extends RenderBox {
     canvas.save();
 
     // Clip out of bounds decorations
-    if (size.contains(offset)) {
-      canvas.translate(offset.dx, offset.dy);
+    canvas.translate(offset.dx, offset.dy);
 
-      _decoration.draw(canvas, size, _chartState);
+    _decoration.draw(canvas, size, _chartState);
 
-      canvas.restore();
-    }
+    canvas.restore();
   }
 }
