@@ -1,6 +1,6 @@
 name: charts_painter
 description: Highly customizable and extendable charts library for flutter made with custom painters
-version: 3.1.1
+version: 3.1.1+1
 homepage: https://github.com/infinum/flutter-charts
 repository: https://github.com/infinum/flutter-charts
 
