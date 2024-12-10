@@ -18,10 +18,12 @@ class ScrollableVisibleItemsChartScreen extends StatefulWidget {
   ScrollableVisibleItemsChartScreen({Key? key}) : super(key: key);
 
   @override
-  _ScrollableVisibleItemsChartScreenState createState() => _ScrollableVisibleItemsChartScreenState();
+  _ScrollableVisibleItemsChartScreenState createState() =>
+      _ScrollableVisibleItemsChartScreenState();
 }
 
-class _ScrollableVisibleItemsChartScreenState extends State<ScrollableVisibleItemsChartScreen> {
+class _ScrollableVisibleItemsChartScreenState
+    extends State<ScrollableVisibleItemsChartScreen> {
   List<CandleItem> _values = <CandleItem>[];
   double targetMax = 0;
   double targetMin = 0;
@@ -76,18 +78,24 @@ class _ScrollableVisibleItemsChartScreenState extends State<ScrollableVisibleIte
               padding: const EdgeInsets.all(24.0),
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                physics: _isScrollable ? ScrollPhysics() : NeverScrollableScrollPhysics(),
+                physics: _isScrollable
+                    ? ScrollPhysics()
+                    : NeverScrollableScrollPhysics(),
                 child: CandleChart<CandleItem>(
                   data: _values,
                   height: MediaQuery.of(context).size.height * 0.4,
                   width: MediaQuery.of(context).size.width - 48,
-                  dataToValue: (CandleItem value) => CandleValue(value.min, value.max),
+                  dataToValue: (CandleItem value) =>
+                      CandleValue(value.min, value.max),
                   chartItemOptions: BarItemOptions(
                     minBarWidth: 10.0,
                     padding: EdgeInsets.symmetric(horizontal: 2.0),
                     barItemBuilder: (_) {
                       return BarItem(
-                        color: Theme.of(context).colorScheme.primary.withOpacity(1.0),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withOpacity(1.0),
                         radius: BorderRadius.all(
                           Radius.circular(100.0),
                         ),
@@ -95,8 +103,9 @@ class _ScrollableVisibleItemsChartScreenState extends State<ScrollableVisibleIte
                     },
                   ),
                   chartBehaviour: ChartBehaviour(
-                    scrollSettings:
-                        _isScrollable ? ScrollSettings(visibleItems: _visibleItems.toDouble()) : ScrollSettings.none(),
+                    scrollSettings: _isScrollable
+                        ? ScrollSettings(visibleItems: _visibleItems.toDouble())
+                        : ScrollSettings.none(),
                     onItemClicked: (item) {
                       setState(() {
                         _selected = item.itemIndex;
@@ -111,8 +120,14 @@ class _ScrollableVisibleItemsChartScreenState extends State<ScrollableVisibleIte
                       verticalValuesPadding: EdgeInsets.only(left: 8.0),
                       horizontalAxisStep: 5,
                       verticalTextAlign: TextAlign.start,
-                      gridColor: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.2),
-                      textStyle: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 13.0),
+                      gridColor: Theme.of(context)
+                          .colorScheme
+                          .primaryContainer
+                          .withOpacity(0.2),
+                      textStyle: Theme.of(context)
+                          .textTheme
+                          .labelMedium!
+                          .copyWith(fontSize: 13.0),
                     ),
                   ],
                   foregroundDecorations: [
@@ -127,7 +142,9 @@ class _ScrollableVisibleItemsChartScreenState extends State<ScrollableVisibleIte
                     ),
                     SelectedItemDecoration(
                       _selected,
-                      backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
+                      backgroundColor: Theme.of(context)
+                          .scaffoldBackgroundColor
+                          .withOpacity(0.5),
                     ),
                   ],
                 ),

@@ -54,7 +54,8 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
       targetMin: targetMin,
       colorOverTarget: Theme.of(context).colorScheme.secondary,
       targetLineColor: Theme.of(context).colorScheme.secondary,
-      targetAreaFillColor: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+      targetAreaFillColor:
+          Theme.of(context).colorScheme.secondary.withOpacity(0.2),
       targetAreaRadius: BorderRadius.circular(8.0),
     );
 
@@ -77,9 +78,12 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                     maxBarWidth: 60,
                     bubbleItemBuilder: (data) {
                       return BubbleItem(
-                          color: tad.getTargetItemColor(Theme.of(context).colorScheme.primary, data.item));
+                          color: tad.getTargetItemColor(
+                              Theme.of(context).colorScheme.primary,
+                              data.item));
                     },
-                    padding: EdgeInsets.symmetric(horizontal: (1 - (_values.length / 17)) * 8.0),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: (1 - (_values.length / 17)) * 8.0),
                   ),
                   dataToValue: (BubbleValue value) => value.max ?? 0,
                   backgroundDecorations: [
@@ -91,8 +95,14 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                       verticalValuesPadding: EdgeInsets.only(left: 8.0),
                       verticalAxisStep: 4,
                       verticalTextAlign: TextAlign.start,
-                      gridColor: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.2),
-                      textStyle: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 13.0),
+                      gridColor: Theme.of(context)
+                          .colorScheme
+                          .primaryContainer
+                          .withOpacity(0.2),
+                      textStyle: Theme.of(context)
+                          .textTheme
+                          .labelMedium!
+                          .copyWith(fontSize: 13.0),
                     ),
                     tad,
                   ],

@@ -33,12 +33,16 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
   void _updateValues() {
     final Random _rand = Random();
     final double _difference = _rand.nextDouble() * 10;
-    targetMax = 5 + ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25)).roundToDouble();
-    _values.addAll(Map<int, List<BarValue<void>>>.fromEntries(List.generate(3, (key) {
+    targetMax = 5 +
+        ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25))
+            .roundToDouble();
+    _values.addAll(
+        Map<int, List<BarValue<void>>>.fromEntries(List.generate(3, (key) {
       return MapEntry(
           key,
           List.generate(minItems, (index) {
-            return BarValue<void>(targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
+            return BarValue<void>(
+                targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
           }));
     })));
     targetMin = targetMax - ((_rand.nextDouble() * 3) + (targetMax * 0.2));
@@ -53,7 +57,8 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
               return _values[key]![index];
             }
 
-            return BarValue<void>(targetMax * 0.4 + Random().nextDouble() * targetMax * 0.9);
+            return BarValue<void>(
+                targetMax * 0.4 + Random().nextDouble() * targetMax * 0.9);
           }));
     }));
   }
@@ -98,7 +103,8 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                 itemOptions: BarItemOptions(
                   padding: const EdgeInsets.symmetric(horizontal: 2.0),
                   minBarWidth: 4.0,
-                  multiValuePadding: const EdgeInsets.symmetric(horizontal: 1.0),
+                  multiValuePadding:
+                      const EdgeInsets.symmetric(horizontal: 1.0),
                   barItemBuilder: (data) {
                     return BarItem(
                       color: [
@@ -117,13 +123,19 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                     showVerticalGrid: true,
                     showHorizontalValues: _showValues,
                     showVerticalValues: _showValues,
-                    showTopHorizontalValue: _legendOnBottom ? _showValues : false,
-                    horizontalLegendPosition:
-                        _legendOnEnd ? HorizontalLegendPosition.end : HorizontalLegendPosition.start,
-                    verticalLegendPosition:
-                        _legendOnBottom ? VerticalLegendPosition.bottom : VerticalLegendPosition.top,
+                    showTopHorizontalValue:
+                        _legendOnBottom ? _showValues : false,
+                    horizontalLegendPosition: _legendOnEnd
+                        ? HorizontalLegendPosition.end
+                        : HorizontalLegendPosition.start,
+                    verticalLegendPosition: _legendOnBottom
+                        ? VerticalLegendPosition.bottom
+                        : VerticalLegendPosition.top,
                     textStyle: Theme.of(context).textTheme.labelMedium,
-                    gridColor: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.2),
+                    gridColor: Theme.of(context)
+                        .colorScheme
+                        .primaryContainer
+                        .withOpacity(0.2),
                   ),
                 ],
                 foregroundDecorations: [
@@ -133,13 +145,23 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                     textStyle: Theme.of(context)
                         .textTheme
                         .labelMedium!
-                        .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(_stackItems ? 1.0 : 0.0)),
+                        .copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimary
+                                .withOpacity(_stackItems ? 1.0 : 0.0)),
                   ),
                   ValueDecoration(
                     listIndex: 1,
                     alignment: Alignment.bottomCenter,
-                    textStyle: Theme.of(context).textTheme.labelMedium!.copyWith(
-                        color: Theme.of(context).colorScheme.onSecondary.withOpacity(_stackItems ? 1.0 : 0.0)),
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .labelMedium!
+                        .copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondary
+                                .withOpacity(_stackItems ? 1.0 : 0.0)),
                   ),
                   ValueDecoration(
                     listIndex: 2,
@@ -147,7 +169,11 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                     textStyle: Theme.of(context)
                         .textTheme
                         .labelMedium!
-                        .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(_stackItems ? 1.0 : 0.0)),
+                        .copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimary
+                                .withOpacity(_stackItems ? 1.0 : 0.0)),
                   ),
                 ],
               ),
@@ -172,7 +198,8 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                   if (minItems > 6) {
                     minItems -= 4;
                     _values = _values.map((key, value) {
-                      return MapEntry(key, value..removeRange(value.length - 4, value.length));
+                      return MapEntry(key,
+                          value..removeRange(value.length - 4, value.length));
                     });
                   }
                 });

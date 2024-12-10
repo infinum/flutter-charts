@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class OptionsComponentHeader extends StatelessWidget {
-  const OptionsComponentHeader({Key? key, required this.title, required this.subtitle}) : super(key: key);
+  const OptionsComponentHeader(
+      {Key? key, required this.title, required this.subtitle})
+      : super(key: key);
 
   final String title;
   final String subtitle;

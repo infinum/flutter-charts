@@ -41,13 +41,17 @@ class DoubleOptionInput extends HookWidget {
                 SizedBox(
                   width: 50,
                   child: TextField(
-                    decoration: const InputDecoration(filled: true, isDense: true),
+                    decoration:
+                        const InputDecoration(filled: true, isDense: true),
                     controller: textEditingController,
                     onChanged: (value) {
                       final newValue = double.parse(value);
                       onChanged(newValue);
                     },
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                 )
               else
@@ -61,7 +65,9 @@ class DoubleOptionInput extends HookWidget {
                   mini: true,
                   backgroundColor: Colors.grey,
                   onPressed: decrease,
-                  child: const Text('-', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                  child: const Text('-',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                 ),
               ),
               const SizedBox(width: 4),
@@ -73,7 +79,9 @@ class DoubleOptionInput extends HookWidget {
                   backgroundColor: Colors.grey,
                   mini: true,
                   onPressed: increase,
-                  child: const Text('+', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                  child: const Text('+',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                 ),
               ),
             ],
@@ -104,5 +112,6 @@ class DoubleOptionInput extends HookWidget {
     onChanged(value);
   }
 
-  double roundTo(double value, double precision) => (value * precision).round() / precision;
+  double roundTo(double value, double precision) =>
+      (value * precision).round() / precision;
 }
