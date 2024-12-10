@@ -3,12 +3,7 @@ import 'package:charts_web/assets.gen.dart';
 import 'package:flutter/material.dart';
 
 class FuturamaBarWidget extends StatelessWidget {
-  FuturamaBarWidget(
-      {Key? key,
-      required this.stackItems,
-      required this.listKey,
-      required this.item})
-      : super(key: key);
+  FuturamaBarWidget({Key? key, required this.stackItems, required this.listKey, required this.item}) : super(key: key);
 
   final bool stackItems;
   final int listKey;
@@ -27,12 +22,10 @@ class FuturamaBarWidget extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 3.0),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.vertical(
-            top: Radius.circular((!stackItems || listKey == 0) ? 12 : 0)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular((!stackItems || listKey == 0) ? 12 : 0)),
       ),
       foregroundDecoration: BoxDecoration(
-        borderRadius: BorderRadius.vertical(
-            top: Radius.circular((!stackItems || listKey == 0) ? 12 : 0)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular((!stackItems || listKey == 0) ? 12 : 0)),
         color: Colors.accents[listKey].withOpacity(0.2),
         border: Border.all(
           width: 2,
@@ -40,8 +33,7 @@ class FuturamaBarWidget extends StatelessWidget {
         ),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.vertical(
-            top: Radius.circular((!stackItems || listKey == 0) ? 12 : 0)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular((!stackItems || listKey == 0) ? 12 : 0)),
         child: Stack(
           children: [
             Positioned.fill(
@@ -57,7 +49,7 @@ class FuturamaBarWidget extends StatelessWidget {
               child: Text(
                 '${item.max?.toStringAsFixed(2)}',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                style: Theme.of(context).textTheme.labelMedium!.copyWith(
                       color: Colors.black87,
                       fontWeight: FontWeight.w700,
                     ),

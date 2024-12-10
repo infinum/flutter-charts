@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class OptionsComponentHeader extends StatelessWidget {
-  const OptionsComponentHeader(
-      {Key? key, required this.title, required this.subtitle})
-      : super(key: key);
+  const OptionsComponentHeader({Key? key, required this.title, required this.subtitle}) : super(key: key);
 
   final String title;
   final String subtitle;
@@ -19,7 +17,7 @@ class OptionsComponentHeader extends StatelessWidget {
             title,
             style: Theme.of(context)
                 .textTheme
-                .headline4!
+                .headlineMedium!
                 .copyWith(fontWeight: FontWeight.bold, color: Colors.black87),
           ),
         ),
@@ -27,7 +25,7 @@ class OptionsComponentHeader extends StatelessWidget {
           width: double.infinity,
           child: Text(
             subtitle,
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
         const SizedBox(height: 16),

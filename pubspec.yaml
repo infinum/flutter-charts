@@ -12,14 +12,14 @@ dependencies:
   flutter:
     sdk: flutter
   equatable: ^2.0.5
-  collection: ^1.16.0
+  collection: ^1.18.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   pedantic: ^1.11.1
-  golden_toolkit: ^0.13.0
-  lints: ^2.0.1
+  golden_toolkit: ^0.15.0
+  lints: ^5.0.0
   alchemist:
     git:
       url: https://github.com/Betterment/alchemist

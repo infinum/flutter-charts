@@ -35,12 +35,9 @@ class _BarChartScreenState extends State<BarChartScreen> {
   void _updateValues() {
     final Random _rand = Random();
     final double _difference = _rand.nextDouble() * 10;
-    targetMax = 5 +
-        ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25))
-            .roundToDouble();
+    targetMax = 5 + ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25)).roundToDouble();
     _values.addAll(List.generate(minItems, (index) {
-      return BarValue<void>(
-          targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
+      return BarValue<void>(targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
     }));
     targetMin = targetMax - ((_rand.nextDouble() * 3) + (targetMax * 0.2));
   }
@@ -51,8 +48,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
         return _values[index];
       }
 
-      return BarValue<void>(
-          targetMax * 0.4 + Random().nextDouble() * targetMax * 0.9);
+      return BarValue<void>(targetMax * 0.4 + Random().nextDouble() * targetMax * 0.9);
     });
   }
 
@@ -81,9 +77,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
                     radius: const BorderRadius.vertical(
                       top: Radius.circular(24.0),
                     ),
-                    color: _colorfulBars
-                        ? colorForValue
-                        : Theme.of(context).colorScheme.primary,
+                    color: _colorfulBars ? colorForValue : Theme.of(context).colorScheme.primary,
                   );
                 },
               ),
@@ -92,27 +86,18 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   showHorizontalValues: _showValues,
                   showVerticalValues: _showValues,
                   showTopHorizontalValue: _legendOnBottom ? _showValues : false,
-                  horizontalLegendPosition: _legendOnEnd
-                      ? HorizontalLegendPosition.end
-                      : HorizontalLegendPosition.start,
-                  verticalLegendPosition: _legendOnBottom
-                      ? VerticalLegendPosition.bottom
-                      : VerticalLegendPosition.top,
+                  horizontalLegendPosition:
+                      _legendOnEnd ? HorizontalLegendPosition.end : HorizontalLegendPosition.start,
+                  verticalLegendPosition: _legendOnBottom ? VerticalLegendPosition.bottom : VerticalLegendPosition.top,
                   horizontalAxisStep: 1,
                   verticalAxisStep: 1,
-                  verticalValuesPadding:
-                      const EdgeInsets.symmetric(vertical: 4.0),
-                  horizontalValuesPadding:
-                      const EdgeInsets.symmetric(horizontal: 4.0),
-                  textStyle: Theme.of(context).textTheme.caption,
-                  gridColor: Theme.of(context)
-                      .colorScheme
-                      .primaryContainer
-                      .withOpacity(0.2),
+                  verticalValuesPadding: const EdgeInsets.symmetric(vertical: 4.0),
+                  horizontalValuesPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  textStyle: Theme.of(context).textTheme.labelMedium,
+                  gridColor: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.2),
                 ),
                 TargetAreaDecoration(
-                  targetAreaFillColor:
-                      Theme.of(context).colorScheme.error.withOpacity(0.2),
+                  targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
                   targetLineColor: Theme.of(context).colorScheme.error,
                   targetAreaRadius: BorderRadius.circular(12.0),
                   targetMax: targetMax,
@@ -123,17 +108,13 @@ class _BarChartScreenState extends State<BarChartScreen> {
               foregroundDecorations: [
                 SparkLineDecoration(
                   lineWidth: 4.0,
-                  lineColor: Theme.of(context)
-                      .primaryColor
-                      .withOpacity(_showLine ? 1.0 : 0.0),
+                  lineColor: Theme.of(context).primaryColor.withOpacity(_showLine ? 1.0 : 0.0),
                   smoothPoints: _smoothPoints,
                 ),
                 ValueDecoration(
                   alignment: Alignment.bottomCenter,
-                  textStyle: Theme.of(context)
-                      .textTheme
-                      .button!
-                      .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                  textStyle:
+                      Theme.of(context).textTheme.labelMedium!.copyWith(color: Theme.of(context).colorScheme.onPrimary),
                 ),
                 BorderDecoration(endWithChart: true)
               ],
