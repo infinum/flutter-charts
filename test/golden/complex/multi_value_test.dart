@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import '../util.dart';
 
 void main() {
-  goldenTest('Complex - Multiple values', fileName: 'complex_multi_charts',
-      builder: () {
+  goldenTest('Complex - Multiple values', fileName: 'complex_multi_charts', builder: () {
     return GoldenTestGroup(children: [
       GoldenTestScenario(
           name: 'Multiple',
@@ -16,13 +15,14 @@ void main() {
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
               barItemBuilder: (data) {
                 return BarItem(
-                    color: [
-                  Colors.red,
-                  Colors.yellow,
-                  Colors.green,
-                  Colors.blue
-                ][data.listIndex]
-                        .withOpacity(0.5));
+                  color: [
+                    Colors.red,
+                    Colors.yellow,
+                    Colors.green,
+                    Colors.blue,
+                  ][data.sectionOptions.sectionIndex]
+                      .withValues(alpha: 0.5),
+                );
               },
             ),
             strategy: DefaultDataStrategy(stackMultipleValues: true),
@@ -34,12 +34,7 @@ void main() {
             options: BarItemOptions(
               barItemBuilder: (data) {
                 return BarItem(
-                  color: [
-                    Colors.red,
-                    Colors.yellow,
-                    Colors.green,
-                    Colors.blue
-                  ][data.listIndex]
+                  color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.sectionOptions.sectionIndex]
                       .withOpacity(0.5),
                 );
               },
@@ -55,12 +50,7 @@ void main() {
           options: BarItemOptions(
             barItemBuilder: (data) {
               return BarItem(
-                color: [
-                  Colors.red,
-                  Colors.yellow,
-                  Colors.green,
-                  Colors.blue
-                ][data.listIndex]
+                color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.sectionOptions.sectionIndex]
                     .withOpacity(0.5),
               );
             },
@@ -75,21 +65,15 @@ void main() {
           foregroundDecorations: List.generate(
             4,
             (index) => SparkLineDecoration(
-              listIndex: index,
-              lineColor: [
-                Colors.red,
-                Colors.yellow,
-                Colors.green,
-                Colors.blue
-              ][index],
+              sectionIndex: index,
+              lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
               lineWidth: 3.0,
               stretchLine: true,
             ),
           ),
           options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            barItemBuilder: (_) =>
-                BarItem(color: Colors.red.withOpacity(0.025)),
+            barItemBuilder: (_) => BarItem(color: Colors.red.withOpacity(0.025)),
           ),
         ),
       ),
@@ -100,13 +84,8 @@ void main() {
           foregroundDecorations: List.generate(
             4,
             (index) => SparkLineDecoration(
-              listIndex: index,
-              lineColor: [
-                Colors.red,
-                Colors.yellow,
-                Colors.green,
-                Colors.blue
-              ][index],
+              sectionIndex: index,
+              lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
               lineWidth: 3.0,
               stretchLine: true,
             ),
@@ -114,8 +93,7 @@ void main() {
           strategy: StackDataStrategy(),
           options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            barItemBuilder: (data) =>
-                BarItem(color: Colors.red.withOpacity(0.025)),
+            barItemBuilder: (data) => BarItem(color: Colors.red.withOpacity(0.025)),
           ),
         ),
       ),
@@ -127,25 +105,15 @@ void main() {
             foregroundDecorations: List.generate(
                 4,
                 (index) => SparkLineDecoration(
-                      listIndex: index,
-                      lineColor: [
-                        Colors.red,
-                        Colors.yellow,
-                        Colors.green,
-                        Colors.blue
-                      ][index],
+                      sectionIndex: index,
+                      lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
                       lineWidth: 3.0,
                       startPosition: index / 4,
                     )),
             options: BarItemOptions(
               barItemBuilder: (data) {
                 return BarItem(
-                    color: [
-                  Colors.red,
-                  Colors.yellow,
-                  Colors.green,
-                  Colors.blue
-                ][data.listIndex]
+                    color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.sectionOptions.sectionIndex]
                         .withOpacity(0.1));
               },
               multiValuePadding: const EdgeInsets.symmetric(horizontal: 1.0),
@@ -158,29 +126,29 @@ void main() {
           size: 4,
           foregroundDecorations: [
             SparkLineDecoration(
-              listIndex: 0,
+              sectionIndex: 0,
               fill: true,
-              smoothPoints: true,
+              pathBuilder: CubicBezierPathBuilder(),
               lineColor: Colors.green.withOpacity(0.8),
               stretchLine: true,
             ),
             SparkLineDecoration(
-              listIndex: 1,
+              sectionIndex: 1,
               lineColor: Colors.blue,
               lineWidth: 2.0,
               dashArray: [10, 10],
               stretchLine: true,
             ),
             SparkLineDecoration(
-              listIndex: 2,
+              sectionIndex: 2,
               lineColor: Colors.red,
               lineWidth: 4.0,
-              smoothPoints: true,
+              pathBuilder: CubicBezierPathBuilder(),
               dashArray: translateMorse('.. -. ..-. .. -. ..- --  '),
               stretchLine: true,
             ),
             SparkLineDecoration(
-              listIndex: 3,
+              sectionIndex: 3,
               lineColor: Colors.yellow,
               lineWidth: 2.0,
               stretchLine: true,
@@ -189,12 +157,7 @@ void main() {
           options: BarItemOptions(
             barItemBuilder: (data) {
               return BarItem(
-                  color: [
-                Colors.red,
-                Colors.yellow,
-                Colors.green,
-                Colors.blue
-              ][data.listIndex]
+                  color: [Colors.red, Colors.yellow, Colors.green, Colors.blue][data.sectionOptions.sectionIndex]
                       .withOpacity(0.1));
             },
           ),
@@ -207,14 +170,14 @@ void main() {
             strategy: DefaultDataStrategy(stackMultipleValues: false),
             foregroundDecorations: [
               SparkLineDecoration(
-                listIndex: 0,
+                sectionIndex: 0,
                 fill: true,
-                smoothPoints: true,
+                pathBuilder: CubicBezierPathBuilder(),
                 lineColor: Colors.red.withOpacity(0.6),
                 stretchLine: true,
               ),
               SparkLineDecoration(
-                listIndex: 1,
+                sectionIndex: 1,
                 lineColor: Colors.blue,
                 lineWidth: 2.0,
                 dashArray: [15, 5],
@@ -229,7 +192,7 @@ void main() {
                     Colors.transparent,
                     Colors.yellow.withOpacity(0.8),
                     Colors.green.withOpacity(0.8),
-                  ][data.listIndex],
+                  ][data.sectionOptions.sectionIndex],
                 );
               },
             ),
@@ -241,17 +204,17 @@ void main() {
             strategy: DefaultDataStrategy(stackMultipleValues: false),
             foregroundDecorations: [
               SparkLineDecoration(
-                listIndex: 0,
+                sectionIndex: 0,
                 fill: true,
-                smoothPoints: true,
+                pathBuilder: CubicBezierPathBuilder(),
                 lineColor: Colors.redAccent.withOpacity(0.6),
                 stretchLine: true,
               ),
               SparkLineDecoration(
-                listIndex: 1,
+                sectionIndex: 1,
                 lineColor: Colors.red,
                 lineWidth: 2.0,
-                smoothPoints: true,
+                pathBuilder: CubicBezierPathBuilder(),
                 dashArray: translateMorse('.. -. ..-. .. -. ..- --  '),
                 stretchLine: true,
               ),
@@ -280,7 +243,7 @@ void main() {
                     Colors.transparent,
                     Colors.yellow.withOpacity(0.8),
                     Colors.green.withOpacity(0.8),
-                  ][data.listIndex],
+                  ][data.sectionOptions.sectionIndex],
                 );
               },
             ),

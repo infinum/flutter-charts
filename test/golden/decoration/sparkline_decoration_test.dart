@@ -11,8 +11,7 @@ void main() {
     await loadAppFonts();
   });
 
-  goldenTest('sparkline_decoration', fileName: 'sparkline_decoration_golden',
-      builder: () {
+  goldenTest('sparkline_decoration', fileName: 'sparkline_decoration_golden', builder: () {
     return GoldenTestGroup(children: [
       GoldenTestScenario(
         name: 'Default',
@@ -51,7 +50,7 @@ void main() {
         child: getDefaultChart(foregroundDecorations: [
           SparkLineDecoration(
             lineWidth: 3.0,
-            smoothPoints: true,
+            pathBuilder: CubicBezierPathBuilder(),
           ),
         ]),
       ),
@@ -60,7 +59,7 @@ void main() {
         child: getDefaultChart(foregroundDecorations: [
           SparkLineDecoration(
             stretchLine: true,
-            smoothPoints: true,
+            pathBuilder: CubicBezierPathBuilder(),
             lineWidth: 3.0,
           )
         ]),
@@ -113,12 +112,12 @@ void main() {
         name: 'Fill and line smooth',
         child: getDefaultChart(foregroundDecorations: [
           SparkLineDecoration(
-            smoothPoints: true,
+            pathBuilder: CubicBezierPathBuilder(),
             fill: true,
             lineColor: Colors.red.withOpacity(0.2),
           ),
           SparkLineDecoration(
-            smoothPoints: true,
+            pathBuilder: CubicBezierPathBuilder(),
             lineWidth: 3.0,
           )
         ]),
@@ -128,7 +127,7 @@ void main() {
         child: getDefaultChart(foregroundDecorations: [
           SparkLineDecoration(
             stretchLine: true,
-            smoothPoints: true,
+            pathBuilder: CubicBezierPathBuilder(),
             dashArray: [15, 15],
             lineWidth: 3.0,
           )
@@ -143,12 +142,10 @@ void main() {
             state: ChartState(
                 data: ChartData(
                   [
-                    [5, 6, 8, 4, 3, 5, 2, 6, 7]
-                        .map((e) => BarValue<void>(e.toDouble()))
-                        .toList(),
-                    [3, 5, 2, 6, 7, 5, 6, 8, 4]
-                        .map((e) => BarValue<void>(e.toDouble()))
-                        .toList(),
+                    ChartDataSection<void>(
+                        items: [5, 6, 8, 4, 3, 5, 2, 6, 7].map((e) => ChartItem<void>(e.toDouble())).toList()),
+                    ChartDataSection<void>(
+                        items: [3, 5, 2, 6, 7, 5, 6, 8, 4].map((e) => ChartItem<void>(e.toDouble())).toList()),
                   ],
                   valueAxisMaxOver: 2,
                 ),
@@ -158,15 +155,15 @@ void main() {
                 foregroundDecorations: [
                   SparkLineDecoration(
                     stretchLine: true,
-                    smoothPoints: true,
+                    pathBuilder: CubicBezierPathBuilder(),
                     dashArray: [25, 15],
                     lineWidth: 3.0,
                   ),
                   SparkLineDecoration(
-                    listIndex: 1,
+                    sectionIndex: 1,
                     stretchLine: true,
                     lineColor: Colors.red.withOpacity(0.2),
-                    smoothPoints: true,
+                    pathBuilder: CubicBezierPathBuilder(),
                     fill: true,
                   )
                 ]),

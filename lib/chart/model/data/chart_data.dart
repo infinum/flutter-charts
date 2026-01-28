@@ -22,13 +22,13 @@ class ChartData<T> {
 
   /// Make chart data from list of [ChartItem]'s
   factory ChartData.fromList(
-    ChartDataSection<T> items, {
+    List<ChartItem<T>> items, {
     double? axisMax,
     double? axisMin,
     double? valueAxisMaxOver,
   }) {
     return ChartData(
-      [items],
+      [ChartDataSection<T>(items: items)],
       axisMin: axisMin,
       axisMax: axisMax,
       valueAxisMaxOver: valueAxisMaxOver,

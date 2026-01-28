@@ -8,7 +8,8 @@ class SparkLineDecoration extends DecorationPainter {
   SparkLineDecoration({
     this.id,
     this.fill = false,
-    this.pathBuilder = const DefaultPathBuilder(),
+    @Deprecated('Use pathBuilder instead') bool smoothPoints = false,
+    PathBuilder? pathBuilder,
     double lineWidth = 1.0,
     this.lineShift = 0,
     this.lineColor = Colors.red,
@@ -18,7 +19,8 @@ class SparkLineDecoration extends DecorationPainter {
     this.dashArray,
     bool stretchLine = false,
   })  : _stretchLine = stretchLine ? 1.0 : 0.0,
-        lineWidth = lineWidth.clamp(-1, 1);
+        lineWidth = lineWidth.clamp(-1, 1),
+        pathBuilder = pathBuilder ?? (smoothPoints ? CubicBezierPathBuilder() : DefaultPathBuilder());
 
   SparkLineDecoration._lerp({
     this.id,
@@ -173,13 +175,12 @@ class SparkLineDecoration extends DecorationPainter {
   @override
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
     if (endValue is SparkLineDecoration) {
-      final _lineWidthLerp = lerpDouble(lineWidth, endValue.lineWidth, t) ?? 0.0;
-
       return SparkLineDecoration._lerp(
           fill: t > 0.5 ? endValue.fill : fill,
           id: endValue.id,
           pathBuilder: pathBuilder.lerp(endValue.pathBuilder, t),
-          lineWidth: _lineWidthLerp,
+          lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t) ?? 0.0,
+          lineShift: lerpDouble(lineShift, endValue.lineShift, t)!,
           startPosition: lerpDouble(startPosition, endValue.startPosition, t)!,
           lineColor: Color.lerp(lineColor, endValue.lineColor, t)!,
           gradient: Gradient.lerp(gradient, endValue.gradient, t),
