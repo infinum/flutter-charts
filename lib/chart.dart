@@ -69,6 +69,7 @@ part 'chart/render/geometry/painters/empty_geometry_painter.dart';
 part 'chart/render/geometry/painters/geometry_painter.dart';
 // Utils
 part 'chart/render/util/dashed_path_util.dart';
+part 'chart/render/util/path_builder.dart';
 
 /// Widgets
 part 'chart/widgets/animated_chart.dart';

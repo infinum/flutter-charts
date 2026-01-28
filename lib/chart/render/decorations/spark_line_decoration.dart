@@ -8,48 +8,57 @@ class SparkLineDecoration extends DecorationPainter {
   SparkLineDecoration({
     this.id,
     this.fill = false,
-    bool smoothPoints = false,
-    this.lineWidth = 1.0,
+    this.pathBuilder = const DefaultPathBuilder(),
+    double lineWidth = 1.0,
+    this.lineShift = 0,
     this.lineColor = Colors.red,
     this.startPosition = 0.5,
     this.gradient,
     this.sectionIndex = 0,
     this.dashArray,
     bool stretchLine = false,
-  })  : _smoothPoints = smoothPoints ? 1.0 : 0.0,
-        _stretchLine = stretchLine ? 1.0 : 0.0;
+  })  : _stretchLine = stretchLine ? 1.0 : 0.0,
+        lineWidth = lineWidth.clamp(-1, 1);
 
   SparkLineDecoration._lerp({
     this.id,
     this.fill = false,
-    double smoothPoints = 0.0,
+    required this.pathBuilder,
     this.lineWidth = 1.0,
+    this.lineShift = 0,
     this.lineColor = Colors.red,
     this.startPosition = 0.5,
     this.gradient,
     this.sectionIndex = 0,
     required this.dashArray,
     double stretchLine = 0.0,
-  })  : _smoothPoints = smoothPoints,
-        _stretchLine = stretchLine;
+  }) : _stretchLine = stretchLine;
 
   /// Is line or fill, line will have [lineWidth], setting
   /// [fill] to true will ignore [lineWidth]
   final bool fill;
 
-  /// Is sparkline curve smooth (bezier) or lines
-  bool get smoothPoints => _smoothPoints > 0.5;
-
   /// If od sparkline, with different ID's you can have more [SparkLineDecoration]
   /// on same data with different settings. (ex. One to fill and another for just line)
   final String? id;
-  final double _smoothPoints;
+  final PathBuilder pathBuilder;
 
   /// Dashed array for showing lines, if this is not set the line is solid
   final List<double>? dashArray;
 
   /// Set sparkline width
   final double lineWidth;
+
+  /// Set sparkline line shift
+  /// By default strokes are painted in the center of the line.
+  /// This value can be used to shift the line up or down.
+  ///
+  /// 0.0 means that line is painted in the center of the line.
+  /// 1.0 means that line is painted on the bottom of the line.
+  /// -1.0 means that line is painted on the top of the line.
+  ///
+  /// By default this is set to 0.0, so lines are painted in the center of the line.
+  final double lineShift;
 
   /// Set sparkline color
   final Color lineColor;
@@ -73,7 +82,7 @@ class SparkLineDecoration extends DecorationPainter {
   /// Index of list in items, this is used if there are multiple lists in the chart
   ///
   /// By default this will show first list and value will be 0
-  final int sectionIndex;
+  final int? sectionIndex;
 
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
@@ -97,12 +106,13 @@ class SparkLineDecoration extends DecorationPainter {
     final _maxValue = state.data.maxValue - state.data.minValue;
     final scale = size.height / _maxValue;
 
-    final _positions = <Offset>[];
-
     final _listSize = state.data.listSize;
     final _itemWidth = size.width / _listSize;
 
-    final _maxValueForKey = state.data.sections[sectionIndex].items.fold(0.0, (double previousValue, element) {
+    final items = sectionIndex != null
+        ? state.data.sections[sectionIndex!].items
+        : state.data.sections.expand((element) => element.items).toList();
+    final _maxValueForKey = items.fold(0.0, (double previousValue, element) {
       if (previousValue < (element.max ?? element.min ?? 0)) {
         return (element.max ?? element.min ?? 0);
       }
@@ -123,78 +133,52 @@ class SparkLineDecoration extends DecorationPainter {
       );
     }
 
-    final section = state.data.sections[sectionIndex];
-    section.items.asMap().forEach((index, value) {
-      final _stretchPosition = _stretchLine * (index / (section.items.length - 1));
-      final _fixedPosition = (1 - _stretchLine) * startPosition;
+    final sections = sectionIndex != null ? [state.data.sections[sectionIndex!]] : state.data.sections;
+    final paths = sections.map(
+      (section) {
+        final _positions = <Offset>[];
+        section.items.asMap().forEach((index, value) {
+          final _stretchPosition = _stretchLine * (index / (section.items.length - 1));
+          final _fixedPosition = (1 - _stretchLine) * startPosition;
 
-      final _position = _itemWidth * (_stretchPosition + _fixedPosition + section.offset);
+          final _position = _itemWidth * (_stretchPosition + _fixedPosition + section.offset);
 
-      if (fill && index == 0) {
-        _positions.add(Offset(_position, 0.0));
-      }
+          if (fill && index == 0) {
+            _positions.add(Offset(_position, 0.0));
+          }
 
-      _positions.add(
-          Offset(_itemWidth * index + _position, size.height - ((value.max ?? 0.0) - state.data.minValue) * scale));
+          _positions.add(
+              Offset(_itemWidth * index + _position, size.height - ((value.max ?? 0.0) - state.data.minValue) * scale));
 
-      if (fill && state.data.sections[sectionIndex].length - 1 == index) {
-        _positions.add(Offset(_itemWidth * index + _position, 0.0));
-      }
-    });
+          if (fill && section.items.length - 1 == index) {
+            _positions.add(Offset(_itemWidth * index + _position, 0.0));
+          }
+        });
 
-    final _path = _getPoints(_positions, fill, size);
+        return pathBuilder.build(_positions, size, fill);
+      },
+    );
 
-    if (dashArray != null) {
-      canvas.drawPath(dashPath(_path, dashArray: dashArray!), _paint);
-    } else {
-      canvas.drawPath(_path, _paint);
-    }
-  }
+    for (final path in paths) {
+      final shiftedPath = fill ? path : path.shift(Offset(0.0, (lineWidth / 2) * lineShift));
 
-  /// Smooth out points and return path in turn
-  /// Smoothing is done with quadratic bezier
-  Path _getPoints(List<Offset> points, bool fill, Size size) {
-    final _path = Path();
-    if (fill) {
-      _path.moveTo(points[0].dx, size.height);
-      _path.lineTo(points[0].dx, points[0].dy);
-      _path.lineTo(points.first.dx, points.first.dy);
-    } else {
-      _path.moveTo(points[0].dx, points[0].dy);
-      _path.lineTo(points.first.dx, points.first.dy);
-    }
-
-    for (var i = 0; i < points.length - 1; i++) {
-      final _p1 = points[i % points.length];
-      final _p2 = points[(i + 1) % points.length];
-      final controlPointX = _p1.dx + ((_p2.dx - _p1.dx) / 2) * _smoothPoints;
-      final _mid = (_p1 + _p2) / 2;
-      final _firstLerpValue = lerpDouble(_mid.dx, controlPointX, _smoothPoints) ?? size.height;
-      final _secondLerpValue = lerpDouble(_mid.dy, _p2.dy, _smoothPoints) ?? size.height;
-
-      _path.cubicTo(controlPointX, _p1.dy, _firstLerpValue, _secondLerpValue, _p2.dx, _p2.dy);
-
-      if (i == points.length - 2) {
-        _path.lineTo(_p2.dx, _p2.dy);
-        if (fill) {
-          _path.lineTo(_p2.dx, size.height);
-        }
+      if (!fill && dashArray != null) {
+        canvas.drawPath(dashPath(shiftedPath, dashArray: dashArray!), _paint);
+      } else {
+        canvas.drawPath(shiftedPath, _paint);
       }
     }
-
-    return _path;
   }
 
   @override
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
     if (endValue is SparkLineDecoration) {
-      final _smoothPointsLerp = lerpDouble(_smoothPoints, endValue._smoothPoints, t) ?? 0.0;
       final _lineWidthLerp = lerpDouble(lineWidth, endValue.lineWidth, t) ?? 0.0;
 
       return SparkLineDecoration._lerp(
           fill: t > 0.5 ? endValue.fill : fill,
           id: endValue.id,
-          smoothPoints: _smoothPointsLerp,
+          pathBuilder: pathBuilder.lerp(endValue.pathBuilder, t),
           lineWidth: _lineWidthLerp,
           startPosition: lerpDouble(startPosition, endValue.startPosition, t)!,
           lineColor: Color.lerp(lineColor, endValue.lineColor, t)!,
