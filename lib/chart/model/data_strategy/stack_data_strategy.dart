@@ -18,22 +18,25 @@ class StackDataStrategy extends DataStrategy {
   const StackDataStrategy() : super(stackMultipleValues: true);
 
   @override
-  List<List<ChartItem<T?>>> formatDataStrategy<T>(
-      List<List<ChartItem<T?>>> items) {
-    final _incrementList = <ChartItem<T?>>[];
-    return items.reversed
-        .map((entry) {
-          return entry.asMap().entries.map((e) {
-            if (_incrementList.length > e.key) {
-              final _newValue = e.value + _incrementList[e.key];
-              _incrementList[e.key] = (_incrementList[e.key] + e.value);
-              return _newValue;
-            } else {
-              _incrementList.add(e.value);
+  List<ChartDataSection<T>> formatDataStrategy<T>(List<ChartDataSection<T>> sections) {
+    final length = sections.fold<int>(0, (previousValue, element) => max(previousValue, element.length));
+    final _incrementList = List<ChartItem<T?>>.generate(length, (index) => ChartItem<T?>(0.0));
+
+    return sections.reversed
+        .mapIndexed((sectionIndex, section) {
+          final items = section.items.mapIndexed((itemIndex, item) {
+            if (sectionIndex < 1) {
+              return item;
             }
 
-            return e.value;
+            final index = itemIndex + section.offset;
+            final _newValue = item + _incrementList[index];
+            _incrementList[index] = (_incrementList[index] + item);
+
+            return _newValue;
           }).toList();
+
+          return ChartDataSection<T>(items: items, offset: section.offset);
         })
         .toList()
         .reversed

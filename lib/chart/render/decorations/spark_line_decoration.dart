@@ -13,7 +13,7 @@ class SparkLineDecoration extends DecorationPainter {
     this.lineColor = Colors.red,
     this.startPosition = 0.5,
     this.gradient,
-    this.listIndex = 0,
+    this.sectionIndex = 0,
     this.dashArray,
     bool stretchLine = false,
   })  : _smoothPoints = smoothPoints ? 1.0 : 0.0,
@@ -27,7 +27,7 @@ class SparkLineDecoration extends DecorationPainter {
     this.lineColor = Colors.red,
     this.startPosition = 0.5,
     this.gradient,
-    this.listIndex = 0,
+    this.sectionIndex = 0,
     required this.dashArray,
     double stretchLine = 0.0,
   })  : _smoothPoints = smoothPoints,
@@ -73,19 +73,18 @@ class SparkLineDecoration extends DecorationPainter {
   /// Index of list in items, this is used if there are multiple lists in the chart
   ///
   /// By default this will show first list and value will be 0
-  final int listIndex;
+  final int sectionIndex;
 
   @override
   Size layoutSize(BoxConstraints constraints, ChartState state) {
-    final _size = (state.defaultPadding + state.defaultMargin)
-        .deflateSize(constraints.biggest);
+    final _size = (state.defaultPadding + state.defaultMargin).deflateSize(constraints.biggest);
     return _size;
   }
 
   @override
   Offset applyPaintTransform(ChartState state, Size size) {
-    return Offset(state.defaultPadding.left + state.defaultMargin.left,
-        state.defaultPadding.top + state.defaultMargin.top);
+    return Offset(
+        state.defaultPadding.left + state.defaultMargin.left, state.defaultPadding.top + state.defaultMargin.top);
   }
 
   @override
@@ -101,11 +100,9 @@ class SparkLineDecoration extends DecorationPainter {
     final _positions = <Offset>[];
 
     final _listSize = state.data.listSize;
-
     final _itemWidth = size.width / _listSize;
 
-    final _maxValueForKey =
-        state.data.items[listIndex].fold(0.0, (double previousValue, element) {
+    final _maxValueForKey = state.data.sections[sectionIndex].items.fold(0.0, (double previousValue, element) {
       if (previousValue < (element.max ?? element.min ?? 0)) {
         return (element.max ?? element.min ?? 0);
       }
@@ -126,21 +123,22 @@ class SparkLineDecoration extends DecorationPainter {
       );
     }
 
-    state.data.items[listIndex].asMap().forEach((key, value) {
-      final _stretchPosition = _stretchLine * (key / (_listSize - 1));
+    final section = state.data.sections[sectionIndex];
+    section.items.asMap().forEach((index, value) {
+      final _stretchPosition = _stretchLine * (index / (section.items.length - 1));
       final _fixedPosition = (1 - _stretchLine) * startPosition;
 
-      final _position = _itemWidth * (_stretchPosition + _fixedPosition);
+      final _position = _itemWidth * (_stretchPosition + _fixedPosition + section.offset);
 
-      if (fill && key == 0) {
-        _positions.add(Offset(_itemWidth * key + _position, 0.0));
+      if (fill && index == 0) {
+        _positions.add(Offset(_position, 0.0));
       }
 
-      _positions.add(Offset(_itemWidth * key + _position,
-          size.height - ((value.max ?? 0.0) - state.data.minValue) * scale));
+      _positions.add(
+          Offset(_itemWidth * index + _position, size.height - ((value.max ?? 0.0) - state.data.minValue) * scale));
 
-      if (fill && state.data.items[listIndex].length - 1 == key) {
-        _positions.add(Offset(_itemWidth * key + _position, 0.0));
+      if (fill && state.data.sections[sectionIndex].length - 1 == index) {
+        _positions.add(Offset(_itemWidth * index + _position, 0.0));
       }
     });
 
@@ -156,33 +154,27 @@ class SparkLineDecoration extends DecorationPainter {
   /// Smooth out points and return path in turn
   /// Smoothing is done with quadratic bezier
   Path _getPoints(List<Offset> points, bool fill, Size size) {
-    final _points =
-        fill ? points.getRange(1, points.length - 1).toList() : points;
-
     final _path = Path();
     if (fill) {
-      _path.moveTo(_points[0].dx, size.height);
-      _path.lineTo(_points[0].dx, _points[0].dy);
-      _path.lineTo(_points.first.dx, _points.first.dy);
+      _path.moveTo(points[0].dx, size.height);
+      _path.lineTo(points[0].dx, points[0].dy);
+      _path.lineTo(points.first.dx, points.first.dy);
     } else {
-      _path.moveTo(_points[0].dx, _points[0].dy);
-      _path.lineTo(_points.first.dx, _points.first.dy);
+      _path.moveTo(points[0].dx, points[0].dy);
+      _path.lineTo(points.first.dx, points.first.dy);
     }
 
-    for (var i = 0; i < _points.length - 1; i++) {
-      final _p1 = _points[i % _points.length];
-      final _p2 = _points[(i + 1) % _points.length];
+    for (var i = 0; i < points.length - 1; i++) {
+      final _p1 = points[i % points.length];
+      final _p2 = points[(i + 1) % points.length];
       final controlPointX = _p1.dx + ((_p2.dx - _p1.dx) / 2) * _smoothPoints;
       final _mid = (_p1 + _p2) / 2;
-      final _firstLerpValue =
-          lerpDouble(_mid.dx, controlPointX, _smoothPoints) ?? size.height;
-      final _secondLerpValue =
-          lerpDouble(_mid.dy, _p2.dy, _smoothPoints) ?? size.height;
+      final _firstLerpValue = lerpDouble(_mid.dx, controlPointX, _smoothPoints) ?? size.height;
+      final _secondLerpValue = lerpDouble(_mid.dy, _p2.dy, _smoothPoints) ?? size.height;
 
-      _path.cubicTo(controlPointX, _p1.dy, _firstLerpValue, _secondLerpValue,
-          _p2.dx, _p2.dy);
+      _path.cubicTo(controlPointX, _p1.dy, _firstLerpValue, _secondLerpValue, _p2.dx, _p2.dy);
 
-      if (i == _points.length - 2) {
+      if (i == points.length - 2) {
         _path.lineTo(_p2.dx, _p2.dy);
         if (fill) {
           _path.lineTo(_p2.dx, size.height);
@@ -196,10 +188,8 @@ class SparkLineDecoration extends DecorationPainter {
   @override
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
     if (endValue is SparkLineDecoration) {
-      final _smoothPointsLerp =
-          lerpDouble(_smoothPoints, endValue._smoothPoints, t) ?? 0.0;
-      final _lineWidthLerp =
-          lerpDouble(lineWidth, endValue.lineWidth, t) ?? 0.0;
+      final _smoothPointsLerp = lerpDouble(_smoothPoints, endValue._smoothPoints, t) ?? 0.0;
+      final _lineWidthLerp = lerpDouble(lineWidth, endValue.lineWidth, t) ?? 0.0;
 
       return SparkLineDecoration._lerp(
           fill: t > 0.5 ? endValue.fill : fill,
@@ -209,7 +199,7 @@ class SparkLineDecoration extends DecorationPainter {
           startPosition: lerpDouble(startPosition, endValue.startPosition, t)!,
           lineColor: Color.lerp(lineColor, endValue.lineColor, t)!,
           gradient: Gradient.lerp(gradient, endValue.gradient, t),
-          listIndex: endValue.listIndex,
+          sectionIndex: endValue.sectionIndex,
           dashArray: endValue.dashArray,
           stretchLine: lerpDouble(_stretchLine, endValue._stretchLine, t)!);
     }
@@ -221,10 +211,10 @@ class SparkLineDecoration extends DecorationPainter {
   bool isSameType(DecorationPainter other) {
     if (other is SparkLineDecoration) {
       if (id != null && other.id != null) {
-        return id == other.id && listIndex == other.listIndex;
+        return id == other.id && sectionIndex == other.sectionIndex;
       }
 
-      return listIndex == other.listIndex;
+      return sectionIndex == other.sectionIndex;
     }
 
     return false;

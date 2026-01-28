@@ -16,6 +16,8 @@ part 'chart/model/chart_state.dart';
 
 /// Data
 part 'chart/model/data/chart_data.dart';
+part 'chart/model/data/chart_data_section.dart';
+part 'chart/model/data/section_options.dart';
 part 'chart/model/data_strategy/data_strategy.dart';
 part 'chart/model/data_strategy/default_data_strategy.dart';
 part 'chart/model/data_strategy/stack_data_strategy.dart';

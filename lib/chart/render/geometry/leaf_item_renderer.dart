@@ -6,13 +6,13 @@ part of charts_painter;
 /// All customization for this list items can be done with [BarItemOptions] or [BubbleItemOptions]
 class LeafChartItemRenderer<T> extends LeafRenderObjectWidget {
   LeafChartItemRenderer(this.item, this.state, this.itemOptions,
-      {this.listIndex = 0, this.itemIndex = 0, required this.drawDataItem});
+      {required this.sectionOptions, this.itemIndex = 0, required this.drawDataItem});
 
   final ChartItem<T?> item;
   final ChartState<T?> state;
   final ItemOptions itemOptions;
   final DrawDataItem drawDataItem;
-  final int listIndex;
+  final SectionOptions sectionOptions;
   final int itemIndex;
 
   @override
@@ -21,19 +21,18 @@ class LeafChartItemRenderer<T> extends LeafRenderObjectWidget {
       state,
       itemOptions,
       item,
-      listIndex: listIndex,
+      sectionOptions: sectionOptions,
       itemIndex: itemIndex,
       drawDataItem: drawDataItem,
     );
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, _RenderLeafChartItem<T?> renderObject) {
+  void updateRenderObject(BuildContext context, _RenderLeafChartItem<T?> renderObject) {
     renderObject
       ..state = state
       ..itemOptions = itemOptions
-      ..listIndex = listIndex
+      ..sectionOptions = sectionOptions
       ..itemIndex = itemIndex
       ..drawDataItem = drawDataItem
       ..item = item;
@@ -47,14 +46,14 @@ class _RenderLeafChartItem<T> extends RenderBox {
     this._state,
     this._itemOptions,
     this._item, {
-    int? listIndex,
+    required SectionOptions sectionOptions,
     required int itemIndex,
     required DrawDataItem drawDataItem,
-  })  : _listIndex = listIndex ?? 0,
+  })  : _sectionOptions = sectionOptions,
         _drawDataItem = drawDataItem,
         _itemIndex = itemIndex;
 
-  int _listIndex;
+  SectionOptions _sectionOptions;
 
   int _itemIndex;
 
@@ -78,11 +77,11 @@ class _RenderLeafChartItem<T> extends RenderBox {
     }
   }
 
-  int get listIndex => _listIndex;
+  SectionOptions get sectionOptions => _sectionOptions;
 
-  set listIndex(int key) {
-    if (key != _listIndex) {
-      _listIndex = key;
+  set sectionOptions(SectionOptions sectionOptions) {
+    if (sectionOptions != _sectionOptions) {
+      _sectionOptions = sectionOptions;
       markNeedsPaint();
     }
   }
@@ -161,18 +160,15 @@ class _RenderLeafChartItem<T> extends RenderBox {
   @override
   void handleEvent(PointerEvent event, BoxHitTestEntry entry) {
     if (event is PointerDownEvent) {
-      _state.behaviour.onItemClicked
-          ?.call(ItemBuilderData<T>(item, itemIndex, listIndex));
+      _state.behaviour.onItemClicked?.call(ItemBuilderData<T>(item, itemIndex, sectionOptions));
     }
 
     if (event is PointerHoverEvent) {
-      _state.behaviour.onItemHoverEnter
-          ?.call(ItemBuilderData<T>(item, itemIndex, listIndex));
+      _state.behaviour.onItemHoverEnter?.call(ItemBuilderData<T>(item, itemIndex, sectionOptions));
     }
 
     if (event is PointerHoverEvent) {
-      _state.behaviour.onItemHoverExit
-          ?.call(ItemBuilderData<T>(item, itemIndex, listIndex));
+      _state.behaviour.onItemHoverExit?.call(ItemBuilderData<T>(item, itemIndex, sectionOptions));
     }
   }
 

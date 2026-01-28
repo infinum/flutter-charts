@@ -7,28 +7,26 @@ part of charts_painter;
 /// This is a [ChildRenderObjectWidget], single child can be passed to it.
 class ChildChartItemRenderer<T> extends SingleChildRenderObjectWidget {
   ChildChartItemRenderer(this.item, this.state, this.itemOptions,
-      {Key? key, Widget? child, this.itemIndex = 0, this.listIndex = 0})
+      {Key? key, Widget? child, this.itemIndex = 0, required this.sectionOptions})
       : super(key: key, child: child);
 
   final ChartItem<T> item;
   final ChartState<T> state;
   final ItemOptions itemOptions;
-  final int listIndex;
+  final SectionOptions sectionOptions;
   final int itemIndex;
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return _RenderChildChartItem(state, itemOptions, item,
-        listIndex: listIndex, itemIndex: itemIndex);
+    return _RenderChildChartItem(state, itemOptions, item, sectionOptions: sectionOptions, itemIndex: itemIndex);
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, _RenderChildChartItem<T?> renderObject) {
+  void updateRenderObject(BuildContext context, _RenderChildChartItem<T?> renderObject) {
     renderObject
       ..state = state
       ..itemOptions = itemOptions
-      ..listIndex = listIndex
+      ..sectionOptions = sectionOptions
       ..itemIndex = itemIndex
       ..item = item;
 
@@ -38,18 +36,18 @@ class ChildChartItemRenderer<T> extends SingleChildRenderObjectWidget {
 
 class _RenderChildChartItem<T> extends RenderShiftedBox {
   _RenderChildChartItem(this._state, this._itemOptions, this._item,
-      {int? listIndex, int? itemIndex, RenderBox? child})
-      : _listIndex = listIndex ?? 0,
+      {required SectionOptions sectionOptions, int? itemIndex, RenderBox? child})
+      : _sectionOptions = sectionOptions,
         _itemIndex = itemIndex ?? 0,
         super(child);
 
-  int _listIndex;
+  SectionOptions _sectionOptions;
 
-  int get listIndex => _listIndex;
+  SectionOptions get sectionOptions => _sectionOptions;
 
-  set listIndex(int key) {
-    if (key != _listIndex) {
-      _listIndex = key;
+  set sectionOptions(SectionOptions sectionOptions) {
+    if (sectionOptions != _sectionOptions) {
+      _sectionOptions = sectionOptions;
       markNeedsPaint();
     }
   }
@@ -111,9 +109,7 @@ class _RenderChildChartItem<T> extends RenderShiftedBox {
   @override
   bool get sizedByParent => false;
 
-  Size _computeSize(
-      {required BoxConstraints constraints,
-      required ChildLayouter layoutChild}) {
+  Size _computeSize({required BoxConstraints constraints, required ChildLayouter layoutChild}) {
     if (child != null) {
       final childSize = layoutChild(child!, constraints);
       return constraints.constrain(childSize);
@@ -141,18 +137,15 @@ class _RenderChildChartItem<T> extends RenderShiftedBox {
   @override
   void handleEvent(PointerEvent event, BoxHitTestEntry entry) {
     if (event is PointerDownEvent) {
-      _state.behaviour.onItemClicked
-          ?.call(ItemBuilderData<T>(item, itemIndex, listIndex));
+      _state.behaviour.onItemClicked?.call(ItemBuilderData<T>(item, itemIndex, sectionOptions));
     }
 
     if (event is PointerHoverEvent) {
-      _state.behaviour.onItemHoverEnter
-          ?.call(ItemBuilderData<T>(item, itemIndex, listIndex));
+      _state.behaviour.onItemHoverEnter?.call(ItemBuilderData<T>(item, itemIndex, sectionOptions));
     }
 
     if (event is PointerHoverEvent) {
-      _state.behaviour.onItemHoverExit
-          ?.call(ItemBuilderData<T>(item, itemIndex, listIndex));
+      _state.behaviour.onItemHoverExit?.call(ItemBuilderData<T>(item, itemIndex, sectionOptions));
     }
   }
 
@@ -169,7 +162,7 @@ class _RenderChildChartItem<T> extends RenderShiftedBox {
 
       final _stack = 1 - _state.data.dataStrategy._stackMultipleValuesProgress;
 
-      final offset = Offset(size.width * listIndex * _stack, 0.0);
+      final offset = Offset(size.width * sectionOptions.sectionIndex * _stack, 0.0);
       childParentData.offset = offset;
     }
   }
