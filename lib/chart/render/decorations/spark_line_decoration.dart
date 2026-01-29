@@ -10,8 +10,8 @@ class SparkLineDecoration extends DecorationPainter {
     this.fill = false,
     @Deprecated('Use pathBuilder instead') bool smoothPoints = false,
     PathBuilder? pathBuilder,
-    double lineWidth = 1.0,
-    this.lineShift = 0,
+    this.lineWidth = 1.0,
+    double lineShift = 0,
     this.lineColor = Colors.red,
     this.startPosition = 0.5,
     this.gradient,
@@ -19,7 +19,7 @@ class SparkLineDecoration extends DecorationPainter {
     this.dashArray,
     bool stretchLine = false,
   })  : _stretchLine = stretchLine ? 1.0 : 0.0,
-        lineWidth = lineWidth.clamp(-1, 1),
+        lineShift = lineWidth.clamp(-1, 1),
         pathBuilder = pathBuilder ?? (smoothPoints ? CubicBezierPathBuilder() : DefaultPathBuilder());
 
   SparkLineDecoration._lerp({

@@ -37,17 +37,12 @@ class ShowcaseCharts extends StatelessWidget {
                       ],
                     ],
                     axisMax: 35,
-                    dataStrategy:
-                        DefaultDataStrategy(stackMultipleValues: true),
+                    dataStrategy: DefaultDataStrategy(stackMultipleValues: true),
                   ),
                   itemOptions: BubbleItemOptions(
                     maxBarWidth: 2.0,
                     bubbleItemBuilder: (data) {
-                      return BubbleItem(
-                          color: [
-                        Color(0xFF5B6ACF),
-                        Color(0xFFB6CADD)
-                      ][data.listIndex]);
+                      return BubbleItem(color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][data.listIndex]);
                     },
                   ),
                   backgroundDecorations: [
@@ -69,7 +64,7 @@ class ShowcaseCharts extends StatelessWidget {
                       endWithChart: true,
                     ),
                     SparkLineDecoration(
-                      listIndex: 1,
+                      sectionIndex: 1,
                       lineColor: Color(0xFFB6CADD),
                       lineWidth: 1.0,
                     ),
@@ -83,8 +78,7 @@ class ShowcaseCharts extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.of(context).push<void>(
-                MaterialPageRoute(builder: (_) => ShowcaseChartScreen()));
+            Navigator.of(context).push<void>(MaterialPageRoute(builder: (_) => ShowcaseChartScreen()));
           },
         ),
         Divider(),
