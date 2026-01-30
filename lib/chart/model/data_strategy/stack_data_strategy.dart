@@ -25,10 +25,6 @@ class StackDataStrategy extends DataStrategy {
     return sections.reversed
         .mapIndexed((sectionIndex, section) {
           final items = section.items.mapIndexed((itemIndex, item) {
-            if (sectionIndex < 1) {
-              return item;
-            }
-
             final index = itemIndex + section.offset;
             final _newValue = item + _incrementList[index];
             _incrementList[index] = (_incrementList[index] + item);

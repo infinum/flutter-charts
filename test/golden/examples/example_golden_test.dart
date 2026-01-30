@@ -12,9 +12,7 @@ void main() {
         child: Chart(
           state: ChartState.line(
             ChartData.fromList(
-              <double>[1, 3, 4, 2, 7, 6, 2, 5, 4]
-                  .map((e) => BubbleValue<void>(e))
-                  .toList(),
+              <double>[1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e)).toList(),
             ),
             itemOptions: BubbleItemOptions(),
           ),
@@ -33,9 +31,7 @@ void main() {
           height: 600.0,
           state: ChartState.bar(
             ChartData.fromList(
-              <double>[1, 3, 4, 2, 7, 6, 2, 5, 4]
-                  .map((e) => BarValue<void>(e))
-                  .toList(),
+              <double>[1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e)).toList(),
             ),
             itemOptions: BarItemOptions(),
           ),
@@ -52,10 +48,7 @@ void main() {
         width: 450,
         child: Chart<void>(
           state: ChartState(
-            data: ChartData.fromList(
-                [1, 3, 4, 2, 7, 6, 2, 5, 4]
-                    .map((e) => BarValue<void>(e.toDouble()))
-                    .toList(),
+            data: ChartData.fromList([1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BarValue<void>(e.toDouble())).toList(),
                 axisMax: 8.0),
             itemOptions: BarItemOptions(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -87,10 +80,7 @@ void main() {
       padding: EdgeInsets.zero,
       child: Chart<void>(
         state: ChartState(
-          data: ChartData.fromList(
-              [1, 3, 4, 2, 7, 6, 2, 5, 4]
-                  .map((e) => BubbleValue<void>(e.toDouble()))
-                  .toList(),
+          data: ChartData.fromList([1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => BubbleValue<void>(e.toDouble())).toList(),
               axisMax: 8.0),
           itemOptions: BubbleItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -120,12 +110,10 @@ void main() {
         state: ChartState(
           data: ChartData(
             [
-              [1, 3, 4, 2, 7, 6, 2, 5, 4]
-                  .map((e) => BubbleValue<void>(e.toDouble()))
-                  .toList(),
-              [4, 6, 3, 3, 2, 1, 4, 7, 5]
-                  .map((e) => BubbleValue<void>(e.toDouble()))
-                  .toList(),
+              ChartDataSection<void>(
+                  items: [1, 3, 4, 2, 7, 6, 2, 5, 4].map((e) => ChartItem<void>(e.toDouble())).toList()),
+              ChartDataSection<void>(
+                  items: [4, 6, 3, 3, 2, 1, 4, 7, 5].map((e) => ChartItem<void>(e.toDouble())).toList()),
             ],
             axisMax: 8.0,
           ),
@@ -133,8 +121,7 @@ void main() {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             maxBarWidth: 4.0,
             bubbleItemBuilder: (data) {
-              return BubbleItem(
-                  color: [Colors.red, Colors.blue][data.listIndex]);
+              return BubbleItem(color: [Colors.red, Colors.blue][data.sectionOptions.sectionIndex]);
             },
           ),
           backgroundDecorations: [
@@ -148,7 +135,7 @@ void main() {
             SparkLineDecoration(
               // Specify key that this [SparkLineDecoration] will follow
               // Throws if `listIndex` does not exist in chart data
-              listIndex: 1,
+              sectionIndex: 1,
               lineColor: Colors.blue,
             ),
             SparkLineDecoration(),

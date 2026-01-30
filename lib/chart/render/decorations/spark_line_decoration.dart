@@ -8,29 +8,30 @@ class SparkLineDecoration extends DecorationPainter {
   SparkLineDecoration({
     this.id,
     this.fill = false,
-    this.pathBuilder = const DefaultPathBuilder(),
-    double lineWidth = 1.0,
-    this.lineShift = 0,
+    @Deprecated('Use pathBuilder instead') bool smoothPoints = false,
+    PathBuilder? pathBuilder,
+    this.lineWidth = 1.0,
     this.lineColor = Colors.red,
     this.startPosition = 0.5,
     this.gradient,
     this.sectionIndex = 0,
     this.dashArray,
+    this.strokeCap = StrokeCap.butt,
     bool stretchLine = false,
   })  : _stretchLine = stretchLine ? 1.0 : 0.0,
-        lineWidth = lineWidth.clamp(-1, 1);
+        pathBuilder = pathBuilder ?? (smoothPoints ? CubicBezierPathBuilder() : DefaultPathBuilder());
 
   SparkLineDecoration._lerp({
     this.id,
     this.fill = false,
     required this.pathBuilder,
-    this.lineWidth = 1.0,
-    this.lineShift = 0,
+    required this.lineWidth,
     this.lineColor = Colors.red,
     this.startPosition = 0.5,
     this.gradient,
     this.sectionIndex = 0,
     required this.dashArray,
+    required this.strokeCap,
     double stretchLine = 0.0,
   }) : _stretchLine = stretchLine;
 
@@ -49,16 +50,8 @@ class SparkLineDecoration extends DecorationPainter {
   /// Set sparkline width
   final double lineWidth;
 
-  /// Set sparkline line shift
-  /// By default strokes are painted in the center of the line.
-  /// This value can be used to shift the line up or down.
-  ///
-  /// 0.0 means that line is painted in the center of the line.
-  /// 1.0 means that line is painted on the bottom of the line.
-  /// -1.0 means that line is painted on the top of the line.
-  ///
-  /// By default this is set to 0.0, so lines are painted in the center of the line.
-  final double lineShift;
+  /// Set sparkline stroke cap.
+  final StrokeCap strokeCap;
 
   /// Set sparkline color
   final Color lineColor;
@@ -101,7 +94,8 @@ class SparkLineDecoration extends DecorationPainter {
     final _paint = Paint()
       ..color = lineColor
       ..style = fill ? PaintingStyle.fill : PaintingStyle.stroke
-      ..strokeWidth = lineWidth;
+      ..strokeWidth = lineWidth
+      ..strokeCap = strokeCap;
 
     final _maxValue = state.data.maxValue - state.data.minValue;
     final scale = size.height / _maxValue;
@@ -121,14 +115,14 @@ class SparkLineDecoration extends DecorationPainter {
     });
 
     if (gradient != null) {
+      final width = sectionIndex == null ? size.width : state.data.sections[sectionIndex!].items.length * _itemWidth;
+      final height = size.height - (state.data.maxValue - _maxValueForKey) * scale;
+      final left = sectionIndex == null ? 0.0 : state.data.sections[sectionIndex!].offset * _itemWidth;
+      final top = (state.data.maxValue - _maxValueForKey) * scale;
+
       // Compiler complains that gradient could be null. But unless if fails us that will never be null.
       _paint.shader = gradient!.createShader(
-        Rect.fromLTWH(
-          0.0,
-          size.height - (_maxValueForKey * scale),
-          size.width,
-          _maxValueForKey * scale,
-        ),
+        Rect.fromLTWH(left, top, width, height),
         textDirection: TextDirection.ltr,
       );
     }
@@ -143,16 +137,8 @@ class SparkLineDecoration extends DecorationPainter {
 
           final _position = _itemWidth * (_stretchPosition + _fixedPosition + section.offset);
 
-          if (fill && index == 0) {
-            _positions.add(Offset(_position, 0.0));
-          }
-
           _positions.add(
               Offset(_itemWidth * index + _position, size.height - ((value.max ?? 0.0) - state.data.minValue) * scale));
-
-          if (fill && section.items.length - 1 == index) {
-            _positions.add(Offset(_itemWidth * index + _position, 0.0));
-          }
         });
 
         return pathBuilder.build(_positions, size, fill);
@@ -160,12 +146,10 @@ class SparkLineDecoration extends DecorationPainter {
     );
 
     for (final path in paths) {
-      final shiftedPath = fill ? path : path.shift(Offset(0.0, (lineWidth / 2) * lineShift));
-
       if (!fill && dashArray != null) {
-        canvas.drawPath(dashPath(shiftedPath, dashArray: dashArray!), _paint);
+        canvas.drawPath(dashPath(path, dashArray: dashArray!), _paint);
       } else {
-        canvas.drawPath(shiftedPath, _paint);
+        canvas.drawPath(path, _paint);
       }
     }
   }
@@ -173,19 +157,19 @@ class SparkLineDecoration extends DecorationPainter {
   @override
   DecorationPainter animateTo(DecorationPainter endValue, double t) {
     if (endValue is SparkLineDecoration) {
-      final _lineWidthLerp = lerpDouble(lineWidth, endValue.lineWidth, t) ?? 0.0;
-
       return SparkLineDecoration._lerp(
-          fill: t > 0.5 ? endValue.fill : fill,
-          id: endValue.id,
-          pathBuilder: pathBuilder.lerp(endValue.pathBuilder, t),
-          lineWidth: _lineWidthLerp,
-          startPosition: lerpDouble(startPosition, endValue.startPosition, t)!,
-          lineColor: Color.lerp(lineColor, endValue.lineColor, t)!,
-          gradient: Gradient.lerp(gradient, endValue.gradient, t),
-          sectionIndex: endValue.sectionIndex,
-          dashArray: endValue.dashArray,
-          stretchLine: lerpDouble(_stretchLine, endValue._stretchLine, t)!);
+        fill: t > 0.5 ? endValue.fill : fill,
+        id: endValue.id,
+        pathBuilder: pathBuilder.lerp(endValue.pathBuilder, t),
+        lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t) ?? 0.0,
+        startPosition: lerpDouble(startPosition, endValue.startPosition, t)!,
+        lineColor: Color.lerp(lineColor, endValue.lineColor, t)!,
+        strokeCap: endValue.strokeCap,
+        gradient: Gradient.lerp(gradient, endValue.gradient, t),
+        sectionIndex: endValue.sectionIndex,
+        dashArray: endValue.dashArray,
+        stretchLine: lerpDouble(_stretchLine, endValue._stretchLine, t)!,
+      );
     }
 
     return this;

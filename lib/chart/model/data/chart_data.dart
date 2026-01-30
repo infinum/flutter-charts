@@ -22,13 +22,13 @@ class ChartData<T> {
 
   /// Make chart data from list of [ChartItem]'s
   factory ChartData.fromList(
-    ChartDataSection<T> items, {
+    List<ChartItem<T>> items, {
     double? axisMax,
     double? axisMin,
     double? valueAxisMaxOver,
   }) {
     return ChartData(
-      [items],
+      [ChartDataSection<T>(items: items)],
       axisMin: axisMin,
       axisMax: axisMax,
       valueAxisMaxOver: valueAxisMaxOver,
@@ -141,7 +141,7 @@ class ChartData<T> {
   /// This will animate changes in the [ChartData]
   static ChartData<T?> lerp<T>(ChartData<T?> a, ChartData<T?> b, double t) {
     return ChartData._lerp(
-      ChartItemsLerp.lerpValues(a._sections, b._sections, t),
+      ChartSectionsLerp.lerpValues(a._sections, b._sections, t),
       axisMax: lerpDouble(a.axisMax, b.axisMax, t),
       axisMin: lerpDouble(a.axisMin, b.axisMin, t),
       dataStrategy: t > 0.5 ? b.dataStrategy : a.dataStrategy,
@@ -155,7 +155,7 @@ class ChartData<T> {
 }
 
 /// Lerp items in the charts
-class ChartItemsLerp {
+class ChartSectionsLerp {
   /// Lerp chart items
   static List<ChartDataSection<T>> lerpValues<T>(List<ChartDataSection<T>> a, List<ChartDataSection<T>> b, double t) {
     /// Get list length in animation, we will add the items in steps.

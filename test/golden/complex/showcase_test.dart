@@ -25,18 +25,18 @@ void main() {
               state: ChartState(
                 data: ChartData(
                   [
-                    [
-                      CandleValue<bool>.withValue(true, 3.5, 5.5),
-                      CandleValue<bool>.withValue(false, 3.2, 4.2),
-                      CandleValue<bool>.withValue(true, 4.2, 7.5),
-                      CandleValue<bool>.withValue(false, 5.0, 6.1),
-                      CandleValue<bool>.withValue(true, 4.0, 6.0),
-                      CandleValue<bool>.withValue(false, 3.0, 4.0),
-                      CandleValue<bool>.withValue(true, 3.2, 5.8),
-                      CandleValue<bool>.withValue(false, 1.8, 3.8),
-                      CandleValue<bool>.withValue(true, 2.5, 4.3),
-                      CandleValue<bool>.withValue(false, 1.3, 1.9),
-                    ]
+                    ChartDataSection<bool>(items: [
+                      ChartItem(5.5, min: 3.5, value: true),
+                      ChartItem(4.2, min: 3.2, value: false),
+                      ChartItem(7.5, min: 4.2, value: true),
+                      ChartItem(6.1, min: 5.0, value: false),
+                      ChartItem(6.0, min: 4.0, value: true),
+                      ChartItem(4.0, min: 3.0, value: false),
+                      ChartItem(5.8, min: 3.2, value: true),
+                      ChartItem(3.8, min: 1.8, value: false),
+                      ChartItem(4.3, min: 2.5, value: true),
+                      ChartItem(1.9, min: 1.3, value: false),
+                    ]),
                   ],
                   valueAxisMaxOver: 1,
                 ),
@@ -44,9 +44,7 @@ void main() {
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   barItemBuilder: (data) {
                     dynamic _value = data.item.value;
-                    final color = (_value is bool && _value)
-                        ? Color(0xFF567EF7)
-                        : Color(0xFF5ABEF9);
+                    final color = (_value is bool && _value) ? Color(0xFF567EF7) : Color(0xFF5ABEF9);
                     return BarItem(
                       color: color,
                       radius: BorderRadius.all(Radius.circular(12.0)),
@@ -62,13 +60,10 @@ void main() {
                     lineColor: Colors.white12,
                     dashArray: [8, 8],
                     lineWidth: 1.5,
-                    valuesPadding: const EdgeInsets.only(
-                        bottom: 6.0, right: 6.0, left: 6.0),
+                    valuesPadding: const EdgeInsets.only(bottom: 6.0, right: 6.0, left: 6.0),
                     axisValue: (value) => '${value}k',
-                    legendFontStyle: defaultTextStyle.copyWith(
-                        fontSize: 12.0,
-                        color: Colors.white12,
-                        fontWeight: FontWeight.w500),
+                    legendFontStyle:
+                        defaultTextStyle.copyWith(fontSize: 12.0, color: Colors.white12, fontWeight: FontWeight.w500),
                   ),
                 ],
                 foregroundDecorations: [],
@@ -83,28 +78,28 @@ void main() {
           padding: EdgeInsets.zero,
           height: 300,
           width: 400,
-          child: Chart<void>(
+          child: Chart<bool>(
             state: ChartState(
               data: ChartData(
                 [
-                  [
-                    BarValue(4),
-                    BarValue(4),
-                    BarValue(4),
-                    BarValue(4),
-                    BarValue(4),
-                    BarValue(4),
-                    BarValue(4),
-                  ],
-                  [
-                    BarValue(0.4),
-                    BarValue(1.3),
-                    BarValue(0.3),
-                    BarValue(0.4),
-                    BarValue(1.1),
-                    BarValue(0.6),
-                    BarValue(0.4),
-                  ],
+                  ChartDataSection<bool>(items: [
+                    ChartItem(4),
+                    ChartItem(4),
+                    ChartItem(4),
+                    ChartItem(4),
+                    ChartItem(4),
+                    ChartItem(4),
+                    ChartItem(4),
+                  ]),
+                  ChartDataSection<bool>(items: [
+                    ChartItem(0.4),
+                    ChartItem(1.3),
+                    ChartItem(0.3),
+                    ChartItem(0.4),
+                    ChartItem(1.1),
+                    ChartItem(0.6),
+                    ChartItem(0.4),
+                  ]),
                 ],
                 axisMax: 4,
               ),
@@ -113,10 +108,7 @@ void main() {
                 barItemBuilder: (data) {
                   return BarItem(
                     radius: BorderRadius.all(Radius.circular(12.0)),
-                    color: [
-                      Color(0xFFE6E6FD),
-                      Color(0xFF4D4DA6)
-                    ][data.listIndex],
+                    color: [Color(0xFFE6E6FD), Color(0xFF4D4DA6)][data.sectionOptions.sectionIndex],
                   );
                 },
               ),
@@ -131,14 +123,11 @@ void main() {
                   horizontalLegendPosition: HorizontalLegendPosition.start,
                   gridColor: Colors.grey.shade200,
                   gridWidth: 1,
-                  horizontalValuesPadding: const EdgeInsets.only(
-                      bottom: -8.0, right: 8.0, left: 8.0),
+                  horizontalValuesPadding: const EdgeInsets.only(bottom: -8.0, right: 8.0, left: 8.0),
                   verticalValuesPadding: const EdgeInsets.only(top: 24.0),
                   horizontalAxisValueFromValue: (value) => '${value + 1}h',
-                  verticalAxisValueFromIndex: (value) =>
-                      ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][value],
-                  textStyle: defaultTextStyle.copyWith(
-                      fontSize: 12.0, color: Colors.black45),
+                  verticalAxisValueFromIndex: (value) => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][value],
+                  textStyle: defaultTextStyle.copyWith(fontSize: 12.0, color: Colors.black45),
                 ),
               ],
               foregroundDecorations: [],
@@ -156,33 +145,29 @@ void main() {
             state: ChartState(
               data: ChartData(
                 [
-                  [
-                    BarValue(23),
-                    BarValue(17),
-                    BarValue(20),
-                    BarValue(15),
-                    BarValue(24),
-                    BarValue(27),
-                  ],
-                  [
-                    BarValue(12),
-                    BarValue(22),
-                    BarValue(10),
-                    BarValue(20),
-                    BarValue(17),
-                    BarValue(12),
-                  ],
+                  ChartDataSection<bool>(items: [
+                    ChartItem(23),
+                    ChartItem(17),
+                    ChartItem(20),
+                    ChartItem(15),
+                    ChartItem(24),
+                    ChartItem(27),
+                  ]),
+                  ChartDataSection<bool>(items: [
+                    ChartItem(12),
+                    ChartItem(22),
+                    ChartItem(10),
+                    ChartItem(20),
+                    ChartItem(17),
+                    ChartItem(12),
+                  ]),
                 ],
                 dataStrategy: DefaultDataStrategy(stackMultipleValues: false),
                 axisMax: 4,
               ),
               itemOptions: BarItemOptions(
                 barItemBuilder: (data) {
-                  return BarItem(
-                      color: [
-                    Color(0xFF5B6ACF),
-                    Color(0xFFB6CADD)
-                  ][data.listIndex]);
+                  return BarItem(color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][data.sectionOptions.sectionIndex]);
                 },
                 multiValuePadding: const EdgeInsets.symmetric(horizontal: 8.0),
                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -195,11 +180,9 @@ void main() {
                   gridColor: Colors.grey.shade400,
                   gridWidth: 1,
                   dashArray: [4, 4],
-                  verticalValuesPadding:
-                      const EdgeInsets.symmetric(vertical: 12.0),
+                  verticalValuesPadding: const EdgeInsets.symmetric(vertical: 12.0),
                   verticalAxisValueFromIndex: (value) => '0$value',
-                  textStyle: defaultTextStyle.copyWith(
-                      fontSize: 14.0, color: Colors.black45),
+                  textStyle: defaultTextStyle.copyWith(fontSize: 14.0, color: Colors.black45),
                 ),
               ],
               foregroundDecorations: [
@@ -234,34 +217,31 @@ void main() {
             child: Chart<bool>(
               state: ChartState(
                 data: ChartData([
-                  [
-                    BubbleValue(9),
-                    BubbleValue(12),
-                    BubbleValue(11),
-                    BubbleValue(12),
-                    BubbleValue(10),
-                    BubbleValue(22),
-                    BubbleValue(20),
-                    BubbleValue(18),
-                    BubbleValue(13),
-                    BubbleValue(14),
-                  ],
-                  [
-                    BubbleValue(14),
-                    BubbleValue(16),
-                    BubbleValue(14),
-                    BubbleValue(16),
-                    BubbleValue(12),
-                    BubbleValue(6),
-                    BubbleValue(13),
-                    BubbleValue(19),
-                    BubbleValue(10),
-                    BubbleValue(11),
-                  ],
-                ],
-                    axisMax: 30,
-                    dataStrategy:
-                        DefaultDataStrategy(stackMultipleValues: false)),
+                  ChartDataSection<bool>(items: [
+                    ChartItem(9, min: 9),
+                    ChartItem(12, min: 12),
+                    ChartItem(11, min: 11),
+                    ChartItem(12, min: 12),
+                    ChartItem(10, min: 10),
+                    ChartItem(22, min: 22),
+                    ChartItem(20, min: 20),
+                    ChartItem(18, min: 18),
+                    ChartItem(13, min: 13),
+                    ChartItem(14, min: 14),
+                  ]),
+                  ChartDataSection<bool>(items: [
+                    ChartItem(14, min: 14),
+                    ChartItem(16, min: 16),
+                    ChartItem(14, min: 14),
+                    ChartItem(16, min: 16),
+                    ChartItem(12, min: 12),
+                    ChartItem(6, min: 6),
+                    ChartItem(13, min: 13),
+                    ChartItem(19, min: 19),
+                    ChartItem(10, min: 10),
+                    ChartItem(11, min: 11),
+                  ]),
+                ], axisMax: 30, dataStrategy: DefaultDataStrategy(stackMultipleValues: false)),
                 itemOptions: BubbleItemOptions(
                   maxBarWidth: 0.0,
                 ),
@@ -290,7 +270,7 @@ void main() {
                   ),
                   SparkLineDecoration(
                     smoothPoints: true,
-                    listIndex: 1,
+                    sectionIndex: 1,
                     stretchLine: true,
                     lineWidth: 3.0,
                     gradient: LinearGradient(
@@ -316,22 +296,22 @@ void main() {
             state: ChartState(
               data: ChartData(
                 [
-                  [
-                    BubbleValue(10),
-                    BubbleValue(8),
-                    BubbleValue(20),
-                    BubbleValue(18),
-                    BubbleValue(9),
-                    BubbleValue(30),
-                  ],
-                  [
-                    BubbleValue(18),
-                    BubbleValue(25),
-                    BubbleValue(10),
-                    BubbleValue(24),
-                    BubbleValue(19),
-                    BubbleValue(21),
-                  ],
+                  ChartDataSection<bool>(items: [
+                    ChartItem(10, min: 10),
+                    ChartItem(8, min: 8),
+                    ChartItem(20, min: 20),
+                    ChartItem(18, min: 18),
+                    ChartItem(9, min: 9),
+                    ChartItem(30, min: 30),
+                  ]),
+                  ChartDataSection<bool>(items: [
+                    ChartItem(18, min: 18),
+                    ChartItem(25, min: 25),
+                    ChartItem(10, min: 10),
+                    ChartItem(24, min: 24),
+                    ChartItem(19, min: 19),
+                    ChartItem(21, min: 21),
+                  ]),
                 ],
                 axisMax: 35,
                 dataStrategy: DefaultDataStrategy(stackMultipleValues: false),
@@ -339,11 +319,7 @@ void main() {
               itemOptions: BubbleItemOptions(
                 maxBarWidth: 2.0,
                 bubbleItemBuilder: (data) {
-                  return BubbleItem(
-                      color: [
-                    Color(0xFF5B6ACF),
-                    Color(0xFFB6CADD)
-                  ][data.listIndex]);
+                  return BubbleItem(color: [Color(0xFF5B6ACF), Color(0xFFB6CADD)][data.sectionOptions.sectionIndex]);
                 },
               ),
               backgroundDecorations: [
@@ -354,11 +330,9 @@ void main() {
                   gridColor: Colors.grey.shade400,
                   gridWidth: 1,
                   dashArray: [4, 4],
-                  verticalValuesPadding:
-                      const EdgeInsets.symmetric(vertical: 12.0),
+                  verticalValuesPadding: const EdgeInsets.symmetric(vertical: 12.0),
                   verticalAxisValueFromIndex: (value) => '0${value + 1}',
-                  textStyle: defaultTextStyle.copyWith(
-                      fontSize: 14.0, color: Colors.black45),
+                  textStyle: defaultTextStyle.copyWith(fontSize: 14.0, color: Colors.black45),
                 ),
               ],
               foregroundDecorations: [
@@ -372,7 +346,7 @@ void main() {
                   endWithChart: true,
                 ),
                 SparkLineDecoration(
-                  listIndex: 1,
+                  sectionIndex: 1,
                   lineColor: Color(0xFFB6CADD),
                   lineWidth: 4.0,
                 ),
@@ -395,34 +369,34 @@ void main() {
               state: ChartState(
                 data: ChartData(
                   [
-                    [
-                      BarValue(6),
-                      BarValue(3),
-                      BarValue(5),
-                      BarValue(6),
-                      BarValue(5),
-                      BarValue(3),
-                      BarValue(2),
-                      BarValue(5),
-                      BarValue(9),
-                      BarValue(10),
-                      BarValue(5),
-                      BarValue(3),
-                    ],
-                    [
-                      BarValue(-6),
-                      BarValue(-9),
-                      BarValue(-3),
-                      BarValue(-4),
-                      BarValue(-3),
-                      BarValue(-2),
-                      BarValue(-3),
-                      BarValue(-4),
-                      BarValue(-2),
-                      BarValue(-8),
-                      BarValue(-7),
-                      BarValue(-3),
-                    ],
+                    ChartDataSection<bool>(items: [
+                      ChartItem(6),
+                      ChartItem(3),
+                      ChartItem(5),
+                      ChartItem(6),
+                      ChartItem(5),
+                      ChartItem(3),
+                      ChartItem(2),
+                      ChartItem(5),
+                      ChartItem(9),
+                      ChartItem(10),
+                      ChartItem(5),
+                      ChartItem(3),
+                    ]),
+                    ChartDataSection<bool>(items: [
+                      ChartItem(-6),
+                      ChartItem(-9),
+                      ChartItem(-3),
+                      ChartItem(-4),
+                      ChartItem(-3),
+                      ChartItem(-2),
+                      ChartItem(-3),
+                      ChartItem(-4),
+                      ChartItem(-2),
+                      ChartItem(-8),
+                      ChartItem(-7),
+                      ChartItem(-3),
+                    ]),
                   ],
                   axisMax: 14,
                   axisMin: -14,
@@ -432,10 +406,7 @@ void main() {
                   barItemBuilder: (data) {
                     return BarItem(
                       radius: BorderRadius.vertical(top: Radius.circular(12.0)),
-                      color: [
-                        Color(0xFF0139A4),
-                        Color(0xFF00B6E6)
-                      ][data.listIndex],
+                      color: [Color(0xFF0139A4), Color(0xFF00B6E6)][data.sectionOptions.sectionIndex],
                     );
                   },
                 ),
@@ -456,9 +427,6 @@ void main() {
 }
 
 List<double> translateMorse(String morse) {
-  final _s = morse
-      .replaceAll(' ', '0,6,0')
-      .replaceAll('.', '2, 1,')
-      .replaceAll('-', '6, 1,');
+  final _s = morse.replaceAll(' ', '0,6,0').replaceAll('.', '2, 1,').replaceAll('-', '6, 1,');
   return _s.split(',').map((e) => double.tryParse(e) ?? 0).toList()..add(12);
 }

@@ -6,11 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final decorationSparkLinePresenter =
-    ChangeNotifierProvider.family<DecorationSparkLinePresenter, int>(
-        (ref, a) => DecorationSparkLinePresenter(a, ref));
+    ChangeNotifierProvider.family<DecorationSparkLinePresenter, int>((ref, a) => DecorationSparkLinePresenter(a, ref));
 
-class DecorationSparkLinePresenter extends ChangeNotifier
-    implements DecorationBuilder {
+class DecorationSparkLinePresenter extends ChangeNotifier implements DecorationBuilder {
   DecorationSparkLinePresenter(this.index, Ref ref) {
     color = ref.read(chartStatePresenter).listColors.first;
   }
@@ -67,7 +65,7 @@ class DecorationSparkLinePresenter extends ChangeNotifier
   @override
   SparkLineDecoration buildDecoration() {
     return SparkLineDecoration(
-      listIndex: lineId,
+      sectionIndex: lineId,
       fill: filled,
       smoothPoints: smoothPoints,
       lineColor: color,

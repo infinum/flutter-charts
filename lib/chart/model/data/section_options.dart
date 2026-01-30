@@ -15,7 +15,7 @@ class SectionOptions {
   @override
   bool operator ==(Object other) {
     if (other is SectionOptions) {
-      return sectionIndex == other.sectionIndex && sectionOffset == other.sectionOffset;
+      return hashCode == other.hashCode;
     }
     return false;
   }
