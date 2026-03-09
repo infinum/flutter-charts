@@ -16,13 +16,13 @@ void main() {
       GoldenTestScenario(
         name: 'Default',
         child: getDefaultChart(foregroundDecorations: [
-          SparkLineDecoration(lineWidth: 3.0),
+          SparkLineDecoration<void>(lineWidth: 3.0),
         ]),
       ),
       GoldenTestScenario(
         name: 'Start positions at 0',
         child: getDefaultChart(foregroundDecorations: [
-          SparkLineDecoration(
+          SparkLineDecoration<void>(
             lineWidth: 3.0,
             startPosition: 0.0,
           ),
@@ -31,7 +31,7 @@ void main() {
       GoldenTestScenario(
         name: 'Start positions at 1',
         child: getDefaultChart(foregroundDecorations: [
-          SparkLineDecoration(
+          SparkLineDecoration<void>(
             lineWidth: 3.0,
             startPosition: 1.0,
           )
@@ -40,7 +40,7 @@ void main() {
       GoldenTestScenario(
         name: 'Thick',
         child: getDefaultChart(foregroundDecorations: [
-          SparkLineDecoration(
+          SparkLineDecoration<void>(
             lineWidth: 5.0,
           ),
         ]),
@@ -48,7 +48,7 @@ void main() {
       GoldenTestScenario(
         name: 'Smooth',
         child: getDefaultChart(foregroundDecorations: [
-          SparkLineDecoration(
+          SparkLineDecoration<void>(
             lineWidth: 3.0,
             smoothPoints: true,
           ),
@@ -57,7 +57,7 @@ void main() {
       GoldenTestScenario(
         name: 'Stretch line',
         child: getDefaultChart(foregroundDecorations: [
-          SparkLineDecoration(
+          SparkLineDecoration<void>(
             stretchLine: true,
             smoothPoints: true,
             lineWidth: 3.0,
@@ -67,7 +67,7 @@ void main() {
       GoldenTestScenario(
         name: 'Fill',
         child: getDefaultChart(foregroundDecorations: [
-          SparkLineDecoration(
+          SparkLineDecoration<void>(
             fill: true,
           ),
         ]),
@@ -75,7 +75,7 @@ void main() {
       GoldenTestScenario(
         name: 'Gradient',
         child: getDefaultChart(foregroundDecorations: [
-          SparkLineDecoration(
+          SparkLineDecoration<void>(
             lineWidth: 3.0,
             gradient: LinearGradient(
               colors: [
@@ -93,7 +93,7 @@ void main() {
       GoldenTestScenario(
         name: 'Gradient fill',
         child: getDefaultChart(foregroundDecorations: [
-          SparkLineDecoration(
+          SparkLineDecoration<void>(
             fill: true,
             gradient: LinearGradient(
               colors: [
@@ -111,12 +111,12 @@ void main() {
       GoldenTestScenario(
         name: 'Fill and line smooth',
         child: getDefaultChart(foregroundDecorations: [
-          SparkLineDecoration(
+          SparkLineDecoration<void>(
             smoothPoints: true,
             fill: true,
             lineColor: Colors.red.withOpacity(0.2),
           ),
-          SparkLineDecoration(
+          SparkLineDecoration<void>(
             smoothPoints: true,
             lineWidth: 3.0,
           )
@@ -125,7 +125,7 @@ void main() {
       GoldenTestScenario(
         name: 'Stretch line dashed',
         child: getDefaultChart(foregroundDecorations: [
-          SparkLineDecoration(
+          SparkLineDecoration<void>(
             stretchLine: true,
             smoothPoints: true,
             dashArray: [15, 15],
@@ -153,13 +153,13 @@ void main() {
                   barItemBuilder: (_) => BarItem(color: Colors.transparent),
                 ),
                 foregroundDecorations: [
-                  SparkLineDecoration(
+                  SparkLineDecoration<void>(
                     stretchLine: true,
                     smoothPoints: true,
                     dashArray: [25, 15],
                     lineWidth: 3.0,
                   ),
-                  SparkLineDecoration(
+                  SparkLineDecoration<void>(
                     sectionIndex: 1,
                     stretchLine: true,
                     lineColor: Colors.red.withOpacity(0.2),

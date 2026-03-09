@@ -11,15 +11,14 @@ void main() {
     await loadAppFonts();
   });
 
-  goldenTest('Horizontal deooration',
-      fileName: 'general_horizontal_decoration_golden', builder: () {
+  goldenTest('Horizontal deooration', fileName: 'general_horizontal_decoration_golden', builder: () {
     return GoldenTestScenario(
       name: 'Horizontal decoration',
       child: Container(
         height: 500,
         width: 800,
         child: getDefaultChart(backgroundDecorations: [
-          HorizontalAxisDecoration(
+          HorizontalAxisDecoration<void>(
             lineWidth: 4.0,
           ),
         ]),
@@ -27,30 +26,28 @@ void main() {
     );
   });
 
-  goldenTest('Vertical decoration',
-      fileName: 'general_vertical_decoration_golden', builder: () {
+  goldenTest('Vertical decoration', fileName: 'general_vertical_decoration_golden', builder: () {
     return GoldenTestScenario(
         name: 'Vertical decoration',
         child: Container(
           height: 500,
           width: 800,
           child: getDefaultChart(backgroundDecorations: [
-            VerticalAxisDecoration(
+            VerticalAxisDecoration<void>(
               lineWidth: 4.0,
             ),
           ]),
         ));
   });
 
-  goldenTest('Grid decoration', fileName: 'general_grid_decoration_golden',
-      builder: () {
+  goldenTest('Grid decoration', fileName: 'general_grid_decoration_golden', builder: () {
     return GoldenTestScenario(
       name: 'Grid decoration',
       child: Container(
         height: 500,
         width: 800,
         child: getDefaultChart(backgroundDecorations: [
-          GridDecoration(
+          GridDecoration<void>(
             gridWidth: 4.0,
           ),
         ]),
@@ -58,29 +55,27 @@ void main() {
     );
   });
 
-  goldenTest('Border decoration', fileName: 'general_border_decoration_golden',
-      builder: () {
+  goldenTest('Border decoration', fileName: 'general_border_decoration_golden', builder: () {
     return GoldenTestScenario(
       name: 'Border decoration',
       child: Container(
         height: 500,
         width: 800,
         child: getDefaultChart(backgroundDecorations: [
-          BorderDecoration(borderWidth: 4),
+          BorderDecoration<void>(borderWidth: 4),
         ]),
       ),
     );
   });
 
-  goldenTest('Selected item decoration',
-      fileName: 'general_selected_item_decoration_golden', builder: () {
+  goldenTest('Selected item decoration', fileName: 'general_selected_item_decoration_golden', builder: () {
     return GoldenTestScenario(
       name: 'Selected item decoration',
       child: Container(
         height: 500,
         width: 800,
         child: getDefaultChart(backgroundDecorations: [
-          SelectedItemDecoration(
+          SelectedItemDecoration<void>(
             2,
             backgroundColor: Colors.grey.withOpacity(0.25),
             showText: false,
@@ -90,22 +85,20 @@ void main() {
     );
   });
 
-  goldenTest('Target line decoration',
-      fileName: 'general_target_line_decoration_golden', builder: () {
+  goldenTest('Target line decoration', fileName: 'general_target_line_decoration_golden', builder: () {
     return GoldenTestScenario(
       name: 'Target line decoration',
       child: Container(
         height: 500,
         width: 800,
         child: getDefaultChart(foregroundDecorations: [
-          TargetLineDecoration(lineWidth: 8.0, target: 4),
+          TargetLineDecoration<void>(lineWidth: 8.0, target: 4),
         ]),
       ),
     );
   });
 
-  goldenTest('Target line text decoration',
-      fileName: 'general_target_line_text_decoration_golden', builder: () {
+  goldenTest('Target line text decoration', fileName: 'general_target_line_text_decoration_golden', builder: () {
     return GoldenTestScenario(
       name: 'Target line text decoration',
       child: Container(
@@ -113,11 +106,8 @@ void main() {
         width: 800,
         child: getDefaultChart(
           foregroundDecorations: [
-            TargetLineDecoration(
-                lineWidth: 8,
-                target: 4,
-                targetLineColor: Colors.red.withOpacity(0.2)),
-            TargetLineLegendDecoration(
+            TargetLineDecoration<void>(lineWidth: 8, target: 4, targetLineColor: Colors.red.withOpacity(0.2)),
+            TargetLineLegendDecoration<void>(
               legendTarget: 4,
               legendDescription: 'This is target |',
               legendStyle: defaultTextStyle.copyWith(
@@ -131,8 +121,7 @@ void main() {
     );
   });
 
-  goldenTest('Target area decoration',
-      fileName: 'general_target_area_decoration_golden', builder: () {
+  goldenTest('Target area decoration', fileName: 'general_target_area_decoration_golden', builder: () {
     return GoldenTestScenario(
       name: 'Target area decoration',
       child: Container(
@@ -140,22 +129,21 @@ void main() {
         width: 800,
         child: getDefaultChart(
           foregroundDecorations: [
-            TargetAreaDecoration(targetMin: 3, targetMax: 5, lineWidth: 4),
+            TargetAreaDecoration<void>(targetMin: 3, targetMax: 5, lineWidth: 4),
           ],
         ),
       ),
     );
   });
 
-  goldenTest('Sparkline text decoration',
-      fileName: 'general_sparkline_decoration_golden', builder: () {
+  goldenTest('Sparkline text decoration', fileName: 'general_sparkline_decoration_golden', builder: () {
     return GoldenTestScenario(
       name: 'Sparkline text decoration',
       child: Container(
         height: 500,
         width: 800,
         child: getDefaultChart(foregroundDecorations: [
-          SparkLineDecoration(
+          SparkLineDecoration<void>(
             lineWidth: 8.0,
           ),
         ]),

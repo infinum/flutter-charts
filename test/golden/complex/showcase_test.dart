@@ -52,7 +52,7 @@ void main() {
                   },
                 ),
                 backgroundDecorations: [
-                  HorizontalAxisDecoration(
+                  HorizontalAxisDecoration<bool>(
                     axisStep: 2,
                     endWithChart: true,
                     showValues: true,
@@ -113,7 +113,7 @@ void main() {
                 },
               ),
               backgroundDecorations: [
-                GridDecoration(
+                GridDecoration<bool>(
                   endWithChartVertical: true,
                   endWithChartHorizontal: true,
                   showHorizontalValues: true,
@@ -173,7 +173,7 @@ void main() {
                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
               ),
               backgroundDecorations: [
-                GridDecoration(
+                GridDecoration<bool>(
                   horizontalAxisStep: 10.0,
                   showVerticalGrid: false,
                   showVerticalValues: true,
@@ -186,7 +186,7 @@ void main() {
                 ),
               ],
               foregroundDecorations: [
-                BorderDecoration(
+                BorderDecoration<bool>(
                   sidesWidth: Border(
                     bottom: BorderSide(
                       color: Colors.grey.shade400,
@@ -246,18 +246,18 @@ void main() {
                   maxBarWidth: 0.0,
                 ),
                 backgroundDecorations: [
-                  HorizontalAxisDecoration(
+                  HorizontalAxisDecoration<bool>(
                     axisStep: 10.0,
                     lineColor: Colors.grey.shade300,
                   ),
-                  SelectedItemDecoration(
+                  SelectedItemDecoration<bool>(
                     6,
                     showText: false,
                     backgroundColor: Colors.white54,
                   ),
                 ],
                 foregroundDecorations: [
-                  SparkLineDecoration(
+                  SparkLineDecoration<bool>(
                     smoothPoints: true,
                     stretchLine: true,
                     lineWidth: 3.0,
@@ -268,7 +268,7 @@ void main() {
                       ],
                     ),
                   ),
-                  SparkLineDecoration(
+                  SparkLineDecoration<bool>(
                     smoothPoints: true,
                     sectionIndex: 1,
                     stretchLine: true,
@@ -323,7 +323,7 @@ void main() {
                 },
               ),
               backgroundDecorations: [
-                GridDecoration(
+                GridDecoration<bool>(
                   horizontalAxisStep: 10.0,
                   showVerticalGrid: false,
                   showVerticalValues: true,
@@ -336,7 +336,7 @@ void main() {
                 ),
               ],
               foregroundDecorations: [
-                BorderDecoration(
+                BorderDecoration<bool>(
                   sidesWidth: Border(
                     bottom: BorderSide(
                       color: Colors.grey.shade400,
@@ -345,12 +345,12 @@ void main() {
                   ),
                   endWithChart: true,
                 ),
-                SparkLineDecoration(
+                SparkLineDecoration<bool>(
                   sectionIndex: 1,
                   lineColor: Color(0xFFB6CADD),
                   lineWidth: 4.0,
                 ),
-                SparkLineDecoration(
+                SparkLineDecoration<bool>(
                   lineColor: Color(0xFF5B6ACF),
                   lineWidth: 4.0,
                 ),
@@ -411,7 +411,7 @@ void main() {
                   },
                 ),
                 backgroundDecorations: [
-                  GridDecoration(
+                  GridDecoration<bool>(
                     horizontalAxisStep: 7.0,
                     showVerticalGrid: false,
                     gridColor: Colors.grey.shade400,

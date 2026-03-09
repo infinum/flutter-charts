@@ -11,20 +11,19 @@ void main() {
     await loadAppFonts();
   });
 
-  goldenTest('Border decoration', fileName: 'border_decoration_golden',
-      builder: () {
+  goldenTest('Border decoration', fileName: 'border_decoration_golden', builder: () {
     return GoldenTestGroup(
       children: [
         GoldenTestScenario(
           name: 'Default',
           child: getDefaultChart(backgroundDecorations: [
-            BorderDecoration(),
+            BorderDecoration<void>(),
           ]),
         ),
         GoldenTestScenario(
           name: 'Increase width',
           child: getDefaultChart(backgroundDecorations: [
-            BorderDecoration(
+            BorderDecoration<void>(
               borderWidth: 6.0,
             ),
           ]),
@@ -32,31 +31,26 @@ void main() {
         GoldenTestScenario(
           name: 'End with cahrt',
           child: getDefaultChart(backgroundDecorations: [
-            BorderDecoration(
-                sidesWidth: Border.symmetric(
-                    vertical: BorderSide(width: 1.0, color: Colors.black))),
+            BorderDecoration<void>(sidesWidth: Border.symmetric(vertical: BorderSide(width: 1.0, color: Colors.black))),
           ]),
         ),
         GoldenTestScenario(
           name: 'Just vertical',
           child: getDefaultChart(backgroundDecorations: [
-            BorderDecoration(
-                sidesWidth: Border.symmetric(
-                    vertical: BorderSide(width: 1.0, color: Colors.black))),
+            BorderDecoration<void>(sidesWidth: Border.symmetric(vertical: BorderSide(width: 1.0, color: Colors.black))),
           ]),
         ),
         GoldenTestScenario(
           name: 'Just horizontal',
           child: getDefaultChart(backgroundDecorations: [
-            BorderDecoration(
-                sidesWidth: Border.symmetric(
-                    horizontal: BorderSide(width: 1.0, color: Colors.black))),
+            BorderDecoration<void>(
+                sidesWidth: Border.symmetric(horizontal: BorderSide(width: 1.0, color: Colors.black))),
           ]),
         ),
         GoldenTestScenario(
           name: 'All different',
           child: getDefaultChart(backgroundDecorations: [
-            BorderDecoration(
+            BorderDecoration<void>(
                 sidesWidth: Border(
               top: BorderSide(width: 2.0, color: Colors.red),
               bottom: BorderSide(width: 4.0, color: Colors.yellow),

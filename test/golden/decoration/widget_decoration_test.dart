@@ -11,14 +11,12 @@ void main() {
     await loadAppFonts();
   });
 
-  goldenTest('Widget decoration examples', fileName: 'widget_decoration_golden',
-      builder: () {
+  goldenTest('Widget decoration examples', fileName: 'widget_decoration_golden', builder: () {
     return GoldenTestGroup(children: [
       GoldenTestScenario(
         name: 'Target line decoration',
         child: getDefaultChart(backgroundDecorations: [
-          WidgetDecoration(widgetDecorationBuilder:
-              (context, chartState, itemWidth, verticalMultiplier) {
+          WidgetDecoration<void>(widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
             return Stack(
               children: [
                 Positioned(
@@ -35,24 +33,21 @@ void main() {
       GoldenTestScenario(
         name: 'Target line text decoration',
         child: getDefaultChart(backgroundDecorations: [
-          WidgetDecoration(
-              widgetDecorationBuilder:
-                  (context, chartState, itemWidth, verticalMultiplier) {
+          WidgetDecoration<void>(
+              widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
                 return Stack(
                   clipBehavior: Clip.none,
                   children: [
                     Positioned.fill(
                       top: null,
                       bottom: 2 * verticalMultiplier,
-                      child: const RotatedBox(
-                          quarterTurns: 3, child: Text('This is target line')),
+                      child: const RotatedBox(quarterTurns: 3, child: Text('This is target line')),
                     ),
                     Positioned.fill(
                       top: null,
                       left: 0,
                       bottom: 2 * verticalMultiplier,
-                      child: Container(
-                          color: Colors.red, width: double.infinity, height: 2),
+                      child: Container(color: Colors.red, width: double.infinity, height: 2),
                     ),
                   ],
                 );
@@ -63,9 +58,8 @@ void main() {
       GoldenTestScenario(
         name: 'Target area decoration',
         child: getDefaultChart(backgroundDecorations: [
-          WidgetDecoration(
-            widgetDecorationBuilder:
-                (context, chartState, itemWidth, verticalMultiplier) {
+          WidgetDecoration<void>(
+            widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
               return Padding(
                 padding: EdgeInsets.only(top: 5 * verticalMultiplier),
                 child: Container(
@@ -84,12 +78,10 @@ void main() {
       GoldenTestScenario(
         name: 'Border decoration',
         child: getDefaultChart(backgroundDecorations: [
-          WidgetDecoration(
-              widgetDecorationBuilder:
-                  (context, chartState, itemWidth, verticalMultiplier) {
+          WidgetDecoration<void>(
+              widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
                 return Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.red, width: 3)),
+                  decoration: BoxDecoration(border: Border.all(color: Colors.red, width: 3)),
                   width: double.infinity,
                   height: double.infinity,
                 );

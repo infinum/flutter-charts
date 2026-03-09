@@ -100,7 +100,7 @@ void main() {
           ),
           itemOptions: BarItemOptions(),
           foregroundDecorations: [
-            HorizontalAxisDecoration(
+            HorizontalAxisDecoration<void>(
               axisStep: 1,
               lineWidth: 5.0,
             ),
@@ -111,7 +111,7 @@ void main() {
           ),
           itemOptions: BarItemOptions(),
           foregroundDecorations: [
-            HorizontalAxisDecoration(
+            HorizontalAxisDecoration<void>(
               axisStep: 5,
               lineWidth: 1.0,
             ),
@@ -133,7 +133,7 @@ void main() {
           ),
           itemOptions: BarItemOptions(),
           foregroundDecorations: [
-            HorizontalAxisDecoration(
+            HorizontalAxisDecoration<void>(
               axisStep: 1,
               lineWidth: 5.0,
             ),
@@ -144,7 +144,7 @@ void main() {
           ),
           itemOptions: BarItemOptions(),
           foregroundDecorations: [
-            VerticalAxisDecoration(
+            VerticalAxisDecoration<void>(
               axisStep: 5,
               lineWidth: 1.0,
             ),

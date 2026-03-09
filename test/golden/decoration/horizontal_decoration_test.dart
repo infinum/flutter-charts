@@ -11,14 +11,13 @@ void main() {
     await loadAppFonts();
   });
 
-  goldenTest('horizontal_decoartion', fileName: 'horizontal_decoration_golden',
-      builder: () {
+  goldenTest('horizontal_decoartion', fileName: 'horizontal_decoration_golden', builder: () {
     return GoldenTestGroup(children: [
       GoldenTestScenario(
         name: 'Default',
         child: getDefaultChart(
           backgroundDecorations: [
-            HorizontalAxisDecoration(),
+            HorizontalAxisDecoration<void>(),
           ],
         ),
       ),
@@ -26,7 +25,7 @@ void main() {
         name: 'Show values on right',
         child: getDefaultChart(
           backgroundDecorations: [
-            HorizontalAxisDecoration(
+            HorizontalAxisDecoration<void>(
                 showValues: true,
                 legendFontStyle: defaultTextStyle,
                 valuesPadding: const EdgeInsets.only(right: 8.0, left: 4.0)),
@@ -37,7 +36,7 @@ void main() {
         name: 'Show values on left',
         child: getDefaultChart(
           backgroundDecorations: [
-            HorizontalAxisDecoration(
+            HorizontalAxisDecoration<void>(
                 showValues: true,
                 legendPosition: HorizontalLegendPosition.start,
                 legendFontStyle: defaultTextStyle,
@@ -49,7 +48,7 @@ void main() {
         name: 'Increase steps',
         child: getDefaultChart(
           backgroundDecorations: [
-            HorizontalAxisDecoration(
+            HorizontalAxisDecoration<void>(
                 showValues: true,
                 axisStep: 2.0,
                 legendFontStyle: defaultTextStyle,
@@ -61,7 +60,7 @@ void main() {
         name: 'End lines with chart',
         child: getDefaultChart(
           backgroundDecorations: [
-            HorizontalAxisDecoration(
+            HorizontalAxisDecoration<void>(
                 showValues: true,
                 endWithChart: true,
                 legendFontStyle: defaultTextStyle,
@@ -73,7 +72,7 @@ void main() {
         name: 'Show top value',
         child: getDefaultChart(
           backgroundDecorations: [
-            HorizontalAxisDecoration(
+            HorizontalAxisDecoration<void>(
               showValues: true,
               endWithChart: true,
               showTopValue: true,
@@ -87,7 +86,7 @@ void main() {
         name: 'Show dashed lines',
         child: getDefaultChart(
           backgroundDecorations: [
-            HorizontalAxisDecoration(
+            HorizontalAxisDecoration<void>(
               showValues: true,
               dashArray: [10, 10],
               legendFontStyle: defaultTextStyle,
@@ -100,7 +99,7 @@ void main() {
         name: 'Lines only on top 3 values',
         child: getDefaultChart(
           backgroundDecorations: [
-            HorizontalAxisDecoration(
+            HorizontalAxisDecoration<void>(
               showLineForValue: (value) => [6, 8, 7].contains(value),
               lineWidth: 3.0,
             ),
@@ -111,7 +110,7 @@ void main() {
         name: 'Change color',
         child: getDefaultChart(
           backgroundDecorations: [
-            HorizontalAxisDecoration(
+            HorizontalAxisDecoration<void>(
               lineColor: Colors.red,
             ),
           ],

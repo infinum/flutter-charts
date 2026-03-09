@@ -69,7 +69,7 @@ void main() {
           size: 4,
           foregroundDecorations: List.generate(
             4,
-            (index) => SparkLineDecoration(
+            (index) => SparkLineDecoration<void>(
               sectionIndex: index,
               lineColor: [
                 Colors.red,
@@ -93,7 +93,7 @@ void main() {
           size: 4,
           foregroundDecorations: List.generate(
             4,
-            (index) => SparkLineDecoration(
+            (index) => SparkLineDecoration<void>(
               sectionIndex: index,
               lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
               lineWidth: 3.0,
@@ -114,7 +114,7 @@ void main() {
             strategy: DefaultDataStrategy(stackMultipleValues: false),
             foregroundDecorations: List.generate(
                 4,
-                (index) => SparkLineDecoration(
+                (index) => SparkLineDecoration<void>(
                       sectionIndex: index,
                       lineColor: [Colors.red, Colors.yellow, Colors.green, Colors.blue][index],
                       lineWidth: 3.0,
@@ -135,21 +135,21 @@ void main() {
         child: getMultiValueChart(
           size: 4,
           foregroundDecorations: [
-            SparkLineDecoration(
+            SparkLineDecoration<void>(
               sectionIndex: 0,
               fill: true,
               smoothPoints: true,
               lineColor: Colors.green.withOpacity(0.8),
               stretchLine: true,
             ),
-            SparkLineDecoration(
+            SparkLineDecoration<void>(
               sectionIndex: 1,
               lineColor: Colors.blue,
               lineWidth: 2.0,
               dashArray: [10, 10],
               stretchLine: true,
             ),
-            SparkLineDecoration(
+            SparkLineDecoration<void>(
               sectionIndex: 2,
               lineColor: Colors.red,
               lineWidth: 4.0,
@@ -157,7 +157,7 @@ void main() {
               dashArray: translateMorse('.. -. ..-. .. -. ..- --  '),
               stretchLine: true,
             ),
-            SparkLineDecoration(
+            SparkLineDecoration<void>(
               sectionIndex: 3,
               lineColor: Colors.yellow,
               lineWidth: 2.0,
@@ -179,14 +179,14 @@ void main() {
             size: 4,
             strategy: DefaultDataStrategy(stackMultipleValues: false),
             foregroundDecorations: [
-              SparkLineDecoration(
+              SparkLineDecoration<void>(
                 sectionIndex: 0,
                 fill: true,
                 smoothPoints: true,
                 lineColor: Colors.red.withOpacity(0.6),
                 stretchLine: true,
               ),
-              SparkLineDecoration(
+              SparkLineDecoration<void>(
                 sectionIndex: 1,
                 lineColor: Colors.blue,
                 lineWidth: 2.0,
@@ -213,14 +213,14 @@ void main() {
             size: 4,
             strategy: DefaultDataStrategy(stackMultipleValues: false),
             foregroundDecorations: [
-              SparkLineDecoration(
+              SparkLineDecoration<void>(
                 sectionIndex: 0,
                 fill: true,
                 smoothPoints: true,
                 lineColor: Colors.redAccent.withOpacity(0.6),
                 stretchLine: true,
               ),
-              SparkLineDecoration(
+              SparkLineDecoration<void>(
                 sectionIndex: 1,
                 lineColor: Colors.red,
                 lineWidth: 2.0,
@@ -228,16 +228,16 @@ void main() {
                 dashArray: translateMorse('.. -. ..-. .. -. ..- --  '),
                 stretchLine: true,
               ),
-              BorderDecoration(
+              BorderDecoration<void>(
                 borderWidth: 4.0,
               ),
             ],
             backgroundDecorations: [
-              GridDecoration(
+              GridDecoration<void>(
                 horizontalAxisStep: 2,
                 gridColor: Colors.grey.shade400,
               ),
-              TargetAreaDecoration(
+              TargetAreaDecoration<void>(
                 targetMin: 8,
                 targetMax: 14,
                 targetLineColor: Colors.transparent,

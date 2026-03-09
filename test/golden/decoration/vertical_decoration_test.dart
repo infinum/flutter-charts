@@ -11,19 +11,18 @@ void main() {
     await loadAppFonts();
   });
 
-  goldenTest('Vertical decoration', fileName: 'vertical_decoration_golden',
-      builder: () {
+  goldenTest('Vertical decoration', fileName: 'vertical_decoration_golden', builder: () {
     return GoldenTestGroup(children: [
       GoldenTestScenario(
         name: 'Default',
         child: getDefaultChart(backgroundDecorations: [
-          VerticalAxisDecoration(),
+          VerticalAxisDecoration<void>(),
         ]),
       ),
       GoldenTestScenario(
         name: 'Show values on bottom',
         child: getDefaultChart(backgroundDecorations: [
-          VerticalAxisDecoration(
+          VerticalAxisDecoration<void>(
               showValues: true,
               legendFontStyle: defaultTextStyle,
               valuesPadding: const EdgeInsets.only(top: 8.0, bottom: 4.0)),
@@ -32,7 +31,7 @@ void main() {
       GoldenTestScenario(
         name: 'Show values on top',
         child: getDefaultChart(backgroundDecorations: [
-          VerticalAxisDecoration(
+          VerticalAxisDecoration<void>(
               showValues: true,
               legendPosition: VerticalLegendPosition.top,
               legendFontStyle: defaultTextStyle,
@@ -42,7 +41,7 @@ void main() {
       GoldenTestScenario(
         name: 'Increase steps',
         child: getDefaultChart(backgroundDecorations: [
-          VerticalAxisDecoration(
+          VerticalAxisDecoration<void>(
               showValues: true,
               axisStep: 2.0,
               valuesAlign: TextAlign.start,
@@ -53,7 +52,7 @@ void main() {
       GoldenTestScenario(
         name: 'Show dashed lines',
         child: getDefaultChart(backgroundDecorations: [
-          VerticalAxisDecoration(
+          VerticalAxisDecoration<void>(
               showValues: true,
               dashArray: [10, 10],
               legendFontStyle: defaultTextStyle,
@@ -63,7 +62,7 @@ void main() {
       GoldenTestScenario(
         name: 'End lines with chart',
         child: getDefaultChart(backgroundDecorations: [
-          VerticalAxisDecoration(
+          VerticalAxisDecoration<void>(
               showValues: true,
               endWithChart: true,
               legendFontStyle: defaultTextStyle,

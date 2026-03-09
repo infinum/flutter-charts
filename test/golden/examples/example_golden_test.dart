@@ -59,13 +59,13 @@ void main() {
               },
             ),
             backgroundDecorations: [
-              GridDecoration(
+              GridDecoration<void>(
                 verticalAxisStep: 1,
                 horizontalAxisStep: 1,
               ),
             ],
             foregroundDecorations: [
-              BorderDecoration(borderWidth: 5.0),
+              BorderDecoration<void>(borderWidth: 5.0),
             ],
           ),
         ),
@@ -87,14 +87,14 @@ void main() {
             maxBarWidth: 4.0,
           ),
           backgroundDecorations: [
-            GridDecoration(
+            GridDecoration<void>(
               verticalAxisStep: 1,
               horizontalAxisStep: 1,
             ),
           ],
           foregroundDecorations: [
-            BorderDecoration(borderWidth: 5.0),
-            SparkLineDecoration(),
+            BorderDecoration<void>(borderWidth: 5.0),
+            SparkLineDecoration<void>(),
           ],
         ),
       ),
@@ -125,20 +125,20 @@ void main() {
             },
           ),
           backgroundDecorations: [
-            GridDecoration(
+            GridDecoration<void>(
               verticalAxisStep: 1,
               horizontalAxisStep: 1,
             ),
           ],
           foregroundDecorations: [
-            BorderDecoration(borderWidth: 5.0),
-            SparkLineDecoration(
+            BorderDecoration<void>(borderWidth: 5.0),
+            SparkLineDecoration<void>(
               // Specify key that this [SparkLineDecoration] will follow
               // Throws if `listIndex` does not exist in chart data
               sectionIndex: 1,
               lineColor: Colors.blue,
             ),
-            SparkLineDecoration(),
+            SparkLineDecoration<void>(),
           ],
         ),
       ),
