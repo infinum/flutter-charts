@@ -14,7 +14,8 @@ class ChartData<T> {
     this.axisMax,
     this.valueAxisMaxOver,
     this.axisMin,
-  })  : minValue = _getMinValue<T>(
+  })  : _animatedListSize = null,
+        minValue = _getMinValue<T>(
             dataStrategy.formatDataStrategy(_sections).expand((element) => element.items).toList(), axisMin),
         maxValue = _getMaxValue(
                 dataStrategy.formatDataStrategy(_sections).expand((element) => element.items).toList(), axisMax) +
@@ -42,7 +43,7 @@ class ChartData<T> {
     double minValue = 0,
     double? valueAxisMaxOver,
   }) {
-    return ChartData<T?>(
+    return ChartData<T>(
       [
         ChartDataSection<T>(
           items: List.generate(
@@ -52,7 +53,7 @@ class ChartData<T> {
         ),
       ],
       valueAxisMaxOver: valueAxisMaxOver,
-    ) as ChartData<T>;
+    );
   }
 
   ChartData._lerp(
@@ -63,11 +64,16 @@ class ChartData<T> {
     this.valueAxisMaxOver,
     required this.minValue,
     required this.maxValue,
-  });
+    double? animatedListSize,
+  }) : _animatedListSize = animatedListSize;
 
   /// Chart items, items in the list cannot be null, but ChartItem can be defined
   /// with null values to represent gaps in the data
   final List<ChartDataSection<T>> _sections;
+
+  /// Animated logical list size used for smooth width animation when items are
+  /// added or removed between chart states.
+  final double? _animatedListSize;
 
   // Statistics layer
   /// Data strategy to use on items
@@ -105,6 +111,9 @@ class ChartData<T> {
   /// Get max list size
   int get listSize => _sections.fold(0, (previousValue, element) => max(previousValue, element.length));
 
+  /// Animated list size used for width calculations during transitions.
+  double get animatedListSize => _animatedListSize ?? listSize.toDouble();
+
   /// Get number of data lists in the chart
   int get stackSize => _sections.length;
 
@@ -119,12 +128,12 @@ class ChartData<T> {
   /// Get max value of the chart
   /// Max value is max data item from [items] or [ChartOptions.axisMax]
   static double _getMaxValue<T>(List<ChartItem<T>> items, double? valueAxisMax) {
-    return max(valueAxisMax ?? 0.0, items.map((e) => e.max ?? 0.0).reduce(max));
+    return max(valueAxisMax ?? 0.0, items.map((e) => e.max ?? 0.0).fold(0.0, max));
   }
 
   /// Get min value of the chart
   /// Min value is min data item from [items] or [ChartOptions.axisMin]
-  static double _getMinValue<T>(List<ChartItem<T?>> items, double? valueAxisMin) {
+  static double _getMinValue<T>(List<ChartItem<T>> items, double? valueAxisMin) {
     final _minItems = items
         .where((e) => (e.min != null && e.min != 0.0) || (e.min == null && e.max != 0.0))
         .map((e) => e.min ?? e.max ?? double.infinity);
@@ -139,7 +148,7 @@ class ChartData<T> {
   /// factor `t`.
   ///
   /// This will animate changes in the [ChartData]
-  static ChartData<T?> lerp<T>(ChartData<T?> a, ChartData<T?> b, double t) {
+  static ChartData<T> lerp<T>(ChartData<T> a, ChartData<T> b, double t) {
     return ChartData._lerp(
       ChartSectionsLerp.lerpValues(a._sections, b._sections, t),
       axisMax: lerpDouble(a.axisMax, b.axisMax, t),
@@ -150,6 +159,7 @@ class ChartData<T> {
       /// Those are usually calculated, but we need to have a control over them in the animation
       maxValue: lerpDouble(a.maxValue, b.maxValue, t) ?? b.maxValue,
       minValue: lerpDouble(a.minValue, b.minValue, t) ?? b.minValue,
+      animatedListSize: lerpDouble(a.listSize.toDouble(), b.listSize.toDouble(), t),
     );
   }
 }
@@ -159,16 +169,12 @@ class ChartSectionsLerp {
   /// Lerp chart items
   static List<ChartDataSection<T>> lerpValues<T>(List<ChartDataSection<T>> a, List<ChartDataSection<T>> b, double t) {
     /// Get list length in animation, we will add the items in steps.
-    final listLength = lerpDouble(a.length, b.length, t) ?? b.length;
-
-    /// Empty value for generated list.
-    final emptyDataSection = ChartDataSection<T>(items: []);
 
     /// Generate new list fot animation step, add items depending on current [_listLength]
-    return List<ChartDataSection<T>>.generate(listLength.ceil(), (int index) {
+    return List<ChartDataSection<T>>.generate(b.length, (int index) {
       return ChartDataSection.lerp<T>(
-        a.length > index ? a[index] : emptyDataSection,
-        b.length > index ? b[index] : emptyDataSection,
+        a.length > index ? a[index] : ChartDataSection<T>(items: [], offset: a.lastOrNull?.length ?? 0),
+        b.length > index ? b[index] : ChartDataSection<T>(items: [], offset: b.lastOrNull?.length ?? 0),
         t,
       );
     });

@@ -20,7 +20,7 @@ class StackDataStrategy extends DataStrategy {
   @override
   List<ChartDataSection<T>> formatDataStrategy<T>(List<ChartDataSection<T>> sections) {
     final length = sections.fold<int>(0, (previousValue, element) => max(previousValue, element.length));
-    final _incrementList = List<ChartItem<T?>>.generate(length, (index) => ChartItem<T?>(0.0));
+    final _incrementList = List<ChartItem<T>>.generate(length, (index) => ChartItem<T>(0.0));
 
     return sections.reversed
         .mapIndexed((sectionIndex, section) {

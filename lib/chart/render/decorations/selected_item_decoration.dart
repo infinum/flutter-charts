@@ -2,7 +2,7 @@ part of charts_painter;
 
 /// Show selected item in Cupertino style (Health app)
 @Deprecated('You can make this decoration and much more using WidgetDecoration. Check migration guide for more info')
-class SelectedItemDecoration extends DecorationPainter {
+class SelectedItemDecoration<T> extends DecorationPainter<T> {
   /// Constructor for selected item decoration
   SelectedItemDecoration(
     this.selectedItem, {
@@ -45,7 +45,7 @@ class SelectedItemDecoration extends DecorationPainter {
   final int selectedListIndex;
 
   @override
-  Widget getRenderer(ChartState state) {
+  Widget getRenderer(ChartState<T> state) {
     if (child != null) {
       return ChartDecorationChildRenderer(
         state,
@@ -58,16 +58,16 @@ class SelectedItemDecoration extends DecorationPainter {
   }
 
   @override
-  void initDecoration(ChartState state) {
+  void initDecoration(ChartState<T> state) {
     super.initDecoration(state);
     assert(state.data.stackSize > selectedListIndex,
         'Selected list index is not in the list!\nCheck the `selectedListIndex` you are passing.');
   }
 
   @override
-  Size layoutSize(BoxConstraints constraints, ChartState state) {
-    final _listSize = state.data.listSize;
-    final _itemWidth = constraints.deflate(state.defaultMargin).maxWidth / _listSize;
+  Size layoutSize(BoxConstraints constraints, ChartState<T> state) {
+    final _listSize = state.data.animatedListSize;
+    final _itemWidth = _listSize <= 0 ? 0.0 : constraints.deflate(state.defaultMargin).maxWidth / _listSize;
 
     return Size(
       _itemWidth,
@@ -76,8 +76,8 @@ class SelectedItemDecoration extends DecorationPainter {
   }
 
   @override
-  Offset applyPaintTransform(ChartState state, Size size) {
-    final _width = (size.width - state.defaultMargin.horizontal) / state.data.listSize;
+  Offset applyPaintTransform(ChartState<T> state, Size size) {
+    final _width = (size.width - state.defaultMargin.horizontal) / state.data.animatedListSize;
 
     final selectedItem = this.selectedItem;
     if (selectedItem != null) {
@@ -98,7 +98,7 @@ class SelectedItemDecoration extends DecorationPainter {
     return Offset.zero;
   }
 
-  void _drawText(Canvas canvas, Size size, double totalWidth, ChartState state) {
+  void _drawText(Canvas canvas, Size size, double totalWidth, ChartState<T> state) {
     final _item = selectedItem;
     if (_item == null) {
       return;
@@ -184,7 +184,7 @@ class SelectedItemDecoration extends DecorationPainter {
     );
   }
 
-  void _drawLine(Canvas canvas, Size size, ChartState state) {
+  void _drawLine(Canvas canvas, Size size, ChartState<T> state) {
     final _item = selectedItem;
     if (_item == null) {
       return;
@@ -218,7 +218,7 @@ class SelectedItemDecoration extends DecorationPainter {
   }
 
   @override
-  void draw(Canvas canvas, Size size, ChartState state) {
+  void draw(Canvas canvas, Size size, ChartState<T> state) {
     if (child != null) {
       return;
     }
@@ -238,7 +238,7 @@ class SelectedItemDecoration extends DecorationPainter {
     canvas.restore();
   }
 
-  void _drawItem(Canvas canvas, Size size, ChartState state) {
+  void _drawItem(Canvas canvas, Size size, ChartState<T> state) {
     canvas.drawRect(
       Rect.fromPoints(Offset(0.0, marginNeeded().top), Offset(size.width, size.height)),
       Paint()
@@ -260,9 +260,9 @@ class SelectedItemDecoration extends DecorationPainter {
   }
 
   @override
-  DecorationPainter animateTo(DecorationPainter endValue, double t) {
-    if (endValue is SelectedItemDecoration) {
-      return SelectedItemDecoration(
+  DecorationPainter<T> animateTo(DecorationPainter<T> endValue, double t) {
+    if (endValue is SelectedItemDecoration<T>) {
+      return SelectedItemDecoration<T>(
         animate
             ? (lerpDouble(selectedItem?.toDouble(), endValue.selectedItem?.toDouble(), t) ?? 0).round()
             : endValue.selectedItem,

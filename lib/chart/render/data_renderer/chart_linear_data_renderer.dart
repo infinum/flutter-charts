@@ -5,15 +5,15 @@ part of charts_painter;
 class ChartLinearDataRenderer<T> extends ChartDataRenderer<T> {
   ChartLinearDataRenderer(this.chartState, List<Widget> children, {Key? key}) : super(key: key, children: children);
 
-  final ChartState<T?> chartState;
+  final ChartState<T> chartState;
 
   @override
-  _ChartLinearItemRenderer<T?> createRenderObject(BuildContext context) {
-    return _ChartLinearItemRenderer<T?>(chartState);
+  _ChartLinearItemRenderer<T> createRenderObject(BuildContext context) {
+    return _ChartLinearItemRenderer<T>(chartState);
   }
 
   @override
-  void updateRenderObject(BuildContext context, _ChartLinearItemRenderer<T?> renderObject) {
+  void updateRenderObject(BuildContext context, _ChartLinearItemRenderer<T> renderObject) {
     renderObject.chartState = chartState;
     renderObject.markNeedsLayout();
   }
@@ -25,7 +25,7 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     with
         ContainerRenderObjectMixin<RenderBox, ChartItemData>,
         RenderBoxContainerDefaultsMixin<RenderBox, ChartItemData> {
-  _ChartLinearItemRenderer(ChartState<T?> chartState) : super(chartState);
+  _ChartLinearItemRenderer(ChartState<T> chartState) : super(chartState);
 
   @override
   void setupParentData(RenderBox child) {
@@ -47,7 +47,11 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     var childCount = <int, int>{};
     var child = firstChild;
     final _size = computeDryLayout(constraints);
-    final _listSize = _chartState.data.listSize;
+    final _listSize = _chartState.data.animatedListSize;
+    if (_listSize <= 0) {
+      size = _size;
+      return;
+    }
     final _itemSize = Size(_size.width, _size.height);
 
     // Final usable space for one item in the chart

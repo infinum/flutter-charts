@@ -14,7 +14,7 @@ class _ChartWidget<T> extends StatelessWidget {
 
   final double? height;
   final double? width;
-  final ChartState<T?> state;
+  final ChartState<T> state;
 
   double get _horizontalItemPadding => state.itemOptions.padding.horizontal;
 
@@ -63,12 +63,11 @@ class _ChartWidget<T> extends StatelessWidget {
   }
 
   Size _calcChartSize(double itemWidth, double frameWidth, double frameHeight) {
-    final listSize = state.data.listSize;
+    final listSize = state.data.animatedListSize;
     final totalItemWidth = itemWidth + _horizontalItemPadding;
     final listWidth = totalItemWidth * listSize;
 
-    final chartWidth = frameWidth +
-        (listWidth - frameWidth) * state.behaviour.scrollSettings._isScrollable;
+    final chartWidth = frameWidth + (listWidth - frameWidth) * state.behaviour.scrollSettings._isScrollable;
     final finalWidth = chartWidth + state.defaultPadding.horizontal;
 
     return Size(finalWidth, frameHeight);
@@ -78,10 +77,8 @@ class _ChartWidget<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final frameWidth =
-            constraints.maxWidth.isFinite ? constraints.maxWidth : width!;
-        final frameHeight =
-            constraints.maxHeight.isFinite ? constraints.maxHeight : height!;
+        final frameWidth = constraints.maxWidth.isFinite ? constraints.maxWidth : width!;
+        final frameHeight = constraints.maxHeight.isFinite ? constraints.maxHeight : height!;
 
         final itemWidth = _calcItemWidth(frameWidth);
         final size = _calcChartSize(itemWidth, frameWidth, frameHeight);

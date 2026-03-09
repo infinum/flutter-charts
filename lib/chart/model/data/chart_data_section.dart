@@ -11,14 +11,14 @@ class ChartDataSection<T> {
     required double offset,
   }) : _offset = offset;
 
-  final List<ChartItem<T?>> items;
+  final List<ChartItem<T>> items;
   final double _offset;
 
   int get offset => _offset.round();
 
   int get length => offset.round() + items.length;
 
-  ChartItem<T?>? operator [](int index) {
+  ChartItem<T>? operator [](int index) {
     if (index < offset || index >= length) {
       return null;
     }
@@ -33,13 +33,13 @@ class ChartDataSection<T> {
     );
   }
 
-  static List<ChartItem<T?>> _lerpItemList<T>(List<ChartItem<T?>?> a, List<ChartItem<T?>?> b, double t) {
+  static List<ChartItem<T>> _lerpItemList<T>(List<ChartItem<T>> a, List<ChartItem<T>> b, double t) {
     final _listLength = lerpDouble(a.length, b.length, t) ?? b.length;
 
     /// Empty value for generated list.
-    final _emptyValue = ChartItem<T?>(0.0, value: null, min: 0.0);
+    final _emptyValue = ChartItem<T>(0.0, value: null, min: 0.0);
 
-    return List<ChartItem<T?>>.generate(_listLength.ceil(), (int index) {
+    return List<ChartItem<T>>.generate(_listLength.ceil(), (int index) {
       // If old list and new list have value at [index], then just animate from,
       // old list value to the new value
       final _firstItem = index < a.length ? a[index] : null;
@@ -49,9 +49,27 @@ class ChartDataSection<T> {
         if (_secondItem != null && _firstItem != null) {
           return _secondItem.animateFrom(_firstItem, t);
         } else if (_secondItem != null) {
-          return _secondItem.animateFrom(_emptyValue, t);
+          // Newly inserted point with no corresponding previous value, start
+          // from previous point value if possible.
+          final _prevIndex = index > 0 ? index - 1 : 0;
+          ChartItem<T> _start = _emptyValue;
+          if (_prevIndex < b.length) {
+            _start = b[_prevIndex];
+          } else if (_prevIndex < a.length) {
+            _start = a[_prevIndex];
+          }
+          return _secondItem.animateFrom(_start, t);
         } else if (_firstItem != null) {
-          return _firstItem.animateTo(_emptyValue, t);
+          // Point was removed and there is no new value, animate towards
+          // previous point value instead of zero.
+          final _prevIndex = index > 0 ? index - 1 : 0;
+          ChartItem<T> _end = _emptyValue;
+          if (_prevIndex < b.length) {
+            _end = b[_prevIndex];
+          } else if (_prevIndex < a.length) {
+            _end = a[_prevIndex];
+          }
+          return _firstItem.animateTo(_end, t);
         }
 
         return _emptyValue;
@@ -60,28 +78,35 @@ class ChartDataSection<T> {
       // If new list is larger, then check if item in the list is not empty
       // In case item is not empty then animate to it from our [_emptyValue]
       if (index < b.length) {
-        if (_secondItem == null || _secondItem.isEmpty) {
-          return _secondItem ?? _emptyValue;
+        // Purely new points (b has value, a does not). Start from previous
+        // point value if it exists, otherwise from zero.
+        if (_secondItem != null) {
+          final _prevIndex = index > 0 ? index - 1 : 0;
+          ChartItem<T> _start = _emptyValue;
+          if (_prevIndex < b.length) {
+            _start = b[_prevIndex];
+          } else if (_prevIndex < a.length) {
+            _start = a[_prevIndex];
+          }
+          return _secondItem.animateFrom(_start, t);
         }
-
-        // If item is appearing then it's time to animate is
-        // from time it first showed to end of the animation.
-        final _value = _listLength.floor() == index ? ((_listLength - _listLength.floor()) * t) : t;
-        return _secondItem.animateFrom(_emptyValue, _value);
+        return _emptyValue;
       }
 
-      // In case that our old list is bigger, and item is not empty
-      // then we need to animate to empty value from current item value
-      if (_firstItem == null || _firstItem.isEmpty) {
-        return _firstItem ?? _emptyValue;
+      // Points that exist only in the old list (a has value, b does not).
+      // Animate them towards previous point value instead of dropping to zero.
+      if (_firstItem != null) {
+        final _prevIndex = index > 0 ? index - 1 : 0;
+        ChartItem<T> _end = _emptyValue;
+        if (_prevIndex < b.length) {
+          _end = b[_prevIndex];
+        } else if (_prevIndex < a.length) {
+          _end = a[_prevIndex];
+        }
+        return _firstItem.animateTo(_end, t);
       }
 
-      final _value = _listLength.floor() == index
-          ? min(1, (1 - (_listLength - _listLength.floor())) + t / _listLength)
-          : _listLength.floor() >= index
-              ? 0
-              : t;
-      return _firstItem.animateTo(_emptyValue, _value.toDouble());
+      return _emptyValue;
     });
   }
 }

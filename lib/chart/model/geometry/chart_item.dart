@@ -18,8 +18,8 @@ class ChartItem<T> {
   bool get isEmpty => (max ?? 0) == 0 && (min ?? 0) == 0;
 
   /// Animate to [endValue] with factor `t`
-  ChartItem<T?> animateTo(ChartItem<T?> endValue, double t) {
-    return ChartItem<T?>(
+  ChartItem<T> animateTo(ChartItem<T> endValue, double t) {
+    return ChartItem<T>(
       lerpDouble(max, endValue.max, t),
       value: endValue.value,
       min: lerpDouble(min, endValue.min, t),
@@ -27,7 +27,7 @@ class ChartItem<T> {
   }
 
   /// Animate from [startValue] to this with factor `t`
-  ChartItem<T?> animateFrom(ChartItem<T?> startValue, double t) {
+  ChartItem<T> animateFrom(ChartItem<T> startValue, double t) {
     return animateTo(startValue, 1 - t);
   }
 
@@ -45,9 +45,9 @@ class ChartItem<T> {
 
   /// Add two [ChartItem]'s together
   /// `T` value is taken from [other]
-  ChartItem<T?> operator +(Object other) {
-    if (other is ChartItem<T?>) {
-      return ChartItem<T?>(
+  ChartItem<T> operator +(Object other) {
+    if (other is ChartItem<T>) {
+      return ChartItem<T>(
         (other.max ?? 0.0) + (max ?? 0.0),
         value: other.value,
         min: (other.min ?? 0.0) + (min ?? 0.0),
@@ -58,9 +58,9 @@ class ChartItem<T> {
   }
 
   /// Multiply [ChartItem] with another [ChartItem] of number
-  ChartItem<T?> operator *(Object? other) {
-    if (other is ChartItem<T?>) {
-      return ChartItem<T?>(
+  ChartItem<T> operator *(Object? other) {
+    if (other is ChartItem<T>) {
+      return ChartItem<T>(
         (other.max ?? 0.0) * (max ?? 0.0),
         value: other.value,
         min: (other.min ?? 0.0) * (min ?? 0.0),

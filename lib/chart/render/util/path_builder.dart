@@ -1,7 +1,12 @@
 part of charts_painter;
 
 abstract class PathBuilder {
-  Path build(List<Offset> points, Size size, bool encapsulate);
+  Path build(
+    List<Offset> points, {
+    required Size size,
+    required bool encapsulate,
+    required bool clipBottom,
+  });
   PathBuilder lerp(PathBuilder other, double t);
 }
 
@@ -11,14 +16,25 @@ class DefaultPathBuilder implements PathBuilder {
   @override
   PathBuilder lerp(PathBuilder other, double t) {
     if (other is DefaultPathBuilder) {
-      return DefaultPathBuilder();
+      return const DefaultPathBuilder();
+    }
+
+    // When transitioning from a straight line to a smooth path, gradually
+    // increase the smoothing factor so the line doesn't "jump" to the new
+    // shape immediately.
+    if (other is SmoothCubicBezierPathBuilder) {
+      return SmoothCubicBezierPathBuilder._withFactor(t);
+    }
+
+    if (other is CubicBezierPathBuilder) {
+      return CubicBezierPathBuilder.lerp(lerp: t);
     }
 
     return other;
   }
 
   @override
-  Path build(List<Offset> points, Size size, bool encapsulate) {
+  Path build(List<Offset> points, {required Size size, required bool encapsulate, required bool clipBottom}) {
     final _path = Path();
 
     if (points.isEmpty) {
@@ -26,7 +42,7 @@ class DefaultPathBuilder implements PathBuilder {
     }
 
     if (encapsulate) {
-      _path.moveTo(points.first.dx, size.height);
+      _path.moveTo(points.first.dx, clipBottom ? size.height : Rect.largest.height);
       _path.lineTo(points.first.dx, points.first.dy);
     } else {
       _path.moveTo(points.first.dx, points.first.dy);
@@ -38,7 +54,7 @@ class DefaultPathBuilder implements PathBuilder {
     }
 
     if (encapsulate) {
-      _path.lineTo(points.last.dx, size.height);
+      _path.lineTo(points.last.dx, clipBottom ? size.height : Rect.largest.height);
     }
 
     return _path;
@@ -62,10 +78,10 @@ class CubicBezierPathBuilder implements PathBuilder {
   }
 
   @override
-  Path build(List<Offset> points, Size size, bool encapsulate) {
+  Path build(List<Offset> points, {required Size size, required bool encapsulate, required bool clipBottom}) {
     final _path = Path();
     if (encapsulate) {
-      _path.moveTo(points[0].dx, size.height);
+      _path.moveTo(points[0].dx, clipBottom ? size.height : Rect.largest.height);
       _path.lineTo(points[0].dx, points[0].dy);
       _path.lineTo(points.first.dx, points.first.dy);
     } else {
@@ -86,7 +102,7 @@ class CubicBezierPathBuilder implements PathBuilder {
       if (i == points.length - 2) {
         _path.lineTo(_p2.dx, _p2.dy);
         if (encapsulate) {
-          _path.lineTo(_p2.dx, size.height);
+          _path.lineTo(_p2.dx, clipBottom ? size.height : Rect.largest.height);
         }
       }
     }
@@ -96,16 +112,41 @@ class CubicBezierPathBuilder implements PathBuilder {
 }
 
 class SmoothCubicBezierPathBuilder implements PathBuilder {
-  const SmoothCubicBezierPathBuilder() : _lerp = 1.0;
+  const SmoothCubicBezierPathBuilder({this.maxError = 2.0}) : _smoothFactor = 1.0;
 
-  const SmoothCubicBezierPathBuilder.lerp({required double lerp}) : _lerp = lerp;
+  const SmoothCubicBezierPathBuilder._withFactor(this._smoothFactor, [this.maxError = 2.0]);
 
-  final double _lerp;
+  /// Maximum allowed distance (in logical pixels) from any original point to
+  /// the simplified path. Fewer points are kept when this is larger.
+  final double maxError;
+
+  /// How strong the smoothing effect is.
+  ///
+  /// 0.0 – behaves like a straight line (DefaultPathBuilder)
+  /// 1.0 – fully smoothed.
+  final double _smoothFactor;
 
   @override
   PathBuilder lerp(PathBuilder other, double t) {
+    if (other is SmoothCubicBezierPathBuilder) {
+      return SmoothCubicBezierPathBuilder._withFactor(
+        lerpDouble(_smoothFactor, other._smoothFactor, t) ?? other._smoothFactor,
+        t > 0.5 ? other.maxError : maxError,
+      );
+    }
+
     if (other is DefaultPathBuilder) {
-      return SmoothCubicBezierPathBuilder.lerp(lerp: lerpDouble(_lerp, 0, t) ?? 0);
+      return SmoothCubicBezierPathBuilder._withFactor(
+        lerpDouble(_smoothFactor, 0.0, t) ?? 0.0,
+        maxError,
+      );
+    }
+
+    if (other is CubicBezierPathBuilder) {
+      return SmoothCubicBezierPathBuilder._withFactor(
+        lerpDouble(_smoothFactor, 0.0, t) ?? 0.0,
+        maxError,
+      );
     }
 
     return other;
@@ -137,76 +178,100 @@ class SmoothCubicBezierPathBuilder implements PathBuilder {
       }
     }
 
+    // Scale all tangents with smoothing factor so we can smoothly interpolate
+    // between a straight line (_smoothFactor = 0) and the fully smoothed
+    // version (_smoothFactor = 1).
+    if (_smoothFactor != 1.0) {
+      for (var i = 0; i < tangents.length; i++) {
+        tangents[i] *= _smoothFactor;
+      }
+    }
+
     return tangents;
   }
 
+  /// Ramer–Douglas–Peucker: fewest points such that every original point is
+  /// within [maxError] of the simplified path.
   List<Offset> _simplifyPoints(List<Offset> points) {
-    const double cosThreshold = 0.9962; // cos(5°)
-
-    if (points.length < 3) {
+    if (points.length <= 2) {
       return points;
     }
+    final epsilon2 = maxError * maxError;
+    return _rdp(points, 0, points.length - 1, epsilon2);
+  }
 
-    final result = <Offset>[points.first];
+  List<Offset> _rdp(List<Offset> points, int start, int end, double epsilon2) {
+    if (end <= start + 1) {
+      return [points[start], points[end]];
+    }
+    final a = points[start];
+    final b = points[end];
+    final ab = Offset(b.dx - a.dx, b.dy - a.dy);
+    final abLen2 = ab.dx * ab.dx + ab.dy * ab.dy;
 
-    for (int index = 1; index < points.length - 1; index++) {
-      final previousPoint = points[index - 1];
-      final currentPoint = points[index];
-      final nextPoint = points[index + 1];
-
-      final vector1 = currentPoint - previousPoint;
-      final vector2 = nextPoint - currentPoint;
-
-      final length1 = vector1.distance;
-      final length2 = vector2.distance;
-      if (length1 == 0 || length2 == 0) {
-        result.add(currentPoint);
-        continue;
+    double dmax2 = 0;
+    int split = start + 1;
+    for (int i = start + 1; i < end; i++) {
+      final p = points[i];
+      final ap = Offset(p.dx - a.dx, p.dy - a.dy);
+      double dist2;
+      if (abLen2 == 0) {
+        dist2 = ap.dx * ap.dx + ap.dy * ap.dy;
+      } else {
+        final t = ((ap.dx * ab.dx + ap.dy * ab.dy) / abLen2).clamp(0.0, 1.0);
+        final q = Offset(a.dx + ab.dx * t, a.dy + ab.dy * t);
+        final dq = Offset(p.dx - q.dx, p.dy - q.dy);
+        dist2 = dq.dx * dq.dx + dq.dy * dq.dy;
       }
-
-      final dot = (vector1.dx * vector2.dx + vector1.dy * vector2.dy) / (length1 * length2);
-
-      // Preserve extrema
-      final deltaY1 = currentPoint.dy - previousPoint.dy;
-      final deltaY2 = nextPoint.dy - currentPoint.dy;
-      final isExtremum = deltaY1 * deltaY2 < 0;
-
-      final almostStraight = dot >= cosThreshold;
-
-      if (almostStraight && !isExtremum) {
-        // remove currentPoint
-        continue;
+      if (dist2 > dmax2) {
+        dmax2 = dist2;
+        split = i;
       }
-
-      result.add(currentPoint);
     }
 
-    result.add(points.last);
-    return result;
+    if (dmax2 <= epsilon2) {
+      return [points[start], points[end]];
+    }
+    final left = _rdp(points, start, split, epsilon2);
+    final right = _rdp(points, split, end, epsilon2);
+    return [...left.sublist(0, left.length - 1), ...right];
   }
 
   @override
-  Path build(List<Offset> points, Size size, bool encapsulate) {
+  Path build(List<Offset> points, {required Size size, required bool encapsulate, required bool clipBottom}) {
+    if (points.length < 2) {
+      return Path();
+    }
+    // Simplify to fewest points such that error at each original point is < maxError.
+    final simplifiedPoints = _simplifyPoints(points);
+    return _buildPathFromPoints(
+      simplifiedPoints,
+      size: size,
+      encapsulate: encapsulate,
+      clipBottom: clipBottom,
+    );
+  }
+
+  Path _buildPathFromPoints(
+    List<Offset> points, {
+    required Size size,
+    required bool encapsulate,
+    required bool clipBottom,
+  }) {
     final path = Path();
 
-    if (points.length < 2) {
-      return path;
-    }
-
-    final simplifiedPoints = _simplifyPoints(points);
-
     if (encapsulate) {
-      path.moveTo(simplifiedPoints.first.dx, size.height);
-      path.lineTo(simplifiedPoints.first.dx, simplifiedPoints.first.dy);
+      path.moveTo(points.first.dx, clipBottom ? size.height : Rect.largest.height);
+      path.lineTo(points.first.dx, points.first.dy);
     } else {
-      path.moveTo(simplifiedPoints.first.dx, simplifiedPoints.first.dy);
+      path.moveTo(points.first.dx, points.first.dy);
     }
 
-    final tangents = _tangents(simplifiedPoints);
+    final tangents = _tangents(points);
 
-    for (int index = 0; index < simplifiedPoints.length - 1; index++) {
-      final startPoint = simplifiedPoints[index];
-      final endPoint = simplifiedPoints[index + 1];
+    for (int index = 0; index < points.length - 1; index++) {
+      final startPoint = points[index];
+      final endPoint = points[index + 1];
       final deltaX = endPoint.dx - startPoint.dx;
 
       final controlPoint1 = Offset(
@@ -230,7 +295,10 @@ class SmoothCubicBezierPathBuilder implements PathBuilder {
     }
 
     if (encapsulate) {
-      path.lineTo(simplifiedPoints.last.dx, size.height);
+      path.lineTo(
+        points.last.dx,
+        clipBottom ? size.height : Rect.largest.height,
+      );
     }
 
     return path;

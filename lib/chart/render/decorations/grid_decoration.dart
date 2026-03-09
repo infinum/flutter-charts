@@ -3,7 +3,7 @@ part of charts_painter;
 /// Draws a grid with [verticalAxisStep] and [horizontalAxisStep] as spacers
 ///
 /// That will allow for Legend to be inserted as well.
-class GridDecoration extends DecorationPainter {
+class GridDecoration<T> extends DecorationPainter<T> {
   /// Make grid decoration for the chart
   ///
   /// Grid decoration is just merge of [HorizontalAxisDecoration] and [VerticalAxisDecoration]
@@ -28,19 +28,13 @@ class GridDecoration extends DecorationPainter {
     double verticalAxisStep = 1.0,
     double horizontalAxisStep = 1.0,
     double textScale = 1.0,
-    HorizontalLegendPosition horizontalLegendPosition =
-        HorizontalLegendPosition.end,
-    VerticalLegendPosition verticalLegendPosition =
-        VerticalLegendPosition.bottom,
+    HorizontalLegendPosition horizontalLegendPosition = HorizontalLegendPosition.end,
+    VerticalLegendPosition verticalLegendPosition = VerticalLegendPosition.bottom,
     ShowLineForValue? showHorizontalLineForValue,
     TextStyle? textStyle,
-  }) : assert(
-            textStyle != null ||
-                !(showHorizontalValues ||
-                    showTopHorizontalValue ||
-                    showVerticalValues),
+  }) : assert(textStyle != null || !(showHorizontalValues || showTopHorizontalValue || showVerticalValues),
             'Need to provide text style for values to be visible!') {
-    _horizontalAxisDecoration = HorizontalAxisDecoration(
+    _horizontalAxisDecoration = HorizontalAxisDecoration<T>(
       showValues: showHorizontalValues,
       endWithChart: endWithChartHorizontal,
       showLines: showHorizontalGrid,
@@ -58,7 +52,7 @@ class GridDecoration extends DecorationPainter {
       legendFontStyle: textStyle,
       legendPosition: horizontalLegendPosition,
     );
-    _verticalAxisDecoration = VerticalAxisDecoration(
+    _verticalAxisDecoration = VerticalAxisDecoration<T>(
       showValues: showVerticalValues,
       valuesAlign: verticalTextAlign,
       showLines: showVerticalGrid,
@@ -84,64 +78,52 @@ class GridDecoration extends DecorationPainter {
   late VerticalAxisDecoration _verticalAxisDecoration;
 
   @override
-  void draw(Canvas canvas, Size size, ChartState state) {
+  void draw(Canvas canvas, Size size, ChartState<T> state) {
     _horizontalAxisDecoration.draw(canvas, size, state);
     _verticalAxisDecoration.draw(canvas, size, state);
   }
 
   @override
-  Size layoutSize(BoxConstraints constraints, ChartState state) {
+  Size layoutSize(BoxConstraints constraints, ChartState<T> state) {
     return constraints
         .deflate(state.defaultMargin +
             state.defaultPadding.copyWith(
-              left: _horizontalAxisDecoration._endWithChart *
-                  state.defaultPadding.left,
-              right: _horizontalAxisDecoration._endWithChart *
-                  state.defaultPadding.right,
-              top: _verticalAxisDecoration._endWithChart *
-                  state.defaultPadding.top,
-              bottom: _verticalAxisDecoration._endWithChart *
-                  state.defaultPadding.bottom,
+              left: _horizontalAxisDecoration._endWithChart * state.defaultPadding.left,
+              right: _horizontalAxisDecoration._endWithChart * state.defaultPadding.right,
+              top: _verticalAxisDecoration._endWithChart * state.defaultPadding.top,
+              bottom: _verticalAxisDecoration._endWithChart * state.defaultPadding.bottom,
             ))
         .biggest;
   }
 
   @override
-  Offset applyPaintTransform(ChartState state, Size size) {
-    return Offset(
-        state.defaultMargin.left +
-            (_horizontalAxisDecoration._endWithChart *
-                state.defaultPadding.left),
-        state.defaultMargin.top +
-            (_verticalAxisDecoration._endWithChart * state.defaultPadding.top));
+  Offset applyPaintTransform(ChartState<T> state, Size size) {
+    return Offset(state.defaultMargin.left + (_horizontalAxisDecoration._endWithChart * state.defaultPadding.left),
+        state.defaultMargin.top + (_verticalAxisDecoration._endWithChart * state.defaultPadding.top));
   }
 
   @override
   EdgeInsets marginNeeded() {
-    return _horizontalAxisDecoration.marginNeeded() +
-        _verticalAxisDecoration.marginNeeded();
+    return _horizontalAxisDecoration.marginNeeded() + _verticalAxisDecoration.marginNeeded();
   }
 
   @override
   EdgeInsets paddingNeeded() {
-    return _horizontalAxisDecoration.paddingNeeded() +
-        _verticalAxisDecoration.paddingNeeded();
+    return _horizontalAxisDecoration.paddingNeeded() + _verticalAxisDecoration.paddingNeeded();
   }
 
   @override
-  void initDecoration(ChartState state) {
+  void initDecoration(ChartState<T> state) {
     _horizontalAxisDecoration.initDecoration(state);
     _verticalAxisDecoration.initDecoration(state);
   }
 
   @override
-  DecorationPainter animateTo(DecorationPainter endValue, double t) {
-    if (endValue is GridDecoration) {
-      return GridDecoration._lerp(
-        horizontalAxisDecoration: _horizontalAxisDecoration.animateTo(
-            endValue._horizontalAxisDecoration, t),
-        verticalAxisDecoration: _verticalAxisDecoration.animateTo(
-            endValue._verticalAxisDecoration, t),
+  DecorationPainter<T> animateTo(DecorationPainter<T> endValue, double t) {
+    if (endValue is GridDecoration<T>) {
+      return GridDecoration<T>._lerp(
+        horizontalAxisDecoration: _horizontalAxisDecoration.animateTo(endValue._horizontalAxisDecoration, t),
+        verticalAxisDecoration: _verticalAxisDecoration.animateTo(endValue._verticalAxisDecoration, t),
       );
     }
 

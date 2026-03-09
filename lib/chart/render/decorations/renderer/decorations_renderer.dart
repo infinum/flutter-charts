@@ -1,23 +1,18 @@
 part of charts_painter;
 
 class DecorationsRenderer<T> extends MultiChildRenderObjectWidget {
-  DecorationsRenderer(List<DecorationPainter> fixedDecoration, this.chartState,
-      {Key? key})
-      : super(
-            key: key,
-            children:
-                fixedDecoration.map((e) => e.getRenderer(chartState)).toList());
+  DecorationsRenderer(List<DecorationPainter> fixedDecoration, this.chartState, {Key? key})
+      : super(key: key, children: fixedDecoration.map((e) => e.getRenderer(chartState)).toList());
 
-  final ChartState<T?> chartState;
+  final ChartState<T> chartState;
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return _FixedDecorationRenderObject<T?>(chartState);
+    return _FixedDecorationRenderObject<T>(chartState);
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, _FixedDecorationRenderObject<T?> renderObject) {
+  void updateRenderObject(BuildContext context, _FixedDecorationRenderObject<T> renderObject) {
     renderObject.chartState = chartState;
     renderObject.markNeedsLayout();
   }
@@ -29,8 +24,8 @@ class _FixedDecorationRenderObject<T> extends RenderBox
         RenderBoxContainerDefaultsMixin<RenderBox, BoxPaneParentData> {
   _FixedDecorationRenderObject(this._chartState);
 
-  ChartState<T?> _chartState;
-  set chartState(ChartState<T?> state) {
+  ChartState<T> _chartState;
+  set chartState(ChartState<T> state) {
     if (_chartState != state) {
       _chartState = state;
       markNeedsPaint();
@@ -72,5 +67,10 @@ class _FixedDecorationRenderObject<T> extends RenderBox
       context.paintChild(child, childParentData.offset + offset);
       child = childParentData.nextSibling;
     }
+  }
+
+  @override
+  Rect get paintBounds {
+    return Rect.largest;
   }
 }

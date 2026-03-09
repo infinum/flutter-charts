@@ -8,7 +8,7 @@ class ChartDecorationChildRenderer<T> extends SingleChildRenderObjectWidget {
     Key? key,
   }) : super(key: key, child: child);
 
-  final ChartState<T?> chartState;
+  final ChartState<T> chartState;
   final DecorationPainter decorationPainter;
 
   @override
@@ -17,8 +17,7 @@ class ChartDecorationChildRenderer<T> extends SingleChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, _RenderChartDecorationChildren renderObject) {
+  void updateRenderObject(BuildContext context, _RenderChartDecorationChildren renderObject) {
     renderObject
       ..chartState = chartState
       ..decorationPainter = decorationPainter;
@@ -28,9 +27,7 @@ class ChartDecorationChildRenderer<T> extends SingleChildRenderObjectWidget {
 }
 
 class _RenderChartDecorationChildren<T> extends RenderShiftedBox {
-  _RenderChartDecorationChildren(this._chartState, this._decoration,
-      [RenderBox? child])
-      : super(child);
+  _RenderChartDecorationChildren(this._chartState, this._decoration, [RenderBox? child]) : super(child);
 
   DecorationPainter _decoration;
   set decorationPainter(DecorationPainter decoration) {
@@ -42,15 +39,22 @@ class _RenderChartDecorationChildren<T> extends RenderShiftedBox {
 
   DecorationPainter get decorationPainter => _decoration;
 
-  ChartState<T?> _chartState;
-  set chartState(ChartState<T?> chartState) {
+  ChartState<T> _chartState;
+  set chartState(ChartState<T> chartState) {
     if (chartState != _chartState) {
       _chartState = chartState;
       markNeedsPaint();
     }
   }
 
-  ChartState<T?> get chartState => _chartState;
+  ChartState<T> get chartState => _chartState;
+
+  bool get _shouldClipDecoration => _decoration.clipToBounds;
+
+  @override
+  Rect get paintBounds {
+    return _shouldClipDecoration ? super.paintBounds : Rect.largest;
+  }
 
   double get _defaultSize => 0;
 
@@ -69,9 +73,7 @@ class _RenderChartDecorationChildren<T> extends RenderShiftedBox {
   @override
   bool get sizedByParent => false;
 
-  Size _computeSize(
-      {required BoxConstraints constraints,
-      required ChildLayouter layoutChild}) {
+  Size _computeSize({required BoxConstraints constraints, required ChildLayouter layoutChild}) {
     if (child != null) {
       final childSize = layoutChild(child!, constraints);
       final double width = max(childSize.width, _defaultSize);
@@ -102,27 +104,37 @@ class _RenderChartDecorationChildren<T> extends RenderShiftedBox {
 
     if (child != null) {
       final childParentData = child!.parentData! as BoxParentData;
-      final offset =
-          _decoration.applyPaintTransform(_chartState, constraints.biggest);
-      childParentData.offset =
-          Alignment.center.alongOffset(size - child!.size as Offset) + offset;
+      final offset = _decoration.applyPaintTransform(_chartState, constraints.biggest);
+      childParentData.offset = Alignment.center.alongOffset(size - child!.size as Offset) + offset;
     }
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    if (child != null) {
-      final childParentData = child!.parentData! as BoxParentData;
-      context.paintChild(child!, childParentData.offset + offset);
+    void paintContent(PaintingContext context, Offset paintOffset) {
+      if (child != null) {
+        final childParentData = child!.parentData! as BoxParentData;
+        context.paintChild(child!, childParentData.offset + paintOffset);
+      }
+
+      final canvas = context.canvas;
+      final position = _decoration.applyPaintTransform(_chartState, constraints.biggest);
+      canvas.save();
+      canvas.translate(position.dx + paintOffset.dx, position.dy + paintOffset.dy);
+      _decoration.draw(context.canvas, size, _chartState);
+      canvas.restore();
     }
 
-    final _canvas = context.canvas;
+    if (_shouldClipDecoration) {
+      context.pushClipRect(
+        needsCompositing,
+        offset,
+        Offset.zero & size,
+        paintContent,
+      );
+      return;
+    }
 
-    final _position =
-        _decoration.applyPaintTransform(_chartState, constraints.biggest);
-    _canvas.save();
-    _canvas.translate(_position.dx, _position.dy);
-    _decoration.draw(context.canvas, size, _chartState);
-    _canvas.restore();
+    paintContent(context, offset);
   }
 }

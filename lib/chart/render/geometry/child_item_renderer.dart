@@ -22,7 +22,7 @@ class ChildChartItemRenderer<T> extends SingleChildRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(BuildContext context, _RenderChildChartItem<T?> renderObject) {
+  void updateRenderObject(BuildContext context, _RenderChildChartItem<T> renderObject) {
     renderObject
       ..state = state
       ..itemOptions = itemOptions

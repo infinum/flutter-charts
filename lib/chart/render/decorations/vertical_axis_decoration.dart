@@ -15,7 +15,7 @@ enum VerticalLegendPosition {
 ///
 /// This can be used if you don't need anything from [HorizontalAxisDecoration], otherwise you might
 /// consider using [GridDecoration]
-class VerticalAxisDecoration extends DecorationPainter {
+class VerticalAxisDecoration<T> extends DecorationPainter<T> {
   /// Constructor for vertical axis decoration
   VerticalAxisDecoration({
     this.showLines = true,
@@ -96,7 +96,7 @@ class VerticalAxisDecoration extends DecorationPainter {
   final AxisValueFromIndex valueFromIndex;
 
   @override
-  Size layoutSize(BoxConstraints constraints, ChartState state) {
+  Size layoutSize(BoxConstraints constraints, ChartState<T> state) {
     return constraints
         .deflate(state.defaultMargin +
             state.defaultPadding.copyWith(
@@ -107,15 +107,19 @@ class VerticalAxisDecoration extends DecorationPainter {
   }
 
   @override
-  Offset applyPaintTransform(ChartState state, Size size) {
+  Offset applyPaintTransform(ChartState<T> state, Size size) {
     return Offset(state.defaultMargin.left + state.defaultPadding.left,
         state.defaultMargin.top + (_endWithChart * state.defaultPadding.top));
   }
 
   @override
-  void draw(Canvas canvas, Size size, ChartState state) {
+  void draw(Canvas canvas, Size size, ChartState<T> state) {
     final _listSize = state.data.listSize;
-    final _itemWidth = (size.width - lineWidth) / _listSize;
+    final _animatedListSize = state.data.animatedListSize;
+    if (_animatedListSize <= 0) {
+      return;
+    }
+    final _itemWidth = (size.width - lineWidth) / _animatedListSize;
 
     final _paint = Paint()
       ..color = lineColor
@@ -210,9 +214,9 @@ class VerticalAxisDecoration extends DecorationPainter {
   }
 
   @override
-  VerticalAxisDecoration animateTo(DecorationPainter endValue, double t) {
-    if (endValue is VerticalAxisDecoration) {
-      return VerticalAxisDecoration._lerp(
+  VerticalAxisDecoration<T> animateTo(DecorationPainter endValue, double t) {
+    if (endValue is VerticalAxisDecoration<T>) {
+      return VerticalAxisDecoration<T>._lerp(
         lineColor: Color.lerp(lineColor, endValue.lineColor, t) ?? endValue.lineColor,
         lineWidth: lerpDouble(lineWidth, endValue.lineWidth, t) ?? endValue.lineWidth,
         axisStep: lerpDouble(axisStep, endValue.axisStep, t) ?? endValue.axisStep,

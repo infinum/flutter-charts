@@ -14,16 +14,15 @@ class ChartRenderer<T> extends MultiChildRenderObjectWidget {
           DecorationsRenderer(chartState.foregroundDecorations, chartState),
         ]);
 
-  final ChartState<T?> chartState;
+  final ChartState<T> chartState;
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return _ChartRenderObject<T?>(chartState);
+    return _ChartRenderObject<T>(chartState);
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, _ChartRenderObject<T?> renderObject) {
+  void updateRenderObject(BuildContext context, _ChartRenderObject<T> renderObject) {
     renderObject.chartState = chartState;
     renderObject.markNeedsLayout();
   }
@@ -37,8 +36,8 @@ class _ChartRenderObject<T> extends RenderBox
         RenderBoxContainerDefaultsMixin<RenderBox, BoxPaneParentData> {
   _ChartRenderObject(this._chartState);
 
-  ChartState<T?> _chartState;
-  set chartState(ChartState<T?> state) {
+  ChartState<T> _chartState;
+  set chartState(ChartState<T> state) {
     if (_chartState != state) {
       _chartState = state;
       markNeedsPaint();
@@ -64,11 +63,8 @@ class _ChartRenderObject<T> extends RenderBox
     while (child != null) {
       final childParentData = child.parentData! as BoxPaneParentData;
       if (child is ChartItemRenderer) {
-        final _size = constraints
-            .deflate(_chartState.defaultPadding + _chartState.defaultMargin)
-            .biggest;
-        childParentData.offset = Offset(
-            _chartState.defaultPadding.left + _chartState.defaultMargin.left,
+        final _size = constraints.deflate(_chartState.defaultPadding + _chartState.defaultMargin).biggest;
+        childParentData.offset = Offset(_chartState.defaultPadding.left + _chartState.defaultMargin.left,
             _chartState.defaultPadding.top + _chartState.defaultMargin.top);
 
         child.layout(BoxConstraints.tight(_size));

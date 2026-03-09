@@ -1,10 +1,9 @@
 part of charts_painter;
 
 class ChartDecorationRenderer<T> extends LeafRenderObjectWidget {
-  ChartDecorationRenderer(this.chartState, this.decorationPainter, {Key? key})
-      : super(key: key);
+  ChartDecorationRenderer(this.chartState, this.decorationPainter, {Key? key}) : super(key: key);
 
-  final ChartState<T?> chartState;
+  final ChartState<T> chartState;
   final DecorationPainter decorationPainter;
 
   @override
@@ -13,8 +12,7 @@ class ChartDecorationRenderer<T> extends LeafRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(
-      BuildContext context, _RenderChartDecoration renderObject) {
+  void updateRenderObject(BuildContext context, _RenderChartDecoration renderObject) {
     renderObject
       ..chartState = chartState
       ..item = decorationPainter;
@@ -36,15 +34,22 @@ class _RenderChartDecoration<T> extends RenderBox {
 
   DecorationPainter get item => _decoration;
 
-  ChartState<T?> _chartState;
-  set chartState(ChartState<T?> chartState) {
+  ChartState<T> _chartState;
+  set chartState(ChartState<T> chartState) {
     if (chartState != _chartState) {
       _chartState = chartState;
       markNeedsPaint();
     }
   }
 
-  ChartState<T?> get chartState => _chartState;
+  ChartState<T> get chartState => _chartState;
+
+  bool get _shouldClipDecoration => _decoration.clipToBounds;
+
+  @override
+  Rect get paintBounds {
+    return _shouldClipDecoration ? super.paintBounds : Rect.largest;
+  }
 
   double get _defaultSize => 0;
 
@@ -80,12 +85,26 @@ class _RenderChartDecoration<T> extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
+    if (_shouldClipDecoration) {
+      context.pushClipRect(
+        needsCompositing,
+        offset,
+        Offset.zero & size,
+        (context, clipOffset) {
+          final canvas = context.canvas;
+          canvas.save();
+          canvas.translate(clipOffset.dx, clipOffset.dy);
+          _decoration.draw(canvas, size, _chartState);
+          canvas.restore();
+        },
+      );
+      return;
+    }
+
     final canvas = context.canvas;
     canvas.save();
     canvas.translate(offset.dx, offset.dy);
-
     _decoration.draw(canvas, size, _chartState);
-
     canvas.restore();
   }
 }

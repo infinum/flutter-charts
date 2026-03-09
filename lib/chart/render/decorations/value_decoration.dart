@@ -9,7 +9,7 @@ double defaultValueForItem(ChartItem item) => item.max ?? 0.0;
 /// Use this only as [ChartState.foregroundDecorations] in order to be visible at all locations
 /// Exact alignment can be set with [alignment]
 @Deprecated('Use [WidgetItemBuilder] instead if you want to decorate chart items with text')
-class ValueDecoration extends DecorationPainter {
+class ValueDecoration<T> extends DecorationPainter<T> {
   /// Constructor for values decoration
   ValueDecoration({
     this.textStyle,
@@ -40,9 +40,9 @@ class ValueDecoration extends DecorationPainter {
   final bool hideZeroValues;
 
   @override
-  DecorationPainter animateTo(DecorationPainter endValue, double t) {
-    if (endValue is ValueDecoration) {
-      return ValueDecoration(
+  DecorationPainter<T> animateTo(DecorationPainter<T> endValue, double t) {
+    if (endValue is ValueDecoration<T>) {
+      return ValueDecoration<T>(
         textStyle: TextStyle.lerp(textStyle, endValue.textStyle, t),
         alignment: Alignment.lerp(alignment, endValue.alignment, t) ?? endValue.alignment,
         listIndex: endValue.listIndex,
@@ -53,8 +53,8 @@ class ValueDecoration extends DecorationPainter {
   }
 
   @override
-  bool isSameType(DecorationPainter other) {
-    if (other is ValueDecoration) {
+  bool isSameType(DecorationPainter<T> other) {
+    if (other is ValueDecoration<T>) {
       return other.valueGenerator == valueGenerator;
     }
 
@@ -62,12 +62,13 @@ class ValueDecoration extends DecorationPainter {
   }
 
   @override
-  void initDecoration(ChartState state) {
+  void initDecoration(ChartState<T> state) {
     super.initDecoration(state);
     assert(state.data.stackSize > listIndex, 'List index is not in the list!\nCheck the `listIndex` you are passing.');
   }
 
-  void _paintText(Canvas canvas, Size size, ChartItem item, double width, double verticalMultiplier, double minValue) {
+  void _paintText(
+      Canvas canvas, Size size, ChartItem<T> item, double width, double verticalMultiplier, double minValue) {
     final _itemMaxValue = valueGenerator(item);
 
     final _maxValuePainter = ValueDecoration.makeTextPainter(
@@ -90,23 +91,26 @@ class ValueDecoration extends DecorationPainter {
   }
 
   @override
-  Size layoutSize(BoxConstraints constraints, ChartState state) {
+  Size layoutSize(BoxConstraints constraints, ChartState<T> state) {
     final _size = (state.defaultPadding + state.defaultMargin).deflateSize(constraints.biggest);
     return _size;
   }
 
   @override
-  Offset applyPaintTransform(ChartState state, Size size) {
+  Offset applyPaintTransform(ChartState<T> state, Size size) {
     return Offset(
         state.defaultPadding.left + state.defaultMargin.left, state.defaultPadding.top + state.defaultMargin.top);
   }
 
   @override
-  void draw(Canvas canvas, Size size, ChartState state) {
+  void draw(Canvas canvas, Size size, ChartState<T> state) {
     final _maxValue = state.data.maxValue - state.data.minValue;
     final _verticalMultiplier = size.height / max(1, _maxValue);
 
-    final _listSize = state.data.listSize;
+    final _listSize = state.data.animatedListSize;
+    if (_listSize <= 0) {
+      return;
+    }
     final _itemWidth = size.width / _listSize;
 
     state.data.sections[listIndex].items.asMap().forEach((index, value) {

@@ -1,18 +1,16 @@
 part of charts_painter;
 
 /// Paints border around the whole chart
-class BorderDecoration extends DecorationPainter {
+class BorderDecoration<T> extends DecorationPainter<T> {
   /// Makes border decoration around the chart
   BorderDecoration({
     double? borderWidth,
     Border? sidesWidth,
     this.color = Colors.black,
     bool endWithChart = false,
-  })  : assert(borderWidth == null || sidesWidth == null,
-            'Can\'t use `borderWidth` and `width`!'),
+  })  : assert(borderWidth == null || sidesWidth == null, 'Can\'t use `borderWidth` and `width`!'),
         _endWithChart = endWithChart ? 1.0 : 0.0,
-        _borderWidth =
-            sidesWidth ?? Border.all(width: borderWidth ?? 2.0, color: color);
+        _borderWidth = sidesWidth ?? Border.all(width: borderWidth ?? 2.0, color: color);
 
   BorderDecoration._lerp({
     required Border borderWidth,
@@ -29,28 +27,20 @@ class BorderDecoration extends DecorationPainter {
   final double _endWithChart;
 
   @override
-  Offset applyPaintTransform(ChartState state, Size size) {
-    return Offset(
-        ((state.defaultMargin.left - marginNeeded().left) +
-                state.defaultPadding.left) *
-            _endWithChart,
-        ((state.defaultMargin.top - marginNeeded().top) +
-                state.defaultPadding.top) *
-            _endWithChart);
+  Offset applyPaintTransform(ChartState<T> state, Size size) {
+    return Offset(((state.defaultMargin.left - marginNeeded().left) + state.defaultPadding.left) * _endWithChart,
+        ((state.defaultMargin.top - marginNeeded().top) + state.defaultPadding.top) * _endWithChart);
   }
 
   @override
-  Size layoutSize(BoxConstraints constraints, ChartState state) {
-    final _size = constraints
-        .deflate(
-            ((state.defaultMargin - marginNeeded()) + state.defaultPadding) *
-                _endWithChart)
-        .biggest;
+  Size layoutSize(BoxConstraints constraints, ChartState<T> state) {
+    final _size =
+        constraints.deflate(((state.defaultMargin - marginNeeded()) + state.defaultPadding) * _endWithChart).biggest;
     return _size;
   }
 
   @override
-  void draw(Canvas canvas, Size size, ChartState state) {
+  void draw(Canvas canvas, Size size, ChartState<T> state) {
     final _paint = Paint()
       ..style = PaintingStyle.stroke
       ..color = color;
@@ -63,8 +53,7 @@ class BorderDecoration extends DecorationPainter {
     _drawLine(
       canvas,
       Offset(0.0, _borderWidth.top.width / 2),
-      Offset(_width + _borderWidth.dimensions.horizontal,
-          _borderWidth.top.width / 2),
+      Offset(_width + _borderWidth.dimensions.horizontal, _borderWidth.top.width / 2),
       _paint,
     );
 
@@ -72,46 +61,27 @@ class BorderDecoration extends DecorationPainter {
     _paint.color = _borderWidth.right.color;
     _drawLine(
         canvas,
+        Offset(_width + _borderWidth.left.width + _borderWidth.right.width / 2, _borderWidth.top.width),
         Offset(_width + _borderWidth.left.width + _borderWidth.right.width / 2,
-            _borderWidth.top.width),
-        Offset(
-            _width + _borderWidth.left.width + _borderWidth.right.width / 2,
-            _height -
-                _borderWidth.dimensions.vertical -
-                _borderWidth.bottom.width),
+            _height - _borderWidth.dimensions.vertical - _borderWidth.bottom.width),
         _paint);
 
     _paint.strokeWidth = _borderWidth.bottom.width;
     _paint.color = _borderWidth.bottom.color;
     _drawLine(
         canvas,
-        Offset(
-            _width + _borderWidth.dimensions.horizontal,
-            _height -
-                _borderWidth.dimensions.vertical -
-                (_borderWidth.bottom.width / 2)),
-        Offset(
-            0.0,
-            _height -
-                _borderWidth.dimensions.vertical -
-                (_borderWidth.bottom.width / 2)),
+        Offset(_width + _borderWidth.dimensions.horizontal,
+            _height - _borderWidth.dimensions.vertical - (_borderWidth.bottom.width / 2)),
+        Offset(0.0, _height - _borderWidth.dimensions.vertical - (_borderWidth.bottom.width / 2)),
         _paint);
 
     _paint.strokeWidth = _borderWidth.left.width;
     _paint.color = _borderWidth.left.color;
     _drawLine(
         canvas,
-        Offset(
-            -_borderWidth.left.width +
-                _borderWidth.dimensions.horizontal -
-                (_borderWidth.left.width / 2),
-            _height -
-                _borderWidth.dimensions.vertical -
-                _borderWidth.bottom.width),
-        Offset(
-            -_borderWidth.left.width +
-                _borderWidth.dimensions.horizontal -
-                (_borderWidth.left.width / 2),
+        Offset(-_borderWidth.left.width + _borderWidth.dimensions.horizontal - (_borderWidth.left.width / 2),
+            _height - _borderWidth.dimensions.vertical - _borderWidth.bottom.width),
+        Offset(-_borderWidth.left.width + _borderWidth.dimensions.horizontal - (_borderWidth.left.width / 2),
             _borderWidth.top.width),
         _paint);
   }
@@ -130,14 +100,12 @@ class BorderDecoration extends DecorationPainter {
   }
 
   @override
-  DecorationPainter animateTo(DecorationPainter endValue, double t) {
-    if (endValue is BorderDecoration) {
-      return BorderDecoration._lerp(
-        borderWidth: Border.lerp(_borderWidth, endValue._borderWidth, t) ??
-            endValue._borderWidth,
+  DecorationPainter<T> animateTo(DecorationPainter<T> endValue, double t) {
+    if (endValue is BorderDecoration<T>) {
+      return BorderDecoration<T>._lerp(
+        borderWidth: Border.lerp(_borderWidth, endValue._borderWidth, t) ?? endValue._borderWidth,
         color: Color.lerp(color, endValue.color, t) ?? endValue.color,
-        endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t) ??
-            endValue._endWithChart,
+        endWithChart: lerpDouble(_endWithChart, endValue._endWithChart, t) ?? endValue._endWithChart,
       );
     }
 

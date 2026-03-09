@@ -8,8 +8,8 @@ class LeafChartItemRenderer<T> extends LeafRenderObjectWidget {
   LeafChartItemRenderer(this.item, this.state, this.itemOptions,
       {required this.sectionOptions, this.itemIndex = 0, required this.drawDataItem});
 
-  final ChartItem<T?> item;
-  final ChartState<T?> state;
+  final ChartItem<T> item;
+  final ChartState<T> state;
   final ItemOptions itemOptions;
   final DrawDataItem drawDataItem;
   final SectionOptions sectionOptions;
@@ -28,7 +28,7 @@ class LeafChartItemRenderer<T> extends LeafRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(BuildContext context, _RenderLeafChartItem<T?> renderObject) {
+  void updateRenderObject(BuildContext context, _RenderLeafChartItem<T> renderObject) {
     renderObject
       ..state = state
       ..itemOptions = itemOptions
