@@ -112,9 +112,11 @@ class CubicBezierPathBuilder implements PathBuilder {
 }
 
 class SmoothCubicBezierPathBuilder implements PathBuilder {
-  const SmoothCubicBezierPathBuilder({this.maxError = 2.0}) : _smoothFactor = 1.0;
+  static const defaultMaxError = 1.0;
 
-  const SmoothCubicBezierPathBuilder._withFactor(this._smoothFactor, [this.maxError = 2.0]);
+  const SmoothCubicBezierPathBuilder({this.maxError = defaultMaxError}) : _smoothFactor = 1.0;
+
+  const SmoothCubicBezierPathBuilder._withFactor(this._smoothFactor, [this.maxError = defaultMaxError]);
 
   /// Maximum allowed distance (in logical pixels) from any original point to
   /// the simplified path. Fewer points are kept when this is larger.
