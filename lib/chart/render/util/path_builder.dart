@@ -10,6 +10,9 @@ abstract class PathBuilder {
   PathBuilder lerp(PathBuilder other, double t);
 }
 
+/// Connects points with straight line segments through every point.
+///
+/// The honest default: it draws exactly the data, with no smoothing.
 class DefaultPathBuilder implements PathBuilder {
   const DefaultPathBuilder();
 
@@ -61,6 +64,11 @@ class DefaultPathBuilder implements PathBuilder {
   }
 }
 
+/// Cheap smooth approximation using horizontal-midpoint control points.
+///
+/// Fast and visually smooth, but the curve can overshoot beyond the data
+/// range between points. Prefer [SmoothCubicBezierPathBuilder] when the line
+/// must stay faithful to the data.
 class CubicBezierPathBuilder implements PathBuilder {
   const CubicBezierPathBuilder() : _lerp = 1.0;
 
@@ -111,15 +119,25 @@ class CubicBezierPathBuilder implements PathBuilder {
   }
 }
 
+/// Monotone cubic (Fritsch–Carlson) spline that passes through every point.
+///
+/// The recommended smooth builder: it interpolates all data points and is
+/// guaranteed not to overshoot the local data range (no spurious peaks or
+/// dips), matching the "monotone" interpolation used by d3, Chart.js and
+/// Apple's Swift Charts. Optional [maxError] decimation is off by default.
 class SmoothCubicBezierPathBuilder implements PathBuilder {
-  static const defaultMaxError = 1.0;
+  static const defaultMaxError = 0.0;
 
   const SmoothCubicBezierPathBuilder({this.maxError = defaultMaxError}) : _smoothFactor = 1.0;
 
   const SmoothCubicBezierPathBuilder._withFactor(this._smoothFactor, [this.maxError = defaultMaxError]);
 
   /// Maximum allowed distance (in logical pixels) from any original point to
-  /// the simplified path. Fewer points are kept when this is larger.
+  /// the simplified path, used for optional Ramer–Douglas–Peucker decimation.
+  ///
+  /// Defaults to `0` (disabled) so the curve passes through every point. Set a
+  /// value greater than `0` to decimate dense datasets for performance — this
+  /// will make the line skip near-collinear points.
   final double maxError;
 
   /// How strong the smoothing effect is.
@@ -194,8 +212,11 @@ class SmoothCubicBezierPathBuilder implements PathBuilder {
 
   /// Ramer–Douglas–Peucker: fewest points such that every original point is
   /// within [maxError] of the simplified path.
+  ///
+  /// Simplification is opt-in: when [maxError] is `0` (the default) every
+  /// original point is kept and the curve passes through all of them.
   List<Offset> _simplifyPoints(List<Offset> points) {
-    if (points.length <= 2) {
+    if (maxError <= 0 || points.length <= 2) {
       return points;
     }
     final epsilon2 = maxError * maxError;
