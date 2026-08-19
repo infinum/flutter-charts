@@ -50,7 +50,7 @@ class DoubleOptionInput extends HookWidget {
                     },
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText1
+                        .bodyMedium
                         ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                 )

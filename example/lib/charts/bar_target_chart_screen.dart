@@ -97,7 +97,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                     showTopHorizontalValue: _showValues,
                     horizontalAxisStep: 1,
                     verticalAxisStep: 1,
-                    textStyle: Theme.of(context).textTheme.caption,
+                    textStyle: Theme.of(context).textTheme.labelMedium,
                     gridColor: Theme.of(context)
                         .colorScheme
                         .primaryContainer
@@ -118,7 +118,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                     legendTarget: targetMax,
                     legendStyle: Theme.of(context)
                         .textTheme
-                        .overline!
+                        .labelSmall!
                         .copyWith(fontSize: 14),
                     padding: EdgeInsets.only(top: -8),
                   ),

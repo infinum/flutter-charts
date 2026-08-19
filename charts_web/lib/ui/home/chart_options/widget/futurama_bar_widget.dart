@@ -57,7 +57,7 @@ class FuturamaBarWidget extends StatelessWidget {
               child: Text(
                 '${item.max?.toStringAsFixed(2)}',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                style: Theme.of(context).textTheme.labelMedium!.copyWith(
                       color: Colors.black87,
                       fontWeight: FontWeight.w700,
                     ),

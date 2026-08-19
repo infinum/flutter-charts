@@ -61,7 +61,7 @@ class ShowList extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
             'Chart types',
-            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 14.0,
                 ),
@@ -73,7 +73,7 @@ class ShowList extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
             'Chart Decorations',
-            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 14.0,
                 ),
@@ -181,7 +181,7 @@ class ShowList extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
             'Chart Interactions',
-            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 14.0,
                 ),
@@ -274,7 +274,7 @@ class ShowList extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
             'Complex charts',
-            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 14.0,
                 ),

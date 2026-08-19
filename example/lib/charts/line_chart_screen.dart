@@ -115,7 +115,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                         showVerticalValues: _showValues,
                         showHorizontalValues: _showValues,
                         horizontalAxisStep: _stack ? 3 : 1,
-                        textStyle: Theme.of(context).textTheme.caption,
+                        textStyle: Theme.of(context).textTheme.labelMedium,
                         gridColor: Theme.of(context)
                             .colorScheme
                             .primaryContainer

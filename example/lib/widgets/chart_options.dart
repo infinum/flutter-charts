@@ -77,7 +77,7 @@ class _ChartOptionsWidgetState extends State<ChartOptionsWidget> {
                 'OPTIONS',
                 style: Theme.of(context)
                     .textTheme
-                    .button!
+                    .labelMedium!
                     .copyWith(color: Theme.of(context).disabledColor),
               ),
             ),

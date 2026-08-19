@@ -4,9 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('Items', () {
     test('Lerp items, min, max', () {
-      final _firstState = ChartData.fromList([BarValue<void>(10)]);
+      final _firstState = ChartData.fromList([ChartItem<void>(10)]);
       final _secondState = ChartData.fromList(
-          [BarValue<void>(10), BarValue<void>(20), BarValue<void>(15)],
+          [ChartItem<void>(10), ChartItem<void>(20), ChartItem<void>(15)],
           axisMin: 10);
 
       expect(_firstState.items[0].length, 1);
@@ -24,9 +24,9 @@ void main() {
     });
 
     test('Animation animates items', () {
-      final _firstState = ChartData.fromList([BarValue<void>(10)]);
+      final _firstState = ChartData.fromList([ChartItem<void>(10)]);
       final _secondState = ChartData.fromList(
-          [BarValue<void>(20), BarValue<void>(10), BarValue<void>(5)]);
+          [ChartItem<void>(20), ChartItem<void>(10), ChartItem<void>(5)]);
 
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
@@ -35,8 +35,8 @@ void main() {
     });
 
     test('Bar -> Bubble animates different type items', () {
-      final _firstState = ChartData.fromList([BarValue<void>(10)]);
-      final _secondState = ChartData.fromList([BubbleValue<void>(20)]);
+      final _firstState = ChartData.fromList([ChartItem<void>(10)]);
+      final _secondState = ChartData.fromList([ChartItem<void>(20, min: 20)]);
 
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
@@ -45,8 +45,8 @@ void main() {
     });
 
     test('Bubble -> Bar animates different type items', () {
-      final _firstState = ChartData.fromList([BubbleValue<void>(10)]);
-      final _secondState = ChartData.fromList([BarValue<void>(20)]);
+      final _firstState = ChartData.fromList([ChartItem<void>(10, min: 10)]);
+      final _secondState = ChartData.fromList([ChartItem<void>(20)]);
 
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
@@ -55,18 +55,18 @@ void main() {
     });
 
     test('Bar -> Candle animates different type items', () {
-      final _firstState = ChartData.fromList([BarValue<void>(10)]);
-      final _secondState = ChartData.fromList([CandleValue<void>(10, 20)]);
+      final _firstState = ChartData.fromList([ChartItem<void>(10)]);
+      final _secondState = ChartData.fromList([ChartItem<void>(20, min: 10)]);
 
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items[0], [CandleValue<void>(5, 15)]);
+      expect(_middleState.items[0], [ChartItem<void>(15, min: 5)]);
     });
 
     test('Candle -> Bar animates different type items', () {
-      final _firstState = ChartData.fromList([CandleValue<void>(10, 20)]);
-      final _secondState = ChartData.fromList([BarValue<void>(10)]);
+      final _firstState = ChartData.fromList([ChartItem<void>(20, min: 10)]);
+      final _secondState = ChartData.fromList([ChartItem<void>(10)]);
 
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
@@ -75,18 +75,18 @@ void main() {
     });
 
     test('Bubble -> Candle animates different type items', () {
-      final _firstState = ChartData.fromList([BubbleValue<void>(10)]);
-      final _secondState = ChartData.fromList([CandleValue<void>(10, 20)]);
+      final _firstState = ChartData.fromList([ChartItem<void>(10, min: 10)]);
+      final _secondState = ChartData.fromList([ChartItem<void>(20, min: 10)]);
 
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
       // Animating to second state, so second item type has to be used
-      expect(_middleState.items[0], [CandleValue<void>(10, 15)]);
+      expect(_middleState.items[0], [ChartItem<void>(15, min: 10)]);
     });
 
     test('Candle -> Bubble animates different type items', () {
-      final _firstState = ChartData.fromList([CandleValue<void>(10, 20)]);
-      final _secondState = ChartData.fromList([BubbleValue<void>(10)]);
+      final _firstState = ChartData.fromList([ChartItem<void>(20, min: 10)]);
+      final _secondState = ChartData.fromList([ChartItem<void>(10, min: 10)]);
 
       final _middleState = ChartData.lerp<void>(_firstState, _secondState, 0.5);
 
@@ -100,7 +100,7 @@ void main() {
       final _firstState = ChartState<void>(
           data: ChartData.fromList(
             [2, 4, 6, 3, 5, 1]
-                .map((e) => BarValue<void>(e.toDouble()))
+                .map((e) => ChartItem<void>(e.toDouble()))
                 .toList(),
           ),
           itemOptions: BarItemOptions(),
@@ -113,7 +113,7 @@ void main() {
       final _secondState = ChartState<void>(
           data: ChartData.fromList(
             [2, 4, 6, 3, 5, 1]
-                .map((e) => BarValue<void>(e.toDouble()))
+                .map((e) => ChartItem<void>(e.toDouble()))
                 .toList(),
           ),
           itemOptions: BarItemOptions(),
@@ -138,7 +138,7 @@ void main() {
       final _firstState = ChartState<void>(
           data: ChartData.fromList(
             [2, 4, 6, 3, 5, 1]
-                .map((e) => BarValue<void>(e.toDouble()))
+                .map((e) => ChartItem<void>(e.toDouble()))
                 .toList(),
           ),
           itemOptions: BarItemOptions(),
@@ -151,7 +151,7 @@ void main() {
       final _secondState = ChartState<void>(
           data: ChartData.fromList(
             [2, 4, 6, 3, 5, 1]
-                .map((e) => BarValue<void>(e.toDouble()))
+                .map((e) => ChartItem<void>(e.toDouble()))
                 .toList(),
           ),
           itemOptions: BarItemOptions(),

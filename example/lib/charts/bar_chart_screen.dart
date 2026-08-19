@@ -104,7 +104,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
                       const EdgeInsets.symmetric(vertical: 4.0),
                   horizontalValuesPadding:
                       const EdgeInsets.symmetric(horizontal: 4.0),
-                  textStyle: Theme.of(context).textTheme.caption,
+                  textStyle: Theme.of(context).textTheme.labelMedium,
                   gridColor: Theme.of(context)
                       .colorScheme
                       .primaryContainer
@@ -132,7 +132,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   alignment: Alignment.bottomCenter,
                   textStyle: Theme.of(context)
                       .textTheme
-                      .button!
+                      .labelMedium!
                       .copyWith(color: Theme.of(context).colorScheme.onPrimary),
                 ),
                 BorderDecoration(endWithChart: true)

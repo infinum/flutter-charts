@@ -126,7 +126,7 @@ class _ScrollableVisibleItemsChartScreenState
                           .withOpacity(0.2),
                       textStyle: Theme.of(context)
                           .textTheme
-                          .caption!
+                          .labelMedium!
                           .copyWith(fontSize: 13.0),
                     ),
                   ],

@@ -153,7 +153,7 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .subtitle1!
+                                    .bodySmall!
                                     .copyWith(
                                       color: Colors.black87,
                                       fontWeight: FontWeight.w700,
@@ -178,7 +178,7 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
                       verticalLegendPosition: _legendOnBottom
                           ? VerticalLegendPosition.bottom
                           : VerticalLegendPosition.top,
-                      textStyle: Theme.of(context).textTheme.caption,
+                      textStyle: Theme.of(context).textTheme.labelMedium,
                       gridColor: Theme.of(context)
                           .colorScheme
                           .primaryContainer

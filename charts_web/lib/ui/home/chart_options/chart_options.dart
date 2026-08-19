@@ -19,7 +19,7 @@ class ChartOptions extends HookConsumerWidget {
         children: [
           Text(
             'Welcome to charts_painter playground. Here we exposed some options to see what kind of charts you can build. Make sure to check showcase for more examples.',
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: 16),
           CupertinoButton.filled(

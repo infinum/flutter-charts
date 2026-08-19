@@ -131,7 +131,7 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                     verticalLegendPosition: _legendOnBottom
                         ? VerticalLegendPosition.bottom
                         : VerticalLegendPosition.top,
-                    textStyle: Theme.of(context).textTheme.caption,
+                    textStyle: Theme.of(context).textTheme.labelMedium,
                     gridColor: Theme.of(context)
                         .colorScheme
                         .primaryContainer
@@ -142,29 +142,38 @@ class _MultiBarChartScreenState extends State<MultiBarChartScreen> {
                   BorderDecoration(),
                   ValueDecoration(
                     alignment: Alignment.bottomCenter,
-                    textStyle: Theme.of(context).textTheme.button!.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onPrimary
-                            .withOpacity(_stackItems ? 1.0 : 0.0)),
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .labelMedium!
+                        .copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimary
+                                .withOpacity(_stackItems ? 1.0 : 0.0)),
                   ),
                   ValueDecoration(
                     listIndex: 1,
                     alignment: Alignment.bottomCenter,
-                    textStyle: Theme.of(context).textTheme.button!.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSecondary
-                            .withOpacity(_stackItems ? 1.0 : 0.0)),
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .labelMedium!
+                        .copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondary
+                                .withOpacity(_stackItems ? 1.0 : 0.0)),
                   ),
                   ValueDecoration(
                     listIndex: 2,
                     alignment: Alignment.bottomCenter,
-                    textStyle: Theme.of(context).textTheme.button!.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onPrimary
-                            .withOpacity(_stackItems ? 1.0 : 0.0)),
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .labelMedium!
+                        .copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimary
+                                .withOpacity(_stackItems ? 1.0 : 0.0)),
                   ),
                 ],
               ),
