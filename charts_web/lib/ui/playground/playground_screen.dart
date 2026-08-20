@@ -14,12 +14,13 @@ class PlaygroundScreen extends ConsumerWidget {
   static const Key codePaneKey = Key('playground.code');
 
   static const double _codeWidth = 420;
+  static const double _handleWidth = 10;
   static const double _compactChartHeight = 320;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final showCode = ref.watch(codePanelVisibleProvider);
-    final optionsWidth = ref.watch(optionsPaneWidthProvider);
+    final requestedWidth = ref.watch(optionsPaneWidthProvider);
 
     final options = SingleChildScrollView(
       key: optionsPaneKey,
@@ -27,10 +28,25 @@ class PlaygroundScreen extends ConsumerWidget {
       child: const OptionsPanel(),
     );
 
-    return switch (context.breakpoint) {
-      AppBreakpoint.expanded => Row(
+    return LayoutBuilder(builder: (context, constraints) {
+      // The pane opens fully extended, so on a narrower window it has to give
+      // ground rather than crush the chart.
+      double fit(double reserved) => requestedWidth.clamp(
+            kMinOptionsWidth,
+            (constraints.maxWidth - reserved).clamp(
+              kMinOptionsWidth,
+              kMaxOptionsWidth,
+            ),
+          );
+
+      return switch (context.breakpoint) {
+        AppBreakpoint.expanded => Row(
           children: [
-            SizedBox(width: optionsWidth, child: options),
+            SizedBox(
+                width: fit(_handleWidth +
+                    kMinChartWidth +
+                    (showCode ? _codeWidth : 0)),
+                child: options),
             const PaneDragHandle(),
             const Expanded(child: ChartStage()),
             if (showCode)
@@ -41,16 +57,17 @@ class PlaygroundScreen extends ConsumerWidget {
               ),
           ],
         ),
-      AppBreakpoint.medium => Row(
+        AppBreakpoint.medium => Row(
           children: [
-            SizedBox(width: optionsWidth, child: options),
+            SizedBox(
+                width: fit(_handleWidth + kMinChartWidth), child: options),
             const PaneDragHandle(),
             Expanded(
               child: ChartStage(onToggleCode: () => _showCodeSheet(context)),
             ),
           ],
         ),
-      AppBreakpoint.compact => Column(
+        AppBreakpoint.compact => Column(
           children: [
             SizedBox(
               height: _compactChartHeight,
@@ -59,7 +76,8 @@ class PlaygroundScreen extends ConsumerWidget {
             Expanded(child: options),
           ],
         ),
-    };
+      };
+    });
   }
 
   void _showCodeSheet(BuildContext context) {

@@ -3,7 +3,14 @@ import 'package:material_ui/material_ui.dart';
 
 const double kMinOptionsWidth = 300;
 const double kMaxOptionsWidth = 720;
-const double kDefaultOptionsWidth = 400;
+
+/// The app opens with the options pane fully extended.
+const double kDefaultOptionsWidth = kMaxOptionsWidth;
+
+/// The chart never gets squeezed below this, however wide the options pane is
+/// set. On a narrow window the stored width is clamped for layout only, so
+/// widening the window restores the pane to its full size.
+const double kMinChartWidth = 360;
 
 /// Width of the playground's options pane, dragged by the user.
 final optionsPaneWidthProvider =

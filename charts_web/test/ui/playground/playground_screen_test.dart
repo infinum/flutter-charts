@@ -2,6 +2,7 @@ import 'package:charts_painter/chart.dart';
 import 'package:charts_web/theme/app_theme.dart';
 import 'package:charts_web/ui/playground/chart_stage.dart';
 import 'package:charts_web/ui/playground/playground_screen.dart';
+import 'package:charts_web/ui/playground/resizable_pane.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -45,5 +46,29 @@ void main() {
         tester.getTopLeft(find.byKey(PlaygroundScreen.optionsPaneKey));
 
     expect(chart.dy, lessThan(options.dy));
+  });
+
+  testWidgets('the options pane opens fully extended on a wide window',
+      (tester) async {
+    await _pump(tester, const Size(1900, 1200));
+
+    final width =
+        tester.getSize(find.byKey(PlaygroundScreen.optionsPaneKey)).width;
+
+    expect(width, kMaxOptionsWidth);
+  });
+
+  testWidgets('a narrow window shrinks the pane rather than the chart',
+      (tester) async {
+    // 900px cannot fit a 720px pane plus a usable chart.
+    await _pump(tester, const Size(900, 900));
+
+    final width =
+        tester.getSize(find.byKey(PlaygroundScreen.optionsPaneKey)).width;
+
+    expect(width, lessThan(kMaxOptionsWidth));
+    expect(width, greaterThanOrEqualTo(kMinOptionsWidth));
+    expect(tester.getSize(find.byType(ChartStage)).width,
+        greaterThanOrEqualTo(kMinChartWidth - 1));
   });
 }

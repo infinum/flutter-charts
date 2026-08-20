@@ -5,9 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
-Future<ProviderContainer> _pump(WidgetTester tester) async {
+Future<ProviderContainer> _pump(WidgetTester tester, {double? startWidth}) async {
   final container = ProviderContainer();
   addTearDown(container.dispose);
+
+  if (startWidth != null) {
+    container.read(optionsPaneWidthProvider.notifier).state = startWidth;
+  }
 
   await tester.pumpWidget(UncontrolledProviderScope(
     container: container,
@@ -25,7 +29,9 @@ Future<ProviderContainer> _pump(WidgetTester tester) async {
 
 void main() {
   testWidgets('dragging the handle widens the options pane', (tester) async {
-    final container = await _pump(tester);
+    // The pane opens fully extended, so start narrower to leave room to grow.
+    const start = 400.0;
+    final container = await _pump(tester, startWidth: start);
 
     await tester.drag(find.byType(PaneDragHandle), const Offset(80, 0));
     await tester.pumpAndSettle();
@@ -34,10 +40,15 @@ void main() {
     // so the pane grows by slightly less than the gesture distance.
     expect(
       container.read(optionsPaneWidthProvider),
-      closeTo(kDefaultOptionsWidth + 80, kDragSlopDefault + 1),
+      closeTo(start + 80, kDragSlopDefault + 1),
     );
-    expect(container.read(optionsPaneWidthProvider),
-        greaterThan(kDefaultOptionsWidth));
+    expect(container.read(optionsPaneWidthProvider), greaterThan(start));
+  });
+
+  testWidgets('the pane opens fully extended', (tester) async {
+    final container = await _pump(tester);
+
+    expect(container.read(optionsPaneWidthProvider), kMaxOptionsWidth);
   });
 
   testWidgets('the width is clamped at both ends', (tester) async {
@@ -53,9 +64,9 @@ void main() {
   });
 
   testWidgets('double-click resets the width', (tester) async {
-    final container = await _pump(tester);
+    final container = await _pump(tester, startWidth: 400);
 
-    await tester.drag(find.byType(PaneDragHandle), const Offset(120, 0));
+    await tester.drag(find.byType(PaneDragHandle), const Offset(-60, 0));
     await tester.pumpAndSettle();
     expect(container.read(optionsPaneWidthProvider),
         isNot(kDefaultOptionsWidth));
