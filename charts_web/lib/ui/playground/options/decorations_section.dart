@@ -48,7 +48,8 @@ class DecorationsSection extends ConsumerWidget {
             _AddDecorationTile(
               name: 'Vertical axis',
               image: Assets.png.generalVerticalDecorationGolden.path,
-              onPressed: () => presenter.addDecoration(VerticalAxisDecoration()),
+              onPressed: () =>
+                  presenter.addDecoration(VerticalAxisDecoration()),
             ),
             _AddDecorationTile(
               name: 'Widget',

@@ -37,19 +37,21 @@ class ChartStage extends ConsumerWidget {
                   label: const Text('Randomize'),
                   onPressed: () => _randomize(presenter),
                 ),
+                const SizedBox(width: 8),
                 TextButton.icon(
                   icon: const Icon(Icons.restart_alt, size: 18),
-                  label: Text(appliedEntry == null
-                      ? 'Reset'
-                      : 'Reset to example'),
+                  label:
+                      Text(appliedEntry == null ? 'Reset' : 'Reset to example'),
                   onPressed: () => _reset(ref, appliedEntry),
                 ),
-                if (onToggleCode != null)
+                if (onToggleCode != null) ...[
+                  const SizedBox(width: 8),
                   TextButton.icon(
                     icon: const Icon(Icons.code, size: 18),
                     label: const Text('Dart source'),
                     onPressed: onToggleCode,
                   ),
+                ],
               ],
             ),
           ),
@@ -89,9 +91,8 @@ class ChartStage extends ConsumerWidget {
 
     if (appliedEntryId == null) return;
 
-    final entry = galleryEntries
-        .where((entry) => entry.id == appliedEntryId)
-        .firstOrNull;
+    final entry =
+        galleryEntries.where((entry) => entry.id == appliedEntryId).firstOrNull;
     entry?.applyToPlayground(ref);
   }
 

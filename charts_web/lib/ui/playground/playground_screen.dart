@@ -41,41 +41,41 @@ class PlaygroundScreen extends ConsumerWidget {
 
       return switch (context.breakpoint) {
         AppBreakpoint.expanded => Row(
-          children: [
-            SizedBox(
-                width: fit(_handleWidth +
-                    kMinChartWidth +
-                    (showCode ? _codeWidth : 0)),
-                child: options),
-            const PaneDragHandle(),
-            const Expanded(child: ChartStage()),
-            if (showCode)
-              const SizedBox(
-                key: codePaneKey,
-                width: _codeWidth,
-                child: CodePanel(),
-              ),
-          ],
-        ),
+            children: [
+              SizedBox(
+                  width: fit(_handleWidth +
+                      kMinChartWidth +
+                      (showCode ? _codeWidth : 0)),
+                  child: options),
+              const PaneDragHandle(),
+              const Expanded(child: ChartStage()),
+              if (showCode)
+                const SizedBox(
+                  key: codePaneKey,
+                  width: _codeWidth,
+                  child: CodePanel(),
+                ),
+            ],
+          ),
         AppBreakpoint.medium => Row(
-          children: [
-            SizedBox(
-                width: fit(_handleWidth + kMinChartWidth), child: options),
-            const PaneDragHandle(),
-            Expanded(
-              child: ChartStage(onToggleCode: () => _showCodeSheet(context)),
-            ),
-          ],
-        ),
+            children: [
+              SizedBox(
+                  width: fit(_handleWidth + kMinChartWidth), child: options),
+              const PaneDragHandle(),
+              Expanded(
+                child: ChartStage(onToggleCode: () => _showCodeSheet(context)),
+              ),
+            ],
+          ),
         AppBreakpoint.compact => Column(
-          children: [
-            SizedBox(
-              height: _compactChartHeight,
-              child: ChartStage(onToggleCode: () => _showCodeSheet(context)),
-            ),
-            Expanded(child: options),
-          ],
-        ),
+            children: [
+              SizedBox(
+                height: _compactChartHeight,
+                child: ChartStage(onToggleCode: () => _showCodeSheet(context)),
+              ),
+              Expanded(child: options),
+            ],
+          ),
       };
     });
   }

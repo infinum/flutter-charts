@@ -73,13 +73,15 @@ class DecorationsGrid extends HookConsumerWidget {
             fallback: 1,
             onChanged: presenter.updateVerticalAxisStep,
           ),
-          NumberField(
-            label: 'Text scale',
-            value: presenter.textScale,
-            step: 0.1,
-            fallback: 1,
-            onChanged: presenter.updateTextScale,
-          ),
+          // Only affects drawn values, so it is hidden until there are some.
+          if (presenter.showHorizontalValues || presenter.showVerticalValues)
+            NumberField(
+              label: 'Text scale',
+              value: presenter.textScale,
+              step: 0.1,
+              fallback: 1,
+              onChanged: presenter.updateTextScale,
+            ),
           LabeledField(
             label: 'Grid colour',
             child: ColorSwatchButton(

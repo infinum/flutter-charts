@@ -31,11 +31,11 @@ class DecorationHorizontalAxisPresenter extends ChangeNotifier
   double lineWidth = 1.0;
   double axisStep = 1.0;
   double textScale = 1.2;
+
   /// Null follows the theme; set means the user picked a colour.
   Color? lineColorOverride;
 
-  Color get lineColor =>
-      lineColorOverride ?? _ref.read(chartGridColorProvider);
+  Color get lineColor => lineColorOverride ?? _ref.read(chartGridColorProvider);
   TextAlign valuesAlign = TextAlign.end;
   EdgeInsets valuesPadding = EdgeInsets.zero;
   HorizontalLegendPosition legendPosition = HorizontalLegendPosition.end;

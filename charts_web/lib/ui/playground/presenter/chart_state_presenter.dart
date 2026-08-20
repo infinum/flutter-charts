@@ -199,6 +199,28 @@ class ChartStatePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Null clears the bound entirely: `ItemOptions` treats an unset width as
+  /// "no limit", which zero does not express.
+  void updateMinBarWidthOrClear(double? value) {
+    if (value == null) {
+      minBarWidth = null;
+      notifyListeners();
+      return;
+    }
+
+    updateMinBarWidth(value);
+  }
+
+  void updateMaxBarWidthOrClear(double? value) {
+    if (value == null) {
+      maxBarWidth = null;
+      notifyListeners();
+      return;
+    }
+
+    updateMaxBarWidth(value);
+  }
+
   void updateMaxBarWidth(double newMaxBarWidth) {
     maxBarWidth = newMaxBarWidth.clamp(0.0, double.infinity);
 
@@ -371,8 +393,8 @@ class _ValueLabelItem extends StatelessWidget {
             child: DecoratedBox(
               decoration: BoxDecoration(
                 color: color,
-                borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(4)),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(4)),
               ),
               child: const SizedBox.expand(),
             ),

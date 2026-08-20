@@ -1,9 +1,12 @@
 import 'package:charts_web/ui/common/dialog/border_dialog.dart';
 import 'package:charts_web/ui/common/dialog/border_radius_dialog.dart';
 import 'package:charts_web/ui/common/dialog/gradient_dialog.dart';
+import 'package:charts_web/ui/design/color_swatch_button.dart';
 import 'package:charts_web/ui/design/edge_insets_field.dart';
 import 'package:charts_web/ui/design/labeled_field.dart';
 import 'package:charts_web/ui/design/number_field.dart';
+import 'package:charts_web/ui/design/optional_number_field.dart';
+import 'package:charts_web/ui/common/dialog/color_picker_dialog.dart';
 import 'package:charts_web/ui/design/section_card.dart';
 import 'package:charts_web/ui/design/segmented_choice.dart';
 import 'package:charts_web/ui/playground/presenter/chart_state_presenter.dart';
@@ -75,25 +78,29 @@ class ItemOptionsSection extends ConsumerWidget {
         // WidgetItemOptions has no padding or startPosition, but does take
         // the width bounds.
         if (isGeometry || painter == SelectedPainter.widget) ...[
-          NumberField(
+          OptionalNumberField(
             label: 'Min item width',
+            helper: 'Unset means no lower limit.',
             value: presenter.minBarWidth,
             step: 2,
             fallback: 20,
-            onChanged: presenter.updateMinBarWidth,
+            onChanged: presenter.updateMinBarWidthOrClear,
           ),
-          NumberField(
+          OptionalNumberField(
             label: 'Max item width',
+            helper: 'Unset means no upper limit.',
             value: presenter.maxBarWidth,
             step: 2,
             fallback: 30,
-            onChanged: presenter.updateMaxBarWidth,
+            onChanged: presenter.updateMaxBarWidthOrClear,
           ),
         ],
         if (isGeometry) ...[
           EdgeInsetsField(
             label: 'Item padding',
-            helper: 'Space around each item inside its slot.',
+            helper: 'Space either side of each item. The library only reads '
+                'the horizontal sides.',
+            horizontalOnly: true,
             value: presenter.chartItemPadding,
             onChanged: presenter.updateChartItemPadding,
           ),
@@ -111,7 +118,9 @@ class ItemOptionsSection extends ConsumerWidget {
           if (!presenter.stackMultipleValues)
             EdgeInsetsField(
               label: 'Group padding',
-              helper: 'Space around each series within a group.',
+              helper: 'Space either side of each series in a group. The '
+                  'library only reads the horizontal sides.',
+              horizontalOnly: true,
               value: presenter.multiValuePadding,
               onChanged: presenter.updateMultiValuePadding,
             ),
@@ -148,75 +157,124 @@ class _PerSeriesOptions extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final presenter = ref.watch(chartStatePresenter);
+    final border = presenter.itemBorderSides[index];
+    final gradient = presenter.gradient[index];
+    final radius = presenter.barBorderRadius[index];
 
     return LabeledField(
       label: 'Series ${index + 1} style',
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Identity marker, not a control: colour is edited in the Data
-          // section, so this swatch only says which series the row belongs to.
-          Container(
-            width: 12,
-            height: 28,
-            decoration: BoxDecoration(
-              color: presenter.listColors[index],
-              borderRadius: BorderRadius.circular(4),
-            ),
+          Row(
+            children: [
+              ColorSwatchButton(
+                color: presenter.listColors[index],
+                tooltip: 'Series colour',
+                onPressed: () async {
+                  final color = await ColorPickerDialog.show(
+                    context,
+                    presenter.listColors[index],
+                  );
+                  if (color != null) presenter.updateListColor(color, index);
+                },
+              ),
+              const SizedBox(width: 12),
+              Text('Colour', style: Theme.of(context).textTheme.bodyMedium),
+            ],
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                OutlinedButton(
-                  onPressed: () async {
-                    final border = await BorderSideDialog.show(
-                      context,
-                      presenter.itemBorderSides[index],
-                      presenter.itemBorderSides[index].color,
-                    );
-                    if (border != null) {
-                      presenter.updateItemBorderSide(border, index);
-                    }
-                  },
-                  child: const Text('Border'),
-                ),
-                OutlinedButton(
-                  onPressed: () async {
-                    final current = presenter.gradient[index] ??
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: [
+              _ClearableAction(
+                label: 'Border',
+                isSet: border != BorderSide.none,
+                onPressed: () async {
+                  final updated = await BorderSideDialog.show(
+                      context, border, border.color);
+                  if (updated != null) {
+                    presenter.updateItemBorderSide(updated, index);
+                  }
+                },
+                onClear: () =>
+                    presenter.updateItemBorderSide(BorderSide.none, index),
+              ),
+              _ClearableAction(
+                label: 'Gradient',
+                isSet: gradient != null,
+                onPressed: () async {
+                  final updated = await LinearGradientPickerDialog.show(
+                    context,
+                    gradient ??
                         LinearGradient(colors: [
                           presenter.listColors[index],
                           Colors.black,
-                        ]);
-                    final gradient = await LinearGradientPickerDialog.show(
-                      context,
-                      current,
-                      onResetGradient: () =>
-                          presenter.updateGradient(null, index),
-                    );
-                    if (gradient != null) {
-                      presenter.updateGradient(gradient, index);
+                        ]),
+                    onResetGradient: () =>
+                        presenter.updateGradient(null, index),
+                  );
+                  if (updated != null) presenter.updateGradient(updated, index);
+                },
+                onClear: () => presenter.updateGradient(null, index),
+              ),
+              if (presenter.selectedPainter == SelectedPainter.bar)
+                _ClearableAction(
+                  label: 'Radius',
+                  isSet: radius != BorderRadius.zero,
+                  onPressed: () async {
+                    final updated =
+                        await BorderRadiusDialog.show(context, radius);
+                    if (updated != null) {
+                      presenter.updateBarBorderRadius(updated, index);
                     }
                   },
-                  child: const Text('Gradient'),
+                  onClear: () =>
+                      presenter.updateBarBorderRadius(BorderRadius.zero, index),
                 ),
-                if (presenter.selectedPainter == SelectedPainter.bar)
-                  OutlinedButton(
-                    onPressed: () async {
-                      final radius = await BorderRadiusDialog.show(
-                          context, presenter.barBorderRadius[index]);
-                      if (radius != null) {
-                        presenter.updateBarBorderRadius(radius, index);
-                      }
-                    },
-                    child: const Text('Radius'),
-                  ),
-              ],
-            ),
+            ],
           ),
         ],
       ),
+    );
+  }
+}
+
+/// An option button that shows whether it holds a value, with a way to put it
+/// back. Border, gradient and radius were all one-way once set: the only route
+/// back was through the dialog, and only the gradient dialog offered one.
+class _ClearableAction extends StatelessWidget {
+  const _ClearableAction({
+    required this.label,
+    required this.isSet,
+    required this.onPressed,
+    required this.onClear,
+  });
+
+  final String label;
+  final bool isSet;
+  final VoidCallback onPressed;
+  final VoidCallback onClear;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!isSet) {
+      return OutlinedButton(onPressed: onPressed, child: Text(label));
+    }
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        FilledButton.tonal(onPressed: onPressed, child: Text(label)),
+        const SizedBox(width: 4),
+        IconButton(
+          tooltip: 'Clear $label',
+          visualDensity: VisualDensity.compact,
+          icon: const Icon(Icons.close, size: 16),
+          onPressed: onClear,
+        ),
+      ],
     );
   }
 }

@@ -33,11 +33,11 @@ class DecorationGridPresenter extends ChangeNotifier
   double horizontalAxisStep = 1.0;
   double verticalAxisStep = 1.0;
   double textScale = 1.0;
+
   /// Null follows the theme; set means the user picked a colour.
   Color? gridColorOverride;
 
-  Color get gridColor =>
-      gridColorOverride ?? _ref.read(chartGridColorProvider);
+  Color get gridColor => gridColorOverride ?? _ref.read(chartGridColorProvider);
 
   void updateShowHorizontalGrid(bool value) {
     showHorizontalGrid = value;

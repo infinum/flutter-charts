@@ -11,12 +11,17 @@ class EdgeInsetsField extends StatelessWidget {
     required this.value,
     required this.onChanged,
     this.helper,
+    this.horizontalOnly = false,
   });
 
   final String label;
   final String? helper;
   final EdgeInsets value;
   final ValueChanged<EdgeInsets> onChanged;
+
+  /// Some insets are only read horizontally by the library, so offering top
+  /// and bottom would be offering controls that do nothing.
+  final bool horizontalOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -31,24 +36,26 @@ class EdgeInsetsField extends StatelessWidget {
             step: 2,
             onChanged: (side) => onChanged(value.copyWith(left: side)),
           ),
-          NumberField(
-            label: 'Top',
-            value: value.top,
-            step: 2,
-            onChanged: (side) => onChanged(value.copyWith(top: side)),
-          ),
+          if (!horizontalOnly)
+            NumberField(
+              label: 'Top',
+              value: value.top,
+              step: 2,
+              onChanged: (side) => onChanged(value.copyWith(top: side)),
+            ),
           NumberField(
             label: 'Right',
             value: value.right,
             step: 2,
             onChanged: (side) => onChanged(value.copyWith(right: side)),
           ),
-          NumberField(
-            label: 'Bottom',
-            value: value.bottom,
-            step: 2,
-            onChanged: (side) => onChanged(value.copyWith(bottom: side)),
-          ),
+          if (!horizontalOnly)
+            NumberField(
+              label: 'Bottom',
+              value: value.bottom,
+              step: 2,
+              onChanged: (side) => onChanged(value.copyWith(bottom: side)),
+            ),
         ],
       ),
     );

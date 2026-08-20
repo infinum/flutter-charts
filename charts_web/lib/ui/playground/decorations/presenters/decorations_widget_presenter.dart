@@ -51,19 +51,21 @@ class DecorationWidgetPresenter extends ChangeNotifier
   @override
   WidgetDecoration buildDecoration() {
     if (type == 0) {
-      return WidgetDecoration(margin: margin, widgetDecorationBuilder:
-          (context, chartState, itemWidth, verticalMultiplier) {
-        return Stack(
-          children: [
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: verticalMultiplier * targetValue,
-              child: Container(color: Colors.blue, height: 2),
-            ),
-          ],
-        );
-      });
+      return WidgetDecoration(
+          margin: margin,
+          widgetDecorationBuilder:
+              (context, chartState, itemWidth, verticalMultiplier) {
+            return Stack(
+              children: [
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: verticalMultiplier * targetValue,
+                  child: Container(color: Colors.blue, height: 2),
+                ),
+              ],
+            );
+          });
     } else if (type == 1) {
       return WidgetDecoration(
           widgetDecorationBuilder:
@@ -89,21 +91,24 @@ class DecorationWidgetPresenter extends ChangeNotifier
           },
           margin: margin);
     } else if (type == 2) {
-      return WidgetDecoration(margin: margin, widgetDecorationBuilder:
-          (context, chartState, itemWidth, verticalMultiplier) {
-        return Padding(
-          padding: EdgeInsets.only(top: (targetValue + 2) * verticalMultiplier),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.blue.withValues(alpha: 0.1),
-              border: Border.all(color: Colors.blue, width: 2),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            width: double.infinity,
-            height: verticalMultiplier * targetValue,
-          ),
-        );
-      });
+      return WidgetDecoration(
+          margin: margin,
+          widgetDecorationBuilder:
+              (context, chartState, itemWidth, verticalMultiplier) {
+            return Padding(
+              padding:
+                  EdgeInsets.only(top: (targetValue + 2) * verticalMultiplier),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.blue.withValues(alpha: 0.1),
+                  border: Border.all(color: Colors.blue, width: 2),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                width: double.infinity,
+                height: verticalMultiplier * targetValue,
+              ),
+            );
+          });
     } else if (type == 3) {
       return WidgetDecoration(
           widgetDecorationBuilder:
@@ -117,35 +122,38 @@ class DecorationWidgetPresenter extends ChangeNotifier
           },
           margin: margin);
     } else if (type == 4) {
-      return WidgetDecoration(margin: margin, widgetDecorationBuilder:
-          (context, chartState, itemWidth, verticalMultiplier) {
-        return Padding(
-          padding: EdgeInsets.only(top: (targetValue + 2) * verticalMultiplier),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Material(
-              color: Colors.blue.withValues(alpha: 0.1),
-              child: InkWell(
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('Thanks for clicking'),
-                    duration: kThemeAnimationDuration,
-                  ));
-                },
-                child: Container(
-                  width: double.infinity,
-                  height: verticalMultiplier * targetValue,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blue, width: 2),
-                    borderRadius: BorderRadius.circular(16),
+      return WidgetDecoration(
+          margin: margin,
+          widgetDecorationBuilder:
+              (context, chartState, itemWidth, verticalMultiplier) {
+            return Padding(
+              padding:
+                  EdgeInsets.only(top: (targetValue + 2) * verticalMultiplier),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Material(
+                  color: Colors.blue.withValues(alpha: 0.1),
+                  child: InkWell(
+                    onTap: () {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Thanks for clicking'),
+                        duration: kThemeAnimationDuration,
+                      ));
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: verticalMultiplier * targetValue,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blue, width: 2),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const Center(child: Text('Click me')),
+                    ),
                   ),
-                  child: const Center(child: Text('Click me')),
                 ),
               ),
-            ),
-          ),
-        );
-      });
+            );
+          });
     } else {
       throw 'Unknown type $type';
     }
@@ -162,11 +170,12 @@ class DecorationWidgetPresenter extends ChangeNotifier
   @override
   void writeDecorationSource(SourceWriter writer) {
     writer.open('WidgetDecoration(');
-    writer.line(
-        '// This playground draws a ${_exampleNames[type]} at value '
+    writer.line('// This playground draws a ${_exampleNames[type]} at value '
         '${doubleLiteral(targetValue)} here.');
-    writer.line('// A widget decoration can return any widget; the demo builds');
-    writer.line('// are in charts_web/lib/ui/playground/decorations/presenters/');
+    writer
+        .line('// A widget decoration can return any widget; the demo builds');
+    writer
+        .line('// are in charts_web/lib/ui/playground/decorations/presenters/');
     writer.line('// decorations_widget_presenter.dart');
     writer.open(
         'widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {');

@@ -65,13 +65,17 @@ class DecorationsVerticalAxis extends HookConsumerWidget {
             fallback: 1,
             onChanged: presenter.updateAxisStep,
           ),
-          NumberField(
-            label: 'Text scale',
-            value: presenter.textScale,
-            step: 0.1,
-            fallback: 1,
-            onChanged: presenter.updateTextScale,
-          ),
+          // Everything below only affects drawn values, so it is hidden
+          // until there are some.
+          if (presenter.showValues) ...[
+            NumberField(
+              label: 'Text scale',
+              value: presenter.textScale,
+              step: 0.1,
+              fallback: 1,
+              onChanged: presenter.updateTextScale,
+            ),
+          ],
           LabeledField(
             label: 'Line colour',
             child: ColorSwatchButton(
@@ -84,32 +88,34 @@ class DecorationsVerticalAxis extends HookConsumerWidget {
               },
             ),
           ),
-          SegmentedChoice<TextAlign>(
-            label: 'Values align',
-            value: presenter.valuesAlign,
-            options: const [
-              SegmentedChoiceOption(value: TextAlign.start, label: 'Start'),
-              SegmentedChoiceOption(value: TextAlign.center, label: 'Center'),
-              SegmentedChoiceOption(value: TextAlign.end, label: 'End'),
-            ],
-            onChanged: presenter.updateValuesAlign,
-          ),
-          SegmentedChoice<VerticalLegendPosition>(
-            label: 'Legend position',
-            value: presenter.legendPosition,
-            options: const [
-              SegmentedChoiceOption(
-                  value: VerticalLegendPosition.top, label: 'Top'),
-              SegmentedChoiceOption(
-                  value: VerticalLegendPosition.bottom, label: 'Bottom'),
-            ],
-            onChanged: presenter.updateLegendPosition,
-          ),
-          EdgeInsetsField(
-            label: 'Values padding',
-            value: presenter.valuesPadding,
-            onChanged: presenter.updateValuesPadding,
-          ),
+          if (presenter.showValues) ...[
+            SegmentedChoice<TextAlign>(
+              label: 'Values align',
+              value: presenter.valuesAlign,
+              options: const [
+                SegmentedChoiceOption(value: TextAlign.start, label: 'Start'),
+                SegmentedChoiceOption(value: TextAlign.center, label: 'Center'),
+                SegmentedChoiceOption(value: TextAlign.end, label: 'End'),
+              ],
+              onChanged: presenter.updateValuesAlign,
+            ),
+            SegmentedChoice<VerticalLegendPosition>(
+              label: 'Legend position',
+              value: presenter.legendPosition,
+              options: const [
+                SegmentedChoiceOption(
+                    value: VerticalLegendPosition.top, label: 'Top'),
+                SegmentedChoiceOption(
+                    value: VerticalLegendPosition.bottom, label: 'Bottom'),
+              ],
+              onChanged: presenter.updateLegendPosition,
+            ),
+            EdgeInsetsField(
+              label: 'Values padding',
+              value: presenter.valuesPadding,
+              onChanged: presenter.updateValuesPadding,
+            ),
+          ],
         ],
       ),
     );
