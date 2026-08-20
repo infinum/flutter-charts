@@ -4,11 +4,10 @@ import 'package:material_ui/material_ui.dart';
 
 class FuturamaBarWidget extends StatelessWidget {
   FuturamaBarWidget(
-      {Key? key,
+      {super.key,
       required this.stackItems,
       required this.listKey,
-      required this.item})
-      : super(key: key);
+      required this.item});
 
   final bool stackItems;
   final int listKey;

@@ -3,7 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:charts_web/ui/design/number_field.dart';
 
 class BorderRadiusDialog extends StatefulWidget {
-  const BorderRadiusDialog({Key? key, required this.radius}) : super(key: key);
+  const BorderRadiusDialog({super.key, required this.radius});
 
   static Future<BorderRadius?> show(BuildContext context, BorderRadius radius) {
     return showDialog<BorderRadius>(

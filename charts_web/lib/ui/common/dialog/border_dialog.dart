@@ -5,8 +5,7 @@ import 'package:charts_web/ui/design/number_field.dart';
 
 class BorderSideDialog extends StatefulWidget {
   const BorderSideDialog(
-      {Key? key, required this.borderSide, required this.color})
-      : super(key: key);
+      {super.key, required this.borderSide, required this.color});
 
   static Future<BorderSide?> show(
       BuildContext context, BorderSide borderSide, Color? color) {

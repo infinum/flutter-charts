@@ -3,8 +3,7 @@ import 'package:material_ui/material_ui.dart';
 
 class ColorPickerDialog extends StatelessWidget {
   const ColorPickerDialog(
-      {Key? key, required this.startColor, this.additionalText})
-      : super(key: key);
+      {super.key, required this.startColor, this.additionalText});
 
   static Future<Color?> show(BuildContext context, Color startColor,
       {String? additionalText}) {

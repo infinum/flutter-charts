@@ -26,7 +26,7 @@ class ChartStatePresenter extends ChangeNotifier {
 
   // data
   List<List<ChartItem<void>>> _data = [
-    [4, 6, 3, 6, 7, 9, 3, 2].map((e) => BarValue(e.toDouble())).toList(),
+    [4, 6, 3, 6, 7, 9, 3, 2].map((e) => ChartItem<void>(e.toDouble())).toList(),
   ];
   DataStrategy _strategy = const StackDataStrategy();
   bool showMaxDataListMessage = false;
@@ -129,9 +129,9 @@ class ChartStatePresenter extends ChangeNotifier {
       _strategy = DefaultDataStrategy(stackMultipleValues: newValue);
       stackMultipleValues = newValue;
       notifyListeners();
-    } else {
-      print('Cannot change multi stack whne using StackDataStrategy');
     }
+    // Nothing to do for StackDataStrategy: stacking is already what it does,
+    // and the UI only offers this toggle for DefaultDataStrategy.
   }
 
   void updateChartBehaviour(ChartBehaviour behaviour) {

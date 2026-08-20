@@ -131,7 +131,17 @@ class ConceptsScreen extends StatelessWidget {
   itemOptions: BarItemOptions(...),
   backgroundDecorations: [GridDecoration()],
   foregroundDecorations: [
-    TargetLineDecoration(target: 6, dashArray: [4, 4]),
+    WidgetDecoration(
+      widgetDecorationBuilder: (context, state, itemWidth, multiplier) =>
+          Stack(children: [
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: multiplier * 6,
+          child: Container(height: 2, color: const Color(0xFFD8262C)),
+        ),
+      ]),
+    ),
   ],
 )''',
           chart: Chart<void>(
@@ -145,11 +155,18 @@ class ConceptsScreen extends StatelessWidget {
               ),
               backgroundDecorations: [GridDecoration(gridColor: outline)],
               foregroundDecorations: [
-                TargetLineDecoration(
-                  target: 6,
-                  targetLineColor: _red,
-                  colorOverTarget: _red,
-                  dashArray: const [4, 4],
+                WidgetDecoration(
+                  widgetDecorationBuilder:
+                      (context, state, itemWidth, verticalMultiplier) => Stack(
+                    children: [
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        bottom: verticalMultiplier * 6,
+                        child: Container(height: 2, color: _red),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

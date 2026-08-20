@@ -19,8 +19,11 @@ List<ChartItem<void>> _items(List<num> values) =>
 BarItem _redBar(ItemBuilderData data) => const BarItem(color: _red);
 BarItem _blueBar(ItemBuilderData data) => const BarItem(color: _blue);
 BarItem _sandBar(ItemBuilderData data) => const BarItem(color: _sand);
-BarItem _plumBar(ItemBuilderData data) => const BarItem(color: _plum);
-BarItem _greenBar(ItemBuilderData data) => const BarItem(color: _green);
+/// The target the 'target-line' entry marks, in data units.
+const double _target = 7;
+
+BarItem _overTargetBar(ItemBuilderData data) =>
+    BarItem(color: (data.item.max ?? 0) > _target ? _red : _green);
 
 BarItem _roundedBar(ItemBuilderData data) => const BarItem(
       color: _green,
@@ -427,22 +430,32 @@ final List<GalleryEntry> galleryEntries = [
   GalleryEntry(
     id: 'target-line',
     title: 'Target line',
-    blurb: 'TargetLineDecoration recolours anything above the target.',
-    tags: const ['decoration'],
+    blurb: 'A WidgetDecoration marks the target; the item builder recolours '
+        'anything above it. This is the replacement for the deprecated '
+        'TargetLineDecoration.',
+    tags: const ['decoration', 'custom'],
     buildChart: (context) => Chart<void>(
       state: ChartState<void>(
         data: ChartData.fromList(_items([4, 6, 3, 8, 7, 9, 5]),
             valueAxisMaxOver: 2),
         itemOptions: const BarItemOptions(
           padding: EdgeInsets.symmetric(horizontal: 4),
-          barItemBuilder: _greenBar,
+          barItemBuilder: _overTargetBar,
         ),
         foregroundDecorations: [
-          TargetLineDecoration(
-            target: 7,
-            targetLineColor: _red,
-            colorOverTarget: _red,
-            dashArray: const [4, 4],
+          WidgetDecoration(
+            widgetDecorationBuilder:
+                (context, state, itemWidth, verticalMultiplier) => Stack(
+              children: [
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  // verticalMultiplier converts a data value into pixels.
+                  bottom: verticalMultiplier * _target,
+                  child: Container(height: 2, color: _red),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -451,14 +464,25 @@ final List<GalleryEntry> galleryEntries = [
   data: ChartData.fromList(values, valueAxisMaxOver: 2),
   itemOptions: BarItemOptions(
     padding: const EdgeInsets.symmetric(horizontal: 4),
-    barItemBuilder: (_) => const BarItem(color: Color(0xFF5A8772)),
+    barItemBuilder: (data) => BarItem(
+      color: (data.item.max ?? 0) > 7
+          ? const Color(0xFFD8262C)
+          : const Color(0xFF5A8772),
+    ),
   ),
   foregroundDecorations: [
-    TargetLineDecoration(
-      target: 7,
-      targetLineColor: Color(0xFFD8262C),
-      colorOverTarget: Color(0xFFD8262C),
-      dashArray: [4, 4],
+    WidgetDecoration(
+      widgetDecorationBuilder:
+          (context, state, itemWidth, verticalMultiplier) => Stack(
+        children: [
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: verticalMultiplier * 7,
+            child: Container(height: 2, color: const Color(0xFFD8262C)),
+          ),
+        ],
+      ),
     ),
   ],
 )''',
@@ -466,38 +490,57 @@ final List<GalleryEntry> galleryEntries = [
   GalleryEntry(
     id: 'value-labels',
     title: 'Value labels',
-    blurb: 'ValueDecoration prints each value above its item.',
-    tags: const ['decoration'],
-    buildChart: (context) => Chart<void>(
-      state: ChartState<void>(
-        data: ChartData.fromList(_items([4, 6, 3, 6, 7]), valueAxisMaxOver: 3),
-        itemOptions: const BarItemOptions(
-          padding: EdgeInsets.symmetric(horizontal: 6),
-          barItemBuilder: _plumBar,
+    blurb: 'WidgetItemOptions draws the bar and its own label, which is what '
+        'replaced the deprecated ValueDecoration.',
+    tags: const ['custom'],
+    buildChart: (context) {
+      final labelStyle = Theme.of(context)
+          .textTheme
+          .labelSmall!
+          .copyWith(color: Theme.of(context).colorScheme.onSurface);
+
+      return Chart<void>(
+        state: ChartState<void>(
+          data:
+              ChartData.fromList(_items([4, 6, 3, 6, 7]), valueAxisMaxOver: 3),
+          itemOptions: WidgetItemOptions(
+            widgetItemBuilder: (data) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              child: Column(
+                children: [
+                  Text((data.item.max ?? 0).toStringAsFixed(0),
+                      style: labelStyle),
+                  const Expanded(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(color: _plum),
+                      child: SizedBox.expand(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
-        foregroundDecorations: [
-          ValueDecoration(
-            textStyle: Theme.of(context)
-                .textTheme
-                .labelSmall!
-                .copyWith(color: Theme.of(context).colorScheme.onSurface),
-            alignment: Alignment.topCenter,
+      );
+    },
+    snippet: '''ChartState<void>(
+  data: ChartData.fromList(values, valueAxisMaxOver: 3),
+  itemOptions: WidgetItemOptions(
+    widgetItemBuilder: (data) => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6),
+      child: Column(
+        children: [
+          Text('\${(data.item.max ?? 0).toStringAsFixed(0)}'),
+          const Expanded(
+            child: DecoratedBox(
+              decoration: BoxDecoration(color: Color(0xFF916794)),
+              child: SizedBox.expand(),
+            ),
           ),
         ],
       ),
     ),
-    snippet: '''ChartState<void>(
-  data: ChartData.fromList(values, valueAxisMaxOver: 3),
-  itemOptions: BarItemOptions(
-    padding: const EdgeInsets.symmetric(horizontal: 6),
-    barItemBuilder: (_) => const BarItem(color: Color(0xFF916794)),
   ),
-  foregroundDecorations: [
-    ValueDecoration(
-      textStyle: Theme.of(context).textTheme.labelSmall!,
-      alignment: Alignment.topCenter,
-    ),
-  ],
 )''',
   ),
   GalleryEntry(

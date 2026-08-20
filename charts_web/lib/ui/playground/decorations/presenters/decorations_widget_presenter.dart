@@ -105,13 +105,13 @@ class DecorationWidgetPresenter extends ChangeNotifier
                   ));
                 },
                 child: Container(
+                  width: double.infinity,
+                  height: verticalMultiplier * 2,
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.blue, width: 2),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: const Center(child: Text('Click me')),
-                  width: double.infinity,
-                  height: verticalMultiplier * 2,
                 ),
               ),
             ),

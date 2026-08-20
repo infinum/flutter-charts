@@ -1,7 +1,6 @@
 import 'package:charts_web/ui/common/dialog/border_dialog.dart';
 import 'package:charts_web/ui/common/dialog/border_radius_dialog.dart';
 import 'package:charts_web/ui/common/dialog/gradient_dialog.dart';
-import 'package:charts_web/ui/design/color_swatch_button.dart';
 import 'package:charts_web/ui/design/labeled_field.dart';
 import 'package:charts_web/ui/design/number_field.dart';
 import 'package:charts_web/ui/design/section_card.dart';

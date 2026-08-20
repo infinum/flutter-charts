@@ -4,8 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LinearGradientPickerDialog extends ConsumerStatefulWidget {
   const LinearGradientPickerDialog(
-      {Key? key, required this.startGradient, this.onResetGradient})
-      : super(key: key);
+      {super.key, required this.startGradient, this.onResetGradient});
 
   static Future<LinearGradient?> show(
       BuildContext context, LinearGradient startGradient,
@@ -105,11 +104,11 @@ class _LinearGradientPickerDialogState
               height: 80,
               width: 50,
               alignment: Alignment.center,
-              child: const Text('Example',
-                  style: TextStyle(fontSize: 10, color: Colors.white)),
               decoration: BoxDecoration(
                 gradient: _getGradient(),
               ),
+              child: const Text('Example',
+                  style: TextStyle(fontSize: 10, color: Colors.white)),
             ),
             Row(
               children: [
