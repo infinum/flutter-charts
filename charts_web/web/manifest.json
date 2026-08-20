@@ -1,12 +1,12 @@
 {
-    "name": "charts_web",
-    "short_name": "charts_web",
+    "name": "charts_painter playground",
+    "short_name": "charts_painter",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
-    "orientation": "portrait-primary",
+    "background_color": "#FFF8F7",
+    "theme_color": "#D8262C",
+    "description": "Interactive playground and live gallery for charts_painter, a highly customizable Flutter charts library built with custom painters.",
+    "orientation": "any",
     "prefer_related_applications": false,
     "icons": [
         {

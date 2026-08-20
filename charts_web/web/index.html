@@ -1,111 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <!--
-      If you are serving your web app in a path other than the root, change the
-      href value below to reflect the base path you are serving from.
+  <!-- Placeholder replaced by the --base-href build argument. The site is
+       served from a GitHub Pages subpath, so build with
+       `flutter build web --base-href /flutter-charts/`. -->
+  <base href="$FLUTTER_BASE_HREF">
 
-      The path provided below has to start and end with a slash "/" in order for
-      it to work correctly.
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+        content="Interactive playground and live gallery for charts_painter, a highly customizable Flutter charts library built with custom painters.">
 
-      For more details:
-      * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+  <meta name="theme-color" content="#FFF8F7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1A1112" media="(prefers-color-scheme: dark)">
 
-      This is a placeholder for base href that will be replaced by the value of
-      the `--base-href` argument provided to `flutter build`.
-    -->
-    <base href="/flutter-charts/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="charts_painter playground">
+  <meta property="og:description"
+        content="Build a Flutter chart in the browser and copy the Dart that produces it.">
+  <meta property="og:image" content="icons/chart_image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="charts_painter playground">
+  <meta name="twitter:description"
+        content="Build a Flutter chart in the browser and copy the Dart that produces it.">
+  <meta name="twitter:image" content="icons/chart_image.png">
 
-    <meta charset="UTF-8">
-    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-    <meta name="description" content="A new Flutter project.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="charts_painter">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
-    <!-- iOS meta tags & icons -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="charts_web">
-    <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="favicon.png"/>
-
-    <title>Demo charts_painter</title>
-    <link rel="stylesheet" href="./style.css">
-    <link rel="manifest" href="manifest.json">
+  <title>charts_painter playground</title>
 </head>
 <body>
-<div class="loading">
-    <div>
-        <img class="loader" src="./icons/chart_image.png" width="800px">
-    </div>
+<div class="boot" id="boot">
+  <div class="boot__mark">charts_painter</div>
+  <div class="boot__bar"><span></span></div>
 </div>
-<!-- This script installs service_worker.js to provide PWA functionality to
-     application. For more information, see:
-     https://developers.google.com/web/fundamentals/primers/service-workers -->
+
+<script src="flutter_bootstrap.js" async></script>
 <script>
-    var serviceWorkerVersion = null;
-    var scriptLoaded = false;
-    function loadMainDartJs() {
-      if (scriptLoaded) {
-        return;
-      }
-      scriptLoaded = true;
-      var scriptTag = document.createElement('script');
-      scriptTag.src = 'main.dart.js';
-      scriptTag.type = 'application/javascript';
-      document.body.append(scriptTag);
-    }
-
-    if ('serviceWorker' in navigator) {
-      // Service workers are supported. Use them.
-      window.addEventListener('load', function () {
-        // Wait for registration to finish before dropping the <script> tag.
-        // Otherwise, the browser will load the script multiple times,
-        // potentially different versions.
-        var serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;
-        navigator.serviceWorker.register(serviceWorkerUrl)
-          .then((reg) => {
-            function waitForActivation(serviceWorker) {
-              serviceWorker.addEventListener('statechange', () => {
-                if (serviceWorker.state == 'activated') {
-                  console.log('Installed new service worker.');
-                  loadMainDartJs();
-                }
-              });
-            }
-            if (!reg.active && (reg.installing || reg.waiting)) {
-              // No active web worker and we have installed or are installing
-              // one for the first time. Simply wait for it to activate.
-              waitForActivation(reg.installing || reg.waiting);
-            } else if (!reg.active.scriptURL.endsWith(serviceWorkerVersion)) {
-              // When the app updates the serviceWorkerVersion changes, so we
-              // need to ask the service worker to update.
-              console.log('New service worker available.');
-              reg.update();
-              waitForActivation(reg.installing);
-            } else {
-              // Existing service worker is still good.
-              console.log('Loading app from service worker.');
-              loadMainDartJs();
-            }
-          });
-
-        // If service worker doesn't succeed in a reasonable amount of time,
-        // fallback to plaint <script> tag.
-        setTimeout(() => {
-          if (!scriptLoaded) {
-            console.warn(
-              'Failed to load app from service worker. Falling back to plain <script> tag.',
-            );
-            loadMainDartJs();
-          }
-        }, 4000);
-      });
-    } else {
-      // Service workers not supported. Just drop the <script> tag.
-      loadMainDartJs();
-    }
-
+  // The engine dispatches this once the first frame is on screen.
+  window.addEventListener('flutter-first-frame', function () {
+    var boot = document.getElementById('boot');
+    if (!boot) return;
+    boot.classList.add('boot--done');
+    window.setTimeout(function () { boot.remove(); }, 400);
+  });
 </script>
 </body>
 </html>
