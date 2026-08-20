@@ -1,3 +1,4 @@
+import 'package:charts_web/ui/common/dialog/legacy_material_host.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -32,7 +33,8 @@ class ColorPickerDialog extends StatelessWidget {
             Text(
                 'In this editor you can select only colors from given pallete. Any color can be given in code.\n$additionalText'),
             const SizedBox(height: 16),
-            ColorPicker(
+            LegacyMaterialHost(
+                child: ColorPicker(
               enableOpacity: true,
               opacityTrackHeight: 20,
               color: startColor,
@@ -56,7 +58,7 @@ class ColorPickerDialog extends StatelessWidget {
                 'Select color shade',
                 style: Theme.of(context).textTheme.titleSmall,
               ),
-            ),
+            )),
           ],
         ),
       ),

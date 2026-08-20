@@ -184,13 +184,29 @@ class ChartStatePresenter extends ChangeNotifier {
     minBarWidth = minItemWidth == -1 ? minBarWidth : minItemWidth;
   }
 
+  /// [ItemOptions] asserts `maxBarWidth >= minBarWidth`, so the pair has to
+  /// stay ordered. Rather than refuse the edit, the other bound is carried
+  /// along: raising the minimum above the maximum pushes the maximum up, and
+  /// lowering the maximum below the minimum pulls the minimum down.
   void updateMinBarWidth(double newMinBarWidth) {
-    minBarWidth = newMinBarWidth;
+    minBarWidth = newMinBarWidth.clamp(0.0, double.infinity);
+
+    final currentMax = maxBarWidth;
+    if (currentMax != null && currentMax < minBarWidth!) {
+      maxBarWidth = minBarWidth;
+    }
+
     notifyListeners();
   }
 
   void updateMaxBarWidth(double newMaxBarWidth) {
-    maxBarWidth = newMaxBarWidth;
+    maxBarWidth = newMaxBarWidth.clamp(0.0, double.infinity);
+
+    final currentMin = minBarWidth;
+    if (currentMin != null && currentMin > maxBarWidth!) {
+      minBarWidth = maxBarWidth;
+    }
+
     notifyListeners();
   }
 

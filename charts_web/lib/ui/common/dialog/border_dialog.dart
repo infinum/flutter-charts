@@ -1,3 +1,4 @@
+import 'package:charts_web/ui/common/dialog/legacy_material_host.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -67,9 +68,10 @@ class _BorderSideDialogState extends State<BorderSideDialog> {
             ),
           ),
           const SizedBox(height: 8),
-          ColorPicker(
-              enableOpacity: true,
-              opacityTrackHeight: 20,
+          LegacyMaterialHost(
+              child: ColorPicker(
+            enableOpacity: true,
+            opacityTrackHeight: 20,
             color: color,
             // Update the screenPickerColor using the callback.
             onColorChanged: (Color newColor) {
@@ -91,7 +93,7 @@ class _BorderSideDialogState extends State<BorderSideDialog> {
               'Select color shade',
               style: Theme.of(context).textTheme.titleSmall,
             ),
-          ),
+          )),
           const SizedBox(height: 36),
           Row(
             children: [

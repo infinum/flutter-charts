@@ -46,65 +46,68 @@ class _BorderRadiusDialogState extends State<BorderRadiusDialog> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                width: 220,
-                child: Column(
-                children: [
-                  NumberField(
-                    label: 'Top-left',
-                    value: state.topLeft.x,
-                    step: 4,
-                    onChanged: (a) {
-                      setState(() {
-                        state = state.copyWith(topLeft: Radius.circular(a));
-                      });
-                    },
-                    fallback: widget.radius.topLeft.x,
-                  ),
-                  NumberField(
-                      label: 'Bottom-left',
-                      value: state.bottomLeft.x,
-                      step: 4,
-                      onChanged: (a) {
-                        setState(() => state =
-                            state.copyWith(bottomLeft: Radius.circular(a)));
-                      },
-                      fallback: widget.radius.bottomLeft.x),
-                ],
-              )),
+                  width: 220,
+                  child: Column(
+                    children: [
+                      NumberField(
+                        label: 'Top-left',
+                        value: state.topLeft.x,
+                        step: 4,
+                        onChanged: (a) {
+                          setState(() {
+                            state = state.copyWith(topLeft: Radius.circular(a));
+                          });
+                        },
+                        fallback: widget.radius.topLeft.x,
+                      ),
+                      NumberField(
+                          label: 'Bottom-left',
+                          value: state.bottomLeft.x,
+                          step: 4,
+                          onChanged: (a) {
+                            setState(() => state =
+                                state.copyWith(bottomLeft: Radius.circular(a)));
+                          },
+                          fallback: widget.radius.bottomLeft.x),
+                    ],
+                  )),
               const SizedBox(width: 16),
               Container(
                 height: 50,
                 width: 50,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.7),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withValues(alpha: 0.7),
                   borderRadius: state,
                 ),
               ),
               const SizedBox(width: 16),
               SizedBox(
-                width: 220,
-                child: Column(
-                children: [
-                  NumberField(
-                      label: 'Top-right',
-                      value: state.topRight.x,
-                      step: 4,
-                      onChanged: (a) {
-                        setState(() => state =
-                            state.copyWith(topRight: Radius.circular(a)));
-                      },
-                      fallback: widget.radius.topRight.x),
-                  NumberField(
-                      label: 'Bottom-right',
-                      value: state.bottomRight.x,
-                      step: 4,
-                      onChanged: (a) {
-                        setState(() => state =
-                            state.copyWith(bottomRight: Radius.circular(a)));
-                      },
-                      fallback: widget.radius.bottomRight.x),
-                ],
-              )),
+                  width: 220,
+                  child: Column(
+                    children: [
+                      NumberField(
+                          label: 'Top-right',
+                          value: state.topRight.x,
+                          step: 4,
+                          onChanged: (a) {
+                            setState(() => state =
+                                state.copyWith(topRight: Radius.circular(a)));
+                          },
+                          fallback: widget.radius.topRight.x),
+                      NumberField(
+                          label: 'Bottom-right',
+                          value: state.bottomRight.x,
+                          step: 4,
+                          onChanged: (a) {
+                            setState(() => state = state.copyWith(
+                                bottomRight: Radius.circular(a)));
+                          },
+                          fallback: widget.radius.bottomRight.x),
+                    ],
+                  )),
             ],
           ),
           const SizedBox(height: 36),

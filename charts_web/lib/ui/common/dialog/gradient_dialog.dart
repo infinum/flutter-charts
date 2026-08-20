@@ -1,3 +1,4 @@
+import 'package:charts_web/ui/common/dialog/legacy_material_host.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -53,7 +54,8 @@ class _LinearGradientPickerDialogState
             const Text(
                 'In this editor you can select only simple two-stop linear gradient. You can add any kind of gradient in code.'),
             const SizedBox(height: 16),
-            ColorPicker(
+            LegacyMaterialHost(
+                child: ColorPicker(
               enableOpacity: true,
               opacityTrackHeight: 20,
               color: widget.startGradient.colors[0],
@@ -70,8 +72,9 @@ class _LinearGradientPickerDialogState
                 ColorPickerType.primary: true,
                 ColorPickerType.accent: false
               },
-            ),
-            ColorPicker(
+            )),
+            LegacyMaterialHost(
+                child: ColorPicker(
               enableOpacity: true,
               opacityTrackHeight: 20,
               color: widget.startGradient.colors[1],
@@ -88,7 +91,7 @@ class _LinearGradientPickerDialogState
                 ColorPickerType.primary: true,
                 ColorPickerType.accent: false
               },
-            ),
+            )),
             SizedBox(
               width: 400,
               child: SwitchListTile(
