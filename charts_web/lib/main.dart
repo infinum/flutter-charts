@@ -1,23 +1,25 @@
+import 'package:charts_web/theme/app_theme.dart';
+import 'package:charts_web/theme/theme_mode_provider.dart';
 import 'package:charts_web/ui/common/respo/respo.dart';
 import 'package:charts_web/ui/home/home_screen.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(const ProviderScope(child: ChartsWebApp()));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class ChartsWebApp extends ConsumerWidget {
+  const ChartsWebApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        fontFamily: 'InterTight',
-        primarySwatch: Colors.red,
-      ),
+      title: 'charts_painter',
+      debugShowCheckedModeBanner: false,
+      theme: appTheme(Brightness.light),
+      darkTheme: appTheme(Brightness.dark),
+      themeMode: ref.watch(themeModeProvider),
       builder: _builder,
       home: HomeScreen(),
     );
