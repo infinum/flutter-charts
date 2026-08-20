@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:charts_painter/chart.dart';
 import 'package:charts_web/main.dart';
-import 'package:charts_web/ui/home/home_screen.dart';
+import 'package:charts_web/ui/playground/playground_screen.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,7 +27,7 @@ void main() {
 
   setUpAll(loadAppFonts);
 
-  testWidgets('App boots and renders a chart on the home screen',
+  testWidgets('App boots and renders a chart in the playground',
       (WidgetTester tester) async {
     // The showcase is a desktop-first layout; the default 800x600 test surface
     // is narrower than the options panel plus chart.
@@ -38,7 +38,7 @@ void main() {
     await tester.pumpWidget(const ProviderScope(child: ChartsWebApp()));
     await tester.pumpAndSettle();
 
-    expect(find.byType(HomeScreen), findsOneWidget);
+    expect(find.byType(PlaygroundScreen), findsOneWidget);
     expect(find.byType(AnimatedChart<void>), findsOneWidget);
   });
 }
