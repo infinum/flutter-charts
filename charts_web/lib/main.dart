@@ -1,6 +1,6 @@
 import 'package:charts_web/theme/app_theme.dart';
 import 'package:charts_web/theme/theme_mode_provider.dart';
-import 'package:charts_web/ui/home/home_screen.dart';
+import 'package:charts_web/ui/shell/app_shell.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -20,7 +20,7 @@ class ChartsWebApp extends ConsumerWidget {
       darkTheme: appTheme(Brightness.dark),
       themeMode: ref.watch(themeModeProvider),
       builder: _builder,
-      home: HomeScreen(),
+      home: const AppShell(),
     );
   }
 }
