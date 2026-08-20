@@ -1,5 +1,6 @@
 import 'package:charts_painter/chart.dart';
 import 'package:charts_web/codegen/dart_literal.dart';
+import 'package:charts_web/codegen/source_writer.dart';
 import 'package:charts_web/ui/playground/presenter/chart_decorations_presenter.dart';
 import 'package:charts_web/ui/playground/presenter/chart_state_presenter.dart';
 import 'package:material_ui/material_ui.dart';
@@ -78,16 +79,22 @@ class DecorationSparkLinePresenter extends ChangeNotifier
   }
 
   @override
-  String buildDecorationCode() {
-    return '''    SparkLineDecoration(
-      lineKey: $lineId,
-      fill: $filled,
-      smoothPoints: $smoothPoints,
-      lineColor: ${colorLiteral(color)},
-      lineWidth: $lineWidth,
-      gradient: null,
-      startPosition: $startPosition,
-    ),
-    ''';
+  void writeDecorationSource(SourceWriter writer) {
+    writer.open('SparkLineDecoration(');
+    if (lineId != 0) writer.line('listIndex: $lineId,');
+    if (filled) writer.line('fill: true,');
+    if (smoothPoints) writer.line('smoothPoints: true,');
+    writer.line('lineColor: ${colorLiteral(color)},');
+    if (lineWidth != 1.0) {
+      writer.line('lineWidth: ${doubleLiteral(lineWidth)},');
+    }
+    if (startPosition != 0.5) {
+      writer.line('startPosition: ${doubleLiteral(startPosition)},');
+    }
+    final currentGradient = gradient;
+    if (currentGradient != null) {
+      writer.line('gradient: ${gradientLiteral(currentGradient)},');
+    }
+    writer.close('),');
   }
 }

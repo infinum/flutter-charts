@@ -1,4 +1,5 @@
 import 'package:charts_painter/chart.dart';
+import 'package:charts_web/codegen/source_writer.dart';
 import 'package:charts_web/ui/playground/presenter/chart_decorations_presenter.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -122,17 +123,31 @@ class DecorationWidgetPresenter extends ChangeNotifier
     }
   }
 
+  static const Map<int, String> _exampleNames = {
+    0: 'target line',
+    1: 'target line with a label',
+    2: 'target area',
+    3: 'border',
+    4: 'clickable widget',
+  };
+
   @override
-  String buildDecorationCode() {
-    return '''    WidgetDecoration(
-          widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {
-            return Container(
-              decoration: BoxDecoration(border: Border.all(color: Colors.blue, width: 3)),
-              width: double.infinity,
-              height: double.infinity,
-            );
-          },
-          margin: EdgeInsets.all(3),
-    ''';
+  void writeDecorationSource(SourceWriter writer) {
+    writer.open('WidgetDecoration(');
+    writer.line('// This playground draws a ${_exampleNames[type]} here.');
+    writer.line('// A widget decoration can return any widget; the demo builds');
+    writer.line('// are in charts_web/lib/ui/playground/decorations/presenters/');
+    writer.line('// decorations_widget_presenter.dart');
+    writer.open(
+        'widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {');
+    writer.open('return DecoratedBox(');
+    writer.open('decoration: BoxDecoration(');
+    writer.line('border: Border.all(color: Color(0xFF2196F3), width: 3.0),');
+    writer.close('),');
+    writer.line('child: const SizedBox.expand(),');
+    writer.close(');');
+    writer.close('},');
+    writer.line('margin: EdgeInsets.all(3.0),');
+    writer.close('),');
   }
 }

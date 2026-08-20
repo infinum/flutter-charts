@@ -1,5 +1,6 @@
 import 'package:charts_painter/chart.dart';
 import 'package:charts_web/codegen/dart_literal.dart';
+import 'package:charts_web/codegen/source_writer.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -68,16 +69,20 @@ class DecorationVerticalAxisPresenter extends ChangeNotifier
   }
 
   @override
-  String buildDecorationCode() {
-    return '''    VerticalAxisDecoration(
-      showLines: $showLines,
-      textScale: 1.2,
-      showValues: $showValues,
-      endWithChart: $endWithChart,
-      lineWidth: $lineWidth,
-      axisStep: $axisStep,
-      lineColor: ${colorLiteral(lineColor)},
-    ),
-    ''';
+  void writeDecorationSource(SourceWriter writer) {
+    writer.open('VerticalAxisDecoration(');
+    // The presenter always sets a non-default text scale.
+    writer.line('textScale: 1.2,');
+    if (!showLines) writer.line('showLines: false,');
+    if (showValues) writer.line('showValues: true,');
+    if (endWithChart) writer.line('endWithChart: true,');
+    if (lineWidth != 1.0) {
+      writer.line('lineWidth: ${doubleLiteral(lineWidth)},');
+    }
+    if (axisStep != 1.0) {
+      writer.line('axisStep: ${doubleLiteral(axisStep)},');
+    }
+    writer.line('lineColor: ${colorLiteral(lineColor)},');
+    writer.close('),');
   }
 }

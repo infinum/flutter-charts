@@ -1,4 +1,5 @@
 import 'package:charts_painter/chart.dart';
+import 'package:charts_web/codegen/source_writer.dart';
 import 'package:charts_web/ui/playground/decorations/presenters/decorations_horizontal_axis_presenter.dart';
 import 'package:charts_web/ui/playground/decorations/presenters/decorations_sparkline_presenter.dart';
 import 'package:charts_web/ui/playground/decorations/presenters/decorations_vertical_axis_presenter.dart';
@@ -127,5 +128,8 @@ enum DecorationLayer { background, foreground }
 
 abstract class DecorationBuilder {
   DecorationPainter buildDecoration();
-  String buildDecorationCode();
+
+  /// Emits the Dart source for this decoration. Kept next to
+  /// [buildDecoration] on purpose: whoever changes one sees the other.
+  void writeDecorationSource(SourceWriter writer);
 }
