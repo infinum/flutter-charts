@@ -1,0 +1,193 @@
+import 'package:charts_painter/chart.dart';
+import 'package:charts_web/ui/design/code_block.dart';
+import 'package:charts_web/ui/design/section_card.dart';
+import 'package:material_ui/material_ui.dart';
+
+const Color _red = Color(0xFFD8262C);
+const Color _blue = Color(0xFF6479C3);
+
+List<ChartItem<void>> _items(List<num> values) =>
+    values.map((value) => ChartItem<void>(value.toDouble())).toList();
+
+BarItem _redBar(ItemBuilderData data) => const BarItem(color: _red);
+BarItem _blueBar(ItemBuilderData data) => const BarItem(color: _blue);
+
+BarItem _twoSeriesBar(ItemBuilderData data) =>
+    BarItem(color: data.listIndex == 0 ? _red : _blue);
+
+BarItem _thresholdBar(ItemBuilderData data) => BarItem(
+      color: (data.item.max ?? 0) > 5 ? _red : _blue,
+      radius: const BorderRadius.vertical(top: Radius.circular(6)),
+    );
+
+class ConceptsScreen extends StatelessWidget {
+  const ConceptsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final outline = theme.colorScheme.outlineVariant;
+
+    return ListView(
+      padding: const EdgeInsets.all(24),
+      children: [
+        Text('How charts_painter fits together',
+            style: theme.textTheme.headlineSmall),
+        const SizedBox(height: 4),
+        Text(
+          'Four pieces. Once these click, every option in the playground has '
+          'an obvious home.',
+          style: theme.textTheme.bodyMedium
+              ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+        ),
+        const SizedBox(height: 20),
+        _Concept(
+          title: 'ChartState',
+          body: 'The single object a chart renders. It holds the data, the '
+              'item options, the behaviour, and two lists of decorations. '
+              'Build one and hand it to Chart or AnimatedChart.',
+          snippet: '''Chart<void>(
+  state: ChartState<void>(
+    data: ChartData.fromList(values),
+    itemOptions: BarItemOptions(
+      barItemBuilder: (_) => const BarItem(color: Color(0xFFD8262C)),
+    ),
+  ),
+)''',
+          chart: Chart<void>(
+            height: 140,
+            state: ChartState<void>(
+              data: ChartData.fromList(_items([4, 6, 3, 6, 7]),
+                  valueAxisMaxOver: 2),
+              itemOptions: const BarItemOptions(
+                padding: EdgeInsets.symmetric(horizontal: 6),
+                barItemBuilder: _redBar,
+              ),
+            ),
+          ),
+        ),
+        _Concept(
+          title: 'ChartData and DataStrategy',
+          body: 'Data is a list of lists: one inner list per series. The '
+              'strategy decides what happens when several series share a slot '
+              '- stacked on top of each other, or grouped side by side.',
+          snippet: '''ChartData(
+  [seriesA, seriesB],
+  dataStrategy: const StackDataStrategy(),
+  valueAxisMaxOver: 2,
+)''',
+          chart: Chart<void>(
+            height: 140,
+            state: ChartState<void>(
+              data: ChartData(
+                [
+                  _items([3, 5, 2, 4]),
+                  _items([2, 1, 4, 2]),
+                ],
+                dataStrategy: const StackDataStrategy(),
+                valueAxisMaxOver: 2,
+              ),
+              itemOptions: const BarItemOptions(
+                padding: EdgeInsets.symmetric(horizontal: 6),
+                barItemBuilder: _twoSeriesBar,
+              ),
+            ),
+          ),
+        ),
+        _Concept(
+          title: 'ItemOptions',
+          body: 'How one data point is drawn. BarItemOptions and '
+              'BubbleItemOptions cover the common cases; the builder receives '
+              'the item, its index and its series index, so colour, gradient, '
+              'border and radius can vary per point. WidgetItemOptions hands '
+              'the whole job to a widget.',
+          snippet: '''BarItemOptions(
+  maxBarWidth: 20,
+  barItemBuilder: (data) => BarItem(
+    color: (data.item.max ?? 0) > 5 ? Colors.red : Colors.blue,
+    radius: const BorderRadius.vertical(top: Radius.circular(6)),
+  ),
+)''',
+          chart: Chart<void>(
+            height: 140,
+            state: ChartState<void>(
+              data: ChartData.fromList(_items([4, 6, 3, 7, 5]),
+                  valueAxisMaxOver: 2),
+              itemOptions: const BarItemOptions(
+                padding: EdgeInsets.symmetric(horizontal: 6),
+                barItemBuilder: _thresholdBar,
+              ),
+            ),
+          ),
+        ),
+        _Concept(
+          title: 'Decorations',
+          body: 'Everything that is not an item: grids, axes, sparklines, '
+              'target lines, value labels, or any widget. Background '
+              'decorations paint under the items, foreground over them, and '
+              'the same decoration can sit in either list.',
+          snippet: '''ChartState<void>(
+  data: ChartData.fromList(values),
+  itemOptions: BarItemOptions(...),
+  backgroundDecorations: [GridDecoration()],
+  foregroundDecorations: [
+    TargetLineDecoration(target: 6, dashArray: [4, 4]),
+  ],
+)''',
+          chart: Chart<void>(
+            height: 140,
+            state: ChartState<void>(
+              data: ChartData.fromList(_items([4, 6, 3, 7, 5]),
+                  valueAxisMaxOver: 2),
+              itemOptions: const BarItemOptions(
+                padding: EdgeInsets.symmetric(horizontal: 6),
+                barItemBuilder: _blueBar,
+              ),
+              backgroundDecorations: [GridDecoration(gridColor: outline)],
+              foregroundDecorations: [
+                TargetLineDecoration(
+                  target: 6,
+                  targetLineColor: _red,
+                  colorOverTarget: _red,
+                  dashArray: const [4, 4],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _Concept extends StatelessWidget {
+  const _Concept({
+    required this.title,
+    required this.body,
+    required this.snippet,
+    required this.chart,
+  });
+
+  final String title;
+  final String body;
+  final String snippet;
+  final Widget chart;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: SectionCard(
+        title: title,
+        collapsible: false,
+        children: [
+          Text(body, style: Theme.of(context).textTheme.bodyMedium),
+          const SizedBox(height: 16),
+          chart,
+          const SizedBox(height: 16),
+          CodeBlock(source: snippet),
+        ],
+      ),
+    );
+  }
+}

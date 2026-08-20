@@ -1,4 +1,5 @@
 import 'package:charts_web/ui/common/layout/breakpoints.dart';
+import 'package:charts_web/ui/concepts/concepts_screen.dart';
 import 'package:charts_web/ui/gallery/gallery_screen.dart';
 import 'package:charts_web/ui/playground/playground_screen.dart';
 import 'package:charts_web/ui/shell/shell_header.dart';
@@ -37,7 +38,7 @@ class _AppShellState extends ConsumerState<AppShell> {
       children: [
         const PlaygroundScreen(),
         const GalleryScreen(),
-        const _Placeholder(label: 'Concepts'),
+        const ConceptsScreen(),
       ],
     );
 
@@ -82,13 +83,4 @@ class _AppShellState extends ConsumerState<AppShell> {
   }
 
   void _select(int index) => setState(() => _index = index);
-}
-
-class _Placeholder extends StatelessWidget {
-  const _Placeholder({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) => Center(child: Text(label));
 }
