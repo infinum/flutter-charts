@@ -1,4 +1,5 @@
 import 'package:charts_web/ui/common/layout/breakpoints.dart';
+import 'package:charts_web/ui/gallery/gallery_screen.dart';
 import 'package:charts_web/ui/playground/playground_screen.dart';
 import 'package:charts_web/ui/shell/shell_header.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,7 +36,7 @@ class _AppShellState extends ConsumerState<AppShell> {
       index: _index,
       children: [
         const PlaygroundScreen(),
-        const _Placeholder(label: 'Gallery'),
+        const GalleryScreen(),
         const _Placeholder(label: 'Concepts'),
       ],
     );

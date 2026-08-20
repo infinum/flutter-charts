@@ -26,9 +26,6 @@ dependencies:
 
   charts_painter:
     path: ../
-  example:
-    path: ../example
-
   material_ui: ^1.0.0
   collection: ^1.18.0
 
@@ -40,9 +37,6 @@ dependencies:
   flex_color_picker: ^3.7.0
   flutter_svg: ^2.0.17
 
-  # Added by the material_ui migration; the last two Cupertino widgets go in
-  # Task 7, and this goes with them.
-  cupertino_ui: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
