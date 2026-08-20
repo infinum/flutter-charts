@@ -1,4 +1,5 @@
 import 'package:charts_painter/chart.dart';
+import 'package:example/widgets/widget_decorations.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -45,7 +46,7 @@ class _ChartAppState extends State<ChartApp> {
               GridDecoration(),
             ],
             foregroundDecorations: [
-              SelectedItemDecoration(_selectedIndex),
+              selectedItemDecoration(_selectedIndex),
             ]),
       ),
     );

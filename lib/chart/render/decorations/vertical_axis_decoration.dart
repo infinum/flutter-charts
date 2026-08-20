@@ -164,7 +164,7 @@ class VerticalAxisDecoration extends DecorationPainter {
           text: _text,
           style: legendFontStyle,
         ),
-        textScaleFactor: textScale,
+        textScaler: TextScaler.linear(textScale),
         textAlign: valuesAlign,
         maxLines: 1,
         textDirection: TextDirection.ltr,
@@ -214,7 +214,7 @@ class VerticalAxisDecoration extends DecorationPainter {
     final textPainter = TextPainter(
         text: TextSpan(text: text, style: style),
         maxLines: 1,
-        textScaleFactor: textScale,
+        textScaler: TextScaler.linear(textScale),
         textDirection: TextDirection.ltr)
       ..layout();
     return textPainter.size.height;

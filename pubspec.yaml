@@ -5,7 +5,7 @@ homepage: https://github.com/infinum/flutter-charts
 repository: https://github.com/infinum/flutter-charts
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=3.0.0 <4.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
@@ -17,13 +17,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  pedantic: ^1.11.1
-  golden_toolkit: ^0.15.0
   lints: ^5.0.0
-  alchemist:
-    git:
-      url: https://github.com/Betterment/alchemist
-      ref: d57c359ceadeae7ebde51639bcf9fbf37bb5f100
+  alchemist: ^0.14.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -31,7 +26,7 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
   uses-material-design: true
-  
+
 screenshots:
-  - description: 'Showcase of possible charts with charts_painter'
+  - description: "Showcase of possible charts with charts_painter"
     path: assets/showcase.gif

@@ -33,7 +33,7 @@ class FuturamaBarWidget extends StatelessWidget {
       foregroundDecoration: BoxDecoration(
         borderRadius: BorderRadius.vertical(
             top: Radius.circular((!stackItems || listKey == 0) ? 12 : 0)),
-        color: Colors.accents[listKey].withOpacity(0.2),
+        color: Colors.accents[listKey].withValues(alpha: 0.2),
         border: Border.all(
           width: 2,
           color: Colors.accents[listKey],

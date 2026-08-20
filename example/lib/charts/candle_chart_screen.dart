@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:example/widgets/widget_decorations.dart';
 
 import 'package:charts_painter/chart.dart';
 import 'package:example/widgets/candle_chart.dart';
@@ -75,7 +76,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                 data: _values,
                 height: MediaQuery.of(context).size.height * 0.4,
                 dataToValue: (CandleItem value) =>
-                    CandleValue(value.min, value.max),
+                    ChartItem(value.max, min: value.min),
                 chartItemOptions: BarItemOptions(
                   minBarWidth: 4.0,
                   padding: EdgeInsets.symmetric(horizontal: 2.0),
@@ -84,7 +85,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                       color: Theme.of(context)
                           .colorScheme
                           .primary
-                          .withOpacity(1.0),
+                          .withValues(alpha: 1.0),
                       radius: BorderRadius.all(
                         Radius.circular(100.0),
                       ),
@@ -107,7 +108,7 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                     gridColor: Theme.of(context)
                         .colorScheme
                         .primaryContainer
-                        .withOpacity(0.2),
+                        .withValues(alpha: 0.2),
                     textStyle: Theme.of(context)
                         .textTheme
                         .labelMedium!
@@ -115,20 +116,20 @@ class _CandleChartScreenState extends State<CandleChartScreen> {
                   ),
                 ],
                 foregroundDecorations: [
-                  ValueDecoration(
+                  valueLabelsDecoration(
                     textStyle: TextStyle(color: Colors.red),
                     alignment: Alignment.topCenter,
                   ),
-                  ValueDecoration(
+                  valueLabelsDecoration(
                     textStyle: TextStyle(color: Colors.red),
                     alignment: Alignment.bottomCenter,
                     valueGenerator: (item) => item.min ?? 0,
                   ),
-                  SelectedItemDecoration(
+                  selectedItemDecoration(
                     _selected,
                     backgroundColor: Theme.of(context)
                         .scaffoldBackgroundColor
-                        .withOpacity(0.5),
+                        .withValues(alpha: 0.5),
                   ),
                 ],
               ),

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:example/widgets/widget_decorations.dart';
 
 import 'package:charts_painter/chart.dart';
 import 'package:example/widgets/chart_options.dart';
@@ -15,7 +16,7 @@ class BarTargetChartScreen extends StatefulWidget {
 }
 
 class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
-  List<BarValue> _values = <BarValue>[];
+  List<ChartItem> _values = <ChartItem>[];
   double targetMax = 0;
   double targetMin = 0;
   bool _showValues = false;
@@ -36,7 +37,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
         ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25))
             .roundToDouble();
     _values.addAll(List.generate(minItems, (index) {
-      return BarValue<void>(
+      return ChartItem<void>(
           targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
     }));
     targetMin = targetMax - ((_rand.nextDouble() * 3) + (targetMax * 0.2));
@@ -48,16 +49,15 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
         return _values[index];
       }
 
-      return BarValue<void>(
+      return ChartItem<void>(
           targetMax * 0.4 + Random().nextDouble() * targetMax * 0.9);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final _targetDecoration = TargetLineDecoration(
+    final _targetDecoration = targetLineDecoration(
       target: targetMax,
-      colorOverTarget: Theme.of(context).colorScheme.error,
       targetLineColor: Theme.of(context).colorScheme.error,
     );
 
@@ -75,14 +75,18 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
               child: BarChart(
                 data: _values,
                 height: MediaQuery.of(context).size.height * 0.4,
-                dataToValue: (BarValue value) => value.max ?? 0,
+                dataToValue: (ChartItem value) => value.max ?? 0,
                 itemOptions: BarItemOptions(
                   padding: const EdgeInsets.symmetric(horizontal: 2.0),
                   minBarWidth: 4.0,
                   barItemBuilder: (data) {
                     return BarItem(
-                      color: _targetDecoration.getTargetItemColor(
-                          Theme.of(context).colorScheme.primary, data.item),
+                      color: colorForTarget(
+                        Theme.of(context).colorScheme.primary,
+                        data.item,
+                        target: targetMax,
+                        colorOverTarget: Theme.of(context).colorScheme.error,
+                      ),
                       radius: const BorderRadius.vertical(
                         top: Radius.circular(24.0),
                       ),
@@ -101,7 +105,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                     gridColor: Theme.of(context)
                         .colorScheme
                         .primaryContainer
-                        .withOpacity(0.2),
+                        .withValues(alpha: 0.2),
                   ),
                   _targetDecoration,
                 ],
@@ -110,10 +114,10 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                     lineWidth: 4.0,
                     lineColor: Theme.of(context)
                         .primaryColor
-                        .withOpacity(_showLine ? 1.0 : 0.0),
+                        .withValues(alpha: _showLine ? 1.0 : 0.0),
                     smoothPoints: _smoothPoints,
                   ),
-                  TargetLineLegendDecoration(
+                  targetLineLegendDecoration(
                     legendDescription: 'Target line 👇',
                     legendTarget: targetMax,
                     legendStyle: Theme.of(context)
@@ -130,7 +134,7 @@ class _BarTargetChartScreenState extends State<BarTargetChartScreen> {
                     color: Theme.of(context)
                         .colorScheme
                         .primaryContainer
-                        .withOpacity(0.4),
+                        .withValues(alpha: 0.4),
                   ),
                 ],
               ),

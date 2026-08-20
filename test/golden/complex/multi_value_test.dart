@@ -22,7 +22,7 @@ void main() {
                   Colors.green,
                   Colors.blue
                 ][data.listIndex]
-                        .withOpacity(0.5));
+                        .withValues(alpha: 0.5));
               },
             ),
             strategy: DefaultDataStrategy(stackMultipleValues: true),
@@ -40,7 +40,7 @@ void main() {
                     Colors.green,
                     Colors.blue
                   ][data.listIndex]
-                      .withOpacity(0.5),
+                      .withValues(alpha: 0.5),
                 );
               },
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -61,7 +61,7 @@ void main() {
                   Colors.green,
                   Colors.blue
                 ][data.listIndex]
-                    .withOpacity(0.5),
+                    .withValues(alpha: 0.5),
               );
             },
             multiValuePadding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -89,7 +89,7 @@ void main() {
           options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
             barItemBuilder: (_) =>
-                BarItem(color: Colors.red.withOpacity(0.025)),
+                BarItem(color: Colors.red.withValues(alpha: 0.025)),
           ),
         ),
       ),
@@ -115,7 +115,7 @@ void main() {
           options: BarItemOptions(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
             barItemBuilder: (data) =>
-                BarItem(color: Colors.red.withOpacity(0.025)),
+                BarItem(color: Colors.red.withValues(alpha: 0.025)),
           ),
         ),
       ),
@@ -146,7 +146,7 @@ void main() {
                   Colors.green,
                   Colors.blue
                 ][data.listIndex]
-                        .withOpacity(0.1));
+                        .withValues(alpha: 0.1));
               },
               multiValuePadding: const EdgeInsets.symmetric(horizontal: 1.0),
               padding: const EdgeInsets.symmetric(horizontal: 1.0),
@@ -161,7 +161,7 @@ void main() {
               listIndex: 0,
               fill: true,
               smoothPoints: true,
-              lineColor: Colors.green.withOpacity(0.8),
+              lineColor: Colors.green.withValues(alpha: 0.8),
               stretchLine: true,
             ),
             SparkLineDecoration(
@@ -195,7 +195,7 @@ void main() {
                 Colors.green,
                 Colors.blue
               ][data.listIndex]
-                      .withOpacity(0.1));
+                      .withValues(alpha: 0.1));
             },
           ),
         ),
@@ -210,7 +210,7 @@ void main() {
                 listIndex: 0,
                 fill: true,
                 smoothPoints: true,
-                lineColor: Colors.red.withOpacity(0.6),
+                lineColor: Colors.red.withValues(alpha: 0.6),
                 stretchLine: true,
               ),
               SparkLineDecoration(
@@ -227,8 +227,8 @@ void main() {
                   color: [
                     Colors.transparent,
                     Colors.transparent,
-                    Colors.yellow.withOpacity(0.8),
-                    Colors.green.withOpacity(0.8),
+                    Colors.yellow.withValues(alpha: 0.8),
+                    Colors.green.withValues(alpha: 0.8),
                   ][data.listIndex],
                 );
               },
@@ -244,7 +244,7 @@ void main() {
                 listIndex: 0,
                 fill: true,
                 smoothPoints: true,
-                lineColor: Colors.redAccent.withOpacity(0.6),
+                lineColor: Colors.redAccent.withValues(alpha: 0.6),
                 stretchLine: true,
               ),
               SparkLineDecoration(
@@ -268,7 +268,7 @@ void main() {
                 targetMin: 8,
                 targetMax: 14,
                 targetLineColor: Colors.transparent,
-                targetAreaFillColor: Colors.blue.withOpacity(0.4),
+                targetAreaFillColor: Colors.blue.withValues(alpha: 0.4),
               ),
             ],
             options: BarItemOptions(
@@ -278,8 +278,8 @@ void main() {
                   color: [
                     Colors.transparent,
                     Colors.transparent,
-                    Colors.yellow.withOpacity(0.8),
-                    Colors.green.withOpacity(0.8),
+                    Colors.yellow.withValues(alpha: 0.8),
+                    Colors.green.withValues(alpha: 0.8),
                   ][data.listIndex],
                 );
               },

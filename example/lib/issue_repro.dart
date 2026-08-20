@@ -24,7 +24,7 @@ class ChartTest extends StatelessWidget {
           data: ChartData(
             [
               byCount.map((e) => ChartItem<void>(e.toDouble())).toList(),
-              // byCount.map((e) => BarValue<void>(e.toDouble())).toList()
+              // byCount.map((e) => ChartItem<void>(e.toDouble())).toList()
             ],
           ),
           itemOptions: BarItemOptions(),
@@ -42,7 +42,7 @@ class ChartTest extends StatelessWidget {
               gridWidth: 2,
               textStyle: Theme.of(context)
                   .textTheme
-                  .subtitle2!
+                  .titleSmall!
                   .copyWith(fontSize: 8, fontWeight: FontWeight.bold),
               gridColor: Theme.of(context).dividerColor,
             ),

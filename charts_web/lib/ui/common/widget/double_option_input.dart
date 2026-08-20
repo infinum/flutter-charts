@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 /// Small input used for double values, e.g. padding
 class DoubleOptionInput extends HookWidget {
-  DoubleOptionInput(
+  const DoubleOptionInput(
       {Key? key,
       required this.name,
       required this.value,
@@ -21,11 +21,10 @@ class DoubleOptionInput extends HookWidget {
   final double defaultValue;
   final bool noInputField;
 
-  late TextEditingController textEditingController;
-
   @override
   Widget build(BuildContext context) {
-    textEditingController = useTextEditingController(text: value.toString());
+    final textEditingController =
+        useTextEditingController(text: value.toString());
 
     return ClipRRect(
       child: Padding(
@@ -64,7 +63,7 @@ class DoubleOptionInput extends HookWidget {
                   elevation: 1,
                   mini: true,
                   backgroundColor: Colors.grey,
-                  onPressed: decrease,
+                  onPressed: () => decrease(textEditingController),
                   child: const Text('-',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
@@ -78,7 +77,7 @@ class DoubleOptionInput extends HookWidget {
                   elevation: 1,
                   backgroundColor: Colors.grey,
                   mini: true,
-                  onPressed: increase,
+                  onPressed: () => increase(textEditingController),
                   child: const Text('+',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
@@ -91,24 +90,24 @@ class DoubleOptionInput extends HookWidget {
     );
   }
 
-  void decrease() {
+  void decrease(TextEditingController controller) {
     if (value == null) {
-      changeValue(defaultValue);
+      changeValue(controller, defaultValue);
     } else {
-      changeValue(roundTo(value! - step, 10));
+      changeValue(controller, roundTo(value! - step, 10));
     }
   }
 
-  void increase() {
+  void increase(TextEditingController controller) {
     if (value == null) {
-      changeValue(defaultValue);
+      changeValue(controller, defaultValue);
     } else {
-      changeValue(roundTo(value! + step, 10));
+      changeValue(controller, roundTo(value! + step, 10));
     }
   }
 
-  void changeValue(double value) {
-    textEditingController.text = value.toString();
+  void changeValue(TextEditingController controller, double value) {
+    controller.text = value.toString();
     onChanged(value);
   }
 

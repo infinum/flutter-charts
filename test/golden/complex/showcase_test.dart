@@ -1,16 +1,10 @@
 import 'package:alchemist/alchemist.dart';
 import 'package:charts_painter/chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:golden_toolkit/golden_toolkit.dart';
 
 import '../util.dart';
 
 void main() {
-  setUpAll(() async {
-    await loadAppFonts();
-  });
-
   goldenTest('Complex - showcase', fileName: 'showcase_charts', builder: () {
     return GoldenTestGroup(children: [
       GoldenTestScenario(
@@ -295,8 +289,8 @@ void main() {
                     lineWidth: 3.0,
                     gradient: LinearGradient(
                       colors: [
-                        Color(0xFFFFA3A3).withOpacity(0.3),
-                        Color(0xFF8F66C2).withOpacity(0.3),
+                        Color(0xFFFFA3A3).withValues(alpha: 0.3),
+                        Color(0xFF8F66C2).withValues(alpha: 0.3),
                       ],
                     ),
                   ),

@@ -22,13 +22,13 @@ class ComplexCharts extends StatelessWidget {
                   data: ChartData(
                     [
                       [10, 12, 13, 11, 16]
-                          .map((e) => BarValue<void>(e.toDouble()))
+                          .map((e) => ChartItem<void>(e.toDouble()))
                           .toList(),
                       [6, 8, 9, 7, 12]
-                          .map((e) => BarValue<void>(e.toDouble()))
+                          .map((e) => ChartItem<void>(e.toDouble()))
                           .toList(),
                       [2, 4, 5, 3, 8]
-                          .map((e) => BarValue<void>(e.toDouble()))
+                          .map((e) => ChartItem<void>(e.toDouble()))
                           .toList(),
                     ],
                     axisMax: 9.0,

@@ -6,6 +6,7 @@ import 'package:example/charts/scrollable_visible_items_chart_screen.dart';
 import 'package:example/complex/complex_charts.dart';
 import 'package:example/showcase/ios_charts.dart';
 import 'package:example/showcase/showcase_charts.dart';
+import 'package:example/widgets/widget_decorations.dart';
 import 'package:flutter/material.dart';
 
 import 'charts/line_chart_screen.dart';
@@ -98,7 +99,8 @@ class ShowList extends StatelessWidget {
                 state: ChartState<void>(
                   data: ChartData.fromList(
                     [2, 7, 2, 4, 7, 6, 2, 5, 4]
-                        .map((e) => BubbleValue<void>(e.toDouble()))
+                        .map((e) =>
+                            ChartItem<void>(e.toDouble(), min: e.toDouble()))
                         .toList(),
                     axisMax: 9,
                   ),
@@ -139,7 +141,7 @@ class ShowList extends StatelessWidget {
                 state: ChartState<void>(
                     data: ChartData.fromList(
                       [1, 3, 4, 2, 7, 6, 2, 5, 4]
-                          .map((e) => BarValue<void>(e.toDouble()))
+                          .map((e) => ChartItem<void>(e.toDouble()))
                           .toList(),
                       axisMax: 8,
                     ),
@@ -157,9 +159,8 @@ class ShowList extends StatelessWidget {
                       ),
                     ],
                     foregroundDecorations: [
-                      TargetLineDecoration(
+                      targetLineDecoration(
                         target: 6,
-                        colorOverTarget: Theme.of(context).colorScheme.error,
                         targetLineColor:
                             Theme.of(context).colorScheme.secondary,
                       ),
@@ -198,7 +199,7 @@ class ShowList extends StatelessWidget {
                 state: ChartState<void>(
                   data: ChartData.fromList(
                     [1, 3, 4, 2, 7, 6, 2, 5, 4]
-                        .map((e) => BarValue<void>(e.toDouble()))
+                        .map((e) => ChartItem<void>(e.toDouble()))
                         .toList(),
                     axisMax: 8,
                   ),
@@ -239,8 +240,8 @@ class ShowList extends StatelessWidget {
                 state: ChartState<void>(
                   data: ChartData.fromList(
                     [1, 3, 4, 2, 7, 6, 2, 5, 4, 2, 9, 10, 2, 4, 8, 7, 7, 6, 1]
-                        .map((e) =>
-                            CandleValue<void>(e.toDouble() + 6, e.toDouble()))
+                        .map((e) => ChartItem<void>(e.toDouble(),
+                            min: e.toDouble() + 6))
                         .toList(),
                     axisMax: 15,
                   ),

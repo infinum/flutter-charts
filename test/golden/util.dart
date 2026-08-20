@@ -24,7 +24,8 @@ Widget getDefaultChart({
         ),
         itemOptions: BarItemOptions(
           padding: const EdgeInsets.symmetric(horizontal: 4.0),
-          barItemBuilder: (_) => BarItem(color: Colors.red.withOpacity(0.1)),
+          barItemBuilder: (_) =>
+              BarItem(color: Colors.red.withValues(alpha: 0.1)),
         ),
         backgroundDecorations: backgroundDecorations ?? [],
         foregroundDecorations: foregroundDecorations ?? [],

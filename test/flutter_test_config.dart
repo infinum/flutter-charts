@@ -1,26 +1,32 @@
 import 'dart:async';
 
-import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:alchemist/alchemist.dart';
+import 'package:flutter/material.dart';
 
 Future<void> testExecutable(FutureOr<void> Function() testMain) async {
   const isRunningInCi = bool.fromEnvironment('CI', defaultValue: false);
 
-  await loadAppFonts();
-
   return AlchemistConfig.runWithConfig(
     config: AlchemistConfig(
+      // Alchemist 0.14 defaults to a blue backdrop and 18px scenario labels.
+      // Keep the white backdrop the committed goldens were built around.
+      goldenTestTheme: GoldenTestTheme(
+        backgroundColor: Colors.white,
+        borderColor: const Color(0xFFE0E0E0),
+        nameTextStyle: const TextStyle(fontSize: 14, color: Colors.black87),
+        padding: const EdgeInsets.all(8),
+      ),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.red,
           brightness: Brightness.light,
-          background: Colors.white,
+          surface: Colors.white,
         ),
-        backgroundColor: Colors.white,
         brightness: Brightness.light,
       ),
       ciGoldensConfig: const CiGoldensConfig(
         enabled: isRunningInCi,
-        tolerance: 0.05,
+        diffThreshold: 0.05,
       ),
       platformGoldensConfig: const PlatformGoldensConfig(
         enabled: !isRunningInCi,
@@ -28,38 +34,4 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
     ),
     run: testMain,
   );
-
-  // return AlchemistConfig.runWithConfig(
-  //   config: AlchemistConfig(
-  //     theme: ThemeData(
-  //       colorScheme: ColorScheme.fromSeed(
-  //         seedColor: Colors.red,
-  //         brightness: Brightness.light,
-  //         background: Colors.white,
-  //       ),
-  //       brightness: Brightness.light,
-  //     ),
-  //     ciGoldensConfig: const CiGoldensConfig(
-  //       enabled: isRunningInCi,
-  //       tolerance: 0.05,
-  //     ),
-  //     platformGoldensConfig: const PlatformGoldensConfig(
-  //       enabled: !isRunningInCi,
-  //     ),
-  //   ),
-  //   run: testMain,
-  // );
-
-  // return GoldenToolkit.runWithConfiguration(
-  //   () async {
-  //     await loadAppFonts();
-  //     return testMain();
-  //   },
-  //   config: GoldenToolkitConfiguration(
-  //     enableRealShadows: false,
-  //     // Mac has fon smoothing that will sometimes trigger false positives based on system settings.
-  //     // Skip assertion on Mac until fix is deployed: https://github.com/flutter/flutter/issues/56383
-  //     // skipGoldenAssertion: () => Platform.isMacOS,
-  //   ),
-  // );
 }

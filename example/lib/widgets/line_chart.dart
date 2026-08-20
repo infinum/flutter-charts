@@ -20,7 +20,9 @@ class LineChart<T> extends StatelessWidget {
     this.stack = false,
     Key? key,
   })  : _mappedValues = [
-          data.map((e) => BubbleValue<T>(dataToValue(e))).toList()
+          data
+              .map((e) => ChartItem<T>(dataToValue(e), min: dataToValue(e)))
+              .toList()
         ],
         super(key: key);
 
@@ -52,7 +54,7 @@ class LineChart<T> extends StatelessWidget {
   final ChartBehaviour chartBehaviour;
   final ItemOptions? chartItemOptions;
 
-  final List<List<BubbleValue<T>>> _mappedValues;
+  final List<List<ChartItem<T>>> _mappedValues;
 
   @override
   Widget build(BuildContext context) {

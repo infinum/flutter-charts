@@ -1,16 +1,10 @@
 import 'package:alchemist/alchemist.dart';
 import 'package:charts_painter/chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:golden_toolkit/golden_toolkit.dart';
 
 import '../util.dart';
 
 void main() {
-  setUpAll(() async {
-    await loadAppFonts();
-  });
-
   goldenTest('Horizontal deooration',
       fileName: 'general_horizontal_decoration_golden', builder: () {
     return GoldenTestScenario(
@@ -82,7 +76,7 @@ void main() {
         child: getDefaultChart(backgroundDecorations: [
           SelectedItemDecoration(
             2,
-            backgroundColor: Colors.grey.withOpacity(0.25),
+            backgroundColor: Colors.grey.withValues(alpha: 0.25),
             showText: false,
           ),
         ]),
@@ -116,7 +110,7 @@ void main() {
             TargetLineDecoration(
                 lineWidth: 8,
                 target: 4,
-                targetLineColor: Colors.red.withOpacity(0.2)),
+                targetLineColor: Colors.red.withValues(alpha: 0.2)),
             TargetLineLegendDecoration(
               legendTarget: 4,
               legendDescription: 'This is target |',

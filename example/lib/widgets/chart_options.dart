@@ -60,7 +60,6 @@ class _ChartOptionsWidgetState extends State<ChartOptionsWidget> {
               ),
               Flexible(
                 child: ListTile(
-                  enabled: widget.onRefresh != null,
                   trailing: Icon(Icons.refresh),
                   title: Text('Refresh dataset'),
                   onTap: widget.onRefresh,

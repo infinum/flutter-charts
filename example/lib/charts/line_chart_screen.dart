@@ -14,7 +14,7 @@ class LineChartScreen extends StatefulWidget {
 }
 
 class _LineChartScreenState extends State<LineChartScreen> {
-  Map<int, List<BubbleValue>> _values = <int, List<BubbleValue>>{};
+  Map<int, List<ChartItem>> _values = <int, List<ChartItem>>{};
   double targetMax = 0;
   bool _showValues = false;
   bool _smoothPoints = false;
@@ -36,9 +36,10 @@ class _LineChartScreenState extends State<LineChartScreen> {
     targetMax =
         3 + (_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25);
     _values.addAll(List.generate(3, (index) {
-      List<BubbleValue<void>> _items = [];
+      List<ChartItem<void>> _items = [];
       for (int i = 0; i < minItems; i++) {
-        _items.add(BubbleValue<void>(2 + _rand.nextDouble() * _difference));
+        final value = 2 + _rand.nextDouble() * _difference;
+        _items.add(ChartItem<void>(value, min: value));
       }
       return _items;
     }).asMap());
@@ -46,27 +47,28 @@ class _LineChartScreenState extends State<LineChartScreen> {
 
   void _addValues() {
     _values.addAll(List.generate(3, (index) {
-      List<BubbleValue<void>> _items = [];
+      List<ChartItem<void>> _items = [];
       for (int i = 0; i < minItems; i++) {
-        _items.add(BubbleValue<void>(2 + Random().nextDouble() * targetMax));
+        final value = 2 + Random().nextDouble() * targetMax;
+        _items.add(ChartItem<void>(value, min: value));
       }
       return _items;
     }).asMap());
   }
 
-  List<List<BubbleValue<void>>> _getMap() {
+  List<List<ChartItem<void>>> _getMap() {
     return [
       _values[0]!.toList(),
       _values[1]!
           .asMap()
-          .map<int, BubbleValue<void>>((index, e) {
+          .map<int, ChartItem<void>>((index, e) {
             return MapEntry(index, e);
           })
           .values
           .toList(),
       _values[2]!
           .asMap()
-          .map<int, BubbleValue<void>>((index, e) {
+          .map<int, ChartItem<void>>((index, e) {
             return MapEntry(index, e);
           })
           .values
@@ -96,7 +98,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                     itemColor: Theme.of(context)
                         .colorScheme
                         .secondary
-                        .withOpacity(_showLine ? 1.0 : 0.0),
+                        .withValues(alpha: _showLine ? 1.0 : 0.0),
                     lineWidth: 2.0,
                     chartItemOptions: BubbleItemOptions(
                       maxBarWidth: _showLine ? 0.0 : 6.0,
@@ -119,34 +121,32 @@ class _LineChartScreenState extends State<LineChartScreen> {
                         gridColor: Theme.of(context)
                             .colorScheme
                             .primaryContainer
-                            .withOpacity(0.2),
+                            .withValues(alpha: 0.2),
                       ),
                       SparkLineDecoration(
                         id: 'first_line_fill',
                         smoothPoints: _smoothPoints,
                         fill: true,
-                        lineColor: Theme.of(context)
-                            .colorScheme
-                            .secondary
-                            .withOpacity(_fillLine
-                                ? _stack
-                                    ? 1.0
-                                    : 0.2
-                                : 0.0),
+                        lineColor:
+                            Theme.of(context).colorScheme.secondary.withValues(
+                                alpha: _fillLine
+                                    ? _stack
+                                        ? 1.0
+                                        : 0.2
+                                    : 0.0),
                         listIndex: 0,
                       ),
                       SparkLineDecoration(
                         id: 'second_line_fill',
                         smoothPoints: _smoothPoints,
                         fill: true,
-                        lineColor: Theme.of(context)
-                            .colorScheme
-                            .primary
-                            .withOpacity(_fillLine
-                                ? _stack
-                                    ? 1.0
-                                    : 0.2
-                                : 0.0),
+                        lineColor:
+                            Theme.of(context).colorScheme.primary.withValues(
+                                alpha: _fillLine
+                                    ? _stack
+                                        ? 1.0
+                                        : 0.2
+                                    : 0.0),
                         listIndex: 1,
                       ),
                       SparkLineDecoration(
@@ -157,14 +157,13 @@ class _LineChartScreenState extends State<LineChartScreen> {
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: Colors.accents),
-                        lineColor: Theme.of(context)
-                            .colorScheme
-                            .secondary
-                            .withOpacity(_fillLine
-                                ? _stack
-                                    ? 1.0
-                                    : 0.2
-                                : 0.0),
+                        lineColor:
+                            Theme.of(context).colorScheme.secondary.withValues(
+                                alpha: _fillLine
+                                    ? _stack
+                                        ? 1.0
+                                        : 0.2
+                                    : 0.0),
                         listIndex: 2,
                       ),
                     ],
@@ -176,7 +175,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                         lineColor: Theme.of(context)
                             .colorScheme
                             .primary
-                            .withOpacity(_showLine ? 1.0 : 0.0),
+                            .withValues(alpha: _showLine ? 1.0 : 0.0),
                         listIndex: 1,
                       ),
                       SparkLineDecoration(
@@ -190,7 +189,7 @@ class _LineChartScreenState extends State<LineChartScreen> {
                         lineColor: Theme.of(context)
                             .colorScheme
                             .primary
-                            .withOpacity(_showLine ? 1.0 : 0.0),
+                            .withValues(alpha: _showLine ? 1.0 : 0.0),
                         listIndex: 2,
                       ),
                     ],

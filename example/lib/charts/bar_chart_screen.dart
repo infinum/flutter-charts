@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:example/widgets/widget_decorations.dart';
 
 import 'package:charts_painter/chart.dart';
 import 'package:example/widgets/chart_options.dart';
@@ -15,7 +16,7 @@ class BarChartScreen extends StatefulWidget {
 }
 
 class _BarChartScreenState extends State<BarChartScreen> {
-  List<BarValue<void>> _values = <BarValue<void>>[];
+  List<ChartItem<void>> _values = <ChartItem<void>>[];
   double targetMax = 0;
   double targetMin = 0;
   bool _showValues = false;
@@ -39,7 +40,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
         ((_rand.nextDouble() * _difference * 0.75) - (_difference * 0.25))
             .roundToDouble();
     _values.addAll(List.generate(minItems, (index) {
-      return BarValue<void>(
+      return ChartItem<void>(
           targetMax * 0.4 + _rand.nextDouble() * targetMax * 0.9);
     }));
     targetMin = targetMax - ((_rand.nextDouble() * 3) + (targetMax * 0.2));
@@ -51,7 +52,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
         return _values[index];
       }
 
-      return BarValue<void>(
+      return ChartItem<void>(
           targetMax * 0.4 + Random().nextDouble() * targetMax * 0.9);
     });
   }
@@ -71,7 +72,7 @@ class _BarChartScreenState extends State<BarChartScreen> {
             child: BarChart(
               data: _values,
               height: MediaQuery.of(context).size.height * 0.4,
-              dataToValue: (BarValue value) => value.max ?? 0.0,
+              dataToValue: (ChartItem value) => value.max ?? 0.0,
               itemOptions: BarItemOptions(
                 padding: const EdgeInsets.symmetric(horizontal: 2.0),
                 minBarWidth: 4.0,
@@ -108,11 +109,13 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   gridColor: Theme.of(context)
                       .colorScheme
                       .primaryContainer
-                      .withOpacity(0.2),
+                      .withValues(alpha: 0.2),
                 ),
                 TargetAreaDecoration(
-                  targetAreaFillColor:
-                      Theme.of(context).colorScheme.error.withOpacity(0.2),
+                  targetAreaFillColor: Theme.of(context)
+                      .colorScheme
+                      .error
+                      .withValues(alpha: 0.2),
                   targetLineColor: Theme.of(context).colorScheme.error,
                   targetAreaRadius: BorderRadius.circular(12.0),
                   targetMax: targetMax,
@@ -125,10 +128,10 @@ class _BarChartScreenState extends State<BarChartScreen> {
                   lineWidth: 4.0,
                   lineColor: Theme.of(context)
                       .primaryColor
-                      .withOpacity(_showLine ? 1.0 : 0.0),
+                      .withValues(alpha: _showLine ? 1.0 : 0.0),
                   smoothPoints: _smoothPoints,
                 ),
-                ValueDecoration(
+                valueLabelsDecoration(
                   alignment: Alignment.bottomCenter,
                   textStyle: Theme.of(context)
                       .textTheme

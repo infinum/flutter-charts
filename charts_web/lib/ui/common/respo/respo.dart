@@ -1,9 +1,6 @@
 // ignore_for_file: prefer-single-widget-per-file
 
 import 'package:flutter/material.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'respo.freezed.dart';
 
 const _mobileBreakpoint = 800;
 const _tabletBreakpoint = 1400;
@@ -42,15 +39,15 @@ class RespoState extends State<Respo> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    // Dimensions are only available after first frame paint.
     WidgetsBinding.instance.addObserver(this);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Breakpoints must be initialized before the first frame is drawn.
-      // Directly updating dimensions is safe because frame callbacks
-      // in initState are guaranteed.
-      setDimensions();
-      setState(() {});
-    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // MediaQuery is readable here, so the very first build already lays out at
+    // the real window size instead of the 200x200 placeholder below.
+    setDimensions();
   }
 
   @override
@@ -203,11 +200,11 @@ class RespoWrapperData {
 
   ResponsiveSize get size {
     if (screenWidth < _mobileBreakpoint) {
-      return const ResponsiveSize.small();
+      return ResponsiveSize.small;
     } else if (screenWidth < _tabletBreakpoint) {
-      return const ResponsiveSize.medium();
+      return ResponsiveSize.medium;
     } else {
-      return const ResponsiveSize.large();
+      return ResponsiveSize.large;
     }
   }
 
@@ -228,9 +225,4 @@ class RespoWrapperData {
   }
 }
 
-@freezed
-class ResponsiveSize with _$ResponsiveSize {
-  const factory ResponsiveSize.small() = _Small;
-  const factory ResponsiveSize.medium() = _Medium;
-  const factory ResponsiveSize.large() = _Large;
-}
+enum ResponsiveSize { small, medium, large }

@@ -66,7 +66,7 @@ class DecorationWidgetPresenter extends ChangeNotifier
           padding: EdgeInsets.only(top: 5 * verticalMultiplier),
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.blue.withOpacity(0.1),
+              color: Colors.blue.withValues(alpha: 0.1),
               border: Border.all(color: Colors.blue, width: 2),
               borderRadius: BorderRadius.circular(16),
             ),
@@ -95,7 +95,7 @@ class DecorationWidgetPresenter extends ChangeNotifier
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: Material(
-              color: Colors.blue.withOpacity(0.1),
+              color: Colors.blue.withValues(alpha: 0.1),
               child: InkWell(
                 onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

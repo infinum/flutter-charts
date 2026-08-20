@@ -4,14 +4,8 @@ import 'package:alchemist/alchemist.dart';
 import 'package:charts_painter/chart.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:golden_toolkit/golden_toolkit.dart';
 
 void main() {
-  setUpAll(() async {
-    await loadAppFonts();
-  });
-
   goldenTest('Bar painter', fileName: 'bar_geometry_golden', builder: () {
     return Container(
       height: 500,

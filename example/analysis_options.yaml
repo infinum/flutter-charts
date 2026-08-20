@@ -1,4 +1,4 @@
-include: package:pedantic/analysis_options.yaml
+include: package:lints/recommended.yaml
 
 # Specify analysis options.
 #
@@ -21,20 +21,26 @@ include: package:pedantic/analysis_options.yaml
 # Android Studio, and the `flutter analyze` command.
 
 analyzer:
-  strong-mode:
-    implicit-casts: false
-    implicit-dynamic: false
+  language:
+    strict-casts: false
+    strict-raw-types: false
   errors:
+    avoid_function_literals_in_foreach_calls: ignore
+    no_leading_underscores_for_local_identifiers: ignore
+    library_private_types_in_public_api: ignore
     # treat missing required parameters as a warning (not a hint)
     missing_required_param: warning
     # treat missing returns as a warning (not a hint)
     missing_return: warning
     # allow having TODOs in the code
     todo: ignore
-    # Ignore analyzer hints for updating pubspecs when using Future or
-    # Stream and not importing dart:async
-    # Please see https://github.com/flutter/flutter/pull/24528 for details.
-    sdk_version_async_exported_from_core: ignore
   exclude:
     - "bin/cache/**"
     - "lib/assets.dart"
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**

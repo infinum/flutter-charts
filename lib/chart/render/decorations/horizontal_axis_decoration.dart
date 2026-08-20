@@ -247,7 +247,7 @@ class HorizontalAxisDecoration extends DecorationPainter {
   TextPainter _getTextPainter(String? text, {Size? size}) {
     final textPainter = TextPainter(
       text: TextSpan(text: text, style: legendFontStyle),
-      textScaleFactor: textScale,
+      textScaler: TextScaler.linear(textScale),
       textAlign: valuesAlign,
       maxLines: 1,
       textDirection: TextDirection.ltr,

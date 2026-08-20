@@ -13,29 +13,28 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final _provider = ref.watch(chartStatePresenter);
+    ref.watch(chartStatePresenter);
 
     return Scaffold(
       backgroundColor: const Color(0xffefefef),
-      body: Respo.of(context).size.maybeMap(small: (_) {
-        return ListView(
-          shrinkWrap: true,
-          children: [
-            ChartOptions(),
-            const SizedBox(height: 500, child: _Chart()),
-          ],
-        );
-      }, orElse: () {
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-                width: 600.0,
-                child: SingleChildScrollView(child: ChartOptions())),
-            const Expanded(child: _Chart()),
-          ],
-        );
-      }),
+      body: switch (Respo.of(context).size) {
+        ResponsiveSize.small => ListView(
+            shrinkWrap: true,
+            children: [
+              ChartOptions(),
+              const SizedBox(height: 500, child: _Chart()),
+            ],
+          ),
+        ResponsiveSize.medium || ResponsiveSize.large => Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                  width: 600.0,
+                  child: SingleChildScrollView(child: ChartOptions())),
+              const Expanded(child: _Chart()),
+            ],
+          ),
+      },
     );
   }
 }

@@ -1,16 +1,10 @@
 import 'package:alchemist/alchemist.dart';
 import 'package:charts_painter/chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:golden_toolkit/golden_toolkit.dart';
 
 import '../util.dart';
 
 void main() {
-  setUpAll(() async {
-    await loadAppFonts();
-  });
-
   goldenTest('sparkline_decoration', fileName: 'sparkline_decoration_golden',
       builder: () {
     return GoldenTestGroup(children: [
@@ -115,7 +109,7 @@ void main() {
           SparkLineDecoration(
             smoothPoints: true,
             fill: true,
-            lineColor: Colors.red.withOpacity(0.2),
+            lineColor: Colors.red.withValues(alpha: 0.2),
           ),
           SparkLineDecoration(
             smoothPoints: true,
@@ -165,7 +159,7 @@ void main() {
                   SparkLineDecoration(
                     listIndex: 1,
                     stretchLine: true,
-                    lineColor: Colors.red.withOpacity(0.2),
+                    lineColor: Colors.red.withValues(alpha: 0.2),
                     smoothPoints: true,
                     fill: true,
                   )

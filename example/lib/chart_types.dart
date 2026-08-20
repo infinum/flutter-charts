@@ -99,8 +99,8 @@ class ChartTypes extends StatelessWidget {
                 state: ChartState<void>(
                   data: ChartData.fromList(
                     [1, 3, 4, 2, 7, 6, 2, 5, 4]
-                        .map((e) =>
-                            CandleValue<void>(e.toDouble() + 6, e.toDouble()))
+                        .map((e) => ChartItem<void>(e.toDouble(),
+                            min: e.toDouble() + 6))
                         .toList(),
                     axisMax: 15,
                   ),

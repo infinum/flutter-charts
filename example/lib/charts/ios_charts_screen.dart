@@ -68,8 +68,6 @@ class IosChartScreen extends StatefulWidget {
 }
 
 class _IosChartScreenState extends State<IosChartScreen> {
-  int _currentState = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,10 +86,10 @@ class _IosChartScreenState extends State<IosChartScreen> {
                 height: 180,
                 child: BarChart(
                   data: _batteryData
-                      .map((e) => BarValue<void>(e.toDouble()))
+                      .map((e) => ChartItem<void>(e.toDouble()))
                       .toList(),
                   height: MediaQuery.of(context).size.height * 0.18,
-                  dataToValue: (BarValue value) => value.max ?? 0.0,
+                  dataToValue: (ChartItem value) => value.max ?? 0.0,
                   itemOptions: BarItemOptions(
                     padding: const EdgeInsets.symmetric(horizontal: 2.0),
                     minBarWidth: 4.0,
@@ -129,7 +127,7 @@ class _IosChartScreenState extends State<IosChartScreen> {
                                         width: squareWidth * 4,
                                         child: Container(
                                           color: CupertinoColors.activeGreen
-                                              .withOpacity(0.4),
+                                              .withValues(alpha: 0.4),
                                         ),
                                       ),
                                       // Second (Bigger) green rectangle area
@@ -140,7 +138,7 @@ class _IosChartScreenState extends State<IosChartScreen> {
                                         width: squareWidth * 20,
                                         child: Container(
                                           color: CupertinoColors.activeGreen
-                                              .withOpacity(0.4),
+                                              .withValues(alpha: 0.4),
                                         ),
                                       ),
                                       // Bottom battery state indicator (green)
@@ -178,7 +176,8 @@ class _IosChartScreenState extends State<IosChartScreen> {
                                                         shape: StadiumBorder(),
                                                         color: CupertinoColors
                                                             .systemGreen
-                                                            .withOpacity(0.2),
+                                                            .withValues(
+                                                                alpha: 0.2),
                                                       ),
                                                     ),
                                                   ),

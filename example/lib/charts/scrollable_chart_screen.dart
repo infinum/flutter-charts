@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:example/widgets/widget_decorations.dart';
 
 import 'package:charts_painter/chart.dart';
 import 'package:example/widgets/chart_options.dart';
@@ -61,15 +62,16 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
       colorOverTarget: Theme.of(context)
           .colorScheme
           .error
-          .withOpacity(_showBars ? 1.0 : 0.0),
-      targetAreaFillColor: Theme.of(context).colorScheme.error.withOpacity(0.2),
+          .withValues(alpha: _showBars ? 1.0 : 0.0),
+      targetAreaFillColor:
+          Theme.of(context).colorScheme.error.withValues(alpha: 0.2),
       targetLineColor: Theme.of(context).colorScheme.error,
       targetAreaRadius: BorderRadius.circular(12.0),
     );
 
     final _chartState = ChartState(
       data: ChartData.fromList(
-        _values.map((e) => BarValue<void>(e)).toList(),
+        _values.map((e) => ChartItem<void>(e)).toList(),
         axisMax: 20,
       ),
       itemOptions: BarItemOptions(
@@ -81,7 +83,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                 Theme.of(context)
                     .colorScheme
                     .primary
-                    .withOpacity(_showBars ? 1.0 : 0.0),
+                    .withValues(alpha: _showBars ? 1.0 : 0.0),
                 data.item),
             radius: const BorderRadius.vertical(
               top: Radius.circular(24.0),
@@ -110,15 +112,19 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
           endWithChart: false,
           lineWidth: 2.0,
           axisStep: 2,
-          lineColor:
-              Theme.of(context).colorScheme.primaryContainer.withOpacity(0.2),
+          lineColor: Theme.of(context)
+              .colorScheme
+              .primaryContainer
+              .withValues(alpha: 0.2),
         ),
         VerticalAxisDecoration(
           endWithChart: false,
           lineWidth: 2.0,
           axisStep: 7,
-          lineColor:
-              Theme.of(context).colorScheme.primaryContainer.withOpacity(0.8),
+          lineColor: Theme.of(context)
+              .colorScheme
+              .primaryContainer
+              .withValues(alpha: 0.8),
         ),
         GridDecoration(
           showVerticalGrid: true,
@@ -127,42 +133,43 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
           verticalValuesPadding: const EdgeInsets.symmetric(vertical: 12.0),
           verticalAxisStep: 1,
           horizontalAxisStep: 1,
-          textStyle: Theme.of(context).textTheme.caption,
-          gridColor:
-              Theme.of(context).colorScheme.primaryContainer.withOpacity(0.2),
+          textStyle: Theme.of(context).textTheme.bodySmall,
+          gridColor: Theme.of(context)
+              .colorScheme
+              .primaryContainer
+              .withValues(alpha: 0.2),
         ),
         targetArea,
         SparkLineDecoration(
           fill: true,
           lineColor: Theme.of(context)
               .primaryColor
-              .withOpacity(!_showBars ? 0.2 : 0.0),
+              .withValues(alpha: !_showBars ? 0.2 : 0.0),
           smoothPoints: _smoothPoints,
         ),
       ],
       foregroundDecorations: [
-        ValueDecoration(
+        valueLabelsDecoration(
           alignment: _showBars ? Alignment.bottomCenter : Alignment(0.0, -1.0),
-          textStyle: Theme.of(context).textTheme.button!.copyWith(
+          textStyle: Theme.of(context).textTheme.labelLarge!.copyWith(
               color: (_showBars
                       ? Theme.of(context).colorScheme.onPrimary
                       : Theme.of(context).colorScheme.primary)
-                  .withOpacity(_isScrollable ? 1.0 : 0.0)),
+                  .withValues(alpha: _isScrollable ? 1.0 : 0.0)),
         ),
         SparkLineDecoration(
           lineWidth: 2.0,
           lineColor: Theme.of(context)
               .primaryColor
-              .withOpacity(!_showBars ? 1.0 : 0.0),
+              .withValues(alpha: !_showBars ? 1.0 : 0.0),
           smoothPoints: _smoothPoints,
         ),
         BorderDecoration(
           endWithChart: true,
           color: Theme.of(context).colorScheme.primaryContainer,
         ),
-        SelectedItemDecoration(
+        selectedItemDecoration(
           _selected,
-          animate: true,
           selectedColor: Theme.of(context).colorScheme.secondary,
           topMargin: 40.0,
           child: Padding(
@@ -180,7 +187,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
           ),
           backgroundColor: Theme.of(context)
               .scaffoldBackgroundColor
-              .withOpacity(_isScrollable ? 0.5 : 0.8),
+              .withValues(alpha: _isScrollable ? 0.5 : 0.8),
         ),
       ],
     );
@@ -220,7 +227,7 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                         end: Alignment.centerLeft,
                         colors: [
                           Colors.white,
-                          Colors.white.withOpacity(0.0),
+                          Colors.white.withValues(alpha: 0.0),
                         ],
                         stops: [
                           0.5,
@@ -240,13 +247,13 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                               endWithChart: false,
                               axisValue: (value) => '$value E',
                               legendFontStyle:
-                                  Theme.of(context).textTheme.caption,
+                                  Theme.of(context).textTheme.bodySmall,
                               valuesAlign: TextAlign.center,
                               valuesPadding: const EdgeInsets.only(right: 8.0),
                               lineColor: Theme.of(context)
                                   .colorScheme
                                   .primaryContainer
-                                  .withOpacity(0.8),
+                                  .withValues(alpha: 0.8),
                             )
                           ]
                         : [],

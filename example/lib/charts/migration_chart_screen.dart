@@ -122,7 +122,7 @@ class MigrationChartScreen extends StatelessWidget {
               radius: const BorderRadius.vertical(
                 top: Radius.circular(24.0),
               ),
-              color: Colors.red.withOpacity(0.4),
+              color: Colors.red.withValues(alpha: 0.4),
             );
           },
         ),

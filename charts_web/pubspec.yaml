@@ -18,33 +18,31 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.16.0-126.0.dev <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
   charts_painter:
-    path: ../../flutter-charts
+    path: ../
   example:
     path: ../example
 
-  flutter_riverpod: ^1.0.3
-  riverpod: ^1.0.3
-  flutter_hooks: ^0.18.2+1
-  hooks_riverpod: ^1.0.2
-  cupertino_icons: ^1.0.4
-  freezed_annotation: ^2.1.0
-  flex_color_picker: ^2.6.1
-  flutter_svg: ^1.1.5
+  flutter_riverpod: ^2.6.1
+  riverpod: ^2.6.1
+  flutter_hooks: ^0.21.2
+  hooks_riverpod: ^2.6.1
+  cupertino_icons: ^1.0.8
+  flex_color_picker: ^3.7.0
+  flutter_svg: ^2.0.17
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^2.1.8
-  freezed: ^2.1.0+1
-  flutter_lints: ^1.0.4
-  flutter_gen_runner: ^4.1.6
+  build_runner: ^2.4.13
+  flutter_lints: ^5.0.0
+  flutter_gen_runner: ^5.8.0
 
 flutter_gen:
   output: lib/

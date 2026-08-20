@@ -14,7 +14,7 @@ class BubbleChartScreen extends StatefulWidget {
 }
 
 class _BubbleChartScreenState extends State<BubbleChartScreen> {
-  List<BubbleValue> _values = <BubbleValue>[];
+  List<ChartItem> _values = <ChartItem>[];
   double targetMax = 0;
   double targetMin = 0;
   bool _showValues = false;
@@ -33,7 +33,8 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
     targetMax = _difference;
     targetMin = _difference * 0.5;
     _values.addAll(List.generate(minItems, (index) {
-      return BubbleValue<void>(2 + _rand.nextDouble() * _difference);
+      final value = 2 + _rand.nextDouble() * _difference;
+      return ChartItem<void>(value, min: value);
     }));
   }
 
@@ -43,7 +44,8 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
         return _values[index];
       }
 
-      return BubbleValue<void>(2 + Random().nextDouble() * targetMax);
+      final value = 2 + Random().nextDouble() * targetMax;
+      return ChartItem<void>(value, min: value);
     });
   }
 
@@ -55,7 +57,7 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
       colorOverTarget: Theme.of(context).colorScheme.secondary,
       targetLineColor: Theme.of(context).colorScheme.secondary,
       targetAreaFillColor:
-          Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+          Theme.of(context).colorScheme.secondary.withValues(alpha: 0.2),
       targetAreaRadius: BorderRadius.circular(8.0),
     );
 
@@ -71,7 +73,7 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
             child: Container(
               child: Padding(
                 padding: const EdgeInsets.all(24.0),
-                child: BubbleChart<BubbleValue>(
+                child: BubbleChart<ChartItem>(
                   data: _values,
                   height: MediaQuery.of(context).size.height * 0.3,
                   itemOptions: BubbleItemOptions(
@@ -85,7 +87,7 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                     padding: EdgeInsets.symmetric(
                         horizontal: (1 - (_values.length / 17)) * 8.0),
                   ),
-                  dataToValue: (BubbleValue value) => value.max ?? 0,
+                  dataToValue: (ChartItem value) => value.max ?? 0,
                   backgroundDecorations: [
                     GridDecoration(
                       showHorizontalValues: _showValues,
@@ -98,7 +100,7 @@ class _BubbleChartScreenState extends State<BubbleChartScreen> {
                       gridColor: Theme.of(context)
                           .colorScheme
                           .primaryContainer
-                          .withOpacity(0.2),
+                          .withValues(alpha: 0.2),
                       textStyle: Theme.of(context)
                           .textTheme
                           .labelMedium!

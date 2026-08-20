@@ -56,7 +56,7 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
               return _values[key]![index];
             }
 
-            return BarValue<void>(
+            return ChartItem<void>(
                 targetMax * 0.4 + Random().nextDouble() * targetMax * 0.9);
           }));
     }));
@@ -124,7 +124,8 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
                                 (!_stackItems || data.listIndex == 0)
                                     ? 12
                                     : 0)),
-                        color: Colors.accents[data.listIndex].withOpacity(0.2),
+                        color: Colors.accents[data.listIndex]
+                            .withValues(alpha: 0.2),
                         border: Border.all(
                           width: 2,
                           color: Colors.accents[data.listIndex],
@@ -182,7 +183,7 @@ class _MultiBarWidgetChartScreenState extends State<MultiBarWidgetChartScreen> {
                       gridColor: Theme.of(context)
                           .colorScheme
                           .primaryContainer
-                          .withOpacity(0.2),
+                          .withValues(alpha: 0.2),
                     ),
                   ],
                   foregroundDecorations: [

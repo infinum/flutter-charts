@@ -2,7 +2,7 @@ import 'package:charts_painter/chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-typedef DataToValue<T> = CandleValue<T> Function(T item);
+typedef DataToValue<T> = ChartItem<T> Function(T item);
 typedef DataToAxis<T> = String Function(int item);
 
 /// Short-hand to easier create several candle charts
@@ -32,7 +32,7 @@ class CandleChart<T> extends StatelessWidget {
   final ItemOptions chartItemOptions;
   final ChartGeometryPainter geometryPainter;
 
-  final List<List<CandleValue<T>>> _mappedValues;
+  final List<List<ChartItem<T>>> _mappedValues;
 
   @override
   Widget build(BuildContext context) {
