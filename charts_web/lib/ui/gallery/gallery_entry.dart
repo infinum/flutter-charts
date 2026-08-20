@@ -9,6 +9,8 @@ class GalleryEntry {
     required this.title,
     required this.blurb,
     required this.tags,
+    required this.useCase,
+    required this.customization,
     required this.buildChart,
     required this.snippet,
     required this.applyToPlayground,
@@ -18,6 +20,13 @@ class GalleryEntry {
   final String title;
   final String blurb;
   final List<String> tags;
+
+  /// Where a chart like this earns its place in a real app. The gallery is
+  /// meant to read as templates you would reach for, not as an API tour.
+  final String useCase;
+
+  /// What to change to make the template yours, most-likely edit first.
+  final List<String> customization;
 
   /// Builds the live chart. Returns a widget, not a `ChartState`, so entries
   /// needing a wrapper (the scrollable one) fit the same shape.

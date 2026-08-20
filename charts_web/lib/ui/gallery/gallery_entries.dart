@@ -53,9 +53,18 @@ BarItem _seriesBar(ItemBuilderData data) =>
 final List<GalleryEntry> galleryEntries = [
   GalleryEntry(
     id: 'simple-bar',
-    title: 'Simple bar chart',
-    blurb: 'BarItemOptions with a grid behind it. The shortest useful chart.',
+    title: 'Weekly activity',
+    blurb: 'One bar per day with a light grid behind it. The default shape '
+        'for any "last 7 days" card.',
     tags: const ['bar', 'decoration'],
+    useCase: 'Step counts, sessions, orders per day — anything counted over a '
+        'short, fixed window.',
+    customization: const [
+      'Swap the bar colour in barItemBuilder, or vary it per item from '
+          'data.item.max to highlight outliers.',
+      'showVerticalGrid: true adds column separators when days need dividing.',
+      'Drop padding to let bars touch, raise it for an airier card.',
+    ],
     buildChart: (context) => Chart<void>(
       state: ChartState<void>(
         data: ChartData.fromList(_items([4, 6, 3, 6, 7, 9, 3, 2]),
@@ -98,9 +107,20 @@ final List<GalleryEntry> galleryEntries = [
   ),
   GalleryEntry(
     id: 'stacked-bar',
-    title: 'Stacked series',
-    blurb: 'StackDataStrategy puts every series on top of the previous one.',
+    title: 'Revenue by channel',
+    blurb: 'Three series stacked into one bar per period, so the total and '
+        'the split read at once.',
     tags: const ['bar', 'stacked'],
+    useCase: 'Revenue or traffic split by source, storage by file type, time '
+        'by project.',
+    customization: const [
+      'palette[data.listIndex] gives each channel its colour; use your brand '
+          'ramp here.',
+      'Switch to DefaultDataStrategy(stackMultipleValues: false) to compare '
+          'channels side by side instead of stacked.',
+      'Add a legend above the chart in your own widgets — the chart draws the '
+          'bars, not the key.',
+    ],
     buildChart: (context) => Chart<void>(
       state: ChartState<void>(
         data: ChartData(
@@ -141,9 +161,18 @@ final List<GalleryEntry> galleryEntries = [
   ),
   GalleryEntry(
     id: 'grouped-bar',
-    title: 'Grouped series',
-    blurb: 'DefaultDataStrategy with stacking off draws series side by side.',
+    title: 'This year vs last year',
+    blurb: 'Two series side by side in each slot, the standard period-over- '
+        'period comparison.',
     tags: const ['bar', 'stacked'],
+    useCase: 'Year-on-year sales, budget against actual, A/B results.',
+    customization: const [
+      'multiValuePadding controls the gap inside a pair; padding controls the '
+          'gap between pairs.',
+      'Two colours is usually right here — a muted one for last year, your '
+          'accent for this year.',
+      'Set maxBarWidth so pairs stay readable when there are few periods.',
+    ],
     buildChart: (context) => Chart<void>(
       state: ChartState<void>(
         data: ChartData(
@@ -186,9 +215,19 @@ final List<GalleryEntry> galleryEntries = [
   ),
   GalleryEntry(
     id: 'sparkline',
-    title: 'Sparkline',
-    blurb: 'A line is a decoration. Zero-width items plus SparkLineDecoration.',
+    title: 'Trend sparkline',
+    blurb: 'A filled line with no items at all, sized to sit inside a KPI '
+        'tile.',
     tags: const ['line', 'decoration'],
+    useCase: 'The small trend line under a big number on a dashboard tile.',
+    customization: const [
+      'Items are zero-width on purpose; give them a size to show points on '
+          'the line as well.',
+      'fill: false leaves a plain stroke; smoothPoints: false makes it '
+          'angular.',
+      'The gradient fades the fill to transparent — recolour both stops to '
+          'match the tile.',
+    ],
     buildChart: (context) => Chart<void>(
       state: ChartState<void>(
         data: ChartData.fromList(_items([2, 7, 2, 4, 7, 6, 2, 5, 4]),
@@ -245,9 +284,18 @@ final List<GalleryEntry> galleryEntries = [
   ),
   GalleryEntry(
     id: 'bubble',
-    title: 'Bubble chart',
-    blurb: 'BubbleItemOptions draws a point per value instead of a bar.',
+    title: 'Readings over time',
+    blurb: 'A point per reading rather than a bar, with a grid for reference.',
     tags: const ['bubble'],
+    useCase: 'Sensor readings, weights, prices — sampled values where the '
+        'shape matters more than the magnitude.',
+    customization: const [
+      'min and max on ChartItem are equal here, which is what makes a point '
+          'rather than a column.',
+      'maxBarWidth and minBarWidth set the dot size; keep them equal for '
+          'uniform dots.',
+      'Add a SparkLineDecoration behind the points to join them up.',
+    ],
     buildChart: (context) => Chart<void>(
       state: ChartState<void>(
         data: ChartData.fromList(
@@ -290,9 +338,19 @@ final List<GalleryEntry> galleryEntries = [
   ),
   GalleryEntry(
     id: 'negative-values',
-    title: 'Negative values',
-    blurb: 'axisMin opens space below zero; bar radius flips automatically.',
+    title: 'Cash flow',
+    blurb: 'Bars above and below zero, with axisMin opening the space beneath.',
     tags: const ['bar', 'axis'],
+    useCase: 'Money in and out, temperature against freezing, net change of '
+        'any kind.',
+    customization: const [
+      'axisMin is what reserves room below zero; without it the chart clips '
+          'at the lowest value.',
+      'Colour by sign in barItemBuilder — one colour for credits, another for '
+          'debits.',
+      'Bar radius flips automatically for negative bars, so rounded corners '
+          'stay on the outer end.',
+    ],
     buildChart: (context) => Chart<void>(
       state: ChartState<void>(
         data: ChartData.fromList(
@@ -336,8 +394,18 @@ final List<GalleryEntry> galleryEntries = [
   GalleryEntry(
     id: 'gradient-bars',
     title: 'Gradient bars',
-    blurb: 'Every item accepts a gradient instead of a flat colour.',
+    blurb: 'A vertical gradient per bar, for when a flat fill looks too plain '
+        'on a marketing surface.',
     tags: const ['bar'],
+    useCase: 'Highlight cards, onboarding screens, anywhere the chart is as '
+        'much decoration as data.',
+    customization: const [
+      'Any Gradient works, not just LinearGradient — try a SweepGradient for '
+          'a dial-like look.',
+      'begin and end control the direction; bottomCenter to topCenter reads '
+          'as "growth".',
+      'Keep the darkest stop at the base so short bars stay legible.',
+    ],
     buildChart: (context) => Chart<void>(
       state: ChartState<void>(
         data:
@@ -372,9 +440,18 @@ final List<GalleryEntry> galleryEntries = [
   ),
   GalleryEntry(
     id: 'rounded-bars',
-    title: 'Rounded bars',
-    blurb: 'BorderRadius per item, flipped automatically for negative values.',
+    title: 'Storage usage',
+    blurb: 'Rounded caps and generous spacing, the friendly settings-screen '
+        'look.',
     tags: const ['bar'],
+    useCase: 'Storage or quota breakdowns, profile stats, anything inside a '
+        'consumer settings page.',
+    customization: const [
+      'BorderRadius.vertical rounds only the top; use BorderRadius.circular '
+          'for pill bars.',
+      'Radius larger than half the bar width will look clipped on short bars.',
+      'Pair with a fixed axisMax so a full bar always means "full".',
+    ],
     buildChart: (context) => Chart<void>(
       state: ChartState<void>(
         data:
@@ -403,9 +480,18 @@ final List<GalleryEntry> galleryEntries = [
   ),
   GalleryEntry(
     id: 'axis-labels',
-    title: 'Labelled axes',
-    blurb: 'Both axis decorations with values shown, in the background layer.',
+    title: 'Monthly report',
+    blurb: 'Both axes labelled, the version you print or export rather than '
+        'the one on a tile.',
     tags: const ['axis', 'decoration'],
+    useCase: 'Reports and exports, where a reader needs to read values off '
+        'the chart without tapping.',
+    customization: const [
+      'axisStep decides label density — raise it when labels start colliding.',
+      'legendFontStyle needs an explicit colour: the chart paints this text '
+          'itself, so it will not follow your text theme.',
+      'valuesAlign and valuesPadding nudge labels off the lines.',
+    ],
     buildChart: (context) {
       final outline = Theme.of(context).colorScheme.outlineVariant;
       final labelStyle = _axisLabelStyle(context);
@@ -456,11 +542,20 @@ final List<GalleryEntry> galleryEntries = [
   ),
   GalleryEntry(
     id: 'target-line',
-    title: 'Target line',
-    blurb: 'A WidgetDecoration marks the target; the item builder recolours '
-        'anything above it. This is the replacement for the deprecated '
-        'TargetLineDecoration.',
+    title: 'Goal tracking',
+    blurb: 'A target marked with a widget, and bars recoloured once they pass '
+        'it.',
     tags: const ['decoration', 'custom'],
+    useCase: 'Sales quotas, step goals, SLA thresholds — any "did we hit it" '
+        'chart.',
+    customization: const [
+      'verticalMultiplier converts a data value to pixels, which is how the '
+          'line finds its height.',
+      'The widget is a normal Flutter widget: add a label, a dashed border, '
+          'or a tappable area.',
+      'The threshold colour lives in barItemBuilder, so the line and the bars '
+          'stay in sync through one constant.',
+    ],
     buildChart: (context) => Chart<void>(
       state: ChartState<void>(
         data: ChartData.fromList(_items([4, 6, 3, 8, 7, 9, 5]),
@@ -531,10 +626,19 @@ final List<GalleryEntry> galleryEntries = [
   ),
   GalleryEntry(
     id: 'value-labels',
-    title: 'Value labels',
-    blurb: 'WidgetItemOptions draws the bar and its own label, which is what '
-        'replaced the deprecated ValueDecoration.',
+    title: 'Values on bars',
+    blurb: 'Each item draws its own number above the bar, so no axis is '
+        'needed.',
     tags: const ['custom'],
+    useCase: 'Short comparisons — five or six bars where exact values matter '
+        'more than a scale.',
+    customization: const [
+      'The item is a plain Column, so the label can be anything: a Text, an '
+          'icon, a Row with both.',
+      'valueAxisMaxOver reserves headroom so the top label is not clipped.',
+      'This replaces the deprecated ValueDecoration; the builder gives you '
+          'far more control.',
+    ],
     buildChart: (context) {
       final labelStyle = Theme.of(context)
           .textTheme
@@ -593,10 +697,18 @@ final List<GalleryEntry> galleryEntries = [
   ),
   GalleryEntry(
     id: 'scrollable',
-    title: 'Scrollable chart',
-    blurb: 'ScrollSettings fixes how many items are visible; wrap in a scroll '
-        'view and the chart sizes itself.',
+    title: 'Long time series',
+    blurb: 'More points than fit on screen, with a fixed number visible and '
+        'the rest a swipe away.',
     tags: const ['bar', 'scroll'],
+    useCase: 'A year of daily data on a phone, log volumes, anything you '
+        'would otherwise have to aggregate.',
+    customization: const [
+      'visibleItems sets how many fit; the chart sizes itself and ignores the '
+          'width limit.',
+      'It must be wrapped in a horizontal scroll view or it will overflow.',
+      'Pair with a fixed axisMax so the scale does not jump as you scroll.',
+    ],
     buildChart: (context) => SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Chart<void>(
@@ -641,9 +753,20 @@ final List<GalleryEntry> galleryEntries = [
   ),
   GalleryEntry(
     id: 'widget-items',
-    title: 'Widget items',
-    blurb: 'WidgetItemOptions replaces the painter with any widget you like.',
+    title: 'Custom widget items',
+    blurb: 'Every item is a widget you build, once the painters stop being '
+        'enough.',
     tags: const ['custom'],
+    useCase: 'Branded bars, avatars on a timeline, items that need to be '
+        'tapped or animated individually.',
+    customization: const [
+      'Anything Flutter can build works here, including images, gradients and '
+          'gesture detectors.',
+      'The builder receives the item, its index and its series index, so '
+          'items can differ from each other.',
+      'This is the slowest option of the four; prefer a painter when the '
+          'shape is simple.',
+    ],
     buildChart: (context) => Chart<void>(
       state: ChartState<void>(
         data: ChartData.fromList(_items([4, 6, 3, 6, 7]), valueAxisMaxOver: 2),

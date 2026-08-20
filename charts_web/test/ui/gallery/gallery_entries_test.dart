@@ -16,6 +16,22 @@ void main() {
       expect(entry.blurb, isNotEmpty, reason: entry.id);
       expect(entry.snippet, contains('ChartState'), reason: entry.id);
       expect(entry.tags, isNotEmpty, reason: entry.id);
+      // The gallery reads as templates, so each one has to say where it is
+      // used and what to change.
+      expect(entry.useCase, isNotEmpty, reason: entry.id);
+      expect(entry.customization, hasLength(greaterThanOrEqualTo(2)),
+          reason: entry.id);
+      for (final tip in entry.customization) {
+        expect(tip, isNotEmpty, reason: entry.id);
+        expect(tip, endsWith('.'), reason: entry.id);
+      }
+
+      // Guards the wrapped string literals in the source: a missing or
+      // doubled space at a line join is invisible until it renders.
+      for (final prose in [entry.blurb, entry.useCase, ...entry.customization]) {
+        expect(prose, isNot(contains('  ')), reason: '${entry.id}: "$prose"');
+        expect(prose.trim(), prose, reason: '${entry.id}: "$prose"');
+      }
     }
   });
 

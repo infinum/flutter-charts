@@ -1,4 +1,3 @@
-import 'package:charts_web/ui/common/layout/breakpoints.dart';
 import 'package:charts_web/ui/gallery/gallery_detail.dart';
 import 'package:charts_web/ui/gallery/gallery_entries.dart';
 import 'package:charts_web/ui/gallery/gallery_entry.dart';
@@ -20,20 +19,22 @@ class GalleryScreen extends ConsumerWidget {
             .where((entry) => entry.tags.contains(selectedTag))
             .toList();
 
-    final columns = switch (context.breakpoint) {
-      AppBreakpoint.compact => 1,
-      AppBreakpoint.medium => 2,
-      AppBreakpoint.expanded => 3,
-    };
-
     return ListView(
       padding: const EdgeInsets.all(24),
       children: [
-        Text('Gallery', style: theme.textTheme.headlineSmall),
+        // Capped and centred: full-bleed on a wide monitor stretches every
+        // card into a letterbox and leaves the copy unreadably wide.
+        Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1400),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+        Text('Chart templates', style: theme.textTheme.headlineSmall),
         const SizedBox(height: 4),
         Text(
-          'Every chart below is live, not a screenshot. Open one for its '
-          'source.',
+          'Charts you would actually ship, each one live rather than a '
+          'screenshot. Open one for its source and what to change.',
           style: theme.textTheme.bodyMedium
               ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
         ),
@@ -56,13 +57,19 @@ class GalleryScreen extends ConsumerWidget {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: entries.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: columns,
+          // Max-extent rather than a fixed column count, so cards keep their
+          // proportions instead of widening to fill the window.
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 440,
             crossAxisSpacing: 16,
             mainAxisSpacing: 16,
-            childAspectRatio: 1.15,
+            mainAxisExtent: 340,
           ),
           itemBuilder: (context, index) => _GalleryCard(entry: entries[index]),
+        ),
+              ],
+            ),
+          ),
         ),
       ],
     );
@@ -94,7 +101,7 @@ class _GalleryCard extends StatelessWidget {
               Text(entry.title, style: theme.textTheme.titleSmall),
               const SizedBox(height: 4),
               Text(
-                entry.blurb,
+                entry.useCase,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.bodySmall
