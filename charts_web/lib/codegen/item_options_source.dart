@@ -13,7 +13,7 @@ void writeItemOptions(SourceWriter writer, ChartStatePresenter presenter) {
     case SelectedPainter.none:
       _writeEmpty(writer);
     case SelectedPainter.widget:
-      _writeWidget(writer);
+      _writeWidget(writer, presenter);
   }
 }
 
@@ -87,8 +87,30 @@ void _writeEmpty(SourceWriter writer) {
   writer.close('),');
 }
 
-void _writeWidget(SourceWriter writer) {
+void _writeWidget(SourceWriter writer, ChartStatePresenter presenter) {
   writer.open('itemOptions: WidgetItemOptions(');
+
+  if (presenter.widgetItemExample == WidgetItemExample.valueLabel) {
+    writer.open('widgetItemBuilder: (data) => Padding(');
+    writer.line('padding: const EdgeInsets.symmetric(horizontal: 4.0),');
+    writer.open('child: Column(');
+    writer.open('children: [');
+    writer.line("Text('\${(data.item.max ?? 0).toStringAsFixed(0)}'),");
+    writer.open('Expanded(');
+    writer.open('child: DecoratedBox(');
+    writer.line(
+        'decoration: BoxDecoration(color: ${colorLiteral(presenter.listColors.first)}),');
+    writer.line('child: const SizedBox.expand(),');
+    writer.close('),');
+    writer.close('),');
+    writer.close('],');
+    writer.close('),');
+    writer.close('),');
+    writer.close('),');
+
+    return;
+  }
+
   writer.line('// Any widget works here. This demo draws an image; see');
   writer
       .line('// charts_web/lib/ui/playground/options/futurama_bar_widget.dart');

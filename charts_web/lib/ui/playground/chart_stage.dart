@@ -61,10 +61,21 @@ class ChartStage extends ConsumerWidget {
                 border: Border.all(color: theme.colorScheme.outlineVariant),
               ),
               padding: const EdgeInsets.all(20),
-              child: AnimatedChart<void>(
-                duration: const Duration(milliseconds: 450),
-                state: presenter.state,
-              ),
+              child: presenter.isScrollable
+                  // Scrollable charts ignore the width limit and size
+                  // themselves, so they need a scroll view around them.
+                  ? SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: AnimatedChart<void>(
+                        duration: const Duration(milliseconds: 450),
+                        width: 1200,
+                        state: presenter.state,
+                      ),
+                    )
+                  : AnimatedChart<void>(
+                      duration: const Duration(milliseconds: 450),
+                      state: presenter.state,
+                    ),
             ),
           ),
         ],

@@ -3,40 +3,24 @@ import 'package:charts_web/ui/concepts/concepts_screen.dart';
 import 'package:charts_web/ui/shell/chart_theme_sync.dart';
 import 'package:charts_web/ui/gallery/gallery_screen.dart';
 import 'package:charts_web/ui/playground/playground_screen.dart';
+import 'package:charts_web/ui/shell/shell_destination.dart';
 import 'package:charts_web/ui/shell/shell_header.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
-enum ShellDestination {
-  playground('Playground', Icons.tune),
-  gallery('Gallery', Icons.grid_view),
-  concepts('Concepts', Icons.school_outlined);
-
-  const ShellDestination(this.label, this.icon);
-
-  final String label;
-  final IconData icon;
-}
-
-class AppShell extends ConsumerStatefulWidget {
+class AppShell extends ConsumerWidget {
   const AppShell({super.key});
 
   @override
-  ConsumerState<AppShell> createState() => _AppShellState();
-}
-
-class _AppShellState extends ConsumerState<AppShell> {
-  int _index = 0;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isCompact = context.breakpoint == AppBreakpoint.compact;
+    final index = ref.watch(shellDestinationProvider).index;
 
     // IndexedStack, not a swap: a playground configuration must survive a trip
     // to the gallery and back.
     final body = ChartThemeSync(
         child: IndexedStack(
-      index: _index,
+      index: index,
       children: [
         const PlaygroundScreen(),
         const GalleryScreen(),
@@ -54,8 +38,8 @@ class _AppShellState extends ConsumerState<AppShell> {
                 : Row(
                     children: [
                       NavigationRail(
-                        selectedIndex: _index,
-                        onDestinationSelected: _select,
+                        selectedIndex: index,
+                        onDestinationSelected: (value) => _select(ref, value),
                         destinations: ShellDestination.values
                             .map((destination) => NavigationRailDestination(
                                   icon: Icon(destination.icon),
@@ -71,8 +55,8 @@ class _AppShellState extends ConsumerState<AppShell> {
       ),
       bottomNavigationBar: isCompact
           ? NavigationBar(
-              selectedIndex: _index,
-              onDestinationSelected: _select,
+              selectedIndex: index,
+              onDestinationSelected: (value) => _select(ref, value),
               destinations: ShellDestination.values
                   .map((destination) => NavigationDestination(
                         icon: Icon(destination.icon),
@@ -84,5 +68,7 @@ class _AppShellState extends ConsumerState<AppShell> {
     );
   }
 
-  void _select(int index) => setState(() => _index = index);
+  void _select(WidgetRef ref, int index) =>
+      ref.read(shellDestinationProvider.notifier).state =
+          ShellDestination.values[index];
 }

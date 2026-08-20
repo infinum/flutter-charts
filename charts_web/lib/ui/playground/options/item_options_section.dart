@@ -49,12 +49,23 @@ class ItemOptionsSection extends ConsumerWidget {
           onChanged: presenter.updateItemPainter,
         ),
         const SizedBox(height: 8),
-        if (painter == SelectedPainter.widget)
+        if (painter == SelectedPainter.widget) ...[
           Text(
-            'WidgetItemOptions draws any widget you hand it. This demo uses an '
-            'image.',
+            'WidgetItemOptions draws any widget you hand it.',
             style: Theme.of(context).textTheme.bodySmall,
           ),
+          SegmentedChoice<WidgetItemExample>(
+            label: 'Widget example',
+            value: presenter.widgetItemExample,
+            options: const [
+              SegmentedChoiceOption(
+                  value: WidgetItemExample.image, label: 'Image'),
+              SegmentedChoiceOption(
+                  value: WidgetItemExample.valueLabel, label: 'Value label'),
+            ],
+            onChanged: presenter.updateWidgetItemExample,
+          ),
+        ],
         if (painter == SelectedPainter.none)
           Text(
             'BarItemOptions with zero width. Pair it with a SparkLine '

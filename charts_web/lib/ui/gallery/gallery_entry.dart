@@ -11,7 +11,7 @@ class GalleryEntry {
     required this.tags,
     required this.buildChart,
     required this.snippet,
-    this.applyToPlayground,
+    required this.applyToPlayground,
   });
 
   final String id;
@@ -25,9 +25,11 @@ class GalleryEntry {
 
   final String snippet;
 
-  /// Set only for entries whose configuration the playground can actually
-  /// represent. Entries without it show no "Open in playground" action.
-  final void Function(WidgetRef ref)? applyToPlayground;
+  /// Loads this example into the playground. Required, so an entry cannot be
+  /// added without a way to open it; where the playground cannot represent
+  /// something exactly, the closest configuration is applied and the gap is
+  /// noted in a comment at the call site.
+  final void Function(WidgetRef ref) applyToPlayground;
 }
 
 const List<String> galleryTags = [

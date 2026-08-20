@@ -31,12 +31,22 @@ class ChartStatePresenter extends ChangeNotifier {
   DataStrategy _strategy = const StackDataStrategy();
   bool showMaxDataListMessage = false;
 
+  /// Axis bounds. Null lets the data decide; axisMin is what opens space below
+  /// zero for negative values.
+  double? axisMin;
+  double? axisMax;
+
+  /// Non-null makes the chart scrollable and fixes how many items fit on
+  /// screen. The chart must then be wrapped in a horizontal scroll view.
+  double? visibleItems;
+
   List<Color> listColors = [_presetColors[0]];
 
   // Items
   EdgeInsets chartItemPadding =
       const EdgeInsets.only(left: 2, right: 2, top: 0, bottom: 0);
   SelectedPainter selectedPainter = SelectedPainter.bar;
+  WidgetItemExample widgetItemExample = WidgetItemExample.image;
   double? maxBarWidth;
   double? minBarWidth;
   List<BorderSide> itemBorderSides = [_itemBorderSideDefault];
@@ -59,7 +69,11 @@ class ChartStatePresenter extends ChangeNotifier {
         _data,
         dataStrategy: _strategy,
         valueAxisMaxOver: 2.0,
+        axisMin: axisMin,
+        axisMax: axisMax,
       );
+
+  bool get isScrollable => visibleItems != null;
 
   List<List<ChartItem<void>>> get data => _data;
 
@@ -68,7 +82,12 @@ class ChartStatePresenter extends ChangeNotifier {
   ChartState<void> get state => ChartState(
         data: _defaultData,
         itemOptions: _getItemOptions(),
-        behaviour: _behaviour,
+        behaviour: visibleItems == null
+            ? _behaviour
+            : ChartBehaviour(
+                scrollSettings: ScrollSettings(visibleItems: visibleItems),
+                onItemClicked: _behaviour.onItemClicked,
+              ),
         foregroundDecorations:
             _decorationsPresenter.foregroundDecorations.values.toList(),
         backgroundDecorations:
@@ -176,6 +195,26 @@ class ChartStatePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateAxisMin(double? value) {
+    axisMin = value;
+    notifyListeners();
+  }
+
+  void updateAxisMax(double? value) {
+    axisMax = value;
+    notifyListeners();
+  }
+
+  void updateVisibleItems(double? value) {
+    visibleItems = value;
+    notifyListeners();
+  }
+
+  void updateWidgetItemExample(WidgetItemExample example) {
+    widgetItemExample = example;
+    notifyListeners();
+  }
+
   void updateMultiValuePadding(EdgeInsets newPadding) {
     multiValuePadding = newPadding;
     notifyListeners();
@@ -253,6 +292,13 @@ class ChartStatePresenter extends ChangeNotifier {
         maxBarWidth: maxBarWidth,
         minBarWidth: minBarWidth,
         widgetItemBuilder: (data) {
+          if (widgetItemExample == WidgetItemExample.valueLabel) {
+            return _ValueLabelItem(
+              color: _getColorForList(data.listIndex),
+              value: data.item.max ?? 0,
+            );
+          }
+
           return FuturamaBarWidget(
               stackItems: stackMultipleValues,
               listKey: data.listIndex,
@@ -270,6 +316,44 @@ class ChartStatePresenter extends ChangeNotifier {
 }
 
 enum SelectedPainter { bar, bubble, none, widget }
+
+/// Which demo widget `WidgetItemOptions` draws. The point of the painter is
+/// that any widget works, so the playground offers more than one.
+enum WidgetItemExample { image, valueLabel }
+
+/// A bar that prints its own value, the modern replacement for the deprecated
+/// `ValueDecoration`.
+class _ValueLabelItem extends StatelessWidget {
+  const _ValueLabelItem({required this.color, required this.value});
+
+  final Color color;
+  final double value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Column(
+        children: [
+          Text(
+            value.toStringAsFixed(0),
+            style: Theme.of(context).textTheme.labelSmall,
+          ),
+          Expanded(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(4)),
+              ),
+              child: const SizedBox.expand(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 const _presetColors = [
   Color(0xFFD8555F),

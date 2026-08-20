@@ -1,4 +1,5 @@
 import 'package:charts_painter/chart.dart';
+import 'package:charts_web/ui/common/layout/breakpoints.dart';
 import 'package:charts_web/ui/design/code_block.dart';
 import 'package:charts_web/ui/design/section_card.dart';
 import 'package:material_ui/material_ui.dart';
@@ -31,6 +32,14 @@ class ConceptsScreen extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(24),
       children: [
+        // Full-bleed text on a wide monitor gives unreadably long lines, and
+        // stretches every mini-chart into a letterbox.
+        Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1100),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
         Text('How charts_painter fits together',
             style: theme.textTheme.headlineSmall),
         const SizedBox(height: 4),
@@ -43,6 +52,7 @@ class ConceptsScreen extends StatelessWidget {
         const SizedBox(height: 20),
         _Concept(
           title: 'ChartState',
+          summary: 'The object you hand to a chart widget.',
           body: 'The single object a chart renders. It holds the data, the '
               'item options, the behaviour, and two lists of decorations. '
               'Build one and hand it to Chart or AnimatedChart.',
@@ -68,6 +78,7 @@ class ConceptsScreen extends StatelessWidget {
         ),
         _Concept(
           title: 'ChartData and DataStrategy',
+          summary: 'Your numbers, and how several series share a slot.',
           body: 'Data is a list of lists: one inner list per series. The '
               'strategy decides what happens when several series share a slot '
               '- stacked on top of each other, or grouped side by side.',
@@ -96,6 +107,7 @@ class ConceptsScreen extends StatelessWidget {
         ),
         _Concept(
           title: 'ItemOptions',
+          summary: 'How a single data point is drawn.',
           body: 'How one data point is drawn. BarItemOptions and '
               'BubbleItemOptions cover the common cases; the builder receives '
               'the item, its index and its series index, so colour, gradient, '
@@ -122,6 +134,7 @@ class ConceptsScreen extends StatelessWidget {
         ),
         _Concept(
           title: 'Decorations',
+          summary: 'Everything painted around the items.',
           body: 'Everything that is not an item: grids, axes, sparklines, '
               'target lines, value labels, or any widget. Background '
               'decorations paint under the items, foreground over them, and '
@@ -180,6 +193,10 @@ class ConceptsScreen extends StatelessWidget {
             ),
           ),
         ),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -188,29 +205,53 @@ class ConceptsScreen extends StatelessWidget {
 class _Concept extends StatelessWidget {
   const _Concept({
     required this.title,
+    required this.summary,
     required this.body,
     required this.snippet,
     required this.chart,
   });
 
   final String title;
+
+  /// One line under the heading, for skimming.
+  final String summary;
   final String body;
   final String snippet;
   final Widget chart;
 
   @override
   Widget build(BuildContext context) {
+    // Stacked, the chart spans the full column and reads as a letterbox strip.
+    // Side by side it keeps a sane aspect ratio and the code sits next to what
+    // it produces.
+    final sideBySide = context.breakpoint != AppBreakpoint.compact;
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: SectionCard(
         title: title,
+        subtitle: summary,
         collapsible: false,
         children: [
           Text(body, style: Theme.of(context).textTheme.bodyMedium),
           const SizedBox(height: 16),
-          chart,
-          const SizedBox(height: 16),
-          CodeBlock(source: snippet),
+          if (sideBySide)
+            // No IntrinsicHeight here: Chart uses a LayoutBuilder internally
+            // and LayoutBuilder refuses intrinsic sizing, so the row gets an
+            // explicit height instead.
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(child: SizedBox(height: 200, child: chart)),
+                const SizedBox(width: 20),
+                Expanded(child: CodeBlock(source: snippet)),
+              ],
+            )
+          else ...[
+            chart,
+            const SizedBox(height: 16),
+            CodeBlock(source: snippet),
+          ],
         ],
       ),
     );

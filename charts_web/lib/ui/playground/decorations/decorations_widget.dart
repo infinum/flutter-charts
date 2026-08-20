@@ -1,4 +1,5 @@
 import 'package:charts_web/ui/design/edge_insets_field.dart';
+import 'package:charts_web/ui/design/number_field.dart';
 import 'package:charts_web/ui/design/segmented_choice.dart';
 import 'package:charts_web/ui/playground/decorations/decoration_card.dart';
 import 'package:charts_web/ui/playground/decorations/presenters/decorations_widget_presenter.dart';
@@ -38,6 +39,14 @@ class DecorationsWidget extends HookConsumerWidget {
             ],
             onChanged: presenter.updateType,
           ),
+          if (presenter.type <= 2)
+            NumberField(
+              label: 'Target value',
+              value: presenter.targetValue,
+              step: 1,
+              fallback: 3,
+              onChanged: presenter.updateTargetValue,
+            ),
           EdgeInsetsField(
             label: 'Margin',
             helper: 'Resets when you pick another example, since each one '

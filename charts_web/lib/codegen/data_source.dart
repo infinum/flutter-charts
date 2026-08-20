@@ -25,6 +25,11 @@ void writeChartData(SourceWriter writer, ChartStatePresenter presenter) {
         'dataStrategy: const DefaultDataStrategy(stackMultipleValues: false),');
   }
 
+  final axisMin = presenter.axisMin;
+  if (axisMin != null) writer.line('axisMin: ${doubleLiteral(axisMin)},');
+  final axisMax = presenter.axisMax;
+  if (axisMax != null) writer.line('axisMax: ${doubleLiteral(axisMax)},');
+
   // The presenter always sets this, so it is always part of the output.
   writer.line('valueAxisMaxOver: 2.0,');
   writer.close('),');

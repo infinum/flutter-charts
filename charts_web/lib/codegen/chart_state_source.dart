@@ -1,3 +1,4 @@
+import 'package:charts_web/codegen/behaviour_source.dart';
 import 'package:charts_web/codegen/data_source.dart';
 import 'package:charts_web/codegen/decorations_source.dart';
 import 'package:charts_web/codegen/item_options_source.dart';
@@ -22,6 +23,7 @@ String buildChartStateSource(
   writer.open('ChartState<void>(');
   writeChartData(writer, state);
   writeItemOptions(writer, state);
+  writeBehaviour(writer, state);
   writeDecorations(writer, decorations);
   writer.close(')');
 

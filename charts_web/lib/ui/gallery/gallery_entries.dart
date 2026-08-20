@@ -1,5 +1,6 @@
 import 'package:charts_painter/chart.dart';
 import 'package:charts_web/ui/gallery/gallery_entry.dart';
+import 'package:charts_web/ui/playground/decorations/presenters/decorations_widget_presenter.dart';
 import 'package:charts_web/ui/playground/presenter/chart_decorations_presenter.dart';
 import 'package:charts_web/ui/playground/presenter/chart_state_presenter.dart';
 import 'package:material_ui/material_ui.dart';
@@ -323,6 +324,14 @@ final List<GalleryEntry> galleryEntries = [
     HorizontalAxisDecoration(showValues: true, axisStep: 3),
   ],
 )''',
+    applyToPlayground: (ref) {
+      ref.read(chartStatePresenter)
+        ..updateData([_items([3, -2, 5, -4, 2, -1, 4])])
+        ..updateAxisMin(-6);
+      ref.read(chartDecorationsPresenter).addDecoration(
+          HorizontalAxisDecoration(),
+          layer: DecorationLayer.background);
+    },
   ),
   GalleryEntry(
     id: 'gradient-bars',
@@ -504,6 +513,21 @@ final List<GalleryEntry> galleryEntries = [
     ),
   ],
 )''',
+    applyToPlayground: (ref) {
+      ref.read(chartStatePresenter).updateData([_items([4, 6, 3, 8, 7, 9, 5])]);
+      ref
+          .read(chartDecorationsPresenter)
+          .addDecoration(WidgetDecoration(
+            widgetDecorationBuilder: (_, __, ___, ____) =>
+                const SizedBox.shrink(),
+          ));
+      // The playground's widget decoration draws its target line from this
+      // value. Per-item colouring above the target is not a playground option,
+      // so that part of the example does not carry over.
+      ref.read(decorationWidgetPresenter(0))
+        ..updateType(0)
+        ..updateTargetValue(_target);
+    },
   ),
   GalleryEntry(
     id: 'value-labels',
@@ -560,6 +584,12 @@ final List<GalleryEntry> galleryEntries = [
     ),
   ),
 )''',
+    applyToPlayground: (ref) {
+      ref.read(chartStatePresenter)
+        ..updateData([_items([4, 6, 3, 6, 7])])
+        ..updateItemPainter(SelectedPainter.widget)
+        ..updateWidgetItemExample(WidgetItemExample.valueLabel);
+    },
   ),
   GalleryEntry(
     id: 'scrollable',
@@ -601,6 +631,13 @@ final List<GalleryEntry> galleryEntries = [
     ),
   ),
 )''',
+    applyToPlayground: (ref) {
+      ref.read(chartStatePresenter)
+        ..updateData([
+          _items([4, 6, 3, 6, 7, 9, 3, 2, 5, 8, 4, 7, 6, 2, 9, 3])
+        ])
+        ..updateVisibleItems(8);
+    },
   ),
   GalleryEntry(
     id: 'widget-items',

@@ -27,7 +27,7 @@ ChartState<void> fixture08WidgetEverything() => ChartState<void>(
   ),
   foregroundDecorations: [
     WidgetDecoration(
-      // This playground draws a target line here.
+      // This playground draws a target line at value 3.0 here.
       // A widget decoration can return any widget; the demo builds
       // are in charts_web/lib/ui/playground/decorations/presenters/
       // decorations_widget_presenter.dart

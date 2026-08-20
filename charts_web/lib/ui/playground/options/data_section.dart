@@ -4,6 +4,7 @@ import 'package:charts_painter/chart.dart';
 import 'package:charts_web/ui/common/dialog/color_picker_dialog.dart';
 import 'package:charts_web/ui/design/color_swatch_button.dart';
 import 'package:charts_web/ui/design/labeled_field.dart';
+import 'package:charts_web/ui/design/number_field.dart';
 import 'package:charts_web/ui/design/section_card.dart';
 import 'package:charts_web/ui/design/segmented_choice.dart';
 import 'package:charts_web/ui/playground/presenter/chart_state_presenter.dart';
@@ -54,6 +55,27 @@ class DataSection extends HookConsumerWidget {
         const SizedBox(height: 4),
         ...presenter.data.mapIndexed(
           (index, _) => _DataRow(listIndex: index, key: Key('data$index')),
+        ),
+        const Divider(),
+        _NullableNumber(
+          label: 'Axis min',
+          helper: 'Opens space below zero. Leave off to let the data decide.',
+          value: presenter.axisMin,
+          fallback: -5,
+          onChanged: presenter.updateAxisMin,
+        ),
+        _NullableNumber(
+          label: 'Axis max',
+          value: presenter.axisMax,
+          fallback: 10,
+          onChanged: presenter.updateAxisMax,
+        ),
+        _NullableNumber(
+          label: 'Visible items',
+          helper: 'Makes the chart scrollable and fixes how many items fit.',
+          value: presenter.visibleItems,
+          fallback: 8,
+          onChanged: presenter.updateVisibleItems,
         ),
         const SizedBox(height: 8),
         if (presenter.showMaxDataListMessage)
@@ -139,4 +161,59 @@ class _DataRow extends HookConsumerWidget {
   String _valuesText(ChartStatePresenter presenter) => presenter.data[listIndex]
       .map((item) => (item.max ?? item.min)?.toStringAsFixed(0) ?? '')
       .join(', ');
+}
+
+/// A number option that can also be off. `axisMin`, `axisMax` and
+/// `visibleItems` all behave differently when null, so the switch is part of
+/// the control rather than a separate row.
+class _NullableNumber extends StatelessWidget {
+  const _NullableNumber({
+    required this.label,
+    required this.value,
+    required this.fallback,
+    required this.onChanged,
+    this.helper,
+  });
+
+  final String label;
+  final String? helper;
+  final double? value;
+  final double fallback;
+  final ValueChanged<double?> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Switch(
+          value: value != null,
+          onChanged: (on) => onChanged(on ? fallback : null),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: value == null
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  child: LabeledField(
+                    label: label,
+                    helper: helper,
+                    child: Text(
+                      'off',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                    ),
+                  ),
+                )
+              : NumberField(
+                  label: label,
+                  value: value,
+                  step: 1,
+                  fallback: fallback,
+                  onChanged: onChanged,
+                ),
+        ),
+      ],
+    );
+  }
 }

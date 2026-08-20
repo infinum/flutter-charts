@@ -16,6 +16,9 @@ class DecorationWidgetPresenter extends ChangeNotifier
   final int index;
   int type = 0;
 
+  /// The value the target-line and target-area examples sit at, in data units.
+  double targetValue = 3;
+
   /// Null means "use whatever this example needs". Types 1 and 2 position
   /// themselves with a margin, so overriding blindly would break their layout.
   EdgeInsets? _marginOverride;
@@ -35,6 +38,11 @@ class DecorationWidgetPresenter extends ChangeNotifier
     notifyListeners();
   }
 
+  void updateTargetValue(double value) {
+    targetValue = value;
+    notifyListeners();
+  }
+
   void updateMargin(EdgeInsets value) {
     _marginOverride = value;
     notifyListeners();
@@ -50,7 +58,7 @@ class DecorationWidgetPresenter extends ChangeNotifier
             Positioned(
               left: 0,
               right: 0,
-              bottom: verticalMultiplier * 3,
+              bottom: verticalMultiplier * targetValue,
               child: Container(color: Colors.blue, height: 2),
             ),
           ],
@@ -65,14 +73,14 @@ class DecorationWidgetPresenter extends ChangeNotifier
               children: [
                 Positioned.fill(
                   top: null,
-                  bottom: 2 * verticalMultiplier,
+                  bottom: targetValue * verticalMultiplier,
                   child: const RotatedBox(
                       quarterTurns: 3, child: Text('This is target line')),
                 ),
                 Positioned.fill(
                   top: null,
                   left: 0,
-                  bottom: 2 * verticalMultiplier,
+                  bottom: targetValue * verticalMultiplier,
                   child: Container(
                       color: Colors.blue, width: double.infinity, height: 2),
                 ),
@@ -84,7 +92,7 @@ class DecorationWidgetPresenter extends ChangeNotifier
       return WidgetDecoration(margin: margin, widgetDecorationBuilder:
           (context, chartState, itemWidth, verticalMultiplier) {
         return Padding(
-          padding: EdgeInsets.only(top: 5 * verticalMultiplier),
+          padding: EdgeInsets.only(top: (targetValue + 2) * verticalMultiplier),
           child: Container(
             decoration: BoxDecoration(
               color: Colors.blue.withValues(alpha: 0.1),
@@ -92,7 +100,7 @@ class DecorationWidgetPresenter extends ChangeNotifier
               borderRadius: BorderRadius.circular(16),
             ),
             width: double.infinity,
-            height: verticalMultiplier * 2,
+            height: verticalMultiplier * targetValue,
           ),
         );
       });
@@ -112,7 +120,7 @@ class DecorationWidgetPresenter extends ChangeNotifier
       return WidgetDecoration(margin: margin, widgetDecorationBuilder:
           (context, chartState, itemWidth, verticalMultiplier) {
         return Padding(
-          padding: EdgeInsets.only(top: 5 * verticalMultiplier),
+          padding: EdgeInsets.only(top: (targetValue + 2) * verticalMultiplier),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: Material(
@@ -126,7 +134,7 @@ class DecorationWidgetPresenter extends ChangeNotifier
                 },
                 child: Container(
                   width: double.infinity,
-                  height: verticalMultiplier * 2,
+                  height: verticalMultiplier * targetValue,
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.blue, width: 2),
                     borderRadius: BorderRadius.circular(16),
@@ -154,7 +162,9 @@ class DecorationWidgetPresenter extends ChangeNotifier
   @override
   void writeDecorationSource(SourceWriter writer) {
     writer.open('WidgetDecoration(');
-    writer.line('// This playground draws a ${_exampleNames[type]} here.');
+    writer.line(
+        '// This playground draws a ${_exampleNames[type]} at value '
+        '${doubleLiteral(targetValue)} here.');
     writer.line('// A widget decoration can return any widget; the demo builds');
     writer.line('// are in charts_web/lib/ui/playground/decorations/presenters/');
     writer.line('// decorations_widget_presenter.dart');
