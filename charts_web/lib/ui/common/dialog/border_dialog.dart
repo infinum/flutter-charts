@@ -1,7 +1,7 @@
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../widget/double_option_input.dart';
+import 'package:charts_web/ui/design/number_field.dart';
 
 class BorderSideDialog extends StatefulWidget {
   const BorderSideDialog(
@@ -48,8 +48,8 @@ class _BorderSideDialogState extends State<BorderSideDialog> {
           const Text(
               'In this editor you can only edit uniform border. More advanced properties (like border sides, storck style) can be accessed in code.'),
           const SizedBox(height: 16),
-          DoubleOptionInput(
-            name: 'Border width',
+          NumberField(
+            label: 'Border width',
             value: width,
             step: 2,
             onChanged: (a) {
@@ -57,7 +57,7 @@ class _BorderSideDialogState extends State<BorderSideDialog> {
                 width = a;
               });
             },
-            defaultValue: widget.borderSide.width,
+            fallback: widget.borderSide.width,
           ),
           const SizedBox(height: 16),
           Container(

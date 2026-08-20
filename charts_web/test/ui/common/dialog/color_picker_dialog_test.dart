@@ -4,6 +4,7 @@
 // material_ui only.
 // ignore_for_file: deprecated_member_use
 import 'package:charts_web/main.dart';
+import 'package:charts_web/ui/design/color_swatch_button.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart' as legacy;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,7 +21,7 @@ void main() {
     await tester.pumpWidget(const ProviderScope(child: ChartsWebApp()));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.format_paint).first);
+    await tester.tap(find.byType(ColorSwatchButton).first);
     await tester.pumpAndSettle();
 
     expect(find.byType(ColorPicker), findsOneWidget);

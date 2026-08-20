@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:charts_painter/chart.dart';
-import 'package:charts_web/ui/home/presenter/chart_decorations_presenter.dart';
-import 'package:charts_web/ui/home/presenter/chart_state_presenter.dart';
+import 'package:charts_web/ui/playground/presenter/chart_decorations_presenter.dart';
+import 'package:charts_web/ui/playground/presenter/chart_state_presenter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 

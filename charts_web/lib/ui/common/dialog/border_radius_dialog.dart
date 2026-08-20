@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 
-import '../widget/double_option_input.dart';
+import 'package:charts_web/ui/design/number_field.dart';
 
 class BorderRadiusDialog extends StatefulWidget {
   const BorderRadiusDialog({Key? key, required this.radius}) : super(key: key);
@@ -43,11 +43,14 @@ class _BorderRadiusDialogState extends State<BorderRadiusDialog> {
               'In this editor you can only change circular border. More advances properties (like non-circular border) can be accessed in code.'),
           const SizedBox(height: 16),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Column(
+              SizedBox(
+                width: 220,
+                child: Column(
                 children: [
-                  DoubleOptionInput(
-                    name: 'Top-left',
+                  NumberField(
+                    label: 'Top-left',
                     value: state.topLeft.x,
                     step: 4,
                     onChanged: (a) {
@@ -55,51 +58,53 @@ class _BorderRadiusDialogState extends State<BorderRadiusDialog> {
                         state = state.copyWith(topLeft: Radius.circular(a));
                       });
                     },
-                    defaultValue: widget.radius.topLeft.x,
+                    fallback: widget.radius.topLeft.x,
                   ),
-                  DoubleOptionInput(
-                      name: 'Bottom-left',
+                  NumberField(
+                      label: 'Bottom-left',
                       value: state.bottomLeft.x,
                       step: 4,
                       onChanged: (a) {
                         setState(() => state =
                             state.copyWith(bottomLeft: Radius.circular(a)));
                       },
-                      defaultValue: widget.radius.bottomLeft.x),
+                      fallback: widget.radius.bottomLeft.x),
                 ],
-              ),
+              )),
               const SizedBox(width: 16),
               Container(
                 height: 50,
                 width: 50,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor.withValues(alpha: 0.7),
+                  color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.7),
                   borderRadius: state,
                 ),
               ),
               const SizedBox(width: 16),
-              Column(
+              SizedBox(
+                width: 220,
+                child: Column(
                 children: [
-                  DoubleOptionInput(
-                      name: 'Top-right',
+                  NumberField(
+                      label: 'Top-right',
                       value: state.topRight.x,
                       step: 4,
                       onChanged: (a) {
                         setState(() => state =
                             state.copyWith(topRight: Radius.circular(a)));
                       },
-                      defaultValue: widget.radius.topRight.x),
-                  DoubleOptionInput(
-                      name: 'Bottom-right',
+                      fallback: widget.radius.topRight.x),
+                  NumberField(
+                      label: 'Bottom-right',
                       value: state.bottomRight.x,
                       step: 4,
                       onChanged: (a) {
                         setState(() => state =
                             state.copyWith(bottomRight: Radius.circular(a)));
                       },
-                      defaultValue: widget.radius.bottomRight.x),
+                      fallback: widget.radius.bottomRight.x),
                 ],
-              ),
+              )),
             ],
           ),
           const SizedBox(height: 36),

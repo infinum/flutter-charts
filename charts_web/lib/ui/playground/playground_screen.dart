@@ -1,5 +1,5 @@
 import 'package:charts_web/ui/common/layout/breakpoints.dart';
-import 'package:charts_web/ui/home/chart_options/chart_options.dart';
+import 'package:charts_web/ui/playground/options/options_panel.dart';
 import 'package:charts_web/ui/playground/chart_stage.dart';
 import 'package:charts_web/ui/playground/code_panel.dart';
 import 'package:charts_web/ui/playground/playground_providers.dart';
@@ -23,7 +23,7 @@ class PlaygroundScreen extends ConsumerWidget {
     final options = SingleChildScrollView(
       key: optionsPaneKey,
       padding: const EdgeInsets.all(16),
-      child: ChartOptions(),
+      child: const OptionsPanel(),
     );
 
     return switch (context.breakpoint) {
