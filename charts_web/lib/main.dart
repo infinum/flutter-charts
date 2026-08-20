@@ -1,6 +1,6 @@
 import 'package:charts_web/ui/common/respo/respo.dart';
 import 'package:charts_web/ui/home/home_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
@@ -25,5 +25,11 @@ class MyApp extends StatelessWidget {
 }
 
 Widget _builder(BuildContext context, Widget? child) {
-  return Respo(child: child ?? const SizedBox.shrink());
+  // MaterialUiCompatibilityBridge is deprecated on purpose: it is a migration
+  // utility. Needed until flex_color_picker moves to package:material_ui.
+  // Remove this wrapper and the ignore below when it does.
+  // ignore: deprecated_member_use
+  return MaterialUiCompatibilityBridge(
+    child: Respo(child: child ?? const SizedBox.shrink()),
+  );
 }

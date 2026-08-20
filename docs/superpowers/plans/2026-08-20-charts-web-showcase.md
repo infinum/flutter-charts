@@ -13,8 +13,8 @@
 ## Global Constraints
 
 - Flutter `3.47.0` pinned by `.fvmrc`. All commands run as `fvm flutter ...` from the `charts_web/` directory.
-- **Material comes from `material_ui`, not the framework.** Material was decoupled from flutter/flutter into `flutter/packages` and now ships as `material_ui`. Every UI file in `charts_web` imports `package:material_ui/material_ui.dart`; `package:flutter/material.dart` must not appear anywhere in `charts_web/lib` or `charts_web/test`. `material_ui` re-exports `package:flutter/widgets.dart`, so a single import covers both layers. `package:flutter/services.dart` (for `Clipboard`) and `package:flutter/widgets.dart` (where only the widgets layer is needed) remain valid.
-- `flex_color_picker` 2.6.1 still imports `package:flutter/material.dart`, so the app is wrapped in `MaterialUiCompatibilityBridge` via `MaterialApp.builder`. Without it, the colour and gradient dialogs cannot resolve a legacy `ThemeData` and will throw. The bridge is itself `@Deprecated` by design — it is a temporary migration utility — so its single use site carries `// ignore: deprecated_member_use` with a comment naming `flex_color_picker` as the reason, and that ignore is removed when the picker migrates.
+- **Material comes from `material_ui`, not the framework.** Material was decoupled from flutter/flutter into `flutter/packages` and now ships as `material_ui`. `package:flutter/material.dart` still exists in the SDK with its own `src/material/*` — it is not a re-export — so the two `ThemeData` classes are genuinely distinct. Every UI file in `charts_web` imports `package:material_ui/material_ui.dart`; `package:flutter/material.dart` must not appear anywhere in `charts_web/lib` or `charts_web/test`, with exactly one exemption: `test/ui/common/dialog/color_picker_dialog_test.dart`, whose subject is that boundary. `material_ui` re-exports `package:flutter/widgets.dart`, so a single import covers both layers. `package:flutter/services.dart` (for `Clipboard`) and `package:flutter/widgets.dart` (where only the widgets layer is needed) remain valid.
+- `flex_color_picker` 3.8.0 still imports `package:flutter/material.dart` across 23 files, so the app is wrapped in `MaterialUiCompatibilityBridge` via `MaterialApp.builder`. Measured effect of the bridge (see `test/ui/common/dialog/color_picker_dialog_test.dart`): legacy `Theme.of` resolves to the app's seeded palette instead of **silently falling back** to Flutter's default purple, and legacy `MaterialLocalizations.of` resolves instead of throwing `FlutterError`. Only the localizations case throws — the theme fails quietly, which is why the test asserts palette continuity rather than absence of an exception. The bridge is itself `@Deprecated` by design, so its single use site carries `// ignore: deprecated_member_use` naming `flex_color_picker` as the reason.
 - **New dependencies are limited to these two:** `material_ui: ^1.0.0` (required by the point above) and `collection: ^1.18.0` (already used across the UI, already present transitively, currently tripping `depend_on_referenced_packages`). Nothing else is added. The `example:` path dependency is removed in Task 14.
 - Material 3 only: `useMaterial3: true`. Seed color is exactly `Color(0xFFD8262C)`.
 - Never use these deprecated APIs; the replacement is mandatory:
@@ -147,7 +147,9 @@ with
 import 'package:material_ui/material_ui.dart';
 ```
 
-It imports Cupertino only to reach `Color`. No `cupertino_ui` dependency is needed: every other Cupertino use site is a widget Tasks 7 and 8 replace with a Material control.
+It imports Cupertino only to reach `Color`.
+
+Note: `dart fix` migrates Cupertino too, rewriting `package:flutter/cupertino.dart` to `package:cupertino_ui/cupertino_ui.dart` and adding `cupertino_ui: any` to the pubspec. Pin it to `^1.0.0` with a comment. It is needed only by `chart_options.dart` and `options_data_component.dart`, both deleted in Task 7 — remove the dependency then.
 
 - [ ] **Step 6: Bridge the legacy dependency**
 
@@ -393,7 +395,9 @@ class ChartsWebApp extends ConsumerWidget {
 - [ ] **Step 7: Verify the app still analyzes and runs**
 
 Run: `cd charts_web && fvm flutter analyze && fvm flutter test`
-Expected: the analyzer issue count is at or below the 68-issue baseline, and all tests pass. The default `test/widget_test.dart` counter test is deleted here if it fails on the renamed root widget — it is replaced properly in Task 15; delete it now with `rm test/widget_test.dart` if it references `MyApp`.
+Expected: the analyzer issue count is at or below the 68-issue baseline, and all tests pass.
+
+`test/widget_test.dart` is **not** the generated counter test — it already asserts the app boots and renders a chart, and carries a `loadAppFonts` helper worth keeping. It references `MyApp`, so update that reference to `ChartsWebApp` rather than deleting the file. Task 17 extends it.
 
 - [ ] **Step 8: Commit**
 

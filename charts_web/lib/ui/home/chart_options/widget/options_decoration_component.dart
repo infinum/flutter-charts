@@ -5,7 +5,7 @@ import 'package:charts_web/ui/home/decorations/decorations_sparkline.dart';
 import 'package:charts_web/ui/home/decorations/decorations_vertical_axis.dart';
 import 'package:charts_web/ui/home/decorations/decorations_widget.dart';
 import 'package:charts_web/ui/home/presenter/chart_decorations_presenter.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'options_component_header.dart';

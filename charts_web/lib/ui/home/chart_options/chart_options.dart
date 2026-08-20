@@ -3,8 +3,8 @@ import 'package:charts_web/ui/home/chart_options/widget/options_data_component.d
 import 'package:charts_web/ui/home/chart_options/widget/options_decoration_component.dart';
 import 'package:charts_web/ui/home/chart_options/widget/options_items_component.dart';
 import 'package:example/main.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

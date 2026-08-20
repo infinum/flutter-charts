@@ -3,7 +3,7 @@ import 'package:charts_web/ui/home/decorations/presenters/decorations_horizontal
 import 'package:charts_web/ui/home/decorations/presenters/decorations_sparkline_presenter.dart';
 import 'package:charts_web/ui/home/decorations/presenters/decorations_vertical_axis_presenter.dart';
 import 'package:charts_web/ui/home/decorations/presenters/decorations_widget_presenter.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final chartDecorationsPresenter =

@@ -1,6 +1,6 @@
 // ignore_for_file: prefer-single-widget-per-file
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 const _mobileBreakpoint = 800;
 const _tabletBreakpoint = 1400;

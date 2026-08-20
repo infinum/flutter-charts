@@ -3,7 +3,7 @@ import 'package:charts_web/ui/common/dialog/gradient_dialog.dart';
 import 'package:charts_web/ui/common/widget/switch_with_image.dart';
 import 'package:charts_web/ui/home/decorations/common_decoration_box.dart';
 import 'package:charts_web/ui/home/decorations/presenters/decorations_sparkline_presenter.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../common/dialog/color_picker_dialog.dart';

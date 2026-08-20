@@ -1,6 +1,6 @@
 import 'package:charts_painter/chart.dart';
 import 'package:charts_web/assets.gen.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class FuturamaBarWidget extends StatelessWidget {
   FuturamaBarWidget(
