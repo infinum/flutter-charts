@@ -1,6 +1,7 @@
 import 'package:charts_painter/chart.dart';
 import 'package:charts_web/theme/app_theme.dart';
 import 'package:charts_web/ui/gallery/gallery_entries.dart';
+import 'package:charts_web/ui/playground/playground_reset.dart';
 import 'package:charts_web/ui/playground/presenter/chart_label_color_provider.dart';
 import 'package:charts_web/ui/playground/presenter/chart_state_presenter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +15,10 @@ import 'package:material_ui/material_ui.dart';
 /// It was written after the previews and the playground had drifted apart in
 /// 32 places: wrong data strategy on all 13, padding and colours dropped, and
 /// the sparkline losing its gradient.
+///
+/// The second case reuses one container across entries. The first version of
+/// this test made a fresh one each time, and so never noticed that opening a
+/// second example layered it on top of the first.
 class _RefStub implements WidgetRef {
   _RefStub(this.container);
 
@@ -23,8 +28,12 @@ class _RefStub implements WidgetRef {
   T read<T>(ProviderListenable<T> provider) => container.read(provider);
 
   @override
+  void invalidate(ProviderOrFamily provider, {bool asReload = false}) =>
+      container.invalidate(provider);
+
+  @override
   dynamic noSuchMethod(Invocation invocation) =>
-      throw UnsupportedError('only read() is used by applyToPlayground');
+      throw UnsupportedError('only read()/invalidate() are used here');
 }
 
 String _describeItem(ItemOptions options) {
@@ -112,11 +121,7 @@ void main() {
 
       final container = ProviderContainer();
       addTearDown(container.dispose);
-      // ChartThemeSync does this in the running app; the decorations read it
-      // for their default line colour.
-      container.read(chartGridColorProvider.notifier).state =
-          scheme.outlineVariant;
-      container.read(chartLabelColorProvider.notifier).state = scheme.onSurface;
+      _syncTheme(container, scheme);
 
       entry.applyToPlayground(_RefStub(container));
       final applied = container.read(chartStatePresenter).state;
@@ -124,4 +129,66 @@ void main() {
       expect(_describe(applied), _describe(preview), reason: entry.id);
     }
   });
+
+  testWidgets('opening one entry after another replaces it, not layers on it',
+      (tester) async {
+    tester.view.physicalSize = const Size(1200, 800);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+
+    // Collect every preview first; rendering needs the fake-async pump.
+    final previews = <String, List<String>>{};
+    for (final entry in galleryEntries) {
+      await tester.pumpWidget(MaterialApp(
+        theme: appTheme(brightness),
+        home: Scaffold(
+          body: SizedBox(
+            width: 500,
+            height: 300,
+            child: Builder(builder: entry.buildChart),
+          ),
+        ),
+      ));
+      await tester.pumpAndSettle();
+
+      previews[entry.id] =
+          _describe(tester.widget<Chart<void>>(find.byType(Chart<void>)).state);
+    }
+    await tester.pumpWidget(const SizedBox.shrink());
+
+    // One container for the whole walk, like the running app. Real async here:
+    // resetPlayground invalidates providers, and riverpod schedules the
+    // refresh on a timer that the fake-async zone will not retire.
+    await tester.runAsync(() async {
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+      _syncTheme(container, scheme);
+      final ref = _RefStub(container);
+
+      // Start on a heavy entry so there is plenty left to leak: three series,
+      // a stacked strategy and a decoration.
+      galleryEntries
+          .firstWhere((entry) => entry.id == 'stacked-bar')
+          .applyToPlayground(ref);
+
+      for (final entry in galleryEntries) {
+        // What GalleryDetail does when the button is pressed.
+        resetPlayground(ref);
+        entry.applyToPlayground(ref);
+
+        expect(
+          _describe(container.read(chartStatePresenter).state),
+          previews[entry.id],
+          reason: '${entry.id} opened after another entry',
+        );
+      }
+    });
+  });
+}
+
+void _syncTheme(ProviderContainer container, ColorScheme scheme) {
+  // ChartThemeSync does this in the running app; the decorations read it for
+  // their default line colour.
+  container.read(chartGridColorProvider.notifier).state = scheme.outlineVariant;
+  container.read(chartLabelColorProvider.notifier).state = scheme.onSurface;
 }

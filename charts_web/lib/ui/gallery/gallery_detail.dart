@@ -3,6 +3,7 @@ import 'package:charts_web/ui/design/code_block.dart';
 import 'package:charts_web/ui/design/section_card.dart';
 import 'package:charts_web/ui/gallery/gallery_entry.dart';
 import 'package:charts_web/ui/playground/applied_example.dart';
+import 'package:charts_web/ui/playground/playground_reset.dart';
 import 'package:charts_web/ui/shell/shell_destination.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
@@ -73,6 +74,9 @@ class GalleryDetail extends ConsumerWidget {
               icon: const Icon(Icons.tune),
               label: const Text('Open in playground'),
               onPressed: () {
+                // Clear first: otherwise a second example lands on top of the
+                // one already loaded.
+                resetPlayground(ref);
                 entry.applyToPlayground(ref);
                 // Remember it so Reset returns here rather than to the
                 // built-in defaults.

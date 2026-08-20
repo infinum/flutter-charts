@@ -92,6 +92,10 @@ class _RefStub implements WidgetRef {
   T read<T>(ProviderListenable<T> provider) => container.read(provider);
 
   @override
+  void invalidate(ProviderOrFamily provider, {bool asReload = false}) =>
+      container.invalidate(provider);
+
+  @override
   dynamic noSuchMethod(Invocation invocation) =>
-      throw UnsupportedError('only read() is used by applyToPlayground');
+      throw UnsupportedError('only read()/invalidate() are used here');
 }
