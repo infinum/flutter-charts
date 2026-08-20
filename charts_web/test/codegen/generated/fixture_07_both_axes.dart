@@ -22,12 +22,12 @@ ChartState<void> fixture07BothAxes() => ChartState<void>(
   ),
   backgroundDecorations: [
     HorizontalAxisDecoration(
-      textScale: 1.2,
       lineColor: Color(0xFF9E9E9E),
+      textScale: 1.2,
     ),
     VerticalAxisDecoration(
-      textScale: 1.2,
       lineColor: Color(0xFF9E9E9E),
+      textScale: 1.2,
     ),
   ],
 );

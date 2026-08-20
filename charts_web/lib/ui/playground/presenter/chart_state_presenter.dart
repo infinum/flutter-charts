@@ -45,6 +45,10 @@ class ChartStatePresenter extends ChangeNotifier {
   // bar item specific
   List<BorderRadius> barBorderRadius = [_barBorderRadiusDefault];
 
+  /// Where in its slot an item starts. BarItemOptions only; BubbleItemOptions
+  /// has no startPosition.
+  double startPosition = 0.5;
+
   // multi item specific
   bool stackMultipleValues = true;
   EdgeInsets multiValuePadding = EdgeInsets.zero;
@@ -167,6 +171,11 @@ class ChartStatePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateStartPosition(double newStartPosition) {
+    startPosition = newStartPosition;
+    notifyListeners();
+  }
+
   void updateMultiValuePadding(EdgeInsets newPadding) {
     multiValuePadding = newPadding;
     notifyListeners();
@@ -217,6 +226,7 @@ class ChartStatePresenter extends ChangeNotifier {
     } else if (selectedPainter == SelectedPainter.bar) {
       return BarItemOptions(
         padding: chartItemPadding,
+        startPosition: startPosition,
         barItemBuilder: (data) {
           return BarItem(
             color: _getColorForList(data.listIndex),
@@ -239,6 +249,9 @@ class ChartStatePresenter extends ChangeNotifier {
       );
     } else if (selectedPainter == SelectedPainter.widget) {
       return WidgetItemOptions(
+        multiValuePadding: multiValuePadding,
+        maxBarWidth: maxBarWidth,
+        minBarWidth: minBarWidth,
         widgetItemBuilder: (data) {
           return FuturamaBarWidget(
               stackItems: stackMultipleValues,

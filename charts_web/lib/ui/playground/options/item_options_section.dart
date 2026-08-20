@@ -1,6 +1,7 @@
 import 'package:charts_web/ui/common/dialog/border_dialog.dart';
 import 'package:charts_web/ui/common/dialog/border_radius_dialog.dart';
 import 'package:charts_web/ui/common/dialog/gradient_dialog.dart';
+import 'package:charts_web/ui/design/edge_insets_field.dart';
 import 'package:charts_web/ui/design/labeled_field.dart';
 import 'package:charts_web/ui/design/number_field.dart';
 import 'package:charts_web/ui/design/section_card.dart';
@@ -60,7 +61,9 @@ class ItemOptionsSection extends ConsumerWidget {
             'decoration below.',
             style: Theme.of(context).textTheme.bodySmall,
           ),
-        if (isGeometry) ...[
+        // WidgetItemOptions has no padding or startPosition, but does take
+        // the width bounds.
+        if (isGeometry || painter == SelectedPainter.widget) ...[
           NumberField(
             label: 'Min item width',
             value: presenter.minBarWidth,
@@ -75,39 +78,32 @@ class ItemOptionsSection extends ConsumerWidget {
             fallback: 30,
             onChanged: presenter.updateMaxBarWidth,
           ),
-          NumberField(
-            label: 'Item padding left',
-            value: presenter.chartItemPadding.left,
-            step: 2,
-            onChanged: (value) => presenter.updateChartItemPadding(
-                presenter.chartItemPadding.copyWith(left: value)),
+        ],
+        if (isGeometry) ...[
+          EdgeInsetsField(
+            label: 'Item padding',
+            helper: 'Space around each item inside its slot.',
+            value: presenter.chartItemPadding,
+            onChanged: presenter.updateChartItemPadding,
           ),
-          NumberField(
-            label: 'Item padding right',
-            value: presenter.chartItemPadding.right,
-            step: 2,
-            onChanged: (value) => presenter.updateChartItemPadding(
-                presenter.chartItemPadding.copyWith(right: value)),
-          ),
+          if (painter == SelectedPainter.bar)
+            NumberField(
+              label: 'Start position',
+              value: presenter.startPosition,
+              step: 0.1,
+              fallback: 0.5,
+              onChanged: presenter.updateStartPosition,
+            ),
         ],
         if (presenter.isMultiItem && painter != SelectedPainter.none) ...[
           const Divider(),
-          if (!presenter.stackMultipleValues) ...[
-            NumberField(
-              label: 'Group padding left',
-              value: presenter.multiValuePadding.left,
-              step: 2,
-              onChanged: (value) => presenter.updateMultiValuePadding(
-                  presenter.multiValuePadding.copyWith(left: value)),
+          if (!presenter.stackMultipleValues)
+            EdgeInsetsField(
+              label: 'Group padding',
+              helper: 'Space around each series within a group.',
+              value: presenter.multiValuePadding,
+              onChanged: presenter.updateMultiValuePadding,
             ),
-            NumberField(
-              label: 'Group padding right',
-              value: presenter.multiValuePadding.right,
-              step: 2,
-              onChanged: (value) => presenter.updateMultiValuePadding(
-                  presenter.multiValuePadding.copyWith(right: value)),
-            ),
-          ],
           if (painter == SelectedPainter.bar)
             Align(
               alignment: Alignment.centerLeft,

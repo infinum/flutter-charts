@@ -41,6 +41,12 @@ html, body {
   pointer-events: none;
 }
 
+.boot__image {
+  width: min(560px, 70vw);
+  max-height: 45vh;
+  object-fit: contain;
+}
+
 .boot__bar {
   width: 180px;
   height: 3px;

@@ -1,4 +1,5 @@
 import 'package:charts_painter/chart.dart';
+import 'package:charts_web/codegen/dart_literal.dart';
 import 'package:charts_web/codegen/source_writer.dart';
 import 'package:charts_web/ui/playground/presenter/chart_decorations_presenter.dart';
 import 'package:material_ui/material_ui.dart';
@@ -15,15 +16,34 @@ class DecorationWidgetPresenter extends ChangeNotifier
   final int index;
   int type = 0;
 
+  /// Null means "use whatever this example needs". Types 1 and 2 position
+  /// themselves with a margin, so overriding blindly would break their layout.
+  EdgeInsets? _marginOverride;
+
+  static const Map<int, EdgeInsets> _defaultMargins = {
+    1: EdgeInsets.only(left: 20),
+    3: EdgeInsets.all(3),
+  };
+
+  EdgeInsets get margin =>
+      _marginOverride ?? _defaultMargins[type] ?? EdgeInsets.zero;
+
   void updateType(int type) {
     this.type = type;
+    // Each example has its own layout needs; drop a stale override.
+    _marginOverride = null;
+    notifyListeners();
+  }
+
+  void updateMargin(EdgeInsets value) {
+    _marginOverride = value;
     notifyListeners();
   }
 
   @override
   WidgetDecoration buildDecoration() {
     if (type == 0) {
-      return WidgetDecoration(widgetDecorationBuilder:
+      return WidgetDecoration(margin: margin, widgetDecorationBuilder:
           (context, chartState, itemWidth, verticalMultiplier) {
         return Stack(
           children: [
@@ -59,9 +79,9 @@ class DecorationWidgetPresenter extends ChangeNotifier
               ],
             );
           },
-          margin: const EdgeInsets.only(left: 20));
+          margin: margin);
     } else if (type == 2) {
-      return WidgetDecoration(widgetDecorationBuilder:
+      return WidgetDecoration(margin: margin, widgetDecorationBuilder:
           (context, chartState, itemWidth, verticalMultiplier) {
         return Padding(
           padding: EdgeInsets.only(top: 5 * verticalMultiplier),
@@ -87,9 +107,9 @@ class DecorationWidgetPresenter extends ChangeNotifier
               height: double.infinity,
             );
           },
-          margin: const EdgeInsets.all(3));
+          margin: margin);
     } else if (type == 4) {
-      return WidgetDecoration(widgetDecorationBuilder:
+      return WidgetDecoration(margin: margin, widgetDecorationBuilder:
           (context, chartState, itemWidth, verticalMultiplier) {
         return Padding(
           padding: EdgeInsets.only(top: 5 * verticalMultiplier),
@@ -147,7 +167,9 @@ class DecorationWidgetPresenter extends ChangeNotifier
     writer.line('child: const SizedBox.expand(),');
     writer.close(');');
     writer.close('},');
-    writer.line('margin: EdgeInsets.all(3.0),');
+    if (margin != EdgeInsets.zero) {
+      writer.line('margin: ${edgeInsetsLiteral(margin)},');
+    }
     writer.close('),');
   }
 }

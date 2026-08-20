@@ -1,5 +1,6 @@
 import 'package:charts_web/ui/common/layout/breakpoints.dart';
 import 'package:charts_web/ui/concepts/concepts_screen.dart';
+import 'package:charts_web/ui/shell/chart_theme_sync.dart';
 import 'package:charts_web/ui/gallery/gallery_screen.dart';
 import 'package:charts_web/ui/playground/playground_screen.dart';
 import 'package:charts_web/ui/shell/shell_header.dart';
@@ -33,14 +34,15 @@ class _AppShellState extends ConsumerState<AppShell> {
 
     // IndexedStack, not a swap: a playground configuration must survive a trip
     // to the gallery and back.
-    final body = IndexedStack(
+    final body = ChartThemeSync(
+        child: IndexedStack(
       index: _index,
       children: [
         const PlaygroundScreen(),
         const GalleryScreen(),
         const ConceptsScreen(),
       ],
-    );
+    ));
 
     return Scaffold(
       body: Column(

@@ -1,3 +1,4 @@
+import 'package:charts_web/ui/design/edge_insets_field.dart';
 import 'package:charts_web/ui/design/segmented_choice.dart';
 import 'package:charts_web/ui/playground/decorations/decoration_card.dart';
 import 'package:charts_web/ui/playground/decorations/presenters/decorations_widget_presenter.dart';
@@ -36,6 +37,13 @@ class DecorationsWidget extends HookConsumerWidget {
               SegmentedChoiceOption(value: 4, label: 'Clickable'),
             ],
             onChanged: presenter.updateType,
+          ),
+          EdgeInsetsField(
+            label: 'Margin',
+            helper: 'Resets when you pick another example, since each one '
+                'positions itself differently.',
+            value: presenter.margin,
+            onChanged: presenter.updateMargin,
           ),
         ],
       ),

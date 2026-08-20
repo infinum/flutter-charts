@@ -153,7 +153,15 @@ class ConceptsScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 6),
                 barItemBuilder: _blueBar,
               ),
-              backgroundDecorations: [GridDecoration(gridColor: outline)],
+              backgroundDecorations: [
+                GridDecoration(
+                  gridColor: outline,
+                  textStyle: TextStyle(
+                    fontSize: 12,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+              ],
               foregroundDecorations: [
                 WidgetDecoration(
                   widgetDecorationBuilder:

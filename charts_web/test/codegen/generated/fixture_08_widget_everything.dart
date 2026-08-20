@@ -39,7 +39,6 @@ ChartState<void> fixture08WidgetEverything() => ChartState<void>(
           child: const SizedBox.expand(),
         );
       },
-      margin: EdgeInsets.all(3.0),
     ),
   ],
 );

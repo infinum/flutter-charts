@@ -12,6 +12,14 @@ const Color _green = Color(0xFF5A8772);
 
 const List<Color> _palette = [_red, _sand, _plum, _blue, _green];
 
+/// Axis text is painted by the chart, so it cannot inherit the text theme.
+/// Without an explicit colour the library default paints black, which is
+/// invisible in dark mode.
+TextStyle _axisLabelStyle(BuildContext context) => TextStyle(
+      fontSize: 12,
+      color: Theme.of(context).colorScheme.onSurface,
+    );
+
 List<ChartItem<void>> _items(List<num> values) =>
     values.map((value) => ChartItem<void>(value.toDouble())).toList();
 
@@ -300,6 +308,7 @@ final List<GalleryEntry> galleryEntries = [
             showValues: true,
             axisStep: 3,
             lineColor: Theme.of(context).colorScheme.outlineVariant,
+            legendFontStyle: _axisLabelStyle(context),
           ),
         ],
       ),
@@ -390,6 +399,7 @@ final List<GalleryEntry> galleryEntries = [
     tags: const ['axis', 'decoration'],
     buildChart: (context) {
       final outline = Theme.of(context).colorScheme.outlineVariant;
+      final labelStyle = _axisLabelStyle(context);
 
       return Chart<void>(
         state: ChartState<void>(
@@ -401,9 +411,17 @@ final List<GalleryEntry> galleryEntries = [
           ),
           backgroundDecorations: [
             HorizontalAxisDecoration(
-                showValues: true, axisStep: 3, lineColor: outline),
+              showValues: true,
+              axisStep: 3,
+              lineColor: outline,
+              legendFontStyle: labelStyle,
+            ),
             VerticalAxisDecoration(
-                showValues: true, axisStep: 1, lineColor: outline),
+              showValues: true,
+              axisStep: 1,
+              lineColor: outline,
+              legendFontStyle: labelStyle,
+            ),
           ],
         ),
       );

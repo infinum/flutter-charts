@@ -43,44 +43,47 @@ class NumberField extends HookWidget {
       return null;
     }, [value]);
 
-    return Row(
-      children: [
-        Expanded(
-          child: Text(label, style: Theme.of(context).textTheme.bodyMedium),
-        ),
-        const SizedBox(width: 8),
-        if (showInput)
-          SizedBox(
-            width: 76,
-            child: TextField(
-              controller: controller,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              textAlign: TextAlign.end,
-              decoration: InputDecoration(suffixText: suffix),
-              onChanged: (text) {
-                final parsed = double.tryParse(text);
-                if (parsed != null) {
-                  lastValue.value = parsed;
-                  onChanged(parsed);
-                }
-              },
-            ),
-          )
-        else
-          Text(_format(value), style: Theme.of(context).textTheme.bodyMedium),
-        const SizedBox(width: 4),
-        IconButton.filledTonal(
-          visualDensity: VisualDensity.compact,
-          icon: const Icon(Icons.remove, size: 16),
-          onPressed: () => _step(-step),
-        ),
-        IconButton.filledTonal(
-          visualDensity: VisualDensity.compact,
-          icon: const Icon(Icons.add, size: 16),
-          onPressed: () => _step(step),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(label, style: Theme.of(context).textTheme.bodyMedium),
+          ),
+          const SizedBox(width: 8),
+          if (showInput)
+            SizedBox(
+              width: 76,
+              child: TextField(
+                controller: controller,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                textAlign: TextAlign.end,
+                decoration: InputDecoration(suffixText: suffix),
+                onChanged: (text) {
+                  final parsed = double.tryParse(text);
+                  if (parsed != null) {
+                    lastValue.value = parsed;
+                    onChanged(parsed);
+                  }
+                },
+              ),
+            )
+          else
+            Text(_format(value), style: Theme.of(context).textTheme.bodyMedium),
+          const SizedBox(width: 4),
+          IconButton.filledTonal(
+            visualDensity: VisualDensity.compact,
+            icon: const Icon(Icons.remove, size: 16),
+            onPressed: () => _step(-step),
+          ),
+          IconButton.filledTonal(
+            visualDensity: VisualDensity.compact,
+            icon: const Icon(Icons.add, size: 16),
+            onPressed: () => _step(step),
+          ),
+        ],
+      ),
     );
   }
 

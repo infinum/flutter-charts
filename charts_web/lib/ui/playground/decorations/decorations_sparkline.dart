@@ -37,6 +37,19 @@ class DecorationsSparkline extends HookConsumerWidget {
             value: presenter.smoothPoints,
             onChanged: presenter.updateSmoothPoints,
           ),
+          SwitchListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('Dashed'),
+            value: presenter.dashed,
+            onChanged: presenter.updateDashed,
+          ),
+          SwitchListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('Stretch line'),
+            subtitle: const Text('Run the line to both chart edges.'),
+            value: presenter.stretchLine,
+            onChanged: presenter.updateStretchLine,
+          ),
           NumberField(
             label: 'Line width',
             value: presenter.lineWidth,

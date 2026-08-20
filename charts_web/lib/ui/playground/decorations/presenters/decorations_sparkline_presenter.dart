@@ -22,6 +22,8 @@ class DecorationSparkLinePresenter extends ChangeNotifier
 
   bool filled = false;
   bool smoothPoints = false;
+  bool dashed = false;
+  bool stretchLine = false;
   double lineWidth = 1.0;
   double startPosition = 0.5;
 
@@ -37,6 +39,16 @@ class DecorationSparkLinePresenter extends ChangeNotifier
 
   void updateSmoothPoints(bool value) {
     smoothPoints = value;
+    notifyListeners();
+  }
+
+  void updateDashed(bool value) {
+    dashed = value;
+    notifyListeners();
+  }
+
+  void updateStretchLine(bool value) {
+    stretchLine = value;
     notifyListeners();
   }
 
@@ -75,6 +87,8 @@ class DecorationSparkLinePresenter extends ChangeNotifier
       lineWidth: lineWidth,
       gradient: gradient,
       startPosition: startPosition,
+      dashArray: dashed ? const [4, 4] : null,
+      stretchLine: stretchLine,
     );
   }
 
@@ -84,6 +98,8 @@ class DecorationSparkLinePresenter extends ChangeNotifier
     if (lineId != 0) writer.line('listIndex: $lineId,');
     if (filled) writer.line('fill: true,');
     if (smoothPoints) writer.line('smoothPoints: true,');
+    if (stretchLine) writer.line('stretchLine: true,');
+    if (dashed) writer.line('dashArray: [4.0, 4.0],');
     writer.line('lineColor: ${colorLiteral(color)},');
     if (lineWidth != 1.0) {
       writer.line('lineWidth: ${doubleLiteral(lineWidth)},');
