@@ -23,8 +23,5 @@ abstract class GeometryPainter<T> {
   void draw(Canvas canvas, Size size, Paint paint);
 
   /// Calculate item width based on current [Size] and [ChartState]
-  double itemWidth(Size size) {
-    return max(itemOptions.minBarWidth ?? 0.0,
-        min(itemOptions.maxBarWidth ?? double.infinity, size.width));
-  }
+  double itemWidth(Size size) => itemOptions.clampBarWidth(size.width);
 }

@@ -1,8 +1,16 @@
 import 'dart:math';
 
 import 'package:charts_painter/chart.dart';
+import 'package:charts_web/ui/gallery/gallery_entries.dart';
+import 'package:charts_web/ui/playground/applied_example.dart';
+import 'package:charts_web/ui/playground/decorations/presenters/decorations_grid_presenter.dart';
+import 'package:charts_web/ui/playground/decorations/presenters/decorations_horizontal_axis_presenter.dart';
+import 'package:charts_web/ui/playground/decorations/presenters/decorations_sparkline_presenter.dart';
+import 'package:charts_web/ui/playground/decorations/presenters/decorations_vertical_axis_presenter.dart';
+import 'package:charts_web/ui/playground/decorations/presenters/decorations_widget_presenter.dart';
 import 'package:charts_web/ui/playground/presenter/chart_decorations_presenter.dart';
 import 'package:charts_web/ui/playground/presenter/chart_state_presenter.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -16,6 +24,7 @@ class ChartStage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final presenter = ref.watch(chartStatePresenter);
+    final appliedEntry = ref.watch(appliedGalleryEntryProvider);
     final theme = Theme.of(context);
 
     return Padding(
@@ -35,13 +44,10 @@ class ChartStage extends ConsumerWidget {
                 ),
                 TextButton.icon(
                   icon: const Icon(Icons.restart_alt, size: 18),
-                  label: const Text('Reset'),
-                  onPressed: () {
-                    // Recreating the providers is the reset: it restores every
-                    // default without the presenters needing a reset method.
-                    ref.invalidate(chartDecorationsPresenter);
-                    ref.invalidate(chartStatePresenter);
-                  },
+                  label: Text(appliedEntry == null
+                      ? 'Reset'
+                      : 'Reset to example'),
+                  onPressed: () => _reset(ref, appliedEntry),
                 ),
                 if (onToggleCode != null)
                   TextButton.icon(
@@ -81,6 +87,31 @@ class ChartStage extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  /// Recreating the providers is the reset: it restores every default without
+  /// the presenters needing a reset method. If the user arrived from the
+  /// gallery, the example is then re-applied on top.
+  void _reset(WidgetRef ref, String? appliedEntryId) {
+    // The per-decoration presenters have to go first. ChartDecorationsPresenter
+    // registers a listener on each of them, so disposing it alone leaves those
+    // presenters holding a callback into a dead object, and the next edit
+    // throws "used after being disposed".
+    ref.invalidate(decorationGridPresenter);
+    ref.invalidate(decorationSparkLinePresenter);
+    ref.invalidate(decorationHorizontalAxisPresenter);
+    ref.invalidate(decorationVerticalAxisPresenter);
+    ref.invalidate(decorationWidgetPresenter);
+
+    ref.invalidate(chartDecorationsPresenter);
+    ref.invalidate(chartStatePresenter);
+
+    if (appliedEntryId == null) return;
+
+    final entry = galleryEntries
+        .where((entry) => entry.id == appliedEntryId)
+        .firstOrNull;
+    entry?.applyToPlayground(ref);
   }
 
   void _randomize(ChartStatePresenter presenter) {

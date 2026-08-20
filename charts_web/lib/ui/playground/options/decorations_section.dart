@@ -1,6 +1,7 @@
 import 'package:charts_painter/chart.dart';
 import 'package:charts_web/assets.gen.dart';
 import 'package:charts_web/ui/design/section_card.dart';
+import 'package:charts_web/ui/playground/decorations/decorations_grid.dart';
 import 'package:charts_web/ui/playground/decorations/decorations_horizontal_axis.dart';
 import 'package:charts_web/ui/playground/decorations/decorations_sparkline.dart';
 import 'package:charts_web/ui/playground/decorations/decorations_vertical_axis.dart';
@@ -28,6 +29,11 @@ class DecorationsSection extends ConsumerWidget {
           spacing: 8,
           runSpacing: 8,
           children: [
+            _AddDecorationTile(
+              name: 'Grid',
+              image: Assets.png.generalGridDecorationGolden.path,
+              onPressed: () => presenter.addDecoration(GridDecoration()),
+            ),
             _AddDecorationTile(
               name: 'SparkLine',
               image: Assets.png.generalSparklineDecorationGolden.path,
@@ -79,6 +85,7 @@ class DecorationsSection extends ConsumerWidget {
 
     decorations.forEach((index, decoration) {
       widgets.add(switch (decoration) {
+        GridDecoration() => DecorationsGrid(decorationIndex: index),
         SparkLineDecoration() => DecorationsSparkline(decorationIndex: index),
         VerticalAxisDecoration() =>
           DecorationsVerticalAxis(decorationIndex: index),

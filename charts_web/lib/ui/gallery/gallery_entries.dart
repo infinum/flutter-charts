@@ -1,5 +1,9 @@
 import 'package:charts_painter/chart.dart';
 import 'package:charts_web/ui/gallery/gallery_entry.dart';
+import 'package:charts_web/ui/playground/decorations/presenters/decorations_grid_presenter.dart';
+import 'package:charts_web/ui/playground/decorations/presenters/decorations_horizontal_axis_presenter.dart';
+import 'package:charts_web/ui/playground/decorations/presenters/decorations_sparkline_presenter.dart';
+import 'package:charts_web/ui/playground/decorations/presenters/decorations_vertical_axis_presenter.dart';
 import 'package:charts_web/ui/playground/decorations/presenters/decorations_widget_presenter.dart';
 import 'package:charts_web/ui/playground/presenter/chart_decorations_presenter.dart';
 import 'package:charts_web/ui/playground/presenter/chart_state_presenter.dart';
@@ -100,9 +104,10 @@ final List<GalleryEntry> galleryEntries = [
       ref.read(chartStatePresenter)
         ..updateItemPainter(SelectedPainter.bar)
         ..updateData([_items([4, 6, 3, 6, 7, 9, 3, 2])]);
-      ref.read(chartDecorationsPresenter).addDecoration(
-          HorizontalAxisDecoration(),
-          layer: DecorationLayer.background);
+      ref
+          .read(chartDecorationsPresenter)
+          .addDecoration(GridDecoration(), layer: DecorationLayer.background);
+      ref.read(decorationGridPresenter(0)).updateShowVerticalGrid(false);
     },
   ),
   GalleryEntry(
@@ -280,6 +285,11 @@ final List<GalleryEntry> galleryEntries = [
         ..updateItemPainter(SelectedPainter.none);
       ref.read(chartDecorationsPresenter).addDecoration(SparkLineDecoration(),
           layer: DecorationLayer.background);
+      ref.read(decorationSparkLinePresenter(0))
+        ..updateFilled(true)
+        ..updateSmoothPoints(true)
+        ..updateLineWidth(2)
+        ..updateColor(_red);
     },
   ),
   GalleryEntry(
@@ -334,6 +344,9 @@ final List<GalleryEntry> galleryEntries = [
         ..updateItemPainter(SelectedPainter.bubble)
         ..updateMinBarWidth(12)
         ..updateMaxBarWidth(12);
+      ref
+          .read(chartDecorationsPresenter)
+          .addDecoration(GridDecoration(), layer: DecorationLayer.background);
     },
   ),
   GalleryEntry(
@@ -389,6 +402,9 @@ final List<GalleryEntry> galleryEntries = [
       ref.read(chartDecorationsPresenter).addDecoration(
           HorizontalAxisDecoration(),
           layer: DecorationLayer.background);
+      ref.read(decorationHorizontalAxisPresenter(0))
+        ..updateShowValues(true)
+        ..updateAxisStep(3);
     },
   ),
   GalleryEntry(
@@ -538,6 +554,10 @@ final List<GalleryEntry> galleryEntries = [
             layer: DecorationLayer.background);
       decorations.addDecoration(VerticalAxisDecoration(),
           layer: DecorationLayer.background);
+      ref.read(decorationHorizontalAxisPresenter(0))
+        ..updateShowValues(true)
+        ..updateAxisStep(3);
+      ref.read(decorationVerticalAxisPresenter(1)).updateShowValues(true);
     },
   ),
   GalleryEntry(

@@ -133,10 +133,18 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     final _stackSize = max(1.0, (chartState.data.stackSize) * _stack);
 
     // Get available size for item. Subtracts set padding and divide by number of items we want to show
-    final _stackWidth = (itemWidth -
+    final _availableWidth = (itemWidth -
             (_multiValuePadding.horizontal * _stack) -
             (chartState.itemOptions.padding.horizontal * _stackSize)) /
         _stackSize;
+
+    // [ItemOptions.minBarWidth] and [ItemOptions.maxBarWidth] limit the width the
+    // item is allowed to take from the available space.
+    final _stackWidth = chartState.itemOptions.clampBarWidth(_availableWidth);
+
+    // Whatever is left of the available space after clamping is split on both sides,
+    // this keeps clamped items centered in the space they got.
+    final _clampOffset = (_availableWidth - _stackWidth) * _stackSize / 2;
 
     childParentData.offset =
         Offset(_stackWidth * child.listIndex * _stack, 0.0) +
@@ -146,7 +154,8 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
                     (chartState.itemOptions.padding.horizontal *
                         child.listIndex *
                         _stack) +
-                    chartState.itemOptions.padding.left,
+                    chartState.itemOptions.padding.left +
+                    _clampOffset,
                 0) +
             // MultiValuePadding offset
             Offset(_multiValuePadding.left * _stack, 0.0);
@@ -192,8 +201,16 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     final _stackSize = max(1.0, (chartState.data.stackSize) * _stack);
 
     // Get available size for item. Subtracts set padding and divide by number of items we want to show
-    final _stackWidth =
+    final _availableWidth =
         (itemWidth - (_multiValuePadding.horizontal * _stack)) / _stackSize;
+
+    // [ItemOptions.minBarWidth] and [ItemOptions.maxBarWidth] limit the width the
+    // item is allowed to take from the available space.
+    final _stackWidth = chartState.itemOptions.clampBarWidth(_availableWidth);
+
+    // Whatever is left of the available space after clamping is split on both sides,
+    // this keeps clamped items centered in the space they got.
+    final _clampOffset = (_availableWidth - _stackWidth) * _stackSize / 2;
 
     // For `StackDataStrategy` we will cut stacked items at the bottom, this will make sure there is no
     // Widget overlap for drawing, and make sure that centered widgets are in the center of visible item
@@ -201,7 +218,7 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
 
     childParentData.offset = offset + // Current chart offset
         // Item offset in the list
-        Offset(itemWidth * currentValue,
+        Offset(itemWidth * currentValue + _clampOffset,
             size.height - ((child.item.max ?? 0.0) * _verticalMultiplier)) +
         // MultiValuePadding offset
         Offset(_multiValuePadding.left * _stack, 0);

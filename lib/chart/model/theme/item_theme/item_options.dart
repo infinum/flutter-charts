@@ -73,6 +73,15 @@ abstract class ItemOptions {
   /// Geometry
   final ChartGeometryPainter geometryPainter;
 
+  /// Limit [width] to the [minBarWidth] - [maxBarWidth] range.
+  ///
+  /// [width] is returned unchanged when neither bound is set. [minBarWidth] can
+  /// make the item wider than the space it was given, in that case items will
+  /// overlap on charts that cannot grow (see [ScrollSettings]).
+  double clampBarWidth(double width) {
+    return max(minBarWidth ?? 0.0, min(maxBarWidth ?? double.infinity, width));
+  }
+
   /// Animate to next [ItemOptions] state
   /// When making custom [ItemOptions] make sure to override this return custom painter
   /// with all available options, otherwise changes in options won't be animated

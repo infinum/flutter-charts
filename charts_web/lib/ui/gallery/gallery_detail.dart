@@ -2,6 +2,7 @@ import 'package:charts_web/ui/common/layout/breakpoints.dart';
 import 'package:charts_web/ui/design/code_block.dart';
 import 'package:charts_web/ui/design/section_card.dart';
 import 'package:charts_web/ui/gallery/gallery_entry.dart';
+import 'package:charts_web/ui/playground/applied_example.dart';
 import 'package:charts_web/ui/shell/shell_destination.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
@@ -73,6 +74,9 @@ class GalleryDetail extends ConsumerWidget {
               label: const Text('Open in playground'),
               onPressed: () {
                 entry.applyToPlayground(ref);
+                // Remember it so Reset returns here rather than to the
+                // built-in defaults.
+                ref.read(appliedGalleryEntryProvider.notifier).state = entry.id;
                 // Close the detail route and put the rail on the playground,
                 // so the configuration you just applied is what you land on.
                 ref.read(shellDestinationProvider.notifier).state =

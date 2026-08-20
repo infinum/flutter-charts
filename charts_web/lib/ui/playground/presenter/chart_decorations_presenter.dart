@@ -1,5 +1,6 @@
 import 'package:charts_painter/chart.dart';
 import 'package:charts_web/codegen/source_writer.dart';
+import 'package:charts_web/ui/playground/decorations/presenters/decorations_grid_presenter.dart';
 import 'package:charts_web/ui/playground/decorations/presenters/decorations_horizontal_axis_presenter.dart';
 import 'package:charts_web/ui/playground/decorations/presenters/decorations_sparkline_presenter.dart';
 import 'package:charts_web/ui/playground/decorations/presenters/decorations_vertical_axis_presenter.dart';
@@ -30,7 +31,13 @@ class ChartDecorationsPresenter extends ChangeNotifier {
       {DecorationLayer layer = DecorationLayer.foreground}) {
     final index = getNewAutoIncrementDecorationIndex();
 
-    if (decoration is SparkLineDecoration) {
+    // GridDecoration first: it is not a subtype of the axis decorations, but
+    // keeping the order identical to the codegen dispatch avoids divergence.
+    if (decoration is GridDecoration) {
+      final presenter = ref.read(decorationGridPresenter(index));
+      _decorations[index] = _DecorationData(presenter.buildDecoration(), layer);
+      presenter.addListener(() => updateDecoration(index, presenter));
+    } else if (decoration is SparkLineDecoration) {
       final presenter = ref.read(decorationSparkLinePresenter(index));
       _decorations[index] = _DecorationData(presenter.buildDecoration(), layer);
       presenter.addListener(() => updateDecoration(index, presenter));

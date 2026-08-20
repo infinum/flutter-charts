@@ -1,5 +1,6 @@
 import 'package:charts_painter/chart.dart';
 import 'package:charts_web/codegen/source_writer.dart';
+import 'package:charts_web/ui/playground/decorations/presenters/decorations_grid_presenter.dart';
 import 'package:charts_web/ui/playground/decorations/presenters/decorations_horizontal_axis_presenter.dart';
 import 'package:charts_web/ui/playground/decorations/presenters/decorations_sparkline_presenter.dart';
 import 'package:charts_web/ui/playground/decorations/presenters/decorations_vertical_axis_presenter.dart';
@@ -41,6 +42,7 @@ DecorationBuilder? _builderFor(
   DecorationPainter decoration,
 ) =>
     switch (decoration) {
+      GridDecoration() => presenter.ref.read(decorationGridPresenter(index)),
       SparkLineDecoration() =>
         presenter.ref.read(decorationSparkLinePresenter(index)),
       VerticalAxisDecoration() =>

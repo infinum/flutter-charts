@@ -1,3 +1,9 @@
+## [Unreleased]
+* Fix: `minBarWidth` and `maxBarWidth` are now applied to non-scrollable charts, items are centered in the space they got
+* Fix: `maxBarWidth` is no longer ignored when `minBarWidth` is set as well
+* Fix: bubble items no longer subtract `ItemOptions.padding` twice
+* `ItemOptions.clampBarWidth` is the single place where both bounds are applied
+
 ## [3.1.0] - 15.02.2023
 * Added a screenshot
 * Fixed VerticalAxisDecoration padding

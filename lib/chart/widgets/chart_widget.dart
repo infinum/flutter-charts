@@ -18,20 +18,8 @@ class _ChartWidget<T> extends StatelessWidget {
 
   double get _horizontalItemPadding => state.itemOptions.padding.horizontal;
 
-  double _clampItemWidth(double width) {
-    final minBarWidth = state.itemOptions.minBarWidth;
-    final maxBarWidth = state.itemOptions.maxBarWidth;
-
-    if (minBarWidth != null) {
-      return max(minBarWidth, width);
-    }
-
-    if (maxBarWidth != null) {
-      return min(maxBarWidth, width);
-    }
-
-    return width;
-  }
+  double _clampItemWidth(double width) =>
+      state.itemOptions.clampBarWidth(width);
 
   double _calcItemWidthNonScrollable() {
     return max(

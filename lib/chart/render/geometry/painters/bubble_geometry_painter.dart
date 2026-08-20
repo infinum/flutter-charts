@@ -25,14 +25,8 @@ class BubbleGeometryPainter<T> extends GeometryPainter<T> {
     final _verticalMultiplier = size.height / max(1, _maxValue);
     final _minValue = data.minValue * _verticalMultiplier;
 
-    final _itemWidth = max(
-        itemOptions.minBarWidth ?? 0.0,
-        min(
-            itemOptions.maxBarWidth ?? double.infinity,
-            size.width -
-                (itemOptions.padding.horizontal.isNegative
-                    ? 0.0
-                    : itemOptions.padding.horizontal)));
+    // Padding and min/max bar width are already applied to [size] by the layout.
+    final _itemWidth = itemWidth(size);
 
     final _itemMaxValue = item.max ?? 0.0;
     // If item is empty, or it's max value is below chart's minValue then don't draw it.
