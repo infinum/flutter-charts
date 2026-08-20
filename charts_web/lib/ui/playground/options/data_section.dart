@@ -57,6 +57,13 @@ class DataSection extends HookConsumerWidget {
           (index, _) => _DataRow(listIndex: index, key: Key('data$index')),
         ),
         const Divider(),
+        NumberField(
+          label: 'Value axis headroom',
+          value: presenter.valueAxisMaxOver,
+          step: 1,
+          fallback: 2,
+          onChanged: presenter.updateValueAxisMaxOver,
+        ),
         _NullableNumber(
           label: 'Axis min',
           helper: 'Opens space below zero. Leave off to let the data decide.',

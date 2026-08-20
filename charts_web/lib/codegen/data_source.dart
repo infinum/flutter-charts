@@ -31,6 +31,7 @@ void writeChartData(SourceWriter writer, ChartStatePresenter presenter) {
   if (axisMax != null) writer.line('axisMax: ${doubleLiteral(axisMax)},');
 
   // The presenter always sets this, so it is always part of the output.
-  writer.line('valueAxisMaxOver: 2.0,');
+  writer.line(
+      'valueAxisMaxOver: ${doubleLiteral(presenter.valueAxisMaxOver)},');
   writer.close('),');
 }

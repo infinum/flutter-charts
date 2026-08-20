@@ -73,6 +73,22 @@ abstract class ItemOptions {
   /// Geometry
   final ChartGeometryPainter geometryPainter;
 
+  /// Animate [maxBarWidth] from [a] to [b].
+  ///
+  /// `null` means that the item width is not limited, there is no number to
+  /// interpolate to or from, so the target value is used for the whole animation.
+  /// Animating it as `0.0` (what [lerpDouble] does with `null`) would collapse the
+  /// items right after the animation starts, and then snap them back to size.
+  ///
+  /// [minBarWidth] does not need this, `null` there means `0.0`.
+  static double? lerpMaxBarWidth(double? a, double? b, double t) {
+    if (a == null || b == null) {
+      return b;
+    }
+
+    return lerpDouble(a, b, t);
+  }
+
   /// Limit [width] to the [minBarWidth] - [maxBarWidth] range.
   ///
   /// [width] is returned unchanged when neither bound is set. [minBarWidth] can

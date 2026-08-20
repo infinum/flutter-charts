@@ -68,6 +68,8 @@ class _BorderSideDialogState extends State<BorderSideDialog> {
           ),
           const SizedBox(height: 8),
           ColorPicker(
+              enableOpacity: true,
+              opacityTrackHeight: 20,
             color: color,
             // Update the screenPickerColor using the callback.
             onColorChanged: (Color newColor) {

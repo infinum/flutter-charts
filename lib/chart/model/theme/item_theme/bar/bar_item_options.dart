@@ -60,7 +60,8 @@ class BarItemOptions extends ItemOptions {
         multiValuePadding:
             EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ??
                 EdgeInsets.zero,
-        maxBarWidth: lerpDouble(maxBarWidth, endValue.maxBarWidth, t),
+        maxBarWidth:
+            ItemOptions.lerpMaxBarWidth(maxBarWidth, endValue.maxBarWidth, t),
         minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
         startPosition:
             lerpDouble(startPosition, endValue.startPosition, t) ?? 0.5,

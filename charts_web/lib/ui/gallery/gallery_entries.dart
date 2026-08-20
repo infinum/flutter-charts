@@ -1,5 +1,6 @@
 import 'package:charts_painter/chart.dart';
 import 'package:charts_web/ui/gallery/gallery_entry.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:charts_web/ui/playground/decorations/presenters/decorations_grid_presenter.dart';
 import 'package:charts_web/ui/playground/decorations/presenters/decorations_horizontal_axis_presenter.dart';
 import 'package:charts_web/ui/playground/decorations/presenters/decorations_sparkline_presenter.dart';
@@ -25,6 +26,33 @@ TextStyle _axisLabelStyle(BuildContext context) => TextStyle(
       color: Theme.of(context).colorScheme.onSurface,
     );
 
+/// Applies the parts every template shares. Without this each entry drifted
+/// from its own preview: the playground defaults to StackDataStrategy and 2px
+/// padding, which almost no preview uses.
+ChartStatePresenter _applyBase(
+  WidgetRef ref,
+  List<num> values, {
+  Color? color,
+  double padding = 2,
+  double maxOver = 2,
+}) {
+  final presenter = ref.read(chartStatePresenter)
+    ..updateData([_items(values)])
+    ..updateDataStrategy(const DefaultDataStrategy(stackMultipleValues: true))
+    ..updateChartItemPadding(EdgeInsets.symmetric(horizontal: padding))
+    ..updateValueAxisMaxOver(maxOver.toDouble());
+
+  if (color != null) presenter.updateListColor(color, 0);
+
+  return presenter;
+}
+
+const LinearGradient _sparklineGradient = LinearGradient(
+  colors: [Color(0x66D8262C), Color(0x00D8262C)],
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+);
+
 List<ChartItem<void>> _items(List<num> values) =>
     values.map((value) => ChartItem<void>(value.toDouble())).toList();
 
@@ -44,6 +72,9 @@ BarItem _roundedBar(ItemBuilderData data) => const BarItem(
     );
 
 BarItem _gradientBar(ItemBuilderData data) => const BarItem(
+      // The gradient covers the fill, but a colour is still worth setting as
+      // the fallback for anything that cannot draw the gradient.
+      color: _red,
       gradient: LinearGradient(
         colors: [_red, _blue],
         begin: Alignment.bottomCenter,
@@ -101,9 +132,7 @@ final List<GalleryEntry> galleryEntries = [
   ],
 )''',
     applyToPlayground: (ref) {
-      ref.read(chartStatePresenter)
-        ..updateItemPainter(SelectedPainter.bar)
-        ..updateData([_items([4, 6, 3, 6, 7, 9, 3, 2])]);
+      _applyBase(ref, [4, 6, 3, 6, 7, 9, 3, 2], color: _red, padding: 2);
       ref
           .read(chartDecorationsPresenter)
           .addDecoration(GridDecoration(), layer: DecorationLayer.background);
@@ -157,8 +186,8 @@ final List<GalleryEntry> galleryEntries = [
   ),
 )''',
     applyToPlayground: (ref) {
-      final presenter = ref.read(chartStatePresenter)
-        ..updateData([_items([3, 5, 2, 4, 6])]);
+      final presenter =
+          _applyBase(ref, [3, 5, 2, 4, 6], color: _red, padding: 4);
       presenter.addDataList(_items([2, 1, 4, 2, 3]));
       presenter.addDataList(_items([1, 3, 1, 3, 2]));
       presenter.updateDataStrategy(const StackDataStrategy());
@@ -210,12 +239,12 @@ final List<GalleryEntry> galleryEntries = [
   ),
 )''',
     applyToPlayground: (ref) {
-      final presenter = ref.read(chartStatePresenter)
-        ..updateData([_items([3, 5, 2, 4, 6])]);
+      final presenter =
+          _applyBase(ref, [3, 5, 2, 4, 6], color: _red, padding: 4);
       presenter.addDataList(_items([2, 1, 4, 2, 3]));
-      presenter.updateDataStrategy(
-          const DefaultDataStrategy(stackMultipleValues: true));
       presenter.updateStackMultipleValues(false);
+      presenter.updateMultiValuePadding(
+          const EdgeInsets.symmetric(horizontal: 1));
     },
   ),
   GalleryEntry(
@@ -280,16 +309,16 @@ final List<GalleryEntry> galleryEntries = [
   ],
 )''',
     applyToPlayground: (ref) {
-      ref.read(chartStatePresenter)
-        ..updateData([_items([2, 7, 2, 4, 7, 6, 2, 5, 4])])
-        ..updateItemPainter(SelectedPainter.none);
+      _applyBase(ref, [2, 7, 2, 4, 7, 6, 2, 5, 4], padding: 0)
+          .updateItemPainter(SelectedPainter.none);
       ref.read(chartDecorationsPresenter).addDecoration(SparkLineDecoration(),
           layer: DecorationLayer.background);
       ref.read(decorationSparkLinePresenter(0))
         ..updateFilled(true)
         ..updateSmoothPoints(true)
         ..updateLineWidth(2)
-        ..updateColor(_red);
+        ..updateColor(_red)
+        ..updateGradient(_sparklineGradient);
     },
   ),
   GalleryEntry(
@@ -340,7 +369,7 @@ final List<GalleryEntry> galleryEntries = [
   backgroundDecorations: [GridDecoration()],
 )''',
     applyToPlayground: (ref) {
-      ref.read(chartStatePresenter)
+      _applyBase(ref, [3, 6, 2, 8, 5, 7, 4], color: _plum, padding: 0)
         ..updateItemPainter(SelectedPainter.bubble)
         ..updateMinBarWidth(12)
         ..updateMaxBarWidth(12);
@@ -396,9 +425,8 @@ final List<GalleryEntry> galleryEntries = [
   ],
 )''',
     applyToPlayground: (ref) {
-      ref.read(chartStatePresenter)
-        ..updateData([_items([3, -2, 5, -4, 2, -1, 4])])
-        ..updateAxisMin(-6);
+      _applyBase(ref, [3, -2, 5, -4, 2, -1, 4], color: _blue, padding: 3)
+          .updateAxisMin(-6);
       ref.read(chartDecorationsPresenter).addDecoration(
           HorizontalAxisDecoration(),
           layer: DecorationLayer.background);
@@ -445,14 +473,19 @@ final List<GalleryEntry> galleryEntries = [
     ),
   ),
 )''',
-    applyToPlayground: (ref) => ref.read(chartStatePresenter).updateGradient(
-          const LinearGradient(
-            colors: [_red, _blue],
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-          ),
-          0,
+    applyToPlayground: (ref) {
+      // The preview's BarItem sets only a gradient, so its colour is the
+      // default black; the gradient covers the fill either way.
+      _applyBase(ref, [4, 7, 3, 8, 5, 6], color: _red, padding: 4)
+          .updateGradient(
+        const LinearGradient(
+          colors: [_red, _blue],
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
         ),
+        0,
+      );
+    },
   ),
   GalleryEntry(
     id: 'rounded-bars',
@@ -488,11 +521,12 @@ final List<GalleryEntry> galleryEntries = [
     ),
   ),
 )''',
-    applyToPlayground: (ref) => ref
-        .read(chartStatePresenter)
-        .updateBarBorderRadius(
-            const BorderRadius.vertical(top: Radius.circular(8)), 0,
-            forAll: true),
+    applyToPlayground: (ref) {
+      _applyBase(ref, [5, 8, 4, 6, 9, 3], color: _green, padding: 5)
+          .updateBarBorderRadius(
+              const BorderRadius.vertical(top: Radius.circular(8)), 0,
+              forAll: true);
+    },
   ),
   GalleryEntry(
     id: 'axis-labels',
@@ -549,6 +583,7 @@ final List<GalleryEntry> galleryEntries = [
   ],
 )''',
     applyToPlayground: (ref) {
+      _applyBase(ref, [4, 6, 3, 6, 7, 9], color: _sand, padding: 4);
       final decorations = ref.read(chartDecorationsPresenter)
         ..addDecoration(HorizontalAxisDecoration(),
             layer: DecorationLayer.background);
@@ -629,15 +664,13 @@ final List<GalleryEntry> galleryEntries = [
   ],
 )''',
     applyToPlayground: (ref) {
-      ref.read(chartStatePresenter).updateData([_items([4, 6, 3, 8, 7, 9, 5])]);
-      ref
-          .read(chartDecorationsPresenter)
-          .addDecoration(WidgetDecoration(
+      _applyBase(ref, [4, 6, 3, 8, 7, 9, 5], color: _green, padding: 4);
+      ref.read(chartDecorationsPresenter).addDecoration(WidgetDecoration(
             widgetDecorationBuilder: (_, __, ___, ____) =>
                 const SizedBox.shrink(),
           ));
       // The playground's widget decoration draws its target line from this
-      // value. Per-item colouring above the target is not a playground option,
+      // value. Recolouring items above the target is not a playground option,
       // so that part of the example does not carry over.
       ref.read(decorationWidgetPresenter(0))
         ..updateType(0)
@@ -709,8 +742,7 @@ final List<GalleryEntry> galleryEntries = [
   ),
 )''',
     applyToPlayground: (ref) {
-      ref.read(chartStatePresenter)
-        ..updateData([_items([4, 6, 3, 6, 7])])
+      _applyBase(ref, [4, 6, 3, 6, 7], color: _plum, padding: 0, maxOver: 3)
         ..updateItemPainter(SelectedPainter.widget)
         ..updateWidgetItemExample(WidgetItemExample.valueLabel);
     },
@@ -764,11 +796,9 @@ final List<GalleryEntry> galleryEntries = [
   ),
 )''',
     applyToPlayground: (ref) {
-      ref.read(chartStatePresenter)
-        ..updateData([
-          _items([4, 6, 3, 6, 7, 9, 3, 2, 5, 8, 4, 7, 6, 2, 9, 3])
-        ])
-        ..updateVisibleItems(8);
+      _applyBase(ref, [4, 6, 3, 6, 7, 9, 3, 2, 5, 8, 4, 7, 6, 2, 9, 3],
+              color: _red, padding: 4)
+          .updateVisibleItems(8);
     },
   ),
   GalleryEntry(
@@ -827,7 +857,9 @@ final List<GalleryEntry> galleryEntries = [
     ),
   ),
 )''',
-    applyToPlayground: (ref) =>
-        ref.read(chartStatePresenter).updateItemPainter(SelectedPainter.widget),
+    applyToPlayground: (ref) {
+      _applyBase(ref, [4, 6, 3, 6, 7], padding: 0)
+          .updateItemPainter(SelectedPainter.widget);
+    },
   ),
 ];

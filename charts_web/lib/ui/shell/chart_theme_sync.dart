@@ -22,7 +22,9 @@ class _ChartThemeSyncState extends ConsumerState<ChartThemeSync> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    final color = Theme.of(context).colorScheme.onSurface;
+    final scheme = Theme.of(context).colorScheme;
+    final color = scheme.onSurface;
+    final gridColor = scheme.outlineVariant;
 
     // didChangeDependencies still runs inside the build phase, and riverpod
     // refuses provider writes there, so defer to the end of the frame. The
@@ -31,6 +33,9 @@ class _ChartThemeSyncState extends ConsumerState<ChartThemeSync> {
       if (!mounted) return;
       if (ref.read(chartLabelColorProvider) != color) {
         ref.read(chartLabelColorProvider.notifier).state = color;
+      }
+      if (ref.read(chartGridColorProvider) != gridColor) {
+        ref.read(chartGridColorProvider.notifier).state = gridColor;
       }
     });
   }

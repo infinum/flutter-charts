@@ -36,6 +36,10 @@ class ChartStatePresenter extends ChangeNotifier {
   double? axisMin;
   double? axisMax;
 
+  /// Headroom above the tallest value. Templates that draw labels above their
+  /// bars need more of it.
+  double valueAxisMaxOver = 2.0;
+
   /// Non-null makes the chart scrollable and fixes how many items fit on
   /// screen. The chart must then be wrapped in a horizontal scroll view.
   double? visibleItems;
@@ -68,7 +72,7 @@ class ChartStatePresenter extends ChangeNotifier {
   ChartData<void> get _defaultData => ChartData(
         _data,
         dataStrategy: _strategy,
-        valueAxisMaxOver: 2.0,
+        valueAxisMaxOver: valueAxisMaxOver,
         axisMin: axisMin,
         axisMax: axisMax,
       );
@@ -195,6 +199,11 @@ class ChartStatePresenter extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateValueAxisMaxOver(double value) {
+    valueAxisMaxOver = value;
+    notifyListeners();
+  }
+
   void updateAxisMin(double? value) {
     axisMin = value;
     notifyListeners();
@@ -271,7 +280,10 @@ class ChartStatePresenter extends ChangeNotifier {
             color: _getColorForList(data.listIndex),
             gradient: gradient[data.listIndex],
             border: itemBorderSides[data.listIndex],
-            radius: barBorderRadius[data.listIndex],
+            // null rather than zero, matching what you would write by hand.
+            radius: barBorderRadius[data.listIndex] == BorderRadius.zero
+                ? null
+                : barBorderRadius[data.listIndex],
           );
         },
         maxBarWidth: maxBarWidth,

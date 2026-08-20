@@ -17,6 +17,7 @@ class DecorationGridPresenter extends ChangeNotifier
     implements DecorationBuilder {
   DecorationGridPresenter(this.index, this._ref) {
     _ref.listen(chartLabelColorProvider, (_, __) => notifyListeners());
+    _ref.listen(chartGridColorProvider, (_, __) => notifyListeners());
   }
 
   final Ref _ref;
@@ -32,7 +33,11 @@ class DecorationGridPresenter extends ChangeNotifier
   double horizontalAxisStep = 1.0;
   double verticalAxisStep = 1.0;
   double textScale = 1.0;
-  Color gridColor = Colors.grey;
+  /// Null follows the theme; set means the user picked a colour.
+  Color? gridColorOverride;
+
+  Color get gridColor =>
+      gridColorOverride ?? _ref.read(chartGridColorProvider);
 
   void updateShowHorizontalGrid(bool value) {
     showHorizontalGrid = value;
@@ -80,7 +85,7 @@ class DecorationGridPresenter extends ChangeNotifier
   }
 
   void updateColor(Color value) {
-    gridColor = value;
+    gridColorOverride = value;
     notifyListeners();
   }
 

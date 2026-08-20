@@ -142,9 +142,12 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     // item is allowed to take from the available space.
     final _stackWidth = chartState.itemOptions.clampBarWidth(_availableWidth);
 
-    // Whatever is left of the available space after clamping is split on both sides,
-    // this keeps clamped items centered in the space they got.
-    final _clampOffset = (_availableWidth - _stackWidth) * _stackSize / 2;
+    // Whatever is left of the available space after clamping is divided by
+    // [ItemOptions.startPosition]. 0.0 keeps the item on the left of the space it
+    // got, 0.5 centers it and 1.0 pushes it to the right.
+    final _startOffset = (_availableWidth - _stackWidth) *
+        _stackSize *
+        chartState.itemOptions.startPosition;
 
     childParentData.offset =
         Offset(_stackWidth * child.listIndex * _stack, 0.0) +
@@ -155,7 +158,7 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
                         child.listIndex *
                         _stack) +
                     chartState.itemOptions.padding.left +
-                    _clampOffset,
+                    _startOffset,
                 0) +
             // MultiValuePadding offset
             Offset(_multiValuePadding.left * _stack, 0.0);
@@ -208,9 +211,12 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
     // item is allowed to take from the available space.
     final _stackWidth = chartState.itemOptions.clampBarWidth(_availableWidth);
 
-    // Whatever is left of the available space after clamping is split on both sides,
-    // this keeps clamped items centered in the space they got.
-    final _clampOffset = (_availableWidth - _stackWidth) * _stackSize / 2;
+    // Whatever is left of the available space after clamping is divided by
+    // [ItemOptions.startPosition]. 0.0 keeps the item on the left of the space it
+    // got, 0.5 centers it and 1.0 pushes it to the right.
+    final _startOffset = (_availableWidth - _stackWidth) *
+        _stackSize *
+        chartState.itemOptions.startPosition;
 
     // For `StackDataStrategy` we will cut stacked items at the bottom, this will make sure there is no
     // Widget overlap for drawing, and make sure that centered widgets are in the center of visible item
@@ -218,7 +224,7 @@ class _ChartLinearItemRenderer<T> extends ChartItemRenderer<T>
 
     childParentData.offset = offset + // Current chart offset
         // Item offset in the list
-        Offset(itemWidth * currentValue + _clampOffset,
+        Offset(itemWidth * currentValue + _startOffset,
             size.height - ((child.item.max ?? 0.0) * _verticalMultiplier)) +
         // MultiValuePadding offset
         Offset(_multiValuePadding.left * _stack, 0);

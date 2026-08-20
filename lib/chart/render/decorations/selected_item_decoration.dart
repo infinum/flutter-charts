@@ -121,9 +121,15 @@ class SelectedItemDecoration extends DecorationPainter {
       selectedStyle,
       hasMaxWidth: false,
     );
-    // Items are centered in the space they got, so the marker follows that space
-    // and not the (possibly clamped) bar width.
-    final _itemWidth = size.width - state.itemOptions.padding.horizontal;
+    // Follow the item: it takes the clamped width out of the space it got, placed
+    // by [ItemOptions.startPosition].
+    final _availableWidth =
+        size.width - state.itemOptions.padding.horizontal;
+    final _barWidth = state.itemOptions.clampBarWidth(_availableWidth);
+    final _itemWidth = (_availableWidth - _barWidth) *
+            2 *
+            state.itemOptions.startPosition +
+        _barWidth;
 
     const _size = 2.0;
     final _maxValue = state.data.maxValue - state.data.minValue;
@@ -211,9 +217,15 @@ class SelectedItemDecoration extends DecorationPainter {
     }
     final _selectedItem = state.data.items[selectedListIndex][_item];
 
-    // Items are centered in the space they got, so the marker follows that space
-    // and not the (possibly clamped) bar width.
-    final _itemWidth = size.width - state.itemOptions.padding.horizontal;
+    // Follow the item: it takes the clamped width out of the space it got, placed
+    // by [ItemOptions.startPosition].
+    final _availableWidth =
+        size.width - state.itemOptions.padding.horizontal;
+    final _barWidth = state.itemOptions.clampBarWidth(_availableWidth);
+    final _itemWidth = (_availableWidth - _barWidth) *
+            2 *
+            state.itemOptions.startPosition +
+        _barWidth;
 
     const _size = 2.0;
     final _maxValue = state.data.maxValue - state.data.minValue;

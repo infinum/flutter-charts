@@ -1,8 +1,11 @@
 ## [Unreleased]
 * Fix: `minBarWidth` and `maxBarWidth` are now applied to non-scrollable charts, items are centered in the space they got
 * Fix: `maxBarWidth` is no longer ignored when `minBarWidth` is set as well
+* Fix: `ItemOptions.startPosition` now places the item inside the space it got, `0.0` draws it from the start of the slot, `1.0` from the end, `0.5` (default) centers it
+* Fix: animating to or from an unset `maxBarWidth` no longer collapses the items to nothing before snapping them back to size
+* Fix: `WidgetItemOptions` keeps `minBarWidth` and `maxBarWidth` while animating
 * Fix: bubble items no longer subtract `ItemOptions.padding` twice
-* `ItemOptions.clampBarWidth` is the single place where both bounds are applied
+* `ItemOptions.clampBarWidth` and `ItemOptions.lerpMaxBarWidth` are the single place where the bounds are applied and animated
 
 ## [3.1.0] - 15.02.2023
 * Added a screenshot

@@ -33,6 +33,8 @@ class ColorPickerDialog extends StatelessWidget {
                 'In this editor you can select only colors from given pallete. Any color can be given in code.\n$additionalText'),
             const SizedBox(height: 16),
             ColorPicker(
+              enableOpacity: true,
+              opacityTrackHeight: 20,
               color: startColor,
               // Update the screenPickerColor using the callback.
               onColorChanged: (Color color) {

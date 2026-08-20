@@ -57,10 +57,14 @@ class WidgetItemOptions extends ItemOptions {
   const WidgetItemOptions._lerp({
     required this.widgetItemBuilder,
     EdgeInsets multiValuePadding = EdgeInsets.zero,
+    double? maxBarWidth,
+    double? minBarWidth,
   }) : super._lerp(
           multiValuePadding: multiValuePadding,
           geometryPainter: _emptyPainter,
           itemBuilder: widgetItemBuilder,
+          maxBarWidth: maxBarWidth,
+          minBarWidth: minBarWidth,
         );
 
   final WidgetItemBuilder widgetItemBuilder;
@@ -74,6 +78,9 @@ class WidgetItemOptions extends ItemOptions {
       multiValuePadding:
           EdgeInsets.lerp(multiValuePadding, endValue.multiValuePadding, t) ??
               EdgeInsets.zero,
+      maxBarWidth:
+          ItemOptions.lerpMaxBarWidth(maxBarWidth, endValue.maxBarWidth, t),
+      minBarWidth: lerpDouble(minBarWidth, endValue.minBarWidth, t),
     );
   }
 }

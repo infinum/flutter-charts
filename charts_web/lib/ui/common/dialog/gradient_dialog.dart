@@ -54,6 +54,8 @@ class _LinearGradientPickerDialogState
                 'In this editor you can select only simple two-stop linear gradient. You can add any kind of gradient in code.'),
             const SizedBox(height: 16),
             ColorPicker(
+              enableOpacity: true,
+              opacityTrackHeight: 20,
               color: widget.startGradient.colors[0],
               onColorChanged: (Color color) {
                 setState(() {
@@ -70,6 +72,8 @@ class _LinearGradientPickerDialogState
               },
             ),
             ColorPicker(
+              enableOpacity: true,
+              opacityTrackHeight: 20,
               color: widget.startGradient.colors[1],
               onColorChanged: (Color color) {
                 setState(() {
