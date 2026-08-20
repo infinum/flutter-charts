@@ -1,5 +1,5 @@
 import 'package:charts_painter/chart.dart';
-import 'package:charts_web/ui/common/dialog/color_picker_dialog.dart';
+import 'package:charts_web/codegen/dart_literal.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -76,7 +76,7 @@ class DecorationVerticalAxisPresenter extends ChangeNotifier
       endWithChart: $endWithChart,
       lineWidth: $lineWidth,
       axisStep: $axisStep,
-      lineColor: ${colorToCode(lineColor)},
+      lineColor: ${colorLiteral(lineColor)},
     ),
     ''';
   }

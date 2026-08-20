@@ -1,5 +1,5 @@
 import 'package:charts_painter/chart.dart';
-import 'package:charts_web/ui/common/dialog/color_picker_dialog.dart';
+import 'package:charts_web/codegen/dart_literal.dart';
 import 'package:charts_web/ui/playground/presenter/chart_decorations_presenter.dart';
 import 'package:charts_web/ui/playground/presenter/chart_state_presenter.dart';
 import 'package:material_ui/material_ui.dart';
@@ -83,7 +83,7 @@ class DecorationSparkLinePresenter extends ChangeNotifier
       lineKey: $lineId,
       fill: $filled,
       smoothPoints: $smoothPoints,
-      lineColor: ${colorToCode(color)},
+      lineColor: ${colorLiteral(color)},
       lineWidth: $lineWidth,
       gradient: null,
       startPosition: $startPosition,

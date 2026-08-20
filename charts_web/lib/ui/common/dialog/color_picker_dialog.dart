@@ -62,7 +62,3 @@ class ColorPickerDialog extends StatelessWidget {
     );
   }
 }
-
-String colorToCode(Color color) {
-  return 'Color.fromARGB(${color.alpha}, ${color.red}, ${color.green}, ${color.blue})';
-}
