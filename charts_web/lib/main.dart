@@ -1,6 +1,5 @@
 import 'package:charts_web/theme/app_theme.dart';
 import 'package:charts_web/theme/theme_mode_provider.dart';
-import 'package:charts_web/ui/common/respo/respo.dart';
 import 'package:charts_web/ui/home/home_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
@@ -32,6 +31,6 @@ Widget _builder(BuildContext context, Widget? child) {
   // Remove this wrapper and the ignore below when it does.
   // ignore: deprecated_member_use
   return MaterialUiCompatibilityBridge(
-    child: Respo(child: child ?? const SizedBox.shrink()),
+    child: child ?? const SizedBox.shrink(),
   );
 }

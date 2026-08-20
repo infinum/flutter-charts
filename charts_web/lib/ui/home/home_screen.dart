@@ -1,5 +1,5 @@
 import 'package:charts_painter/chart.dart';
-import 'package:charts_web/ui/common/respo/respo.dart';
+import 'package:charts_web/ui/common/layout/breakpoints.dart';
 import 'package:charts_web/ui/home/chart_options/chart_options.dart';
 import 'package:charts_web/ui/home/presenter/chart_state_presenter.dart';
 import 'package:material_ui/material_ui.dart';
@@ -17,15 +17,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xffefefef),
-      body: switch (Respo.of(context).size) {
-        ResponsiveSize.small => ListView(
+      body: switch (context.breakpoint) {
+        AppBreakpoint.compact => ListView(
             shrinkWrap: true,
             children: [
               ChartOptions(),
               const SizedBox(height: 500, child: _Chart()),
             ],
           ),
-        ResponsiveSize.medium || ResponsiveSize.large => Row(
+        AppBreakpoint.medium || AppBreakpoint.expanded => Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
