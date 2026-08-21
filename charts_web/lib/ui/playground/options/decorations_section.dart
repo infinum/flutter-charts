@@ -1,6 +1,7 @@
 import 'package:charts_painter/chart.dart';
 import 'package:charts_web/assets.gen.dart';
 import 'package:charts_web/ui/design/section_card.dart';
+import 'package:charts_web/ui/playground/options/expanded_section.dart';
 import 'package:charts_web/ui/playground/decorations/decorations_grid.dart';
 import 'package:charts_web/ui/playground/decorations/decorations_horizontal_axis.dart';
 import 'package:charts_web/ui/playground/decorations/decorations_sparkline.dart';
@@ -18,7 +19,13 @@ class DecorationsSection extends ConsumerWidget {
     final presenter = ref.watch(chartDecorationsPresenter);
     final theme = Theme.of(context);
 
+    final expanded = ref.watch(expandedOptionSectionProvider);
+
     return SectionCard(
+      expanded: expanded == OptionSection.decorations,
+      onExpandedChanged: (open) => ref
+          .read(expandedOptionSectionProvider.notifier)
+          .state = open ? OptionSection.decorations : null,
       title: 'Decorations',
       subtitle: 'Everything drawn around the items, in a background or a '
           'foreground layer.',

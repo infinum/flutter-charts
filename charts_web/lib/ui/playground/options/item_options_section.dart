@@ -8,6 +8,7 @@ import 'package:charts_web/ui/design/number_field.dart';
 import 'package:charts_web/ui/design/optional_number_field.dart';
 import 'package:charts_web/ui/common/dialog/color_picker_dialog.dart';
 import 'package:charts_web/ui/design/section_card.dart';
+import 'package:charts_web/ui/playground/options/expanded_section.dart';
 import 'package:charts_web/ui/design/segmented_choice.dart';
 import 'package:charts_web/ui/playground/presenter/chart_state_presenter.dart';
 import 'package:collection/collection.dart';
@@ -24,7 +25,13 @@ class ItemOptionsSection extends ConsumerWidget {
     final isGeometry =
         painter == SelectedPainter.bar || painter == SelectedPainter.bubble;
 
+    final expanded = ref.watch(expandedOptionSectionProvider);
+
     return SectionCard(
+      expanded: expanded == OptionSection.itemOptions,
+      onExpandedChanged: (open) => ref
+          .read(expandedOptionSectionProvider.notifier)
+          .state = open ? OptionSection.itemOptions : null,
       title: 'Item options',
       subtitle: 'How each item is drawn. Presets for bar and bubble; '
           'WidgetItemOptions for anything else.',

@@ -7,6 +7,7 @@ import 'package:charts_web/ui/design/labeled_field.dart';
 import 'package:charts_web/ui/design/number_field.dart';
 import 'package:charts_web/ui/design/optional_number_field.dart';
 import 'package:charts_web/ui/design/section_card.dart';
+import 'package:charts_web/ui/playground/options/expanded_section.dart';
 import 'package:charts_web/ui/design/segmented_choice.dart';
 import 'package:charts_web/ui/playground/presenter/chart_state_presenter.dart';
 import 'package:collection/collection.dart';
@@ -24,7 +25,13 @@ class DataSection extends HookConsumerWidget {
     final presenter = ref.watch(chartStatePresenter);
     final isGrouped = presenter.state.data.dataStrategy is DefaultDataStrategy;
 
+    final expanded = ref.watch(expandedOptionSectionProvider);
+
     return SectionCard(
+      expanded: expanded == OptionSection.data,
+      onExpandedChanged: (open) => ref
+          .read(expandedOptionSectionProvider.notifier)
+          .state = open ? OptionSection.data : null,
       title: 'Data',
       subtitle: 'Every data point is an item. Lists become series.',
       children: [

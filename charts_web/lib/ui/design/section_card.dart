@@ -11,6 +11,8 @@ class SectionCard extends StatefulWidget {
     this.initiallyExpanded = true,
     this.collapsible = true,
     this.trailing,
+    this.expanded,
+    this.onExpandedChanged,
   });
 
   final String title;
@@ -20,12 +22,29 @@ class SectionCard extends StatefulWidget {
   final bool collapsible;
   final Widget? trailing;
 
+  /// Set to drive expansion from outside, for a group of cards that should
+  /// open one at a time. Null leaves the card in charge of itself.
+  final bool? expanded;
+  final ValueChanged<bool>? onExpandedChanged;
+
   @override
   State<SectionCard> createState() => _SectionCardState();
 }
 
 class _SectionCardState extends State<SectionCard> {
-  late bool _expanded = widget.initiallyExpanded;
+  late bool _ownExpanded = widget.initiallyExpanded;
+
+  bool get _expanded => widget.expanded ?? _ownExpanded;
+
+  void _toggle() {
+    final next = !_expanded;
+
+    if (widget.expanded == null) {
+      setState(() => _ownExpanded = next);
+    }
+
+    widget.onExpandedChanged?.call(next);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,21 +59,13 @@ class _SectionCardState extends State<SectionCard> {
             Row(
               children: [
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(widget.title, style: theme.textTheme.titleMedium),
-                      if (widget.subtitle != null) ...[
-                        const SizedBox(height: 2),
-                        Text(
-                          widget.subtitle!,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
+                  child: widget.collapsible
+                      ? InkWell(
+                          onTap: _toggle,
+                          borderRadius: BorderRadius.circular(8),
+                          child: _title(theme),
+                        )
+                      : _title(theme),
                 ),
                 if (widget.trailing != null) widget.trailing!,
                 if (widget.collapsible)
@@ -62,7 +73,7 @@ class _SectionCardState extends State<SectionCard> {
                     tooltip: _expanded ? 'Collapse' : 'Expand',
                     icon:
                         Icon(_expanded ? Icons.expand_less : Icons.expand_more),
-                    onPressed: () => setState(() => _expanded = !_expanded),
+                    onPressed: _toggle,
                   ),
               ],
             ),
@@ -75,4 +86,20 @@ class _SectionCardState extends State<SectionCard> {
       ),
     );
   }
+
+  Widget _title(ThemeData theme) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(widget.title, style: theme.textTheme.titleMedium),
+          if (widget.subtitle != null) ...[
+            const SizedBox(height: 2),
+            Text(
+              widget.subtitle!,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
+        ],
+      );
 }

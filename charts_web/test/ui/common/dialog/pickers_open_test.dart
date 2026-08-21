@@ -18,6 +18,13 @@ Future<void> _pumpApp(WidgetTester tester) async {
   await tester.pumpAndSettle();
 }
 
+/// Border and gradient live in Item options, which the accordion keeps closed
+/// until asked.
+Future<void> _openItemOptions(WidgetTester tester) async {
+  await tester.tap(find.text('Item options'));
+  await tester.pumpAndSettle();
+}
+
 void main() {
   testWidgets('the series colour picker opens', (tester) async {
     await _pumpApp(tester);
@@ -31,6 +38,7 @@ void main() {
 
   testWidgets('the border dialog opens', (tester) async {
     await _pumpApp(tester);
+    await _openItemOptions(tester);
 
     await tester.tap(find.text('Border').first);
     await tester.pumpAndSettle();
@@ -41,6 +49,7 @@ void main() {
 
   testWidgets('the gradient dialog opens with both pickers', (tester) async {
     await _pumpApp(tester);
+    await _openItemOptions(tester);
 
     await tester.tap(find.text('Gradient').first);
     await tester.pumpAndSettle();

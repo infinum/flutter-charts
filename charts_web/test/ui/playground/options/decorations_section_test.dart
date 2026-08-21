@@ -2,6 +2,7 @@ import 'package:charts_painter/chart.dart';
 import 'package:charts_web/theme/app_theme.dart';
 import 'package:charts_web/ui/playground/options/decorations_section.dart';
 import 'package:charts_web/ui/playground/presenter/chart_decorations_presenter.dart';
+import 'package:charts_web/ui/playground/options/expanded_section.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -15,6 +16,9 @@ void main() {
 
     final container = ProviderContainer();
     addTearDown(container.dispose);
+
+    // The option panel is an accordion; open the section under test.
+    container.read(expandedOptionSectionProvider.notifier).state = OptionSection.decorations;
 
     await tester.pumpWidget(UncontrolledProviderScope(
       container: container,

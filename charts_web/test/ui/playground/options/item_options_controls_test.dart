@@ -2,6 +2,7 @@ import 'package:charts_web/theme/app_theme.dart';
 import 'package:charts_web/ui/design/color_swatch_button.dart';
 import 'package:charts_web/ui/playground/options/item_options_section.dart';
 import 'package:charts_web/ui/playground/presenter/chart_state_presenter.dart';
+import 'package:charts_web/ui/playground/options/expanded_section.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -13,6 +14,9 @@ Future<ProviderContainer> _pump(WidgetTester tester) async {
 
   final container = ProviderContainer();
   addTearDown(container.dispose);
+
+  // The option panel is an accordion; open the section under test.
+  container.read(expandedOptionSectionProvider.notifier).state = OptionSection.itemOptions;
 
   await tester.pumpWidget(UncontrolledProviderScope(
     container: container,
