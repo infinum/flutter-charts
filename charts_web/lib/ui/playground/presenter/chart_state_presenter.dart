@@ -46,6 +46,16 @@ class ChartStatePresenter extends ChangeNotifier {
 
   List<Color> listColors = [_presetColors[0]];
 
+  /// Recolours every item whose value passes this threshold, the "did we hit
+  /// the target" pattern. Null leaves each item on its series colour.
+  ///
+  /// It is deliberately independent of the widget decoration's target value:
+  /// item options know nothing about which decorations are on the chart, so
+  /// pairing the two is the user's job — set both to the same number and the
+  /// bars change colour exactly where the line crosses them.
+  double? colorThreshold;
+  Color aboveThresholdColor = _aboveThresholdColorDefault;
+
   // Items
   EdgeInsets chartItemPadding =
       const EdgeInsets.only(left: 2, right: 2, top: 0, bottom: 0);
@@ -143,6 +153,18 @@ class ChartStatePresenter extends ChangeNotifier {
 
   void updateListColor(Color color, int listIndex) {
     listColors[listIndex] = color;
+    notifyListeners();
+  }
+
+  /// Null switches the recolour off; [aboveThresholdColor] is kept so turning
+  /// it back on returns the colour that was picked, not the default.
+  void updateColorThreshold(double? value) {
+    colorThreshold = value;
+    notifyListeners();
+  }
+
+  void updateAboveThresholdColor(Color color) {
+    aboveThresholdColor = color;
     notifyListeners();
   }
 
@@ -300,7 +322,7 @@ class ChartStatePresenter extends ChangeNotifier {
         padding: chartItemPadding,
         bubbleItemBuilder: (data) {
           return BubbleItem(
-            color: _getColorForList(data.listIndex),
+            color: _colorForItem(data),
             gradient: gradient[data.listIndex],
             border: itemBorderSides[data.listIndex],
           );
@@ -315,7 +337,7 @@ class ChartStatePresenter extends ChangeNotifier {
         startPosition: startPosition,
         barItemBuilder: (data) {
           return BarItem(
-            color: _getColorForList(data.listIndex),
+            color: _colorForItem(data),
             gradient: gradient[data.listIndex],
             border: itemBorderSides[data.listIndex],
             // null rather than zero, matching what you would write by hand.
@@ -363,6 +385,18 @@ class ChartStatePresenter extends ChangeNotifier {
   Color _getColorForList(int listKey) {
     return listColors[listKey % 5];
   }
+
+  /// The series colour, unless the item passes [colorThreshold]. `item.max` is
+  /// the top of the item, which for a stacked series is the stack total — the
+  /// same number the target line is drawn against.
+  Color _colorForItem(ItemBuilderData<void> data) {
+    final threshold = colorThreshold;
+    if (threshold != null && (data.item.max ?? 0) > threshold) {
+      return aboveThresholdColor;
+    }
+
+    return _getColorForList(data.listIndex);
+  }
 }
 
 enum SelectedPainter { bar, bubble, none, widget }
@@ -404,6 +438,8 @@ class _ValueLabelItem extends StatelessWidget {
     );
   }
 }
+
+const _aboveThresholdColorDefault = Color(0xFFD8262C);
 
 const _presetColors = [
   Color(0xFFD8555F),

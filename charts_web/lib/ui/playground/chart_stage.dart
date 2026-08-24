@@ -20,6 +20,10 @@ class ChartStage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final presenter = ref.watch(chartStatePresenter);
     final appliedEntry = ref.watch(appliedGalleryEntryProvider);
+    // With an example loaded Reset is a two-step: back to the example, then
+    // out of it. The label always names what the next press does.
+    final resetsToDefaults =
+        appliedEntry == null || ref.watch(resetToDefaultsNextProvider);
     final theme = Theme.of(context);
 
     return Padding(
@@ -40,9 +44,13 @@ class ChartStage extends ConsumerWidget {
                 const SizedBox(width: 8),
                 TextButton.icon(
                   icon: const Icon(Icons.restart_alt, size: 18),
-                  label:
-                      Text(appliedEntry == null ? 'Reset' : 'Reset to example'),
-                  onPressed: () => _reset(ref, appliedEntry),
+                  label: Text(appliedEntry == null
+                      ? 'Reset'
+                      : resetsToDefaults
+                          ? 'Reset to default'
+                          : 'Reset to example'),
+                  onPressed: () => _reset(ref, appliedEntry,
+                      toDefaults: resetsToDefaults),
                 ),
                 if (onToggleCode != null) ...[
                   const SizedBox(width: 8),
@@ -86,14 +94,22 @@ class ChartStage extends ConsumerWidget {
     );
   }
 
-  void _reset(WidgetRef ref, String? appliedEntryId) {
+  void _reset(WidgetRef ref, String? appliedEntryId,
+      {required bool toDefaults}) {
+    // resetPlayground clears the two-step flag, so both branches set what they
+    // leave behind afterwards.
     resetPlayground(ref);
 
-    if (appliedEntryId == null) return;
+    if (toDefaults) {
+      // Nothing to reset to any more; the button goes back to a plain 'Reset'.
+      ref.read(appliedGalleryEntryProvider.notifier).state = null;
+      return;
+    }
 
     final entry =
         galleryEntries.where((entry) => entry.id == appliedEntryId).firstOrNull;
     entry?.applyToPlayground(ref);
+    ref.read(resetToDefaultsNextProvider.notifier).state = true;
   }
 
   void _randomize(ChartStatePresenter presenter) {

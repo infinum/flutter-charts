@@ -1,3 +1,5 @@
+import 'package:charts_web/ui/common/dialog/color_picker_dialog.dart';
+import 'package:charts_web/ui/design/color_swatch_button.dart';
 import 'package:charts_web/ui/design/edge_insets_field.dart';
 import 'package:charts_web/ui/design/number_field.dart';
 import 'package:charts_web/ui/design/segmented_choice.dart';
@@ -47,6 +49,29 @@ class DecorationsWidget extends HookConsumerWidget {
               fallback: 3,
               onChanged: presenter.updateTargetValue,
             ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              ColorSwatchButton(
+                color: presenter.lineColor,
+                tooltip: 'Decoration colour',
+                onPressed: () async {
+                  final color = await ColorPickerDialog.show(
+                      context, presenter.lineColor);
+                  if (color != null) presenter.updateLineColor(color);
+                },
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'Colour. Match it to the item recolour threshold in Item '
+                  'options to colour bars by goal.',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
           EdgeInsetsField(
             label: 'Margin',
             helper: 'Resets when you pick another example, since each one '

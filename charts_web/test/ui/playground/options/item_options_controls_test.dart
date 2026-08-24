@@ -78,6 +78,29 @@ void main() {
     expect(presenter.listColors.first, original);
   });
 
+  testWidgets('the recolour threshold reveals a colour once it is switched on',
+      (tester) async {
+    final container = await _pump(tester);
+    final presenter = container.read(chartStatePresenter);
+    final swatchesBefore =
+        tester.widgetList(find.byType(ColorSwatchButton)).length;
+
+    expect(find.text('Recolour above'), findsWidgets);
+    expect(find.text('Colour above the threshold'), findsNothing);
+
+    presenter.updateColorThreshold(7);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Colour above the threshold'), findsOneWidget);
+    expect(tester.widgetList(find.byType(ColorSwatchButton)),
+        hasLength(swatchesBefore + 1));
+
+    presenter.updateColorThreshold(null);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Colour above the threshold'), findsNothing);
+  });
+
   testWidgets('a set border shows a clear action that unsets it',
       (tester) async {
     final container = await _pump(tester);

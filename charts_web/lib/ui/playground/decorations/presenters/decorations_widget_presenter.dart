@@ -9,6 +9,8 @@ final decorationWidgetPresenter =
     ChangeNotifierProvider.family<DecorationWidgetPresenter, int>(
         (ref, a) => DecorationWidgetPresenter(a, ref));
 
+const _lineColorDefault = Colors.blue;
+
 class DecorationWidgetPresenter extends ChangeNotifier
     implements DecorationBuilder {
   DecorationWidgetPresenter(this.index, Ref ref);
@@ -18,6 +20,10 @@ class DecorationWidgetPresenter extends ChangeNotifier
 
   /// The value the target-line and target-area examples sit at, in data units.
   double targetValue = 3;
+
+  /// What every demo widget is drawn in. Configurable so a target line can be
+  /// matched to the item colour a chart uses for "over target".
+  Color lineColor = _lineColorDefault;
 
   /// Null means "use whatever this example needs". Types 1 and 2 position
   /// themselves with a margin, so overriding blindly would break their layout.
@@ -43,6 +49,11 @@ class DecorationWidgetPresenter extends ChangeNotifier
     notifyListeners();
   }
 
+  void updateLineColor(Color color) {
+    lineColor = color;
+    notifyListeners();
+  }
+
   void updateMargin(EdgeInsets value) {
     _marginOverride = value;
     notifyListeners();
@@ -61,7 +72,7 @@ class DecorationWidgetPresenter extends ChangeNotifier
                   left: 0,
                   right: 0,
                   bottom: verticalMultiplier * targetValue,
-                  child: Container(color: Colors.blue, height: 2),
+                  child: Container(color: lineColor, height: 2),
                 ),
               ],
             );
@@ -84,7 +95,7 @@ class DecorationWidgetPresenter extends ChangeNotifier
                   left: 0,
                   bottom: targetValue * verticalMultiplier,
                   child: Container(
-                      color: Colors.blue, width: double.infinity, height: 2),
+                      color: lineColor, width: double.infinity, height: 2),
                 ),
               ],
             );
@@ -100,8 +111,8 @@ class DecorationWidgetPresenter extends ChangeNotifier
                   EdgeInsets.only(top: (targetValue + 2) * verticalMultiplier),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.blue.withValues(alpha: 0.1),
-                  border: Border.all(color: Colors.blue, width: 2),
+                  color: lineColor.withValues(alpha: 0.1),
+                  border: Border.all(color: lineColor, width: 2),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 width: double.infinity,
@@ -115,7 +126,7 @@ class DecorationWidgetPresenter extends ChangeNotifier
               (context, chartState, itemWidth, verticalMultiplier) {
             return Container(
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blue, width: 3)),
+                  border: Border.all(color: lineColor, width: 3)),
               width: double.infinity,
               height: double.infinity,
             );
@@ -132,7 +143,7 @@ class DecorationWidgetPresenter extends ChangeNotifier
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: Material(
-                  color: Colors.blue.withValues(alpha: 0.1),
+                  color: lineColor.withValues(alpha: 0.1),
                   child: InkWell(
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -144,7 +155,7 @@ class DecorationWidgetPresenter extends ChangeNotifier
                       width: double.infinity,
                       height: verticalMultiplier * targetValue,
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blue, width: 2),
+                        border: Border.all(color: lineColor, width: 2),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: const Center(child: Text('Click me')),
@@ -181,7 +192,8 @@ class DecorationWidgetPresenter extends ChangeNotifier
         'widgetDecorationBuilder: (context, chartState, itemWidth, verticalMultiplier) {');
     writer.open('return DecoratedBox(');
     writer.open('decoration: BoxDecoration(');
-    writer.line('border: Border.all(color: Color(0xFF2196F3), width: 3.0),');
+    writer.line(
+        'border: Border.all(color: ${colorLiteral(lineColor)}, width: 3.0),');
     writer.close('),');
     writer.line('child: const SizedBox.expand(),');
     writer.close(');');

@@ -54,6 +54,43 @@ void main() {
     );
   });
 
+  test('a colour threshold emits a test against the item value', () {
+    final source = render((presenter) {
+      presenter.updateListColor(const Color(0xFF5A8772), 0);
+      presenter.updateColorThreshold(7);
+      presenter.updateAboveThresholdColor(const Color(0xFFD8262C));
+    });
+
+    expect(
+      source,
+      contains('color: (data.item.max ?? 0) > 7.0 ? Color(0xFFD8262C) : '
+          'Color(0xFF5A8772),'),
+    );
+  });
+
+  test('a colour threshold keeps the per-series lookup as its else branch',
+      () {
+    final source = render((presenter) {
+      presenter.addDataList([ChartItem<void>(1)]);
+      presenter.updateListColor(const Color(0xFF111111), 0);
+      presenter.updateListColor(const Color(0xFF222222), 1);
+      presenter.updateColorThreshold(4);
+      presenter.updateAboveThresholdColor(const Color(0xFFD8262C));
+    });
+
+    expect(
+      source,
+      contains('color: (data.item.max ?? 0) > 4.0 ? Color(0xFFD8262C) : '
+          '[Color(0xFF111111), Color(0xFF222222)][data.listIndex % 2],'),
+    );
+  });
+
+  test('no threshold leaves the colour a plain literal', () {
+    final source = render((presenter) => presenter.updateColorThreshold(null));
+
+    expect(source, isNot(contains('data.item.max')));
+  });
+
   test('per-series radius is emitted when any series sets one', () {
     final source = render((presenter) {
       presenter.updateItemPainter(SelectedPainter.bar);

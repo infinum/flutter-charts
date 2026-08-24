@@ -610,6 +610,9 @@ final List<GalleryEntry> galleryEntries = [
           'or a tappable area.',
       'The threshold colour lives in barItemBuilder, so the line and the bars '
           'stay in sync through one constant.',
+      'Open this in the playground and both halves are editable: the target '
+          'under Item options -> Recolour above, the line under the widget '
+          'decoration.',
     ],
     buildChart: (context) => Chart<void>(
       state: ChartState<void>(
@@ -664,17 +667,19 @@ final List<GalleryEntry> galleryEntries = [
   ],
 )''',
     applyToPlayground: (ref) {
-      _applyBase(ref, [4, 6, 3, 8, 7, 9, 5], color: _green, padding: 4);
+      _applyBase(ref, [4, 6, 3, 8, 7, 9, 5], color: _green, padding: 4)
+        // The line and the bars read the same number from two presenters, the
+        // playground's way of expressing the one constant the snippet shares.
+        ..updateColorThreshold(_target)
+        ..updateAboveThresholdColor(_red);
       ref.read(chartDecorationsPresenter).addDecoration(WidgetDecoration(
             widgetDecorationBuilder: (_, __, ___, ____) =>
                 const SizedBox.shrink(),
           ));
-      // The playground's widget decoration draws its target line from this
-      // value. Recolouring items above the target is not a playground option,
-      // so that part of the example does not carry over.
       ref.read(decorationWidgetPresenter(0))
         ..updateType(0)
-        ..updateTargetValue(_target);
+        ..updateTargetValue(_target)
+        ..updateLineColor(_red);
     },
   ),
   GalleryEntry(

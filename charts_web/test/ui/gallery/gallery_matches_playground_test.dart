@@ -37,21 +37,29 @@ class _RefStub implements WidgetRef {
 }
 
 String _describeItem(ItemOptions options) {
-  final built = options.itemBuilder(ItemBuilderData(ChartItem<void>(5), 0, 0));
   final buffer = StringBuffer('${options.runtimeType} '
       'padding=${options.padding} multiValue=${options.multiValuePadding} '
       'max=${options.maxBarWidth} min=${options.minBarWidth} '
       'start=${options.startPosition}');
 
-  if (built is BarItem) {
-    buffer.write(' BarItem(color=${built.color} '
-        'gradient=${built.gradient} border=${built.border} '
-        'radius=${built.radius})');
-  } else if (built is BubbleItem) {
-    buffer.write(' BubbleItem(color=${built.color} '
-        'gradient=${built.gradient} border=${built.border})');
-  } else {
-    buffer.write(' widget');
+  // Two samples, because an item builder may answer differently per item: the
+  // goal-tracking entry recolours everything over its target, and one probe
+  // below the target would call that a match whatever the playground did.
+  for (final value in [5.0, 15.0]) {
+    final built =
+        options.itemBuilder(ItemBuilderData(ChartItem<void>(value), 0, 0));
+    buffer.write(' @$value');
+
+    if (built is BarItem) {
+      buffer.write(' BarItem(color=${built.color} '
+          'gradient=${built.gradient} border=${built.border} '
+          'radius=${built.radius})');
+    } else if (built is BubbleItem) {
+      buffer.write(' BubbleItem(color=${built.color} '
+          'gradient=${built.gradient} border=${built.border})');
+    } else {
+      buffer.write(' widget');
+    }
   }
 
   return buffer.toString();

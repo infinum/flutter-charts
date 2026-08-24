@@ -45,11 +45,7 @@ void _writeGeometry(
   final item = isBar ? 'BarItem' : 'BubbleItem';
 
   writer.open('$builder: (data) => $item(');
-  writer.line('color: ${_perSeries(
-    seriesCount,
-    (index) => colorLiteral(
-        presenter.listColors[index % presenter.listColors.length]),
-  )},');
+  writer.line('color: ${_itemColor(presenter, seriesCount)},');
 
   if (presenter.gradient.isNotEmpty) {
     writer.line('gradient: ${_perSeries(seriesCount, (index) {
@@ -122,6 +118,25 @@ void _writeWidget(SourceWriter writer, ChartStatePresenter presenter) {
   writer.line('child: const SizedBox.expand(),');
   writer.close('),');
   writer.close('),');
+}
+
+/// The series colour, wrapped in a threshold test when the playground
+/// recolours items that pass a value. Written out rather than hidden behind a
+/// helper: reading it is how you learn that `data.item` is what makes an item
+/// builder more than a colour lookup.
+String _itemColor(ChartStatePresenter presenter, int seriesCount) {
+  final seriesColor = _perSeries(
+    seriesCount,
+    (index) =>
+        colorLiteral(presenter.listColors[index % presenter.listColors.length]),
+  );
+
+  final threshold = presenter.colorThreshold;
+  if (threshold == null) return seriesColor;
+
+  return '(data.item.max ?? 0) > ${doubleLiteral(threshold)} '
+      '? ${colorLiteral(presenter.aboveThresholdColor)} '
+      ': $seriesColor';
 }
 
 /// One value for a single series, or an inline indexed lookup for several, so

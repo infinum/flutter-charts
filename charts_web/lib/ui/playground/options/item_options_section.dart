@@ -148,8 +148,60 @@ class ItemOptionsSection extends ConsumerWidget {
         ],
         if (isGeometry) ...[
           const Divider(),
+          const _ThresholdOptions(),
+          const Divider(),
           ...presenter.data
               .mapIndexed((index, _) => _PerSeriesOptions(index: index)),
+        ],
+      ],
+    );
+  }
+}
+
+/// Recolours items that pass a value, the "did we hit the target" pattern.
+/// Pair it with a widget decoration's target line set to the same number and
+/// the bars change colour exactly where the line crosses them.
+class _ThresholdOptions extends ConsumerWidget {
+  const _ThresholdOptions();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final presenter = ref.watch(chartStatePresenter);
+    final threshold = presenter.colorThreshold;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        OptionalNumberField(
+          label: 'Recolour above',
+          helper: 'Items over this value take the colour below. Match it to a '
+              'widget decoration target line to colour by goal.',
+          value: threshold,
+          fallback: 7,
+          onChanged: presenter.updateColorThreshold,
+        ),
+        if (threshold != null) ...[
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              ColorSwatchButton(
+                color: presenter.aboveThresholdColor,
+                tooltip: 'Colour above the threshold',
+                onPressed: () async {
+                  final color = await ColorPickerDialog.show(
+                    context,
+                    presenter.aboveThresholdColor,
+                  );
+                  if (color != null) {
+                    presenter.updateAboveThresholdColor(color);
+                  }
+                },
+              ),
+              const SizedBox(width: 12),
+              Text('Colour above the threshold',
+                  style: Theme.of(context).textTheme.bodyMedium),
+            ],
+          ),
         ],
       ],
     );

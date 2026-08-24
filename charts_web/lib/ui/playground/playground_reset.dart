@@ -1,3 +1,4 @@
+import 'package:charts_web/ui/playground/applied_example.dart';
 import 'package:charts_web/ui/playground/decorations/presenters/decorations_grid_presenter.dart';
 import 'package:charts_web/ui/playground/decorations/presenters/decorations_horizontal_axis_presenter.dart';
 import 'package:charts_web/ui/playground/decorations/presenters/decorations_sparkline_presenter.dart';
@@ -28,4 +29,8 @@ void resetPlayground(WidgetRef ref) {
 
   ref.invalidate(chartDecorationsPresenter);
   ref.invalidate(chartStatePresenter);
+
+  // The reset button's two-step starts over: whatever is loaded next is
+  // something to reset *to*, not away from.
+  ref.invalidate(resetToDefaultsNextProvider);
 }

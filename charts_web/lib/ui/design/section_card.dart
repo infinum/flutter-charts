@@ -51,55 +51,70 @@ class _SectionCardState extends State<SectionCard> {
     final theme = Theme.of(context);
 
     return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: widget.collapsible
-                      ? InkWell(
-                          onTap: _toggle,
-                          borderRadius: BorderRadius.circular(8),
-                          child: _title(theme),
-                        )
-                      : _title(theme),
-                ),
-                if (widget.trailing != null) widget.trailing!,
-                if (widget.collapsible)
-                  IconButton(
-                    tooltip: _expanded ? 'Collapse' : 'Expand',
-                    icon:
-                        Icon(_expanded ? Icons.expand_less : Icons.expand_more),
-                    onPressed: _toggle,
-                  ),
-              ],
-            ),
-            if (_expanded) ...[
-              const SizedBox(height: 12),
-              ...widget.children,
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _title(ThemeData theme) => Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.title, style: theme.textTheme.titleMedium),
-          if (widget.subtitle != null) ...[
-            const SizedBox(height: 2),
-            Text(
-              widget.subtitle!,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
+          Row(
+            children: [
+              Expanded(
+                child: widget.collapsible
+                    ? InkWell(
+                        onTap: _toggle,
+                        borderRadius: BorderRadius.circular(14),
+                        child: Row(
+                          children: [
+                            Expanded(child: _title(theme)),
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: IconButton(
+                                tooltip: _expanded ? 'Collapse' : 'Expand',
+                                icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
+                                onPressed: _toggle,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : _title(theme),
+              ),
+              if (widget.trailing != null)
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: widget.trailing!,
+                ),
+            ],
+          ),
+          if (_expanded) ...[
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: widget.children,
               ),
             ),
           ],
         ],
+      ),
+    );
+  }
+
+  Widget _title(ThemeData theme) => Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(widget.title, style: theme.textTheme.titleMedium),
+            if (widget.subtitle != null) ...[
+              const SizedBox(height: 2),
+              Text(
+                widget.subtitle!,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ],
+        ),
       );
 }
