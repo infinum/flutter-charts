@@ -67,6 +67,41 @@ void main() {
       expect(sampledMaxY, lessThanOrEqualTo(inputMaxY + 0.5));
     });
 
+    test('stays within neighbouring points on flat-then-spike data', () {
+      // Mirrors the bug report: long flat plateau, a sharp spike, a dip below
+      // the plateau and a short step. Uneven slopes on either side of a point
+      // used to produce tangents that made the curve overshoot the frame.
+      const spike = [
+        Offset(0, 90),
+        Offset(20, 90),
+        Offset(40, 90),
+        Offset(60, 90),
+        Offset(80, 89),
+        Offset(100, 5),
+        Offset(110, 100),
+        Offset(120, 98),
+        Offset(140, 60),
+        Offset(160, 60),
+      ];
+      final path = const SmoothCubicBezierPathBuilder()
+          .build(spike, size: size, encapsulate: false, clipBottom: false);
+      final samples = _samplePath(path, step: 0.25);
+
+      // Between every pair of consecutive data points the curve must stay
+      // within the y-range spanned by those two points (local monotonicity).
+      for (var i = 0; i < spike.length - 1; i++) {
+        final a = spike[i];
+        final b = spike[i + 1];
+        final lo = math.min(a.dy, b.dy) - 0.5;
+        final hi = math.max(a.dy, b.dy) + 0.5;
+        for (final s in samples) {
+          if (s.dx < a.dx || s.dx > b.dx) continue;
+          expect(s.dy, inInclusiveRange(lo, hi),
+              reason: 'sample $s leaves the range of segment $a -> $b');
+        }
+      }
+    });
+
     test('simplification is opt-in: maxError > 0 drops near-collinear points', () {
       // Middle point sits 3px off the straight chord between the endpoints.
       const points = [Offset(0, 0), Offset(50, 3), Offset(100, 0)];

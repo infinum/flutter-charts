@@ -177,11 +177,23 @@ class SmoothCubicBezierPathBuilder implements PathBuilder {
     final slopes = List<double>.filled(pointCount - 1, 0);
 
     for (int index = 0; index < pointCount - 1; index++) {
-      slopes[index] = (points[index + 1].dy - points[index].dy) / (points[index + 1].dx - points[index].dx);
+      final deltaX = points[index + 1].dx - points[index].dx;
+      final deltaY = points[index + 1].dy - points[index].dy;
+      // Coincident x-coordinates: treat as a vertical jump with no usable slope.
+      slopes[index] = deltaX == 0 ? 0 : deltaY / deltaX;
     }
     return slopes;
   }
 
+  /// Fritsch–Carlson monotone tangents (same scheme as d3 `curveMonotoneX`).
+  ///
+  /// For each interior point the tangent is the interval-weighted mean of the
+  /// two neighbouring secant slopes, then limited so it never exceeds three
+  /// times the smaller of those slopes. Without the limiting step a flat
+  /// interval next to a steep one gets a tangent far too large for the flat
+  /// side, and the curve wiggles past the data (overshoots the top of a peak
+  /// or dips below a valley). At a slope sign change, the tangent is zero so
+  /// local extrema stay exactly at the data points.
   List<double> _tangents(List<Offset> points) {
     final slopes = _slopes(points);
     final pointCount = points.length;
@@ -191,11 +203,21 @@ class SmoothCubicBezierPathBuilder implements PathBuilder {
     tangents[pointCount - 1] = 0;
 
     for (int index = 1; index < pointCount - 1; index++) {
-      if (slopes[index - 1] * slopes[index] <= 0) {
-        tangents[index] = 0; // slope sign change
-      } else {
-        tangents[index] = (slopes[index - 1] + slopes[index]) / 2;
+      final s0 = slopes[index - 1];
+      final s1 = slopes[index];
+
+      if (s0 == 0 || s1 == 0 || s0.sign != s1.sign) {
+        tangents[index] = 0; // local extremum or flat neighbour
+        continue;
       }
+
+      final h0 = points[index].dx - points[index - 1].dx;
+      final h1 = points[index + 1].dx - points[index].dx;
+      // Interval-weighted mean of the two secant slopes.
+      final weighted = (s0 * h1 + s1 * h0) / (h0 + h1);
+      // Limit to keep the Hermite segment monotone on both sides (|m| <= 3 * min|s|).
+      final limited = min(min(s0.abs(), s1.abs()), 0.5 * weighted.abs());
+      tangents[index] = (s0.sign + s1.sign) * limited;
     }
 
     // Scale all tangents with smoothing factor so we can smoothly interpolate
